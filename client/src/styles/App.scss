@@ -1,3 +1,11 @@
 $navy-blue: #213555;
 $light-navy-blue: #4F709C;
 $dirty-white: #F0F0F0;
+
+
+.login-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100dvh;
+}

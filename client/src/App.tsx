@@ -1,17 +1,22 @@
 // import { useState } from 'react'
 import './styles/App.scss'
-import { Button } from './components/ui/button'
+import { Routes, Route } from 'react-router-dom'
+import { Login } from './pages/Login'
+import { Register } from './pages/Register'
 
 function App() {
-  
+  const authRoutes = [
+    { path: '/login', element: <Login/> },
+    { path: '/register', element: <Register/> },
+  ]
+
   return (
     <>
-      <div className='hello-world font-bold'>
-          Hello classroom 
-          <div className='sub-class'>
-              <Button variant={'outline'} size={'lg'}>Wew</Button>
-          </div>
-      </div>
+      <Routes>
+          {authRoutes && authRoutes.map(({ path, element }, index) => (
+            <Route  key={index} path={path} element={element}/>
+          ))}
+      </Routes>
     </>
   )
 }
