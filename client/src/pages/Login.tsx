@@ -18,12 +18,19 @@ import { Input } from "@/components/ui/input"
 import { useForm } from "react-hook-form"
 import { Button } from "@/components/ui/button"
 import { z } from "zod"
+import axios from 'axios'
+import { useMutation } from "@tanstack/react-query"
 
 const formSchema = z.object({
     email: z.string().min(1, { message: 'please fill the empty field' }),
     password: z.string().min(8, { message: 'password should be 8 characters' }),
-    role: z.string()
+    role: z.string().min(1, { message: 'role is required' })
 })
+
+const loginData = async (value: any): Promise<any> => {
+    const response = await axios.post(`${import.meta.env.VITE_SERVER_URL}/auth/login`, value)
+    return response.data
+}
 
 export const Login = () => {
     const form = useForm<z.infer<typeof formSchema>>({
@@ -35,9 +42,18 @@ export const Login = () => {
         },
     })
 
+    const mutation = useMutation({
+        mutationFn: loginData,
+        onSuccess: (data) => {
+            console.log(data)
+        },
+        onError: (error) => {
+            console.log(error)
+        }
+    })
+
     function onSubmit(values: z.infer<typeof formSchema>) {
-        // Do something with the form values.
-        // ✅ This will be type-safe and validated.
+        mutation.mutate(values)
         console.log(values)
     }
 
@@ -51,7 +67,7 @@ export const Login = () => {
                             name="email"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>First Name</FormLabel>
+                                    <FormLabel>Email:</FormLabel>
                                     <FormControl>
                                         <Input type="email" placeholder="your email" {...field}/>
                                     </FormControl>
@@ -64,7 +80,7 @@ export const Login = () => {
                             name="password"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Password</FormLabel>
+                                    <FormLabel>Password:</FormLabel>
                                     <FormControl>
                                         <Input type="password" placeholder="your password" {...field}/>
                                     </FormControl>
@@ -77,7 +93,7 @@ export const Login = () => {
                             name="role"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Password</FormLabel>
+                                    <FormLabel>Role:</FormLabel>
                                         <Select onValueChange={field.onChange} defaultValue={field.value}>
                                             <FormControl>
                                                 <SelectTrigger>
