@@ -28,7 +28,7 @@ export const login = async (req: Request, res: Response): Promise<any> => {
         if (!user) return res.json({ message: "User don't exist"}) 
 
         const matchPass = await comparePassword(password, user.password)
-        if (!matchPass) return res.status(400).json({ message: 'Invalid credentials' })
+        if (!matchPass) return res.json({ message: 'Invalid credentials' })
 
         const accessToken = generateToken(user.id, user.role)
         const refreshToken = generateRefreshToken(user.id, user.role)

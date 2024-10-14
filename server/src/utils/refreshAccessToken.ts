@@ -1,6 +1,8 @@
 import { Request, Response } from "express";
 import { generateToken } from "./createToken";
 import { RefreshTokenModel } from "../models/refresh_token"
+import { JwtPayload } from "middlewares";
+import jwt, { decode } from 'jsonwebtoken'
 
 export const refresh = async (req: Request, res: Response): Promise<any> => {
     const { refreshToken } = req.cookies;
@@ -21,13 +23,20 @@ export const refresh = async (req: Request, res: Response): Promise<any> => {
 
     // Generate new access token if refresh token is not yet expired
     //
-    const accessToken = generateToken(existingToken.user.toString(), 'role')
 
-    res.cookie("accessToken", accessToken, {
-        httpOnly: true,
-        secure: true, // Enable in a production environment with HTTPS
-        maxAge: 15 * 60 * 1000, // 15 minutes
-    })
+    try {
+        const decoded = jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET as string) as JwtPayload
+        const newAccessToken = generateToken(decoded.id, decoded.role)
 
-    res.json({ message: "Generated new access token" });
+        res.cookie("accessToken", newAccessToken, {
+            httpOnly: true,
+            secure: true, // Enable in a production environment with HTTPS
+            maxAge: 15 * 60 * 1000, // 15 minutes
+        })
+
+        res.json({ message: "Generated new access token" });
+    } catch (error) {
+        return res.status(403).json({ message: error });
+    }
+    
 };

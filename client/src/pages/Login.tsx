@@ -20,6 +20,7 @@ import { Button } from "@/components/ui/button"
 import { z } from "zod"
 import axios from 'axios'
 import { useMutation } from "@tanstack/react-query"
+// import { useNavigate } from "react-router-dom"
 
 const formSchema = z.object({
     email: z.string().min(1, { message: 'please fill the empty field' }),
@@ -52,8 +53,11 @@ export const Login = () => {
         }
     })
 
+    // const navigate = useNavigate()
+
     function onSubmit(values: z.infer<typeof formSchema>) {
         mutation.mutate(values)
+        // navigate('/')
         console.log(values)
     }
 

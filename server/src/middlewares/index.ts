@@ -3,7 +3,7 @@ import { get } from 'lodash'
 import jwt from 'jsonwebtoken'
 
 
-interface JwtPayload {
+export interface JwtPayload {
     id: string
     role: string
 }

@@ -9,6 +9,7 @@ const StudentSchema = new Schema<IStudent>({
     firstname: { type: String, required: true },
     email: { type: String, required: true , unique: true },
     password: { type: String, requird: true },
+    role: { type: String, required: true },
     gradeLevel: { type: Number, required: true }
 })
 

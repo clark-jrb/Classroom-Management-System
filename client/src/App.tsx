@@ -3,6 +3,7 @@ import './styles/App.scss'
 import { Routes, Route } from 'react-router-dom'
 import { Login } from './pages/Login'
 import { Register } from './pages/Register'
+import { Dashboard } from './pages/Dashboard'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
 const queryClient = new QueryClient()
@@ -13,11 +14,18 @@ function App() {
     { path: '/register', element: <Register/> },
   ]
 
+  const studentRoutes = [
+    { path: '/', element: <Dashboard/> }
+  ]
+
   return (
     <QueryClientProvider client={queryClient}>
       <Routes>
           {authRoutes && authRoutes.map(({ path, element }, index) => (
             <Route  key={index} path={path} element={element}/>
+          ))}
+          {studentRoutes && studentRoutes.map(({ path, element }, index) => (
+            <Route key={index} path={path} element={element}/>
           ))}
       </Routes>
     </QueryClientProvider>

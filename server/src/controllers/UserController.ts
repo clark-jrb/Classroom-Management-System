@@ -1,5 +1,12 @@
 import { Response, Request } from "express"
 import { UserModel } from "../models/user"
+import { getStudentById } from "./StudentController"
+
+export const authenticated = async (req: Request, res: Response): Promise<any> => {
+    const user = (req as any).user
+    const currentUser = await getStudentById(user.id)
+    return res.json({ currentUser: currentUser })
+}
 
 export const getUsers = () => UserModel.find()
 export const getUserByEmail = (email: string) => UserModel.findOne({ email })

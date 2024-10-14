@@ -1,9 +1,11 @@
 import express from 'express'
-import { getAllUsers } from '../controllers/UserController'
+import { getAllUsers, authenticated } from '../controllers/UserController'
 import { isAuthenticated, isOwner } from '../middlewares'
+import { getAllStudents } from '../controllers/StudentController'
 
 export default (router: express.Router) => {
-    router.get('/users', isAuthenticated, getAllUsers)
+    router.get('/authenticated', isAuthenticated, authenticated)
+    router.get('/users', isAuthenticated, getAllStudents)
     // router.delete('/students/:id', isAuthenticated, deleteStudent)
     // router.patch('/students/:id', isAuthenticated, updateStudent)
 }
