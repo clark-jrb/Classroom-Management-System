@@ -2,7 +2,7 @@ import { Schema, model } from "mongoose";
 import { IUser } from "./user";
 
 interface ITeacher extends IUser {
-    subject: string
+    subjects: string
 }
 
 const TeacherSchema = new Schema<ITeacher>({
@@ -10,7 +10,7 @@ const TeacherSchema = new Schema<ITeacher>({
     email: { type: String, required: true , unique: true },
     password: { type: String, requird: true },
     role: { type: String, required: true },
-    subject: { type: String, required: true }
+    subjects: { type: String, required: true }
 })
 
 export const TeacherModel = model<ITeacher>('teachers', TeacherSchema)

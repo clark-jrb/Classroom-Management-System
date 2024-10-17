@@ -1,6 +1,8 @@
 import { Response, Request } from "express"
 import { UserModel } from "../models/user"
 import { getStudentById } from "./StudentController"
+import { StudentModel } from "../models/student"
+import { TeacherModel } from "../models/teacher"
 
 export const authenticated = async (req: Request, res: Response): Promise<any> => {
     const user = (req as any).user
@@ -8,16 +10,60 @@ export const authenticated = async (req: Request, res: Response): Promise<any> =
     return res.json({ currentUser: currentUser })
 }
 
+export class UserFactory {
+    public email: string
+    public role: string
+
+    constructor(email: string, role: string) {
+        this.email = email
+        this.role = role
+
+        const validRoles = [
+            'student',
+            'teacher',
+            'admin'
+        ]
+
+        if (!validRoles.includes(role)) {
+            throw new Error(`Invalid role: ${role}`)
+        }
+    }
+
+    private selectModel () {
+        const availableModels: any = {
+            student: StudentModel,
+            teacher: TeacherModel,
+            default: UserModel
+        }
+        const selectedModel = availableModels[this.role] || availableModels['default']
+        
+        return selectedModel
+    }
+
+    // get user by email 
+    public getByEmail() {
+        const Model = this.selectModel()
+
+        return Model.findOne({ email: this.email })
+    }
+
+    // create user 
+    //
+    public async createUser(values: Record<string, any>) {
+        const Model = this.selectModel()
+        const user = await new Model(values).save()
+
+        return user.toObject()
+    }
+}
+
 export const getUsers = () => UserModel.find()
-export const getUserByEmail = (email: string) => UserModel.findOne({ email })
-export const getUserBySessionToken = (sessionToken: string) => UserModel.findOne({
-    'authentication.sessionToken': sessionToken
-})
+// export const getUserByEmail = (email: string) => UserModel.findOne({ email })
 
 export const getUserById = (id: string) => UserModel.findById(id)
-export const createUser = (values: Record<string, any>) => new UserModel(values)
-    .save()
-    .then((user) => user.toObject())
+// export const createUser = (values: Record<string, any>) => new UserModel(values)
+//     .save()
+//     .then((user) => user.toObject())
 
 export const deleteUserById = (id: string) => UserModel.findOneAndDelete({ _id: id })
 export const updateUserById = (id: string, values: Record<string, any>) => UserModel.findByIdAndUpdate(id, values)
