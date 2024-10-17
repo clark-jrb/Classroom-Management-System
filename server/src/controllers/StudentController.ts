@@ -1,22 +1,42 @@
 import { Response, Request } from "express"
 import { StudentModel } from "../models/student"
 
-export const verifiedStudent = async (req: Request, res: Response): Promise<any> => {
-    const user = (req as any).user
-    const currentUser = await getStudentById(user.id)
-    return res.json({ currentUser: currentUser })
-}
+export class StudentController {
 
-export const getStudentById = (id: string) => StudentModel.findById(id)
-export const getStudents = () => StudentModel.find()
+    public getStudents = async (req: Request, res: Response): Promise<any> => {
+        try {
+            const students = await StudentModel.find()
 
-export const getAllStudents = async (req: Request, res: Response): Promise<any> => {
-    try {
-        const students = await getStudents()
+            return res.status(200).json({ students: students })
+        } catch (error) {
+            return res.status(400).json({ message: 'Failed to get students', error })
+        }
+    }
 
-        return res.status(200).json(students)
-    } catch (error) {
-        console.log(error)
-        return res.sendStatus(400)
+    public getStudentById = async (req: Request, res: Response): Promise<any> => {
+        try {
+            const { id } = req.params
+            const student = await StudentModel.findById(id)
+
+            return res.status(200).json({ student: student })
+        } catch (error) {
+            return res.status(400).json({ message: 'Failed to get student', error })
+        }
+        // return await StudentModel.findById(id)
+    }
+
+    public deleteStudentById = async (req: Request, res: Response): Promise<any> => {
+        try {
+            const { id } = req.params
+            await StudentModel.findOneAndDelete({ _id: id })
+
+            return res.status(200).json({ message: 'Student successfully deleted' })
+        } catch (error) {
+            return res.status(400).json({ message: 'Failed to delete student', error })
+        }
+    }
+    
+    public async updateUserById(id: string, values: Record<string, any>) {
+        return await StudentModel.findByIdAndUpdate(id, values)
     }
 }
