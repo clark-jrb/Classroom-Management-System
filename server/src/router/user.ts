@@ -1,5 +1,5 @@
 import express from 'express'
-import { getAllUsers, authenticated } from '../controllers/UserController'
+import { authenticated } from '../controllers/UserController'
 import { isAuthenticated, isOwner } from '../middlewares'
 import { getAllStudents } from '../controllers/StudentController'
 

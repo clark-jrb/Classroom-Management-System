@@ -4,34 +4,35 @@ import { UserFactory } from './UserController'
 import { hashPassword, comparePassword } from '../utils/hashPassword'
 import { generateToken, generateRefreshToken } from '../utils/createToken'
 
+const User = new UserFactory()
+
 export const login = async (req: Request, res: Response): Promise<any> => {
     const { email, password, role } = req.body
     // var user
 
-    const findUser = new UserFactory(email, role)
-    const user = await findUser.getByEmail()
+    const userExists = await User.getByEmail(email, role)
 
     try {
         if (!email || !password) { return res.json({ message: 'Incomplete credentials'}) }
 
         // check if user exists
         //
-        if (!user) return res.json({ message: "User don't exist"}) 
+        if (!userExists) return res.json({ message: "User don't exist"}) 
 
         // check if password matched 
         //
-        const matchPass = await comparePassword(password, user.password)
+        const matchPass = await comparePassword(password, userExists.password)
         if (!matchPass) return res.json({ message: 'Wrong password' })
 
         // generate access ad refresh tokens 
         //
-        const accessToken = generateToken(user.id, user.role)
-        const refreshToken = generateRefreshToken(user.id, user.role)
+        const accessToken = generateToken(userExists.id, userExists.role)
+        const refreshToken = generateRefreshToken(userExists.id, userExists.role)
         
         // create refresh tokens on database 
         //
         const createRefreshToken = new RefreshTokenModel({
-            user: user._id,
+            user: userExists._id,
             refresh_token: refreshToken,
             expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // Expires in 7 days
         })
@@ -70,8 +71,7 @@ export const register = async (req: Request, res: Response): Promise<any> => {
         homeroom 
     } = req.body
 
-    const user = new UserFactory(email, role)
-    const userExist = await user.getByEmail()
+    const userExist = await User.getByEmail(email, role)
 
     try {
         // check if all fields filled 
@@ -98,19 +98,7 @@ export const register = async (req: Request, res: Response): Promise<any> => {
             homeroom
         }
 
-        await user.createUser(values)
-
-        // switch (role) {
-        //     case 'student':
-        //         await createStudent({...values, gradeLevel})
-        //         break
-        //     case 'teacher':
-        //         await createTeacher({...values, subjects, homeroom})
-        //         break
-        //     default:
-        //         await createUser(values)
-        //         break
-        // }
+        await User.createUser(values, role)
         
         return res.status(201).json({ message: "User registered successfully!" }).end()
     } catch (error) {

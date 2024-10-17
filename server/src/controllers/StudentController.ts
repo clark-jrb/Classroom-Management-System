@@ -7,14 +7,8 @@ export const verifiedStudent = async (req: Request, res: Response): Promise<any>
     return res.json({ currentUser: currentUser })
 }
 
-export const createStudent = (values: Record<string, any>) => new StudentModel(values)
-    .save()
-    .then((student) => student.toObject())
-
-export const getStudentByEmail = (email: string) => StudentModel.findOne({ email })
 export const getStudentById = (id: string) => StudentModel.findById(id)
 export const getStudents = () => StudentModel.find()
-
 
 export const getAllStudents = async (req: Request, res: Response): Promise<any> => {
     try {
