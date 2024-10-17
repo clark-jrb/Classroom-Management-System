@@ -15,22 +15,18 @@ export const login = async (req: Request, res: Response): Promise<any> => {
     try {
         if (!email || !password) { return res.json({ message: 'Incomplete credentials'}) }
 
-        // check if user exists
-        //
+        // checks if user exists
         if (!userExists) return res.json({ message: "User don't exist"}) 
 
-        // check if password matched 
-        //
+        // checks if password matched 
         const matchPass = await comparePassword(password, userExists.password)
         if (!matchPass) return res.json({ message: 'Wrong password' })
 
-        // generate access ad refresh tokens 
-        //
+        // generates access ad refresh tokens 
         const accessToken = generateToken(userExists.id, userExists.role)
         const refreshToken = generateRefreshToken(userExists.id, userExists.role)
         
-        // create refresh tokens on database 
-        //
+        // creates refresh tokens on database 
         const createRefreshToken = new RefreshTokenModel({
             user: userExists._id,
             refresh_token: refreshToken,
@@ -38,8 +34,7 @@ export const login = async (req: Request, res: Response): Promise<any> => {
         })
         await createRefreshToken.save()
         
-        // respond with access and refresh token on headers
-        //
+        // responds with access and refresh token on headers
         res.cookie("accessToken", accessToken, {
             httpOnly: true,
             secure: true,

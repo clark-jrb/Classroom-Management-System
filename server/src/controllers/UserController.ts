@@ -23,15 +23,13 @@ export class UserFactory {
     }
 
     // get user by email 
-    //
     public async getByEmail(email: string, role: string) {
         const Model = this.selectModel(role)
 
         return await Model.findOne({ email: email })
     }
 
-    // create user 
-    //
+    // create user
     public async createUser(values: Record<string, any>, role: string) {
         const Model = this.selectModel(role)
         const user = await new Model(values).save()
@@ -39,8 +37,7 @@ export class UserFactory {
         return user.toObject()
     }
 
-    // is user authenticated? 
-    //
+    // is user authenticated?
     public authenticated = async (req: Request, res: Response): Promise<any> => {
         const user = (req as any).user;
         const { role, id } = user
