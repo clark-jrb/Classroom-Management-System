@@ -1,10 +1,10 @@
 import { Request, Response } from 'express'
 import { RefreshTokenModel } from '../models/refresh_token'
-import { UserFactory } from './UserController'
+import { UserController } from './UserController'
 import { hashPassword, comparePassword } from '../utils/hashPassword'
 import { generateToken, generateRefreshToken } from '../utils/createToken'
 
-const User = new UserFactory()
+const User = new UserController()
 
 export const login = async (req: Request, res: Response): Promise<any> => {
     const { email, password, role } = req.body

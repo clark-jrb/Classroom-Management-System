@@ -1,8 +1,8 @@
 import express from 'express'
-import { UserFactory } from '../controllers/UserController'
+import { UserController } from '../controllers/UserController'
 import { isAuthenticated } from '../middlewares'
 
-const User = new UserFactory()
+const User = new UserController()
 const { authenticated } = User
 
 export default (router: express.Router) => {

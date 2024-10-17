@@ -3,7 +3,7 @@ import { UserModel } from "../models/user"
 import { StudentModel } from "../models/student"
 import { TeacherModel } from "../models/teacher"
 
-export class UserFactory {
+export class UserController {
 
     private selectModel(role: string) {
         const validRoles = ['student', 'teacher', 'admin']
