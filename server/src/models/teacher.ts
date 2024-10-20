@@ -1,8 +1,13 @@
 import { Schema, model } from "mongoose";
 import { IUser } from "./user";
 
+interface ISubjects {
+    name: string
+    checked: boolean
+}
+
 interface ITeacher extends IUser {
-    subjects: string
+    subjects: ISubjects[]
 }
 
 const TeacherSchema = new Schema<ITeacher>({
@@ -10,7 +15,7 @@ const TeacherSchema = new Schema<ITeacher>({
     email: { type: String, required: true , unique: true },
     password: { type: String, requird: true },
     role: { type: String, required: true },
-    subjects: { type: String, required: true }
+    subjects: { type: [Object], required: true }
 })
 
 export const TeacherModel = model<ITeacher>('teachers', TeacherSchema)

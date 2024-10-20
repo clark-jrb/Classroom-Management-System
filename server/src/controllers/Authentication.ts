@@ -95,7 +95,7 @@ export const register = async (req: Request, res: Response): Promise<any> => {
 
         await User.createUser(values, role)
         
-        return res.status(201).json({ message: "User registered successfully!" }).end()
+        return res.status(201).json({ userRole: role, message: "User registered successfully!" }).end()
     } catch (error) {
         console.log(error)
         return res.sendStatus(400)
