@@ -6,7 +6,7 @@ import { TeacherModel } from "../models/teacher"
 export class UserController {
 
     private selectModel(role: string) {
-        const validRoles = ['student', 'teacher', 'admin']
+        const validRoles = ['student', 'faculty', 'admin']
 
         if (!validRoles.includes(role)) {
             throw new Error(`Invalid role: ${role}`)
@@ -14,7 +14,7 @@ export class UserController {
 
         const availableModels: any = {
             student: StudentModel,
-            teacher: TeacherModel,
+            faculty: TeacherModel,
             default: UserModel
         }
         const selectedModel = availableModels[role] || availableModels['default']
@@ -48,9 +48,9 @@ export class UserController {
     }
 }
 
-export const getUserById = (id: string) => UserModel.findById(id)
-export const deleteUserById = (id: string) => UserModel.findOneAndDelete({ _id: id })
-export const updateUserById = (id: string, values: Record<string, any>) => UserModel.findByIdAndUpdate(id, values)
+// export const getUserById = (id: string) => UserModel.findById(id)
+// export const deleteUserById = (id: string) => UserModel.findOneAndDelete({ _id: id })
+// export const updateUserById = (id: string, values: Record<string, any>) => UserModel.findByIdAndUpdate(id, values)
 
 
 // export const getAllUsers = async (req: Request, res: Response): Promise<any> => {

@@ -22,7 +22,7 @@ export const login = async (req: Request, res: Response): Promise<any> => {
         const matchPass = await comparePassword(password, userExists.password)
         if (!matchPass) return res.json({ message: 'Wrong password' })
 
-        // generates access ad refresh tokens 
+        // generates access and refresh tokens 
         const accessToken = generateToken(userExists.id, userExists.role)
         const refreshToken = generateRefreshToken(userExists.id, userExists.role)
         

@@ -20,7 +20,8 @@ import { Button } from "@/components/ui/button"
 import { z } from "zod"
 import axios from 'axios'
 import { useMutation } from "@tanstack/react-query"
-// import { useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
+import { useAuthStore } from "@/stores/auth/authSlice"
 
 const formSchema = z.object({
     email: z.string().min(1, { message: 'please fill the empty field' }),
@@ -34,6 +35,9 @@ const loginData = async (value: any): Promise<any> => {
 }
 
 export const Login = () => {
+    const { setAccessToken } = useAuthStore()
+    const navigate = useNavigate()
+
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -47,6 +51,14 @@ export const Login = () => {
         mutationFn: loginData,
         onSuccess: (data) => {
             console.log(data)
+            const { accessToken, message } = data
+
+            setAccessToken(accessToken)
+            console.log(message)
+
+            setTimeout(() => {
+                navigate('/')
+            }, 1000);
         },
         onError: (error) => {
             console.log(error)
