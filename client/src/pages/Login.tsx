@@ -35,7 +35,7 @@ const loginData = async (value: any): Promise<any> => {
 }
 
 export const Login = () => {
-    const { setAccessToken } = useAuthStore()
+    const { setAccessToken, setRefreshToken, setRole } = useAuthStore()
     const navigate = useNavigate()
 
     const form = useForm<z.infer<typeof formSchema>>({
@@ -51,25 +51,33 @@ export const Login = () => {
         mutationFn: loginData,
         onSuccess: (data) => {
             console.log(data)
-            const { accessToken, message } = data
+            const { accessToken, refreshToken, userRole, message } = data
 
             setAccessToken(accessToken)
+            setRefreshToken(refreshToken)
+            setRole(userRole)
+
             console.log(message)
 
-            setTimeout(() => {
-                navigate('/')
-            }, 1000);
+            switch (userRole) {
+                case 'student':
+                    navigate('/')
+                    break
+                case 'faculty':
+                    navigate('/faculty')
+                    break
+                default:
+                    navigate('/login')
+                    break
+            }
         },
         onError: (error) => {
             console.log(error)
         }
     })
 
-    // const navigate = useNavigate()
-
     function onSubmit(values: z.infer<typeof formSchema>) {
         mutation.mutate(values)
-        // navigate('/')
         console.log(values)
     }
 

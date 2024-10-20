@@ -47,7 +47,7 @@ export const login = async (req: Request, res: Response): Promise<any> => {
             maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
         })
 
-        return res.json({ accessToken, refreshToken, message: "User logged in successfully!" })
+        return res.json({ accessToken, refreshToken, userRole: userExists.role, message: "User logged in successfully!" })
     } catch (error) {
         console.log(error)
         return res.sendStatus(400)

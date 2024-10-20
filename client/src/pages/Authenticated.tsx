@@ -3,11 +3,13 @@ import { useEffect } from "react"
 import { useAuthStore } from "@/stores/auth/authSlice";
 
 const isAuthenticated = () => {
-    const { accessTokenC } = useAuthStore()
+    const { accessToken, refreshToken, role } = useAuthStore()
 
     useEffect(() => {
-        console.log('access token: ' + accessTokenC)
-    }, [accessTokenC]);
+        console.log('access token: ' + accessToken)
+        console.log('refresh token: ' + refreshToken)
+        console.log('role token: ' + role)
+    }, [accessToken]);
 }
 
 export const Student = () => {
