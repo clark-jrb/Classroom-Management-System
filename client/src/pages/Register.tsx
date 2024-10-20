@@ -44,6 +44,11 @@ const subjectsList = [
     { name: 'English', checked: false }
 ]
 
+const registerData = async (value: any): Promise<any> => {
+    const response = await axios.post(`${import.meta.env.VITE_SERVER_URL}/auth/register`, value)
+    return response.data
+}
+
 export const Register = () => {
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -57,8 +62,18 @@ export const Register = () => {
         },
     })
 
+    const mutation = useMutation({
+        mutationFn: registerData,
+        onSuccess: (data) => {
+            console.log(data)
+        },
+        onError: (error) => {
+            console.log(error)
+        }
+    })
+
     function onSubmit(values: z.infer<typeof formSchema>) {
-        // mutation.mutate(values)
+        mutation.mutate(values)
         console.log(values)
     }
 
