@@ -33,7 +33,7 @@ const formSchema = z.object({
     subjects: z.array(
         z.object({
             name: z.string().min(1, { message: 'Subject name is required' }),
-            checked: z.boolean().default(false).optional(), // Boolean field for checked status
+            checked: z.boolean().default(false) // Boolean field for checked status
         })
     ).min(1, { message: 'At least one subject must be selected' }).optional(),
     homeroom: z.boolean().default(false).optional()
@@ -50,6 +50,7 @@ const registerData = async (value: any): Promise<any> => {
 }
 
 export const Register = () => {
+    const navigate = useNavigate()
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -57,8 +58,6 @@ export const Register = () => {
             email: "",
             password: "",
             role: "",
-            // gradeLevel: 0,
-            // subjects: subjectsList
         },
     })
 
@@ -66,6 +65,20 @@ export const Register = () => {
         mutationFn: registerData,
         onSuccess: (data) => {
             console.log(data)
+            const { userRole, message } = data
+            console.log(message)
+
+            switch (userRole) {
+                case 'student':
+                    navigate('/')
+                    break
+                case 'faculty':
+                    navigate('/faculty')
+                    break
+                default:
+                    navigate('/login')
+                    break
+            }
         },
         onError: (error) => {
             console.log(error)
@@ -74,6 +87,7 @@ export const Register = () => {
 
     function onSubmit(values: z.infer<typeof formSchema>) {
         mutation.mutate(values)
+        form.reset()
         console.log(values)
     }
 
