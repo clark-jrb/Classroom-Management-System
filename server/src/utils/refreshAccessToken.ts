@@ -11,9 +11,8 @@ export const refresh = async (req: Request, res: Response): Promise<any> => {
     // Check if the refresh token exists in the database
     //
     const existingToken = await RefreshTokenModel.findOne({ refresh_token: refreshToken })
-    if (!existingToken) {
-        return res.status(403).json({ message: 'Invalid refresh token' })
-    }
+    if (!existingToken) return res.status(403).json({ message: 'Invalid refresh token' })
+    
 
     // Check if the refresh token has expired (if expired, redirect to login page)
     //

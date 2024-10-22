@@ -40,11 +40,16 @@ export class UserController {
     // is user authenticated?
     public authenticated = async (req: Request, res: Response): Promise<any> => {
         const user = (req as any).user;
+        const { accessToken } = req.cookies
+
         const { role, id } = user
         const Model = this.selectModel(role)
         const currentUser = await Model.findById(id);
 
-        return res.json({ currentUser: currentUser });
+        return res.json({ 
+            currentUser: currentUser, 
+            accessToken: accessToken
+        });
     }
 }
 
