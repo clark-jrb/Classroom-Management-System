@@ -30,7 +30,9 @@ const formSchema = z.object({
 })
 
 const loginData = async (value: any): Promise<any> => {
-    const response = await axios.post(`${import.meta.env.VITE_SERVER_URL}/auth/login`, value)
+    const response = await axios.post(`${import.meta.env.VITE_SERVER_URL}/auth/login`,
+        value
+    , { withCredentials: true })
     return response.data
 }
 
