@@ -8,7 +8,6 @@ const User = new UserController()
 
 export const login = async (req: Request, res: Response): Promise<any> => {
     const { email, password, role } = req.body
-    // var user
 
     const userExists = await User.getByEmail(email, role)
 
@@ -38,12 +37,14 @@ export const login = async (req: Request, res: Response): Promise<any> => {
         res.cookie("accessToken", accessToken, {
             httpOnly: true,
             secure: true,
+            sameSite: 'lax',
             maxAge: 15 * 60 * 1000, // 15 minutes
         })
 
         res.cookie("refreshToken", refreshToken, {
             httpOnly: true,
             secure: true,
+            sameSite: 'lax',
             maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
         })
 
