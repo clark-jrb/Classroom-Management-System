@@ -106,5 +106,5 @@ export const register = async (req: Request, res: Response): Promise<any> => {
 export const logout = async (req: Request, res: Response): Promise<any> => {
     res.clearCookie('accessToken')
     res.clearCookie('refreshToken')
-    res.json('User successfully logged out')
+    res.json({ message: 'User successfully logged out'})
 }

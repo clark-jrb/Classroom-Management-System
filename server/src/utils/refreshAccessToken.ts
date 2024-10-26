@@ -30,6 +30,7 @@ export const refresh = async (req: Request, res: Response): Promise<any> => {
         res.cookie("accessToken", newAccessToken, {
             httpOnly: true,
             secure: true, // Enable in a production environment with HTTPS
+            sameSite: "lax",
             maxAge: 15 * 60 * 1000, // 15 minutes
         })
 
