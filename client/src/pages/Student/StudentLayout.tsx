@@ -2,10 +2,10 @@
 export const StudentLayout = ({ children }: any) => {
     return (
         <>
-            <nav>
+            <nav className="nav-student h-dvh">
                 this is navigation menu for student
             </nav>
-            <main>
+            <main className="h-dvh student-content">
                 { children }
             </main>
         </>

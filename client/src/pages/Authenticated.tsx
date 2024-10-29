@@ -25,19 +25,19 @@ const isAuthenticated = () => {
 export const Student = () => {
     isAuthenticated()
     return (
-        <main>
-            this is student
+        <>
+            {/* this is student */}
             <Outlet/>
-        </main>
+        </>
     )
 }
 
 export const Faculty = () => {
     isAuthenticated()
     return (
-        <main>
-            this is faculty
+        <>
+            {/* this is faculty */}
             <Outlet/>
-        </main>
+        </>
     )
 }

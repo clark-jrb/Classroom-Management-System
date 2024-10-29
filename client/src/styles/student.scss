@@ -1,0 +1,15 @@
+@import 'App';
+
+.nav-student {
+    background-color: $light-navy-blue;
+    position: absolute;
+    color: $dirty-white;
+    width: 13rem;
+}
+
+.student-content {
+    background-color: $dirty-white;
+    padding-left: 15rem;
+    padding-block: 2rem;
+    padding-right: 2rem
+}
