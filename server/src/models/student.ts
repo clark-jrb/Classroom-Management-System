@@ -1,11 +1,6 @@
 import { Schema, model } from "mongoose";
-import { IUser } from "./user";
 
-interface IStudent extends IUser {
-    gradeLevel: number
-}
-
-const StudentSchema = new Schema<IStudent>({
+const StudentSchema = new Schema({
     firstname: { type: String, required: true },
     email: { type: String, required: true , unique: true },
     password: { type: String, requird: true },
@@ -13,4 +8,15 @@ const StudentSchema = new Schema<IStudent>({
     gradeLevel: { type: Number, required: true }
 })
 
-export const StudentModel = model<IStudent>('students', StudentSchema)
+export const StudentModel = model('students', StudentSchema)
+
+const StudentInfoSchema = new Schema({
+    sid: { type: Schema.Types.ObjectId, required: true },
+    middlename: { type: String, required: false, default: '' },
+    lastname: { type: String, required: true, default: '' },
+    sex: { type: String, required: true, default: '' },
+    birthdate: { type: Date, required: false, default: null },
+    contact: { type: Number, required: true, default: null }
+})
+
+export const StudentInfoModel = model('students_info', StudentInfoSchema)

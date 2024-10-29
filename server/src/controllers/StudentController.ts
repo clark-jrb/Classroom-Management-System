@@ -1,7 +1,21 @@
 import { Response, Request } from "express"
-import { StudentModel } from "../models/student"
+import { StudentModel, StudentInfoModel } from "../models/student"
 
 export class StudentController {
+
+    /**
+     * addInformation
+     */
+    public addInformation = async (req: Request, res: Response): Promise<any> => {
+        try {
+            const values = req.body
+            const student_info = await new StudentInfoModel(values).save()
+            
+            return res.status(200).json({ student_info: student_info.toObject(), message: 'Successfully added student information' })
+        } catch (error) {
+            return res.status(400).json({ message: 'Failed to add information', error })
+        }
+    }
 
     public getStudents = async (req: Request, res: Response): Promise<any> => {
         try {

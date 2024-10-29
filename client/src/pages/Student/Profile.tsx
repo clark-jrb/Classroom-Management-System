@@ -1,9 +1,13 @@
 import { StudentContainer } from "@/components/student-container"
+import { StudentLayout } from "./StudentLayout"
 
 export const Profile = () => {
     return (
-        <StudentContainer>
-            <div>Profile</div>
-        </StudentContainer>
+        <StudentLayout>
+            <StudentContainer>
+                Profile
+                <div></div>
+            </StudentContainer>
+        </StudentLayout>
     )
 }

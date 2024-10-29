@@ -20,7 +20,7 @@ function App() {
 
   const studentRoutes = [
     { path: '/', element: <StudentDashboard/> },
-    { path: '/grades', element: <Grades/> }
+    { path: '/grades', element: <Grades/> },
     { path: '/profile', element: <Profile/> }
   ]
   

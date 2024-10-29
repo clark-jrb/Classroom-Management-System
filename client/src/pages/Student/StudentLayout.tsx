@@ -45,7 +45,7 @@ export const StudentLayout = ({ children }: any) => {
                     </Link>
                     <Link to={'/profile'}>
                         <div className="student-nav-link w-full">
-                            Profile
+                            My Profile
                         </div>
                     </Link>
                     <div className="student-nav-link w-full" id="logout-btn-in-links" onClick={handleLogout}>
