@@ -1,5 +1,7 @@
 // import { useAuthStore } from "@/stores/auth/authSlice"
 // import { useEffect } from "react"
+import { StudentLayout } from "./StudentLayout"
+import { StudentContainer } from "@/components/student-container"
 
 export const Grades = () => {
     // const { role } = useAuthStore()
@@ -11,6 +13,10 @@ export const Grades = () => {
     // }, [role]);
 
     return (
-        <div>Grades</div>
+        <StudentLayout>
+            <StudentContainer>
+                <div>Grades</div>
+            </StudentContainer>
+        </StudentLayout>
     )
 }

@@ -5,6 +5,9 @@
     position: absolute;
     color: $dark-navy-blue;
     width: 13rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
 }
 
 .student-content {
@@ -13,7 +16,7 @@
     padding: 2rem;
 }
 
-.student-dash {
+.student-container {
     background-color: white;
     padding: 2rem;
 }
@@ -31,4 +34,25 @@
 
 .logo-cont img {
     height: 2.75rem;
+}
+
+.student-nav-link {
+    text-align: left;
+    padding-inline: 3rem;
+    padding-block: .75rem;
+}
+
+
+.student-links {
+    position: relative;
+    flex: 1;
+}
+
+#logout-btn-in-links {
+    position: absolute;
+    bottom: 2rem;
+}
+
+#logout-btn-in-links:hover, .student-nav-link:hover {
+    cursor: pointer;
 }
