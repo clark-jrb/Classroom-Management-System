@@ -17,7 +17,7 @@ const isAuthenticated = () => {
 
         if (data) {
             setRole(currentUser.role)
-            console.log(currentUser)
+            // console.log(currentUser)
         }
     }, [data, setRole]);
 }
