@@ -5,6 +5,7 @@ import { Login } from './pages/Login'
 import { Register } from './pages/Register'
 import { StudentDashboard } from './pages/Student/StudentDashboard'
 import { Grades } from './pages/Student/Grades'
+import { Profile } from './pages/Student/Profile'
 import { Student, Faculty } from './pages/Authenticated'
 import { FacultyDashboard } from './pages/Faculty/FacultyDashboard'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
@@ -20,6 +21,7 @@ function App() {
   const studentRoutes = [
     { path: '/', element: <StudentDashboard/> },
     { path: '/grades', element: <Grades/> }
+    { path: '/profile', element: <Profile/> }
   ]
   
   const facultyRoutes = [
