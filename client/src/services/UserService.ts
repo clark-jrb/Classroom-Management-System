@@ -8,8 +8,19 @@ export const getCurrentUser = async () => {
         const response = await apiClient.get(`${server_url}/authenticated`, {
             withCredentials: true
         })
-        return response
+        return response.data
     } catch (error) {
         console.log('Failed to fetch current user', error)
+    }
+}
+
+export const getStudentInformation = async (id: string) => {
+    try {
+        const response = await apiClient.get(`${server_url}/student/${id}`, {
+            withCredentials: true
+        })
+        return response.data
+    } catch (error) {
+        console.log('Failed to fetch student information', error)
     }
 }

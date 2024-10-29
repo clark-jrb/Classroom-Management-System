@@ -5,7 +5,7 @@ import { useAuthStore } from "@/stores/auth/authSlice"
 import { useEffect } from "react"
 
 const isAuthenticated = () => {
-    const { setRole } = useAuthStore()
+    const { setRole, setUserId } = useAuthStore()
     
     const { data } = useQuery({
         queryKey: ['currentUser'],
@@ -13,13 +13,11 @@ const isAuthenticated = () => {
     })
     
     useEffect(() => {
-        const currentUser = data?.data.currentUser
-
-        if (data) {
-            setRole(currentUser.role)
-            // console.log(currentUser)
+        if (data && data.currentUser) {
+            setRole(data.currentUser.role);
+            setUserId(data.currentUser._id);
         }
-    }, [data, setRole]);
+    }, [data, setRole, setUserId]);
 }
 
 export const Student = () => {
