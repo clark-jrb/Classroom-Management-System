@@ -1,15 +1,34 @@
 @import 'App';
 
 .nav-student {
-    background-color: $light-navy-blue;
+    background-color: white;
     position: absolute;
-    color: $dirty-white;
+    color: $dark-navy-blue;
     width: 13rem;
 }
 
 .student-content {
     background-color: $dirty-white;
-    padding-left: 15rem;
-    padding-block: 2rem;
-    padding-right: 2rem
+    margin-left: 13rem;
+    padding: 2rem;
+}
+
+.student-dash {
+    background-color: white;
+    padding: 2rem;
+}
+
+.logo-cont {
+    border-bottom: $light-navy-blue 1px solid;
+    height: 4rem;
+    padding-inline: 1rem;
+    padding-block: .5rem;
+    gap: .5rem;
+    display: flex;
+    align-items: center;
+    // justify-content: center;
+}
+
+.logo-cont img {
+    height: 2.75rem;
 }

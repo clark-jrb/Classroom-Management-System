@@ -28,9 +28,11 @@ export const StudentDashboard = () => {
 
     return (
         <StudentLayout>
-            Student Dashboard
-            <Button size={'sm'} onClick={handleNavigate}>Go to grades</Button>
-            <Button size={'sm'} onClick={handleLogout}>Log Out</Button>
+            <div className="student-dash rounded-md h-full shadow">
+                Student Dashboard
+                <Button size={'sm'} onClick={handleNavigate}>Go to grades</Button>
+                <Button size={'sm'} onClick={handleLogout}>Log Out</Button>
+            </div>
         </StudentLayout>
     )
 }
