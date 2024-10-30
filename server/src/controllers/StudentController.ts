@@ -33,7 +33,7 @@ export class StudentController {
             const student = await StudentModel.findById(id)
             const student_info = await StudentInfoModel.findOne({ sid: id })
 
-            return res.status(200).json({ student, student_info })
+            return res.status(200).json([student, student_info])
         } catch (error) {
             return res.status(400).json({ message: 'Failed to get student', error })
         }

@@ -3,7 +3,6 @@ import { StudentLayout } from "./StudentLayout"
 import { useQuery } from "@tanstack/react-query"
 import { getStudentInformation } from "@/services/UserService"
 import { useAuthStore } from "@/stores/auth/authSlice"
-import { useState, useEffect } from "react"
 
 export const Profile = () => {
     const { user_id } = useAuthStore()
@@ -14,26 +13,36 @@ export const Profile = () => {
         enabled: !!user_id
     })
 
-    if (isLoading) {
-        console.log('loading student...')
-    }
+    // if (isLoading) {
+    //     console.log('loading student...')
+    // }
     
-    if (isError) {
-        console.log(error)
-    }
+    // if (isError) {
+    //     console.log(error)
+    // }
 
-    const student_data = Array.isArray(data) ? data : Object.values(data || {});
+    // if (data) {
+    //     // const [ student ] = data
+    //     console.log(data)
+    // }
+
+
 
     return (
         <StudentLayout>
             <StudentContainer>
                 Profile
                 <div>
-                    {student_data.map((item: any, index: number) => (
-                        <div key={index}>
-                            { item.firstname }{ item.middlename }{ item.lastname }
-                        </div>
-                    ))}
+                    {isLoading? 
+                        (<div>Loading...</div>) 
+                        : 
+                        (data && data.map((item: any, index: number) => (
+                            <div key={index}>
+                                { item.firstname }{ item.middlename }{ item.lastname }
+                            </div>
+                        )))
+                    }
+                    
                 </div>
             </StudentContainer>
         </StudentLayout>
