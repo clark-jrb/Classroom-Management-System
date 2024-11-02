@@ -5,6 +5,10 @@ import { useStudentInfo } from "@/hooks/useStudentInfo"
 export const Profile = () => {
     const [ data, error, isLoading, isError ] = useStudentInfo()  // this should be complete or else it won't load the loading UI
 
+    if (error) {
+        console.log('there is an error: ' + error)
+    }
+
     return (
         <StudentLayout>
             <StudentContainer>

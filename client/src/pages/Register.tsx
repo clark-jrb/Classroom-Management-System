@@ -19,10 +19,8 @@ import { Input } from "@/components/ui/input"
 import { useForm } from "react-hook-form"
 import { Button } from "@/components/ui/button"
 import { z } from "zod"
-import axios from 'axios'
-import { useMutation } from "@tanstack/react-query"
-import { useNavigate } from "react-router-dom"
 import { useEffect } from "react"
+import { useAuthentication } from "@/hooks/useAuthentication"
 
 const formSchema = z.object({
     firstname: z.string().min(1, { message: 'please fill the empty field' }),
@@ -44,13 +42,8 @@ const subjectsList = [
     { name: 'English', checked: false }
 ]
 
-const registerData = async (value: any): Promise<any> => {
-    const response = await axios.post(`${import.meta.env.VITE_SERVER_URL}/auth/register`, value)
-    return response.data
-}
-
 export const Register = () => {
-    const navigate = useNavigate()
+    const { registerUser }  = useAuthentication()
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -61,32 +54,8 @@ export const Register = () => {
         },
     })
 
-    const mutation = useMutation({
-        mutationFn: registerData,
-        onSuccess: (data) => {
-            console.log(data)
-            const { userRole, message } = data
-            console.log(message)
-
-            switch (userRole) {
-                case 'student':
-                    navigate('/')
-                    break
-                case 'faculty':
-                    navigate('/faculty')
-                    break
-                default:
-                    navigate('/login')
-                    break
-            }
-        },
-        onError: (error) => {
-            console.log(error)
-        }
-    })
-
     function onSubmit(values: z.infer<typeof formSchema>) {
-        mutation.mutate(values)
+        registerUser.mutate(values)
         form.reset()
         console.log(values)
     }
