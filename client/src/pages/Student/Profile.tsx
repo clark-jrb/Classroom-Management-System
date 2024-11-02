@@ -17,14 +17,14 @@ export const Profile = () => {
     //     console.log('loading student...')
     // }
     
-    // if (isError) {
-    //     console.log(error)
-    // }
+    if (isError) {
+        console.log(error)
+    }
 
-    // if (data) {
-    //     // const [ student ] = data
-    //     console.log(data)
-    // }
+    if (data) {
+        // const [ student ] = data
+        console.log(data)
+    }
 
 
 
@@ -33,15 +33,17 @@ export const Profile = () => {
             <StudentContainer>
                 Profile
                 <div>
-                    {isLoading? 
+                    {/* {isLoading? 
                         (<div>Loading...</div>) 
                         : 
                         (data && data.map((item: any, index: number) => (
                             <div key={index}>
-                                { item.firstname }{ item.middlename }{ item.lastname }
+                                <p>
+                                    { item.firstname }{ item.middlename }{ item.lastname }
+                                </p>
                             </div>
                         )))
-                    }
+                    } */}
                     
                 </div>
             </StudentContainer>

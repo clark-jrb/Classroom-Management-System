@@ -5,8 +5,8 @@ import cookieParser from 'cookie-parser'
 import compression from 'compression'
 import cors from 'cors'
 import * as dotenv from 'dotenv'
-import mongoose from 'mongoose'
 import router from './router'
+import { dbConnect } from './utils/db'
 
 const app = express()
 
@@ -27,9 +27,7 @@ server.listen(process.env.PORT, () => {
     console.log(`Server running on port ${process.env.PORT}`)
 })
 
-mongoose.Promise = Promise
-mongoose.connect(process.env.MONGODB_URL)
-mongoose.connection.on('connected', () => console.log('MongoDB connected'))
-mongoose.connection.on('error', (error: Error) => console.log(error))
+// connect to database 
+dbConnect()
 
 app.use('/', router())

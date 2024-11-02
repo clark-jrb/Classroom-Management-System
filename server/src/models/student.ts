@@ -11,7 +11,7 @@ const StudentSchema = new Schema({
 export const StudentModel = model('students', StudentSchema)
 
 const StudentInfoSchema = new Schema({
-    sid: { type: Schema.Types.ObjectId, required: true },
+    _id: { type: Schema.Types.ObjectId, required: true },
     middlename: { type: String, required: false, default: '' },
     lastname: { type: String, required: true, default: '' },
     sex: { type: String, required: true, default: '' },
