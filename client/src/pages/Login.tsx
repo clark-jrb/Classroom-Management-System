@@ -18,10 +18,7 @@ import { Input } from "@/components/ui/input"
 import { useForm } from "react-hook-form"
 import { Button } from "@/components/ui/button"
 import { z } from "zod"
-import { useMutation } from "@tanstack/react-query"
-import { useNavigate } from "react-router-dom"
-import { useAuthStore } from "@/stores/auth/authSlice"
-import { login } from "@/services/AuthService"
+import { useAuthentication } from "@/hooks/useAuthentication"
 
 const formSchema = z.object({
     email: z.string().min(1, { message: 'please fill the empty field' }),
@@ -30,9 +27,7 @@ const formSchema = z.object({
 })
 
 export const Login = () => {
-    const { setAccessToken, setRefreshToken, setRole } = useAuthStore()
-    const navigate = useNavigate()
-
+    const [ loginUser ] = useAuthentication()
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -42,37 +37,8 @@ export const Login = () => {
         },
     })
 
-    const mutation = useMutation({
-        mutationFn: login,
-        onSuccess: (data) => {
-            console.log(data)
-            const { accessToken, refreshToken, userRole, message } = data
-
-            setAccessToken(accessToken)
-            setRefreshToken(refreshToken)
-            setRole(userRole)
-
-            console.log(message)
-
-            switch (userRole) {
-                case 'student':
-                    navigate('/')
-                    break
-                case 'faculty':
-                    navigate('/faculty')
-                    break
-                default:
-                    navigate('/login')
-                    break
-            }
-        },
-        onError: (error) => {
-            console.log(error)
-        }
-    })
-
     function onSubmit(values: z.infer<typeof formSchema>) {
-        mutation.mutate(values)
+        loginUser.mutate(values)
         console.log(values)
     }
 
@@ -128,8 +94,8 @@ export const Login = () => {
                                 </FormItem>
                             )}
                         />
-                        <Button type="submit" disabled={mutation.isPending}>
-                            {mutation.isPending ? 'Logging in...' : 'Login'}
+                        <Button type="submit" disabled={loginUser.isPending}>
+                            {loginUser.isPending ? 'Logging in...' : 'Login'}
                         </Button>
                     </form>
                 </Form>

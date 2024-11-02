@@ -10,6 +10,14 @@ export const useStudentInfo = () => {
         queryKey: ['student_data', user_id],
         enabled: !!user_id
     })
+    
+    if (isLoading) {
+        console.log('loading..')
+    }
+
+    if (isError) {
+        console.log('error: ' + error)
+    }
 
     return [ data, error, isLoading, isError ]
 }
