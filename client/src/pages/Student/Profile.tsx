@@ -33,17 +33,15 @@ export const Profile = () => {
             <StudentContainer>
                 Profile
                 <div>
-                    {/* {isLoading? 
+                    {isLoading? 
                         (<div>Loading...</div>) 
                         : 
-                        (data && data.map((item: any, index: number) => (
+                        (data && data.map(({ firstname, moreInfo: { middlename, lastname } }: any, index: number) => (
                             <div key={index}>
-                                <p>
-                                    { item.firstname }{ item.middlename }{ item.lastname }
-                                </p>
+                                { firstname }{ middlename }{ lastname }
                             </div>
                         )))
-                    } */}
+                    }
                     
                 </div>
             </StudentContainer>

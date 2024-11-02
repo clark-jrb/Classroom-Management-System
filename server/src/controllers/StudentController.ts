@@ -1,5 +1,6 @@
 import { Response, Request } from "express"
 import { StudentModel, StudentInfoModel } from "../models/student"
+import mongoose, { mongo } from "mongoose"
 
 export class StudentController {
 
@@ -30,29 +31,25 @@ export class StudentController {
     public getStudentById = async (req: Request, res: Response): Promise<any> => {
         try {
             const { id } = req.params
-            // const student = await StudentModel.findById(id)
-            // const student_info = await StudentInfoModel.findOne({ sid: id })
+            const sid = new mongoose.Types.ObjectId(id)
 
             const student = await StudentModel.aggregate([
-                { $match: { _id: id } },
+                { $match: { _id: sid } },
                 {
                     $lookup: {
-                        from: "student_infos", // the name of the student info collection in MongoDB
+                        from: "students_infos", // Ensure this matches your actual collection name
                         localField: "_id",
                         foreignField: "_id",
-                        as: "studentInformation"
+                        as: "moreInfo"
                     }
                 },
-                { $unwind: "$studentInformation" } // optional: to flatten the array if there's only one related student_info
+                { $unwind: { path: "$moreInfo" } }
             ]);
-
-            console.log(student)
 
             return res.status(200).json(student)
         } catch (error) {
             return res.status(400).json({ message: 'Failed to get student', error })
         }
-        // return await StudentModel.findById(id)
     }
 
     public deleteStudentById = async (req: Request, res: Response): Promise<any> => {
