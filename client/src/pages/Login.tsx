@@ -6,38 +6,29 @@ import {
     FormLabel,
     FormMessage
 } from "@/components/ui/form"
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from "@/components/ui/select"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Input } from "@/components/ui/input"
 import { useForm } from "react-hook-form"
 import { Button } from "@/components/ui/button"
 import { z } from "zod"
 import { useAuthentication } from "@/hooks/useAuthentication"
-
-const formSchema = z.object({
-    email: z.string().min(1, { message: 'please fill the empty field' }),
-    password: z.string().min(8, { message: 'password should be 8 characters' }),
-    role: z.string().min(1, { message: 'role is required' })
-})
+import { useAuthStore } from "@/stores/auth/authSlice"
+import { loginSchema } from "@/schemas/authSchemas"
 
 export const Login = () => {
     const { loginUser } = useAuthentication()
-    const form = useForm<z.infer<typeof formSchema>>({
-        resolver: zodResolver(formSchema),
+    const { role } = useAuthStore()
+
+    const form = useForm<z.infer<typeof loginSchema>>({
+        resolver: zodResolver(loginSchema),
         defaultValues: {
             email: "",
             password: "",
-            role: ""
+            role: role
         },
     })
 
-    function onSubmit(values: z.infer<typeof formSchema>) {
+    function onSubmit(values: z.infer<typeof loginSchema>) {
         loginUser.mutate(values)
         console.log(values)
     }
@@ -69,27 +60,6 @@ export const Login = () => {
                                     <FormControl>
                                         <Input type="password" placeholder="your password" {...field}/>
                                     </FormControl>
-                                    <FormMessage/>
-                                </FormItem>
-                            )}
-                        />
-                        <FormField
-                            control={form.control}
-                            name="role"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Role:</FormLabel>
-                                        <Select onValueChange={field.onChange} defaultValue={field.value}>
-                                            <FormControl>
-                                                <SelectTrigger>
-                                                    <SelectValue placeholder="Role" />
-                                                </SelectTrigger>
-                                            </FormControl>
-                                            <SelectContent>
-                                                <SelectItem value="student">Student</SelectItem>
-                                                <SelectItem value="faculty">Faculty</SelectItem>
-                                            </SelectContent>
-                                        </Select>
                                     <FormMessage/>
                                 </FormItem>
                             )}
