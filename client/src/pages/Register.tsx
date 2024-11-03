@@ -21,21 +21,7 @@ import { Button } from "@/components/ui/button"
 import { z } from "zod"
 import { useEffect } from "react"
 import { useAuthentication } from "@/hooks/useAuthentication"
-
-const formSchema = z.object({
-    firstname: z.string().min(1, { message: 'please fill the empty field' }),
-    email: z.string().min(1, { message: 'please fill the empty field' }),
-    password: z.string().min(8, { message: 'password should be 8 characters' }),
-    role: z.string().min(1, { message: 'role is required' }).optional(),
-    gradeLevel: z.number().min(1, { message: 'Grade level must be at least 1' }).optional(),
-    subjects: z.array(
-        z.object({
-            name: z.string().min(1, { message: 'Subject name is required' }),
-            checked: z.boolean().default(false) // Boolean field for checked status
-        })
-    ).min(1, { message: 'At least one subject must be selected' }).optional(),
-    homeroom: z.boolean().default(false).optional()
-})
+import { registerSchema } from "@/schemas/authSchemas"
 
 const subjectsList = [
     { name: 'Math', checked: false },
@@ -44,17 +30,20 @@ const subjectsList = [
 
 export const Register = () => {
     const { registerUser }  = useAuthentication()
-    const form = useForm<z.infer<typeof formSchema>>({
-        resolver: zodResolver(formSchema),
+    const form = useForm<z.infer<typeof registerSchema>>({
+        resolver: zodResolver(registerSchema),
         defaultValues: {
             firstname: "",
             email: "",
             password: "",
             role: "",
+            subjects: subjectsList.map((subject) => ({ ...subject, checked: false })),
+            gradeLevel: 0,
+            homeroom: false
         },
     })
 
-    function onSubmit(values: z.infer<typeof formSchema>) {
+    function onSubmit(values: z.infer<typeof registerSchema>) {
         registerUser.mutate(values)
         form.reset()
         console.log(values)
@@ -62,6 +51,7 @@ export const Register = () => {
 
     const onError = (errors: any) => {
         console.log("Form errors:", errors);
+        console.log("Form state errors:", form.formState.errors.subjects?.message)
     }
 
     const role = form.watch('role')
@@ -163,7 +153,8 @@ export const Register = () => {
                         )}
 
                         {role === 'faculty' && (
-                            (subjectsList.map(({ name }, index) => (
+                            <div>
+                            {subjectsList.map(({ name }, index) => (
                                 <FormField
                                     key={index}
                                     control={form.control}
@@ -182,13 +173,18 @@ export const Register = () => {
                                                 value={name}
                                                 {...form.register(`subjects.${index}.name`)}
                                             />
-                                            <FormMessage/>
                                         </FormItem>
                                     )}
-                                />
-                            )))
+                                    />
+                                ))}
+                                <FormMessage id="subjects"/>
+                                {form.formState.errors.subjects && (
+                                    <p className="text-red-600">
+                                        {form.formState.errors.subjects?.message}
+                                    </p>
+                                )}
+                            </div>
                         )}
-
                         <Button type="submit">Register</Button>
                     </form>
                 </Form>
