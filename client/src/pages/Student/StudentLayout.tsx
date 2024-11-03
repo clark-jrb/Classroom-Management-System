@@ -19,7 +19,7 @@ export const StudentLayout = ({ children }: any) => {
 
     function handleLogout() {
         mutation.mutate()
-        navigate('/login')
+        navigate('/home')
     }
 
     return (

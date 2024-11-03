@@ -6,13 +6,6 @@ import {
     FormLabel,
     FormMessage
 } from "@/components/ui/form"
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from "@/components/ui/select"
 import { Checkbox } from "@/components/ui/checkbox"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Input } from "@/components/ui/input"
@@ -22,6 +15,8 @@ import { z } from "zod"
 import { useEffect } from "react"
 import { useAuthentication } from "@/hooks/useAuthentication"
 import { registerSchema } from "@/schemas/authSchemas"
+import { useAuthStore } from "@/stores/auth/authSlice"
+import { useNavigate } from "react-router-dom"
 
 const subjectsList = [
     { name: 'Math', checked: false },
@@ -30,16 +25,31 @@ const subjectsList = [
 
 export const Register = () => {
     const { registerUser }  = useAuthentication()
+    const navigate = useNavigate()
+    const { role } = useAuthStore()
+
+    useEffect(() => {
+        if (!role) {
+            console.log('role is empty')
+            navigate('/home')
+        }
+    }, [role]);
+
     const form = useForm<z.infer<typeof registerSchema>>({
         resolver: zodResolver(registerSchema),
         defaultValues: {
             firstname: "",
             email: "",
             password: "",
-            role: "",
-            subjects: subjectsList.map((subject) => ({ ...subject, checked: false })),
-            gradeLevel: 0,
-            homeroom: false
+            role: role,
+            subjects: 
+                role === 'faculty' ? 
+                    subjectsList.map((subject) => ({ ...subject }))
+                    : undefined,
+            gradeLevel: 
+                role === "student" ? 0 : undefined,
+            homeroom: 
+                role === "faculty" ? false : undefined,
         },
     })
 
@@ -50,19 +60,16 @@ export const Register = () => {
     }
 
     const onError = (errors: any) => {
-        console.log("Form errors:", errors);
-        console.log("Form state errors:", form.formState.errors.subjects?.message)
+        console.log("Form errors:", errors)
     }
 
-    const role = form.watch('role')
-
-    useEffect(() => {
-        if (role) {
-            form.unregister('subjects')
-            form.unregister('gradeLevel')
-            console.log('role changed')
-        }
-    }, [role]);
+    // useEffect(() => {
+    //     if (role) {
+    //         form.unregister('subjects')
+    //         form.unregister('gradeLevel')
+    //         console.log('role changed')
+    //     }
+    // }, [role]);
 
     return (
         <div className="register-page">
@@ -108,28 +115,6 @@ export const Register = () => {
                                 </FormItem>
                             )}
                         />
-                        <FormField
-                            control={form.control}
-                            name="role"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Role:</FormLabel>
-                                        <Select onValueChange={field.onChange} defaultValue={field.value}>
-                                            <FormControl>
-                                                <SelectTrigger>
-                                                    <SelectValue placeholder="Role" />
-                                                </SelectTrigger>
-                                            </FormControl>
-                                            <SelectContent>
-                                                <SelectItem value="student">Student</SelectItem>
-                                                <SelectItem value="faculty">Faculty</SelectItem>
-                                            </SelectContent>
-                                        </Select>
-                                    <FormMessage/>
-                                </FormItem>
-                            )}
-                        />
-
                         {role === 'student' && (
                             <FormField
                                 control={form.control}
@@ -177,10 +162,9 @@ export const Register = () => {
                                     )}
                                     />
                                 ))}
-                                <FormMessage id="subjects"/>
                                 {form.formState.errors.subjects && (
                                     <p className="text-red-600">
-                                        {form.formState.errors.subjects?.message}
+                                        {form.formState.errors.subjects?.root?.message}
                                     </p>
                                 )}
                             </div>

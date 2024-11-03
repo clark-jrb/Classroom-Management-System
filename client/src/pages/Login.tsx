@@ -14,10 +14,20 @@ import { z } from "zod"
 import { useAuthentication } from "@/hooks/useAuthentication"
 import { useAuthStore } from "@/stores/auth/authSlice"
 import { loginSchema } from "@/schemas/authSchemas"
+import { useEffect } from "react"
+import { useNavigate } from "react-router-dom"
 
 export const Login = () => {
     const { loginUser } = useAuthentication()
     const { role } = useAuthStore()
+    const navigate = useNavigate()
+
+    useEffect(() => {
+        if (!role) {
+            console.log('role is empty')
+            navigate('/home')
+        }
+    }, [role]);
 
     const form = useForm<z.infer<typeof loginSchema>>({
         resolver: zodResolver(loginSchema),
