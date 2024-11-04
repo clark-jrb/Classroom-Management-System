@@ -11,7 +11,7 @@ export const useAuthentication = () => {
     const loginUser = useMutation({
         mutationFn: login,
         onSuccess: (data) => {
-            console.log(data)
+            // console.log(data)
             const { userRole, message } = data
     
             setRole(userRole)
@@ -38,7 +38,7 @@ export const useAuthentication = () => {
     const registerUser = useMutation({
         mutationFn: register,
         onSuccess: (data) => {
-            console.log(data)
+            // console.log(data)
             const { userRole, message } = data
             console.log(message)
 

@@ -55,7 +55,7 @@ export const Register = () => {
 
     function onSubmit(values: z.infer<typeof registerSchema>) {
         registerUser.mutate(values)
-        form.reset()
+        // form.reset()
         console.log(values)
     }
 
@@ -83,7 +83,7 @@ export const Register = () => {
                                 <FormItem>
                                     <FormLabel>First Name:</FormLabel>
                                     <FormControl>
-                                        <Input type="text" placeholder="your first name" {...field}/>
+                                        <Input type="text" placeholder="your first name" {...field} disabled={registerUser.isPending}/>
                                     </FormControl>
                                     <FormMessage/>
                                 </FormItem>
@@ -96,7 +96,7 @@ export const Register = () => {
                                 <FormItem>
                                     <FormLabel>Email:</FormLabel>
                                     <FormControl>
-                                        <Input type="email" placeholder="your email" {...field}/>
+                                        <Input type="email" placeholder="your email" {...field} disabled={registerUser.isPending}/>
                                     </FormControl>
                                     <FormMessage/>
                                 </FormItem>
@@ -109,7 +109,7 @@ export const Register = () => {
                                 <FormItem>
                                     <FormLabel>Password:</FormLabel>
                                     <FormControl>
-                                        <Input type="password" placeholder="your password" {...field}/>
+                                        <Input type="password" placeholder="your password" {...field} disabled={registerUser.isPending}/>
                                     </FormControl>
                                     <FormMessage/>
                                 </FormItem>
@@ -129,6 +129,7 @@ export const Register = () => {
                                                 min={1}
                                                 max={6}
                                                 onChange={(e) => field.onChange(Number(e.target.value))} 
+                                                disabled={registerUser.isPending}
                                             />
                                         </FormControl>
                                         <FormMessage/>
@@ -151,6 +152,7 @@ export const Register = () => {
                                                 <Checkbox
                                                     checked={field.value}
                                                     onCheckedChange={field.onChange}
+                                                    disabled={registerUser.isPending}
                                                 />
                                             </FormControl>
                                             <input
@@ -169,7 +171,9 @@ export const Register = () => {
                                 )}
                             </div>
                         )}
-                        <Button type="submit">Register</Button>
+                        <Button type="submit" disabled={registerUser.isPending}>
+                            {registerUser.isPending ? 'Processing...' : 'Register'}
+                        </Button>
                     </form>
                 </Form>
             </div>

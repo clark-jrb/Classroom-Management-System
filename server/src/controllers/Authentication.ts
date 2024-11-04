@@ -1,8 +1,7 @@
 import { Request, Response } from 'express'
-import { RefreshTokenModel } from '../models/refresh_token'
 import { UserController } from './UserController'
 import { hashPassword, comparePassword } from '../utils/hashPassword'
-import { generateToken, generateRefreshToken, createTokens } from '../utils/createToken'
+import { createTokens } from '../utils/createToken'
 import { accessTokenOpt, refreshTokenOpt } from '../utils/cookieOptions'
 import { createRefreshTokenOnDB } from '../utils/createToken'
 
@@ -17,7 +16,7 @@ export const login = async (req: Request, res: Response): Promise<any> => {
 
     try {
         // checks fields if empty
-        if (!email || !password) { return res.json({ message: 'Incomplete credentials'}) }
+        if (!email || !password) return res.json({ message: 'Incomplete credentials'}) 
 
         // checks if user exists
         if (!userExists) return res.json({ message: "User don't exist"}) 
@@ -99,7 +98,8 @@ export const register = async (req: Request, res: Response): Promise<any> => {
 }
 
 export const logout = async (req: Request, res: Response): Promise<any> => {
-    res.clearCookie('accessToken')
-    res.clearCookie('refreshToken')
-    res.json({ message: 'User successfully logged out'})
+    return res
+        .clearCookie('accessToken')
+        .clearCookie('refreshToken')
+        .json({ message: 'User successfully logged out'})
 }
