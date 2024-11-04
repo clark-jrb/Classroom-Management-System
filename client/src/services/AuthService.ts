@@ -15,7 +15,9 @@ export const login = async (value: any): Promise<any> => {
 
 export const register = async (value: any): Promise<any> => {
     try {
-        const response = await axios.post(`${server_url}/auth/register`, value)
+        const response = await axios.post(`${server_url}/auth/register`, value, {
+            withCredentials: true
+        })
         return response.data
     } catch (error) {
         console.log('Error register', error)

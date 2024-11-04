@@ -7,11 +7,11 @@ export const loginSchema = z.object({
 })
 
 export const registerSchema = z.object({
-    firstname: z.string().min(1, { message: 'please fill the empty field' }),
-    email: z.string().min(1, { message: 'please fill the empty field' }),
-    password: z.string().min(8, { message: 'password should be 8 characters' }),
+    firstname: z.string().min(3, { message: 'Name should be 3 characters above' }),
+    email: z.string().min(1, { message: 'Please provide your email' }),
+    password: z.string().min(8, { message: 'Password should be 8 characters' }),
     role: z.string().min(1, { message: 'role is required' }),
-    gradeLevel: z.number().min(1, { message: 'Grade level must be at least 1' }).optional(),
+    gradeLevel: z.number().min(1, { message: 'Input your grade level' }).optional(),
     subjects: z.array(
         z.object({
             name: z.string(),
