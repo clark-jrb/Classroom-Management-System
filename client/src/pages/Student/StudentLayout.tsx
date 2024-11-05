@@ -1,24 +1,14 @@
 import OOK_logo from '../../assets/ook_logo.png'
 import { Link } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
-import { useMutation } from '@tanstack/react-query'
-import { logout } from '@/services/AuthService'
+import { useAuthentication } from '@/hooks/useAuthentication'
 
 export const StudentLayout = ({ children }: any) => {
     const navigate = useNavigate()
-
-    const mutation = useMutation({
-        mutationFn: logout,
-        onSuccess: (data) => {
-            console.log(data)
-        },
-        onError: (error) => {
-            console.log(error)
-        }
-    })
+    const { logoutUser } = useAuthentication()
 
     function handleLogout() {
-        mutation.mutate()
+        logoutUser.mutate()
         navigate('/home')
     }
 

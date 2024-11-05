@@ -1,13 +1,13 @@
 import { useNavigate } from "react-router-dom"
 import { useMutation } from "@tanstack/react-query"
 import { useAuthStore } from "@/stores/auth/authSlice"
-import { login, register } from "@/services/AuthService"
+import { login, register, logout } from "@/services/AuthService"
 
 export const useAuthentication = () => {
     const { setRole } = useAuthStore()
     const navigate = useNavigate()
 
-    /***** LOGIN *****/
+    // LOGIN 
     const loginUser = useMutation({
         mutationFn: login,
         onSuccess: (data) => {
@@ -34,7 +34,7 @@ export const useAuthentication = () => {
         }
     })
 
-    /***** REGISTER *****/
+    // REGISTER 
     const registerUser = useMutation({
         mutationFn: register,
         onSuccess: (data) => {
@@ -61,6 +61,17 @@ export const useAuthentication = () => {
         }
     })
 
-    return  { loginUser, registerUser }
+    // LOGOUT 
+    const logoutUser = useMutation({
+        mutationFn: logout,
+        onSuccess: (data) => {
+            console.log(data)
+        },
+        onError: (error) => {
+            console.log(error)
+        }
+    })
+
+    return  { loginUser, registerUser, logoutUser }
 }
 
