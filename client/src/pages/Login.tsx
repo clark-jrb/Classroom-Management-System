@@ -40,7 +40,7 @@ export const Login = () => {
 
     function onSubmit(values: z.infer<typeof loginSchema>) {
         loginUser.mutate(values)
-        console.log(values)
+        // console.log(values)
     }
 
     return (

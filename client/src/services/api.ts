@@ -25,7 +25,7 @@ apiClient.interceptors.response.use(
                 return apiClient(originalRequest)
             } catch (error) {
                 console.error('Failed to refresh token, logging out...', error)
-                window.location.href = '/login'
+                window.location.href = '/home'
                 return Promise.reject(error)
             }
         }

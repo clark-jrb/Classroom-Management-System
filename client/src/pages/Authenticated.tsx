@@ -1,13 +1,13 @@
 import { Outlet } from "react-router-dom"
-import { useQuery } from "@tanstack/react-query"
+import { useSuspenseQuery } from "@tanstack/react-query"
 import { getCurrentUser } from "@/services/UserService"
 import { useAuthStore } from "@/stores/auth/authSlice"
-import { useEffect } from "react"
+import { useEffect, Suspense } from "react"
 
-const isAuthenticated = () => {
+const CurrentUser = () => {
     const { setRole, setUserId } = useAuthStore()
     
-    const { data } = useQuery({
+    const { data } = useSuspenseQuery({
         queryKey: ['currentUser'],
         queryFn: getCurrentUser,
     })
@@ -18,24 +18,26 @@ const isAuthenticated = () => {
             setUserId(data.currentUser._id);
         }
     }, [data, setRole, setUserId]);
-}
 
-export const Student = () => {
-    isAuthenticated()
     return (
         <>
-            {/* this is student */}
             <Outlet/>
         </>
     )
 }
 
-export const Faculty = () => {
-    isAuthenticated()
+export const Student = () => {
     return (
-        <>
-            {/* this is faculty */}
-            <Outlet/>
-        </>
+        <Suspense fallback={<div>Loading...</div>}>
+            <CurrentUser/>
+        </Suspense>
+    )
+}
+
+export const Faculty = () => {
+    return (
+        <Suspense fallback={<div>Loading...</div>}>
+            <CurrentUser/>
+        </Suspense>
     )
 }
