@@ -19,10 +19,53 @@
 .student-container {
     background-color: white;
     padding: 2rem;
+
+    .info-cont {
+        .info-cont-head {
+            border-bottom: $light-navy-blue solid 2px;
+            display: flex;
+            justify-content: center;
+            align-items: end;
+
+            .student-name {
+                p {
+                    font-size: xx-large;
+                    white-space: normal;
+                    overflow-wrap: break-word;
+                    // line-height: 2.5rem;
+                }
+            }
+        }
+
+        .info-cont-body {
+            display: flex;
+            justify-content: center;
+
+            .info-data-cont {
+                width: 100%;
+                display: flex;
+                gap: 1.5rem;
+
+                label {
+                    text-align: right;
+                    color: #555;
+                    width: 8rem;
+                }
+
+                span {
+                    // font-size: large;
+                    flex: 1;
+                    word-break: break-all;
+                    border-bottom: #ccc solid 1px;
+                    padding-bottom: .5rem;
+                }
+            }
+        }
+    }
 }
 
 .logo-cont {
-    border-bottom: $light-navy-blue 1px solid;
+    border-bottom: $light-navy-blue 2px solid;
     height: 4rem;
     padding-inline: 1rem;
     padding-block: .5rem;
