@@ -6,41 +6,27 @@ import { ReactComponent as PenEdit } from '@/assets/icons/pen-edit.svg'
 // import { Label } from "@radix-ui/react-label"
 
 export const Profile = () => {
-    const { data, error, isLoading, isError } = studentInfo()  // this should be complete or else it won't load the loading UI
-
-    const { firstname, email, gradeLevel, moreInfo } = data || {}
-
-    const studentData = [
-        { label: 'First Name', value: firstname },
-        { label: 'Middle Name', value: moreInfo?.middlename },
-        { label: 'Last Name', value: moreInfo?.lastname },
-        { label: 'Email', value: email },
-        { label: 'Sex', value: moreInfo?.sex },
-        { label: 'Grade Level', value: gradeLevel },
-        { label: 'Contact', value: moreInfo?.contact },
-        { label: 'Birth Date', value: moreInfo?.birthdate },
-    ]
-
-    if (isError) console.log('there is an error: ' + error) 
+    const { fullName, grade, studentData, isLoading, isError } = studentInfo()  // this should be complete or else it won't load the loading UI
 
     return (
         <StudentLayout>
             <StudentContainer>
                 <div className="h-full">
                     {isError && <div>Error</div>}
-                    {isLoading && <div>Loading...</div>}
-                    {data && 
+                    {isLoading ? 
+                        <div>Loading...</div> 
+                        : 
                         <div className="info-cont">
                             {/* HEADER */}
                             <div className="info-cont-head h-auto w-full">
                                 <div className="w-96">
                                     <div className="student-name mb-2">
                                         <p>
-                                            {firstname} {moreInfo?.middlename} {moreInfo?.lastname}
+                                            {fullName}
                                         </p>
                                     </div>
                                     <div className="flex mb-4">
-                                        <Badge variant="outline">Grade&nbsp;{gradeLevel}</Badge>
+                                        <Badge variant="outline">Grade&nbsp;{grade}</Badge>
                                         <span className="flex ms-auto text-sm">
                                             Edit&nbsp;<PenEdit className="h-5"/>
                                         </span>
