@@ -35,6 +35,15 @@
                     // line-height: 2.5rem;
                 }
             }
+
+            .edit-profi-btn {
+                transition: .2s all;
+            }
+
+            .edit-profi-btn:hover {
+                cursor: pointer;
+                color: $light-navy-blue;
+            }
         }
 
         .info-cont-body {
