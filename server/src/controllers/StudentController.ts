@@ -46,7 +46,12 @@ export class StudentController {
                 { $unwind: { path: "$moreInfo" } }
             ]);
 
-            return res.status(200).json(student)
+            if (student.length === 0) {
+                const studentNoInfo = await StudentModel.findById(id);
+                return res.status(200).json(studentNoInfo);
+            }
+
+            return res.status(200).json(student[0] || [])
         } catch (error) {
             return res.status(400).json({ message: 'Failed to get student', error })
         }
