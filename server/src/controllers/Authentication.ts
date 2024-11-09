@@ -44,18 +44,18 @@ export const register = async (req: Request, res: Response): Promise<any> => {
     const { 
         email, 
         password, 
-        firstname, 
+        // firstname, 
         role, 
-        gradeLevel, 
-        subjects, 
-        homeroom 
+        // gradeLevel, 
+        // subjects, 
+        // homeroom 
     } = req.body
 
     const userExist = await User.getByEmail(email, role)
 
     try {
         // check if all fields filled 
-        if (!email || !password || !firstname) return res.json({ message: "Incomplete credentials" })
+        if (!email || !password) return res.json({ message: "Incomplete credentials" })
 
         // const userExist = await getUserByEmail(email)
         if (userExist) return res.json({ message: "User already exists" })
@@ -65,13 +65,13 @@ export const register = async (req: Request, res: Response): Promise<any> => {
 
         // group values 
         const values = {
-            firstname,
+            // firstname,
             email,
             password: hashedPassword,
             role,
-            gradeLevel,
-            subjects,
-            homeroom
+            // gradeLevel,
+            // subjects,
+            // homeroom
         }
 
         await User.createUser(values, role)

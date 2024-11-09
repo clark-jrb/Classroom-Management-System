@@ -1,11 +1,11 @@
 import { Schema, model } from "mongoose";
 
 const StudentSchema = new Schema({
-    firstname: { type: String, required: true },
+    // firstname: { type: String, required: true },
     email: { type: String, required: true , unique: true },
     password: { type: String, required: true },
     role: { type: String, required: true },
-    gradeLevel: { type: Number, required: true }
+    // gradeLevel: { type: Number, required: true }
 })
 
 export const StudentModel = model('students', StudentSchema)

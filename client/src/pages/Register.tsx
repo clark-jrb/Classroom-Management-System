@@ -6,7 +6,7 @@ import {
     FormLabel,
     FormMessage
 } from "@/components/ui/form"
-import { Checkbox } from "@/components/ui/checkbox"
+// import { Checkbox } from "@/components/ui/checkbox"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Input } from "@/components/ui/input"
 import { useForm } from "react-hook-form"
@@ -18,10 +18,10 @@ import { registerSchema } from "@/schemas/authSchemas"
 import { useAuthStore } from "@/stores/auth/authSlice"
 import { useNavigate } from "react-router-dom"
 
-const subjectsList = [
-    { name: 'Math', checked: false },
-    { name: 'English', checked: false }
-]
+// const subjectsList = [
+//     { name: 'Math', checked: false },
+//     { name: 'English', checked: false }
+// ]
 
 export const Register = () => {
     const { registerUser }  = useAuthentication()
@@ -38,18 +38,18 @@ export const Register = () => {
     const form = useForm<z.infer<typeof registerSchema>>({
         resolver: zodResolver(registerSchema),
         defaultValues: {
-            firstname: "",
+            // firstname: "",
             email: "",
             password: "",
             role: role,
-            subjects: 
-                role === 'faculty' ? 
-                    subjectsList.map((subject) => ({ ...subject }))
-                    : undefined,
-            gradeLevel: 
-                role === "student" ? 0 : undefined,
-            homeroom: 
-                role === "faculty" ? false : undefined,
+            // subjects: 
+            //     role === 'faculty' ? 
+            //         subjectsList.map((subject) => ({ ...subject }))
+            //         : undefined,
+            // gradeLevel: 
+            //     role === "student" ? 0 : undefined,
+            // homeroom: 
+            //     role === "faculty" ? false : undefined,
         },
     })
 
@@ -76,7 +76,7 @@ export const Register = () => {
             <div className="border rounded-md p-6">
             <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit, onError)} className="space-y-6">
-                        <FormField
+                        {/* <FormField
                             control={form.control}
                             name="firstname"
                             render={({ field }) => (
@@ -88,7 +88,7 @@ export const Register = () => {
                                     <FormMessage/>
                                 </FormItem>
                             )}
-                        />
+                        /> */}
                         <FormField
                             control={form.control}
                             name="email"
@@ -115,7 +115,7 @@ export const Register = () => {
                                 </FormItem>
                             )}
                         />
-                        {role === 'student' && (
+                        {/* {role === 'student' && (
                             <FormField
                                 control={form.control}
                                 name="gradeLevel"
@@ -136,9 +136,9 @@ export const Register = () => {
                                     </FormItem>
                                 )}
                             />
-                        )}
+                        )} */}
 
-                        {role === 'faculty' && (
+                        {/* {role === 'faculty' && (
                             <div>
                             {subjectsList.map(({ name }, index) => (
                                 <FormField
@@ -170,7 +170,7 @@ export const Register = () => {
                                     </p>
                                 )}
                             </div>
-                        )}
+                        )} */}
                         <Button type="submit" disabled={registerUser.isPending}>
                             {registerUser.isPending ? 'Processing...' : 'Register'}
                         </Button>
