@@ -12,12 +12,20 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog"
+import { 
+    Form,
+    FormControl,
+    FormField,
+    FormItem,
+    FormLabel,
+    FormMessage
+} from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { Label } from "@radix-ui/react-label"
+// import { Label } from "@radix-ui/react-label"
 import { Button } from "@/components/ui/button"
 
 export const Profile = () => {
-    const { fullName, grade, studentData, isLoading, isError } = studentInfo()  // this should be complete or else it won't load the loading UI
+    const { fullName, grade, studentData, isLoading, isError, studentForm, onSubmit, onError } = studentInfo()  // this should be complete or else it won't load the loading UI
 
     return (
         <StudentLayout>
@@ -65,31 +73,94 @@ export const Profile = () => {
                             </div>
                         }
                     </div>
+
+
+
                     {/* DIALOG CONTENT  */}
                     <DialogContent className="sm:max-w-[425px]">
-                        <DialogHeader>
-                            <DialogTitle>Edit profile</DialogTitle>
-                            <DialogDescription>
-                                Make changes to your profile here. Click save when you're done.
-                            </DialogDescription>
-                        </DialogHeader>
-                            <div className="grid gap-4 py-4">
-                                <div className="grid grid-cols-4 items-center gap-4">
-                                    <Label htmlFor="name" className="text-right">
-                                    Name
-                                    </Label>
-                                    <Input id="name" value="Pedro Duarte" className="col-span-3" />
-                                </div>
-                                <div className="grid grid-cols-4 items-center gap-4">
-                                    <Label htmlFor="username" className="text-right">
-                                    Username
-                                    </Label>
-                                    <Input id="username" value="@peduarte" className="col-span-3" />
-                                </div>
-                            </div>
-                        <DialogFooter>
-                        <Button type="submit">Save changes</Button>
-                        </DialogFooter>
+                        <Form {...studentForm}>
+                            <form onSubmit={studentForm.handleSubmit(onSubmit, onError)} className="space-y-6">
+                                {/* header  */}
+                                <DialogHeader>
+                                    <DialogTitle>Edit profile</DialogTitle>
+                                    <DialogDescription>
+                                        Make changes to your profile here. Click save when you're done.
+                                    </DialogDescription>
+                                </DialogHeader>
+                                    {/* body  */}
+                                    <div className="grid gap-4 py-4">
+                                    <FormField
+                                        control={studentForm.control}
+                                        name="firstname"
+                                        render={({ field }) => (
+                                            <FormItem>
+                                                <FormLabel>First Name:</FormLabel>
+                                                <FormControl>
+                                                    <Input placeholder="Your first name" {...field} />
+                                                </FormControl>
+                                                <FormMessage />
+                                            </FormItem>
+                                        )}
+                                    />
+                                    <FormField
+                                        control={studentForm.control}
+                                        name="middlename"
+                                        render={({ field }) => (
+                                            <FormItem>
+                                                <FormLabel>Middle Name:</FormLabel>
+                                                <FormControl>
+                                                    <Input placeholder="Your middle name" {...field} />
+                                                </FormControl>
+                                                <FormMessage />
+                                            </FormItem>
+                                        )}
+                                    />
+                                    <FormField
+                                        control={studentForm.control}
+                                        name="lastname"
+                                        render={({ field }) => (
+                                            <FormItem>
+                                                <FormLabel>Last Name:</FormLabel>
+                                                <FormControl>
+                                                    <Input placeholder="Your last name" {...field} />
+                                                </FormControl>
+                                                <FormMessage />
+                                            </FormItem>
+                                        )}
+                                    />
+                                    <FormField
+                                        control={studentForm.control}
+                                        name="email"
+                                        render={({ field }) => (
+                                            <FormItem>
+                                                <FormLabel>Email:</FormLabel>
+                                                <FormControl>
+                                                    <Input type="email" placeholder="Your email" {...field} />
+                                                </FormControl>
+                                                <FormMessage />
+                                            </FormItem>
+                                        )}
+                                    />
+                                    <FormField
+                                        control={studentForm.control}
+                                        name="contact"
+                                        render={({ field }) => (
+                                            <FormItem>
+                                                <FormLabel>Contact:</FormLabel>
+                                                <FormControl>
+                                                    <Input placeholder="your contact number" {...field} />
+                                                </FormControl>
+                                                <FormMessage />
+                                            </FormItem>
+                                        )}
+                                    />
+                                    </div>
+                                    {/* footer  */}
+                                <DialogFooter>
+                                    <Button type="submit">Save changes</Button>
+                                </DialogFooter>
+                            </form>
+                        </Form>
                     </DialogContent>
                 </Dialog>
             </StudentContainer>
