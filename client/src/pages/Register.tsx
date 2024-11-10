@@ -12,21 +12,23 @@ import { Input } from "@/components/ui/input"
 import { useForm } from "react-hook-form"
 import { Button } from "@/components/ui/button"
 import { z } from "zod"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { useAuthentication } from "@/hooks/useAuthentication"
 import { registerSchema } from "@/schemas/authSchemas"
 import { useAuthStore } from "@/stores/auth/authSlice"
 import { useNavigate } from "react-router-dom"
+import { DatePicker } from "@/components/ui/date-picker"
 
-// const subjectsList = [
-//     { name: 'Math', checked: false },
-//     { name: 'English', checked: false }
-// ]
+const subjectsList = [
+    { name: 'Math', checked: false },
+    { name: 'English', checked: false }
+]
 
 export const Register = () => {
     const { registerUser }  = useAuthentication()
     const navigate = useNavigate()
     const { role } = useAuthStore()
+    const [nextForm, setNextForm] = useState(false)
 
     useEffect(() => {
         if (!role) {
@@ -38,105 +40,120 @@ export const Register = () => {
     const form = useForm<z.infer<typeof registerSchema>>({
         resolver: zodResolver(registerSchema),
         defaultValues: {
-            // firstname: "",
             email: "",
             password: "",
             role: role,
-            // subjects: 
-            //     role === 'faculty' ? 
-            //         subjectsList.map((subject) => ({ ...subject }))
-            //         : undefined,
-            // gradeLevel: 
-            //     role === "student" ? 0 : undefined,
-            // homeroom: 
-            //     role === "faculty" ? false : undefined,
+            subjects: subjectsList.map((subject) => ({ ...subject })),
+            gradeLevel: 0,
+            homeroom: false,
+            birth_date: new Date()
         },
     })
 
     function onSubmit(values: z.infer<typeof registerSchema>) {
-        registerUser.mutate(values)
+        // registerUser.mutate(values)
         // form.reset()
-        // console.log(values)
+        console.log(values)
     }
 
-    const onError = (errors: any) => {
+    function onError(errors: any) {
         console.log("Form errors:", errors)
     }
 
-    // useEffect(() => {
-    //     if (role) {
-    //         form.unregister('subjects')
-    //         form.unregister('gradeLevel')
-    //         console.log('role changed')
-    //     }
-    // }, [role]);
+    function handleNextForm() {
+        if (form.watch("email") && form.watch("password")) setNextForm(true)
+        if (role === 'student') {
+            form.unregister('subjects')
+            form.unregister('homeroom')
+        }
+    }
 
     return (
         <div className="register-page">
             <div className="border rounded-md p-6">
             <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit, onError)} className="space-y-6">
-                        {/* <FormField
-                            control={form.control}
-                            name="firstname"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>First Name:</FormLabel>
-                                    <FormControl>
-                                        <Input type="text" placeholder="your first name" {...field} disabled={registerUser.isPending}/>
-                                    </FormControl>
-                                    <FormMessage/>
-                                </FormItem>
-                            )}
-                        /> */}
-                        <FormField
-                            control={form.control}
-                            name="email"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Email:</FormLabel>
-                                    <FormControl>
-                                        <Input type="email" placeholder="your email" {...field} disabled={registerUser.isPending}/>
-                                    </FormControl>
-                                    <FormMessage/>
-                                </FormItem>
-                            )}
-                        />
-                        <FormField
-                            control={form.control}
-                            name="password"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Password:</FormLabel>
-                                    <FormControl>
-                                        <Input type="password" placeholder="your password" {...field} disabled={registerUser.isPending}/>
-                                    </FormControl>
-                                    <FormMessage/>
-                                </FormItem>
-                            )}
-                        />
-                        {/* {role === 'student' && (
+                        {!nextForm ?
+                            <>
+                                <FormField
+                                    control={form.control}
+                                    name="email"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>Email:</FormLabel>
+                                            <FormControl>
+                                                <Input type="email" placeholder="your email" {...field} disabled={registerUser.isPending}/>
+                                            </FormControl>
+                                            <FormMessage/>
+                                        </FormItem>
+                                    )}
+                                />
+                                <FormField
+                                    control={form.control}
+                                    name="password"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>Password:</FormLabel>
+                                            <FormControl>
+                                                <Input type="password" placeholder="your password" {...field} disabled={registerUser.isPending}/>
+                                            </FormControl>
+                                            <FormMessage/>
+                                        </FormItem>
+                                    )}
+                                />
+                                <Button onClick={handleNextForm}>
+                                    Next
+                                </Button>
+                            </>
+                            :
+                            <>
+                            <div>
                             <FormField
+                                name="birth_date"
                                 control={form.control}
-                                name="gradeLevel"
                                 render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel>Grade Level:</FormLabel>
-                                        <FormControl>
-                                            <Input 
-                                                type="number" 
-                                                placeholder="your grade level" 
-                                                min={1}
-                                                max={6}
-                                                onChange={(e) => field.onChange(Number(e.target.value))} 
-                                                disabled={registerUser.isPending}
-                                            />
-                                        </FormControl>
-                                        <FormMessage/>
-                                    </FormItem>
+                                    <DatePicker
+                                        startYear={1950}
+                                        endYear={2018}
+                                        // Pass the `field.value` and `field.onChange` props to integrate with the form
+                                        value={field.value}
+                                        onChange={(date) => field.onChange(date)}
+                                    />
                                 )}
                             />
-                        )} */}
+                                {role === 'student' && (
+                                    <FormField
+                                        control={form.control}
+                                        name="gradeLevel"
+                                        render={({ field }) => (
+                                            <FormItem>
+                                                <FormLabel>Grade Level:</FormLabel>
+                                                <FormControl>
+                                                    <Input 
+                                                        type="number" 
+                                                        placeholder="your grade level" 
+                                                        min={1}
+                                                        max={6}
+                                                        onChange={(e) => field.onChange(Number(e.target.value))} 
+                                                        disabled={registerUser.isPending}
+                                                    />
+                                                </FormControl>
+                                                <FormMessage/>
+                                            </FormItem>
+                                        )}
+                                    />
+                                )}
+                                
+                                <Button onClick={() => setNextForm(false)}>
+                                    Back
+                                </Button>
+                                <Button type="submit" disabled={registerUser.isPending}>
+                                    {registerUser.isPending ? 'Processing...' : 'Register'}
+                                </Button>
+                            </div>
+                            </>
+                        }
+                        
 
                         {/* {role === 'faculty' && (
                             <div>
@@ -171,9 +188,7 @@ export const Register = () => {
                                 )}
                             </div>
                         )} */}
-                        <Button type="submit" disabled={registerUser.isPending}>
-                            {registerUser.isPending ? 'Processing...' : 'Register'}
-                        </Button>
+                        
                     </form>
                 </Form>
             </div>
