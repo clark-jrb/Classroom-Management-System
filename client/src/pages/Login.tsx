@@ -74,10 +74,14 @@ export const Login = () => {
                                 </FormItem>
                             )}
                         />
+                        
                         <Button type="submit" disabled={loginUser.isPending}>
                             {loginUser.isPending ? 'Loading...' : 'Login'}
                         </Button>
                     </form>
+                    <Button onClick={() => navigate('/home')}>
+                        Back
+                    </Button>
                 </Form>
             </div>
         </div>

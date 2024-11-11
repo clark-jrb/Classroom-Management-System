@@ -14,8 +14,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from ".
     interface DatePickerProps {
         startYear?: number;
         endYear?: number;
-        value: Date;
-        onChange: (date: Date) => void;
+        value: Date | null;
+        onChange: (date: Date | null) => void;
     }
     export function DatePicker({
         startYear = getYear(new Date()),
@@ -24,7 +24,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from ".
         onChange,
     }: DatePickerProps) {
 
-    const [date, setDate] = React.useState<Date>(new Date());
+    const [date, setDate] = React.useState<Date | null>(value || null);
 
     const months = [
         'January', 'February', 'March', 'April',
@@ -43,21 +43,21 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from ".
     
 
     const handleMonthChange = (month: string) => {
-        const newDate = setMonth(date, months.indexOf(month));
+        const newDate = date ? setMonth(date, months.indexOf(month)) : setMonth(new Date(), months.indexOf(month));
         setDate(newDate);
         onChange(newDate);
     }
 
     const handleYearChange = (year: string) => {
-        const newDate = setYear(date, parseInt(year));
-        setDate(newDate)
+        const newDate = date ? setYear(date, parseInt(year)) : setYear(new Date(), parseInt(year));
+        setDate(newDate);
         onChange(newDate);
     }
 
     const handleSelect = (selectedData: Date | undefined) => {
         if (selectedData) {
-            setDate(selectedData)
-            onChange(selectedData); // Notify form of the date change
+            setDate(selectedData || null)
+            onChange(selectedData || null); // Notify form of the date change
         }
     }
 
@@ -72,14 +72,14 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from ".
                     )}
                 >
                 <CalendarIcon className="mr-2 h-4 w-4" />
-                {date ? format(date, "PPP") : <span>Pick a date</span>}
+                    {date ? format(date, "PPP") : <span>Pick a date</span>}
                 </Button>
             </PopoverTrigger>
             <PopoverContent className="w-auto p-0">
                 <div className="flex justify-between p-2">
                 <Select
                     onValueChange={handleMonthChange}
-                    value={months[getMonth(date)]}
+                    value={date ? months[getMonth(date)] : ""}
                 >
                     <SelectTrigger className="w-[110px]">
                     <SelectValue placeholder="Month" />
@@ -92,7 +92,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from ".
                 </Select>
                 <Select
                     onValueChange={handleYearChange}
-                    value={getYear(date).toString()}
+                    value={date ? getYear(date).toString() : ""}
                 >
                     <SelectTrigger className="w-[110px]">
                     <SelectValue placeholder="Year" />
@@ -107,10 +107,10 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from ".
 
                 <Calendar
                     mode="single"
-                    selected={date}
+                    selected={date || undefined}
                     onSelect={handleSelect}
                     initialFocus
-                    month={date}
+                    month={date || new Date()}
                     onMonthChange={setDate}
                 />
             </PopoverContent>
