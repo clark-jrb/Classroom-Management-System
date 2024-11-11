@@ -38,12 +38,12 @@ export class StudentController {
                 {
                     $lookup: {
                         from: "students_infos", // Ensure this matches your actual collection name
-                        localField: "_id",
-                        foreignField: "_id",
-                        as: "moreInfo"
+                        localField: "email",
+                        foreignField: "email",
+                        as: "student_info"
                     }
                 },
-                { $unwind: { path: "$moreInfo" } }
+                { $unwind: { path: "$student_info" } }
             ]);
 
             if (student.length === 0) {

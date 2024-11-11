@@ -65,8 +65,8 @@ export const Register = () => {
     })
 
     function onSubmit(values: z.infer<typeof registerSchema>) {
-        // registerUser.mutate(values)
-        // form.reset()
+        registerUser.mutate(values)
+        form.reset()
         console.log(values)
     }
 

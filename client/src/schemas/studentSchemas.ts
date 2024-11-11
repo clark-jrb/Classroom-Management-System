@@ -6,5 +6,5 @@ export const studentInfoSchema = z.object({
     lastname: z.string().min(2, { message: "Name should be 2 characters above" }).optional(),
     email: z.string().email({ message: "Please provide a valid email" }).optional(),
     sex: z.string().optional(),
-    contact: z.number(),
+    contact: z.string(),
 })

@@ -6,6 +6,7 @@ import { useForm } from "react-hook-form"
 import { studentInfoSchema } from "@/schemas/studentSchemas"
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
+import moment from "moment";
 
 export const studentInfo = () => {
     const { user_id } = useAuthStore()
@@ -16,19 +17,20 @@ export const studentInfo = () => {
         enabled: !!user_id,
     })
 
-    const { firstname, email, gradeLevel, moreInfo } = data || {}
-    const fullName = `${firstname} ${moreInfo?.middlename} ${moreInfo?.lastname}`
+    const { student_info } = data || {}
+    const { firstname, middlename, lastname, email, sex, contact, birth_date, gradeLevel } = student_info || {}
+    const fullName = `${firstname} ${middlename} ${lastname}`
     const grade = gradeLevel
 
     const studentData = [
         { label: 'First Name', value: firstname },
-        { label: 'Middle Name', value: moreInfo?.middlename },
-        { label: 'Last Name', value: moreInfo?.lastname },
+        { label: 'Middle Name', value: middlename },
+        { label: 'Last Name', value: lastname },
         { label: 'Email', value: email },
-        { label: 'Sex', value: moreInfo?.sex },
+        { label: 'Sex', value: sex },
         { label: 'Grade Level', value: gradeLevel },
-        { label: 'Contact', value: moreInfo?.contact },
-        { label: 'Birth Date', value: moreInfo?.birthdate },
+        { label: 'Contact', value: contact },
+        { label: 'Birth Date', value: moment(birth_date).format('LL') },
     ]
     
     if (isError) console.log('there is an error: ' + error) 
@@ -42,19 +44,19 @@ export const studentInfo = () => {
             lastname: "",
             email: "",
             sex: "",
-            contact: 0,
+            contact: "",
         },
     })
 
     useEffect(() => {
         if (data) {
             studentForm.reset({
-                firstname: data.firstname,
-                middlename: data.moreInfo?.middlename,
-                lastname: data.moreInfo?.lastname,
-                email: data.email,
-                sex: data.moreInfo?.sex,
-                contact: data.moreInfo?.contact,
+                firstname: firstname,
+                middlename: middlename,
+                lastname: lastname,
+                email: email,
+                sex: sex,
+                contact: contact,
             });
         }
     }, [data, studentForm]);
