@@ -1,7 +1,7 @@
 import { Response, Request } from "express"
 import { UserModel } from "../models/user"
-import { StudentModel } from "../models/student"
-import { TeacherModel } from "../models/teacher"
+import { StudentModel, StudentInfoModel } from "../models/student"
+import { TeacherModel, TeacherInfoModel } from "../models/teacher"
 
 export class UserController {
 
@@ -22,6 +22,23 @@ export class UserController {
         return selectedModel
     }
 
+    private selectInfoModel(role: string) {
+        const validRoles = ['student', 'faculty']
+
+        if (!validRoles.includes(role)) {
+            throw new Error(`Invalid role: ${role}`)
+        }
+
+        const availableModels: any = {
+            student: StudentInfoModel,
+            faculty: TeacherInfoModel,
+            default: UserModel
+        }
+        const selectedInfoModel = availableModels[role] || availableModels['default']
+
+        return selectedInfoModel
+    }
+
     // get user by email 
     public async getByEmail(email: string, role: string) {
         const Model = this.selectModel(role)
@@ -30,11 +47,17 @@ export class UserController {
     }
 
     // create user
-    public async createUser(values: Record<string, any>, role: string) {
+    public async createUser(values: Record<string, any>, infoValues: Record<string, any>, role: string) {
         const Model = this.selectModel(role)
-        const user = await new Model(values).save()
+        const InfoModel = this.selectInfoModel(role)
 
-        return user.toObject()
+        const user = await new Model(values).save()
+        const userInfo = await new InfoModel(infoValues).save()
+
+        return {
+            user: user.toObject(),
+            userInfo: userInfo.toObject()
+        };
     }
 
     // is user authenticated?

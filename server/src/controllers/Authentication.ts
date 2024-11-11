@@ -42,12 +42,12 @@ export const login = async (req: Request, res: Response): Promise<any> => {
 
 export const register = async (req: Request, res: Response): Promise<any> => {
     const { 
-        email, password, role, firstname, middlename, lastname, sex, birth_date,
+        email, password, role, firstname, middlename, lastname, sex, birth_date, contact,
         gradeLevel, subjects, homeroom 
     } = req.body
 
-    const student_info = { firstname, middlename, lastname, sex, birth_date, gradeLevel }
-    const faculty_info = { firstname, middlename, lastname, sex, birth_date, subjects, homeroom  }
+    const student_info = { firstname, middlename, lastname, sex, birth_date, contact, email,  gradeLevel }
+    const faculty_info = { firstname, middlename, lastname, sex, birth_date, contact, email,  subjects, homeroom  }
 
     const userExist = await User.getByEmail(email, role)
 
@@ -68,7 +68,9 @@ export const register = async (req: Request, res: Response): Promise<any> => {
             role
         }
 
-        await User.createUser(credentials, role)
+        if (role === 'student') { await User.createUser(credentials, student_info, role) }
+        if (role === 'faculty') { await User.createUser(credentials, faculty_info, role) }
+        
         const userNowExist = await User.getByEmail(email, role)
 
         if (userNowExist) {
