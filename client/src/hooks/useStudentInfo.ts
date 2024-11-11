@@ -37,15 +37,7 @@ export const studentInfo = () => {
 
     // student info form for dialog
     const studentForm = useForm<z.infer<typeof studentInfoSchema>>({
-        resolver: zodResolver(studentInfoSchema),
-        defaultValues: {
-            firstname: "",
-            middlename: "",
-            lastname: "",
-            email: "",
-            sex: "",
-            contact: "",
-        },
+        resolver: zodResolver(studentInfoSchema)
     })
 
     useEffect(() => {
@@ -57,6 +49,7 @@ export const studentInfo = () => {
                 email: email,
                 sex: sex,
                 contact: contact,
+                birth_date: new Date(birth_date)
             });
         }
     }, [data, studentForm]);
