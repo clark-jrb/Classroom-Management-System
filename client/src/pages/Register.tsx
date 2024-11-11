@@ -59,7 +59,8 @@ export const Register = () => {
             firstname: "",
             middlename: "",
             lastname: "",
-            sex: ""
+            sex: "",
+            contact: ""
         },
     })
 
@@ -200,6 +201,20 @@ export const Register = () => {
                                     </FormItem>
                                 )}
                             />
+                            {/* Contact */}
+                            <FormField
+                                    control={form.control}
+                                    name="contact"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>Contact Number:</FormLabel>
+                                            <FormControl>
+                                                <Input placeholder="your contact number" {...field} disabled={registerUser.isPending}/>
+                                            </FormControl>
+                                            <FormMessage/>
+                                        </FormItem>
+                                    )}
+                                />
                             {/* For Students */}
                                 {role === 'student' && (
                                     <FormField

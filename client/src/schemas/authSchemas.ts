@@ -17,6 +17,7 @@ export const registerSchema = z.object({
     email: z.string().min(1, { message: 'Please provide your email' }),
     password: z.string().min(8, { message: 'Password should be 8 characters' }),
     role: z.string().min(1, { message: 'role is required' }),
+    contact: z.string().min(11, { message: 'contact number contains of 11 characters' }),
     //for students
     gradeLevel: z.number().min(1, { message: 'Input your grade level' }).optional(),
     // for teachers
