@@ -18,7 +18,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from ".
         onChange: (date: Date) => void;
     }
     export function DatePicker({
-        startYear = getYear(new Date()) - 50,
+        startYear = getYear(new Date()),
         endYear = getYear(new Date()),
         value,
         onChange,
@@ -27,19 +27,11 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from ".
     const [date, setDate] = React.useState<Date>(new Date());
 
     const months = [
-        'January',
-        'February',
-        'March',
-        'April',
-        'May',
-        'June',
-        'July',
-        'August',
-        'September',
-        'October',
-        'November',
-        'December',
+        'January', 'February', 'March', 'April',
+        'May', 'June', 'July', 'August',
+        'September', 'October', 'November', 'December',
     ];
+    
     const years = Array.from(
         { length: endYear - startYear + 1 },
         (_, i) => startYear + i
@@ -53,11 +45,13 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from ".
     const handleMonthChange = (month: string) => {
         const newDate = setMonth(date, months.indexOf(month));
         setDate(newDate);
+        onChange(newDate);
     }
 
     const handleYearChange = (year: string) => {
         const newDate = setYear(date, parseInt(year));
         setDate(newDate)
+        onChange(newDate);
     }
 
     const handleSelect = (selectedData: Date | undefined) => {

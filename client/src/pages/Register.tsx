@@ -114,7 +114,7 @@ export const Register = () => {
                                 render={({ field }) => (
                                     <DatePicker
                                         startYear={1950}
-                                        endYear={2018}
+                                        endYear={2024}
                                         // Pass the `field.value` and `field.onChange` props to integrate with the form
                                         value={field.value}
                                         onChange={(date) => field.onChange(date)}
