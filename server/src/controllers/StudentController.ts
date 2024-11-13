@@ -68,7 +68,29 @@ export class StudentController {
         }
     }
     
-    public async updateUserById(id: string, values: Record<string, any>) {
-        return await StudentModel.findByIdAndUpdate(id, values)
+    public updateStudentById = async (req: Request, res: Response): Promise<any> => {
+        try {
+            const { id } = req.params
+            const data = req.body
+
+            const findUser = await StudentInfoModel.find({ email: data.email })
+
+            console.log("student id: " + id)
+            console.log(data)
+            console.log("existing student: " + findUser)
+    
+            // if (!firstname) return res.sendStatus(400)
+    
+            // const user = await StudentModel.findByIdAndUpdate(id)
+    
+            // user.firstname = firstname
+            // await user.save()
+    
+            return res.status(200).json({ data, message: "profile updated successfully!"}).end()
+        } catch (error) {
+            console.log(error)
+            return res.sendStatus(400)
+        }
+        // return await StudentModel.findByIdAndUpdate(id, values)
     }
 }
