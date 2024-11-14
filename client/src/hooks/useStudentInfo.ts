@@ -1,11 +1,11 @@
 import { useAuthStore } from "@/stores/auth/authSlice";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { getStudentInformation } from "@/services/UserService";
 import { z } from "zod"
 import { useForm } from "react-hook-form"
 import { studentInfoSchema } from "@/schemas/studentSchemas"
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import moment from "moment";
 import { updateStudentInfo } from "@/services/StudentService";
 
@@ -13,7 +13,7 @@ export const studentInfo = () => {
     const { user_id } = useAuthStore()
     const { updateInfo } = studentFunctions()
 
-    const { data, isLoading, isError, error } = useQuery({
+    const { data, isLoading, isError, error, isSuccess } = useQuery({
         queryKey: ['student_data', user_id],
         queryFn: () => getStudentInformation(user_id),
         enabled: !!user_id,
@@ -65,23 +65,28 @@ export const studentInfo = () => {
         console.log("Form errors:", errors)
     }
 
-    return { studentData, fullName, grade, isLoading, isError, error, studentForm, onSubmit, onError }
+    return { studentData, fullName, grade, isLoading, isError, isSuccess, error, studentForm, onSubmit, onError }
 }
 
 // this is where the student functions 
 export const studentFunctions = () => {
     const { user_id } = useAuthStore()
+    const queryClient = useQueryClient()
+    const [open, setOpen] = useState(false)
 
     const updateInfo = useMutation({
         mutationFn: (value: Record<string, any>) => updateStudentInfo(user_id, value),
         onSuccess: (data) => {
             const { message } = data
+            queryClient.invalidateQueries({ queryKey: ['student_data', user_id] })
+            
             console.log(message)
+            setOpen(false)
         },
         onError: (error) => {
             console.log(error)
         }
     })
-
-    return { updateInfo }
+    
+    return { updateInfo, open, setOpen }
 }

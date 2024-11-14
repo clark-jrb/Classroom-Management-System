@@ -73,11 +73,21 @@ export class StudentController {
             const { id } = req.params
             const data = req.body
 
-            const findUser = await StudentInfoModel.find({ email: data.email })
+            const student = await StudentModel.findById(id)
 
-            console.log("student id: " + id)
-            console.log(data)
-            console.log("existing student: " + findUser)
+            if (!student) return res.status(404).json({ message: "Student doesn't exists" })
+
+                // console.log(student[0].email)
+
+            const updateStudentInfo = await StudentInfoModel.findOneAndUpdate(
+                { email: student.email },
+                { $set: data },
+                { new: true, runValidators: true }
+            )
+
+            // console.log("student id: " + id)
+            // console.log(data)
+            // console.log("existing student: " + findUser)
     
             // if (!firstname) return res.sendStatus(400)
     
@@ -86,7 +96,7 @@ export class StudentController {
             // user.firstname = firstname
             // await user.save()
     
-            return res.status(200).json({ data, message: "profile updated successfully!"}).end()
+            return res.status(200).json({ updateStudentInfo, message: "profile updated successfully!"}).end()
         } catch (error) {
             console.log(error)
             return res.sendStatus(400)
