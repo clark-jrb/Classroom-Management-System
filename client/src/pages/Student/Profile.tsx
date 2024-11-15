@@ -31,18 +31,28 @@ import { Input } from "@/components/ui/input"
 // import { Label } from "@radix-ui/react-label"
 import { Button } from "@/components/ui/button"
 import { DatePicker } from "@/components/ui/date-picker"
+import { studentInfoSchema } from "@/schemas/studentSchemas"
+import { studentFunctions } from "@/hooks/useStudentInfo"
+import { z } from "zod"
 
 export const Profile = () => {
-    const { fullName, grade, studentData, isLoading, isError, studentForm, onSubmit, onError } = studentInfo()  // this should be complete or else it won't load the loading UI
+    const { fullName, grade, studentData, studentInfoLoading, studentInfoError, studentForm } = studentInfo()  // this should be complete or else it won't load the loading UI
+    const { updateInfo, openDialog, setOpenDialog } = studentFunctions()
+
+    function onSubmit(values: z.infer<typeof studentInfoSchema>) {
+        updateInfo.mutate(values)
+    }
+
+    function onError (errors: any) { console.log("Form errors:", errors) }
 
     return (
         <StudentLayout>
             <StudentContainer>
-                <Dialog>
+                <Dialog open={openDialog} onOpenChange={setOpenDialog}>
                     {/* PROFILE CONTENT  */}
                     <div className="h-full">
-                        {isError && <div>Error</div>}
-                        {isLoading ? 
+                        {studentInfoError && <div>Error</div>}
+                        {studentInfoLoading ? 
                             <div>Loading...</div> 
                             : 
                             <div className="info-cont">
@@ -214,7 +224,9 @@ export const Profile = () => {
                                     </div>
                                     {/* footer  */}
                                 <DialogFooter>
-                                    <Button type="submit">Save changes</Button>
+                                    <Button type="submit" disabled={updateInfo.isPending}>
+                                        {updateInfo.isPending ? "Loading..." : "Save changes"}
+                                    </Button>
                                 </DialogFooter>
                             </form>
                         </Form>

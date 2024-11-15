@@ -11,9 +11,8 @@ import { updateStudentInfo } from "@/services/StudentService";
 
 export const studentInfo = () => {
     const { user_id } = useAuthStore()
-    const { updateInfo } = studentFunctions()
 
-    const { data, isLoading, isError, error, isSuccess } = useQuery({
+    const { data, isLoading: studentInfoLoading, isError: studentInfoError, error } = useQuery({
         queryKey: ['student_data', user_id],
         queryFn: () => getStudentInformation(user_id),
         enabled: !!user_id,
@@ -35,7 +34,7 @@ export const studentInfo = () => {
         { label: 'Birth Date', value: moment(birth_date).format('LL') },
     ]
     
-    if (isError) console.log('there is an error: ' + error) 
+    if (studentInfoError) console.log('there is an error: ' + error) 
 
     // student info form for dialog
     const studentForm = useForm<z.infer<typeof studentInfoSchema>>({
@@ -56,37 +55,26 @@ export const studentInfo = () => {
         }
     }, [data, studentForm]);
 
-    function onSubmit(values: z.infer<typeof studentInfoSchema>) {
-        updateInfo.mutateAsync(values)
-        console.log(values)
-    }
-
-    function onError (errors: any) {
-        console.log("Form errors:", errors)
-    }
-
-    return { studentData, fullName, grade, isLoading, isError, isSuccess, error, studentForm, onSubmit, onError }
+    return { studentData, fullName, grade, studentInfoLoading, studentInfoError, error, studentForm }
 }
 
 // this is where the student functions 
 export const studentFunctions = () => {
     const { user_id } = useAuthStore()
     const queryClient = useQueryClient()
-    const [open, setOpen] = useState(false)
+    const [openDialog, setOpenDialog] = useState(false);
 
     const updateInfo = useMutation({
         mutationFn: (value: Record<string, any>) => updateStudentInfo(user_id, value),
-        onSuccess: (data) => {
-            const { message } = data
+        onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['student_data', user_id] })
-            
-            console.log(message)
-            setOpen(false)
+            console.log('success on hook')
+            setOpenDialog(false)
         },
         onError: (error) => {
             console.log(error)
         }
     })
     
-    return { updateInfo, open, setOpen }
+    return { updateInfo, openDialog, setOpenDialog }
 }
