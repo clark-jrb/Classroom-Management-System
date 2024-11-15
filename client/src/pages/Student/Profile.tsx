@@ -34,13 +34,21 @@ import { DatePicker } from "@/components/ui/date-picker"
 import { studentInfoSchema } from "@/schemas/studentSchemas"
 import { studentFunctions } from "@/hooks/useStudentInfo"
 import { z } from "zod"
+import { getChangedFields } from "@/helpers/changed-fields"
 
 export const Profile = () => {
-    const { fullName, grade, studentData, studentInfoLoading, studentInfoError, studentForm } = studentInfo()  // this should be complete or else it won't load the loading UI
+    const { fullName, grade, studentData, studentInfoLoading, studentInfoError, studentForm, initialData } = studentInfo()  // this should be complete or else it won't load the loading UI
     const { updateInfo, openDialog, setOpenDialog } = studentFunctions()
 
     function onSubmit(values: z.infer<typeof studentInfoSchema>) {
-        updateInfo.mutate(values)
+        const getChanges = getChangedFields(initialData, values)
+
+        if (Object.keys(getChanges).length !== 0) {
+            updateInfo.mutate(getChanges)
+            console.log('update successful')
+        } else {
+            console.log('there is nothing to update')
+        }
     }
 
     function onError (errors: any) { console.log("Form errors:", errors) }

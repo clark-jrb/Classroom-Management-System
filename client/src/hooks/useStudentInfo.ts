@@ -23,6 +23,10 @@ export const studentInfo = () => {
     const fullName = `${firstname} ${middlename} ${lastname}`
     const grade = gradeLevel
 
+    const initialData = {
+        firstname, middlename, lastname, email, sex, contact, birth_date: new Date(birth_date)
+    }
+
     const studentData = [
         { label: 'First Name', value: firstname },
         { label: 'Middle Name', value: middlename },
@@ -55,7 +59,7 @@ export const studentInfo = () => {
         }
     }, [data, studentForm]);
 
-    return { studentData, fullName, grade, studentInfoLoading, studentInfoError, error, studentForm }
+    return { studentData, fullName, grade, studentInfoLoading, studentInfoError, error, studentForm, initialData }
 }
 
 // this is where the student functions 
