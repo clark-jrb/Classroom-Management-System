@@ -14,7 +14,8 @@ const StudentInfoSchema = new Schema({
     sex: { type: String, required: true },
     birth_date: { type: Date, required: false, default: null },
     contact: { type: String, required: true },
-    gradeLevel: { type: Number, required: true }
+    gradeLevel: { type: Number, required: true },
+    section: { type: String, required: true },
 })
 
 export const StudentModel = model('students', StudentSchema)

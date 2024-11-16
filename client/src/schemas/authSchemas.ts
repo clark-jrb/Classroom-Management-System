@@ -20,6 +20,7 @@ export const registerSchema = z.object({
     contact: z.string().min(11, { message: 'contact number contains of 11 characters' }),
     //for students
     gradeLevel: z.number().min(1, { message: 'Input your grade level' }).optional(),
+    section: z.string().min(1, { message: 'Select your section you are enrolled' }),
     // for teachers
     subjects: z.array(
             z.object({

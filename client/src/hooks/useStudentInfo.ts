@@ -20,7 +20,7 @@ export const studentInfo = () => {
 
     // destructure data from the api
     const { student_info } = data || {}
-    const { firstname, middlename, lastname, email, sex, contact, birth_date, gradeLevel } = student_info || {}
+    const { firstname, middlename, lastname, email, sex, contact, birth_date, gradeLevel, section } = student_info || {}
     const fullName = `${firstname} ${middlename} ${lastname}`
     const grade = gradeLevel
 
@@ -35,7 +35,7 @@ export const studentInfo = () => {
         { label: 'Last Name', value: lastname },
         { label: 'Email', value: email },
         { label: 'Sex', value: sex },
-        { label: 'Grade Level', value: gradeLevel },
+        { label: 'Grade & Section', value: `${gradeLevel}, ${section}` },
         { label: 'Contact', value: contact },
         { label: 'Birth Date', value: moment(birth_date).format('LL') },
     ]

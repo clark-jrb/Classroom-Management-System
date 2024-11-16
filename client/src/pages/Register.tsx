@@ -34,6 +34,15 @@ const subjectsList = [
     { name: 'Science', checked: false },
 ]
 
+const sectionsList = [
+    { grade: 1, sections: ['Crabs', 'Corals'] },
+    { grade: 2, sections: ['Pearls', 'Shrimps'] },
+    { grade: 3, sections: ['Squids', 'Octopus'] },
+    { grade: 4, sections: ['Lobsters', 'Eels'] },
+    { grade: 5, sections: ['Turtles', 'Dolphins'] },
+    { grade: 6, sections: ['Whales', 'Sharks'] }
+];
+
 export const Register = () => {
     const { registerUser }  = useAuthentication()
     const navigate = useNavigate()
@@ -60,7 +69,8 @@ export const Register = () => {
             middlename: "",
             lastname: "",
             sex: "",
-            contact: ""
+            contact: "",
+            section: ""
         },
     })
 
@@ -71,6 +81,13 @@ export const Register = () => {
     }
 
     function onError(errors: any) { console.log("Form errors:", errors) }
+
+    const grade_level = form.watch("gradeLevel") || 0
+    const filteredSections = sectionsList.filter((item) => item.grade === grade_level).flatMap((item) => item.sections)
+
+    useEffect(() => {
+        form.resetField("section")
+    }, [grade_level]);
 
     function handleNextForm() {
         if (form.watch("email") && form.watch("password")) setNextForm(true)
@@ -117,168 +134,206 @@ export const Register = () => {
                             </>
                             :
                             <>
-                            <div>
-                            {/* First Name  */}
-                                <FormField
-                                    control={form.control}
-                                    name="firstname"
-                                    render={({ field }) => (
-                                        <FormItem>
-                                            <FormLabel>First Name:</FormLabel>
-                                            <FormControl>
-                                                <Input placeholder="your first name" {...field} disabled={registerUser.isPending}/>
-                                            </FormControl>
-                                            <FormMessage/>
-                                        </FormItem>
-                                    )}
-                                />
-                            {/* Middle Name */}
-                                <FormField
-                                    control={form.control}
-                                    name="middlename"
-                                    render={({ field }) => (
-                                        <FormItem>
-                                            <FormLabel>Middle Name:</FormLabel>
-                                            <FormControl>
-                                                <Input placeholder="your middle name" {...field} disabled={registerUser.isPending}/>
-                                            </FormControl>
-                                            <FormMessage/>
-                                        </FormItem>
-                                    )}
-                                />
-                            {/* Last Name */}
-                                <FormField
-                                    control={form.control}
-                                    name="lastname"
-                                    render={({ field }) => (
-                                        <FormItem>
-                                            <FormLabel>Last Name:</FormLabel>
-                                            <FormControl>
-                                                <Input placeholder="your last name" {...field} disabled={registerUser.isPending}/>
-                                            </FormControl>
-                                            <FormMessage/>
-                                        </FormItem>
-                                    )}
-                                />
-                            {/* Birth Date */}
-                                <FormField
-                                    name="birth_date"
-                                    control={form.control}
-                                    render={({ field }) => (
-                                        <FormItem>
-                                            <FormLabel>Birth Date:</FormLabel>
-                                            <FormControl>
-                                                <DatePicker
-                                                    startYear={1950}
-                                                    endYear={2024}
-                                                    value={field.value}
-                                                    onChange={(date) => field.onChange(date)}
-                                                />
-                                            </FormControl>
-                                            <FormMessage/>
-                                        </FormItem>
-                                    )}
-                                />
-                            {/* Sex */}
-                            <FormField
-                                control={form.control}
-                                name="sex"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel>Sex:</FormLabel>
-                                            <Select onValueChange={field.onChange} defaultValue={field.value}>
-                                                <FormControl>
-                                                    <SelectTrigger>
-                                                        <SelectValue placeholder="your sex" />
-                                                    </SelectTrigger>
-                                                </FormControl>
-                                                <SelectContent>
-                                                    <SelectItem value="male">Male</SelectItem>
-                                                    <SelectItem value="female">Female</SelectItem>
-                                                </SelectContent>
-                                            </Select>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
-                            {/* Contact */}
-                            <FormField
-                                    control={form.control}
-                                    name="contact"
-                                    render={({ field }) => (
-                                        <FormItem>
-                                            <FormLabel>Contact Number:</FormLabel>
-                                            <FormControl>
-                                                <Input placeholder="your contact number" {...field} disabled={registerUser.isPending}/>
-                                            </FormControl>
-                                            <FormMessage/>
-                                        </FormItem>
-                                    )}
-                                />
-                            {/* For Students */}
-                                {role === 'student' && (
+                            <div className="flex gap-5">
+                                <div className="w-1/2">
+                                {/* First Name  */}
                                     <FormField
                                         control={form.control}
-                                        name="gradeLevel"
+                                        name="firstname"
                                         render={({ field }) => (
                                             <FormItem>
-                                                <FormLabel>Grade Level:</FormLabel>
+                                                <FormLabel>First Name:</FormLabel>
                                                 <FormControl>
-                                                    <Input 
-                                                        type="number" 
-                                                        placeholder="your grade level" 
-                                                        min={1}
-                                                        max={6}
-                                                        onChange={(e) => field.onChange(Number(e.target.value))} 
-                                                        disabled={registerUser.isPending}
+                                                    <Input placeholder="your first name" {...field} disabled={registerUser.isPending}/>
+                                                </FormControl>
+                                                <FormMessage/>
+                                            </FormItem>
+                                        )}
+                                    />
+                                {/* Middle Name */}
+                                    <FormField
+                                        control={form.control}
+                                        name="middlename"
+                                        render={({ field }) => (
+                                            <FormItem>
+                                                <FormLabel>Middle Name:</FormLabel>
+                                                <FormControl>
+                                                    <Input placeholder="your middle name" {...field} disabled={registerUser.isPending}/>
+                                                </FormControl>
+                                                <FormMessage/>
+                                            </FormItem>
+                                        )}
+                                    />
+                                {/* Last Name */}
+                                    <FormField
+                                        control={form.control}
+                                        name="lastname"
+                                        render={({ field }) => (
+                                            <FormItem>
+                                                <FormLabel>Last Name:</FormLabel>
+                                                <FormControl>
+                                                    <Input placeholder="your last name" {...field} disabled={registerUser.isPending}/>
+                                                </FormControl>
+                                                <FormMessage/>
+                                            </FormItem>
+                                        )}
+                                    />
+                                {/* Birth Date */}
+                                    <FormField
+                                        name="birth_date"
+                                        control={form.control}
+                                        render={({ field }) => (
+                                            <FormItem>
+                                                <FormLabel>Birth Date:</FormLabel>
+                                                <FormControl>
+                                                    <DatePicker
+                                                        startYear={1950}
+                                                        endYear={2024}
+                                                        value={field.value}
+                                                        onChange={(date) => field.onChange(date)}
                                                     />
                                                 </FormControl>
                                                 <FormMessage/>
                                             </FormItem>
                                         )}
                                     />
-                                )}
-                            {/* For Faculty */}
-                                {role === 'faculty' && (
-                                    <div>
-                                        {subjectsList.map(({ name }, index) => (
+                                </div>
+                            
+                                <div className="w-1/2">
+                                    {/* Sex */}
+                                        <FormField
+                                        control={form.control}
+                                        name="sex"
+                                        render={({ field }) => (
+                                            <FormItem>
+                                                <FormLabel>Sex:</FormLabel>
+                                                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                                        <FormControl>
+                                                            <SelectTrigger>
+                                                                <SelectValue placeholder="your sex" />
+                                                            </SelectTrigger>
+                                                        </FormControl>
+                                                        <SelectContent>
+                                                            <SelectItem value="male">Male</SelectItem>
+                                                            <SelectItem value="female">Female</SelectItem>
+                                                        </SelectContent>
+                                                    </Select>
+                                                <FormMessage />
+                                            </FormItem>
+                                        )}
+                                    />
+                                    {/* Contact */}
+                                        <FormField
+                                            control={form.control}
+                                            name="contact"
+                                            render={({ field }) => (
+                                                <FormItem>
+                                                    <FormLabel>Contact Number:</FormLabel>
+                                                    <FormControl>
+                                                        <Input placeholder="your contact number" {...field} disabled={registerUser.isPending}/>
+                                                    </FormControl>
+                                                    <FormMessage/>
+                                                </FormItem>
+                                            )}
+                                        />
+                                    {/* For Students */}
+                                        {role === 'student' && (
+                                            <>
+                                            {/* Grade Level */}
                                             <FormField
-                                                key={index}
                                                 control={form.control}
-                                                name={`subjects.${index}.checked`}
+                                                name="gradeLevel"
                                                 render={({ field }) => (
                                                     <FormItem>
-                                                        <FormLabel>{name}</FormLabel>
+                                                        <FormLabel>Grade Level:</FormLabel>
                                                         <FormControl>
-                                                            <Checkbox
-                                                                checked={field.value}
-                                                                onCheckedChange={field.onChange}
+                                                            <Input 
+                                                                type="number" 
+                                                                placeholder="your grade level" 
+                                                                min={1}
+                                                                max={6}
+                                                                onChange={(e) => field.onChange(Number(e.target.value))} 
                                                                 disabled={registerUser.isPending}
                                                             />
                                                         </FormControl>
-                                                        <input
-                                                            type="hidden"
-                                                            value={name}
-                                                            {...form.register(`subjects.${index}.name`)}
-                                                        />
+                                                        <FormMessage/>
                                                     </FormItem>
                                                 )}
                                             />
-                                        ))}
-                                        {form.formState.errors.subjects && (
-                                            <p className="text-red-600">
-                                                {form.formState.errors.subjects?.root?.message}
-                                            </p>
+                                            {/* Section */}
+                                            {grade_level !== 0 && 
+                                                <FormField
+                                                    key={grade_level}
+                                                    control={form.control}
+                                                    name="section"
+                                                    render={({ field }) => (
+                                                        <FormItem>
+                                                            <FormLabel>Section:</FormLabel>
+                                                                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                                                    <FormControl>
+                                                                        <SelectTrigger>
+                                                                            <SelectValue placeholder="your section" />
+                                                                        </SelectTrigger>
+                                                                    </FormControl>
+                                                                    <SelectContent>
+                                                                        {filteredSections.map((section, index) => (
+                                                                            <SelectItem value={section} key={index}>{section}</SelectItem>
+                                                                        ))}
+                                                                    </SelectContent>
+                                                                </Select>
+                                                            <FormMessage />
+                                                        </FormItem>
+                                                    )}
+                                                />
+                                            }
+                                            </>
                                         )}
-                                    </div>
-                                )}
+                                    {/* For Faculty */}
+                                        {role === 'faculty' && (
+                                            <div>
+                                                {subjectsList.map(({ name }, index) => (
+                                                    <FormField
+                                                        key={index}
+                                                        control={form.control}
+                                                        name={`subjects.${index}.checked`}
+                                                        render={({ field }) => (
+                                                            <FormItem>
+                                                                <FormLabel>{name}</FormLabel>
+                                                                <FormControl>
+                                                                    <Checkbox
+                                                                        checked={field.value}
+                                                                        onCheckedChange={field.onChange}
+                                                                        disabled={registerUser.isPending}
+                                                                    />
+                                                                </FormControl>
+                                                                <input
+                                                                    type="hidden"
+                                                                    value={name}
+                                                                    {...form.register(`subjects.${index}.name`)}
+                                                                />
+                                                            </FormItem>
+                                                        )}
+                                                    />
+                                                ))}
+                                                {form.formState.errors.subjects && (
+                                                    <p className="text-red-600">
+                                                        {form.formState.errors.subjects?.root?.message}
+                                                    </p>
+                                                )}
+                                            </div>
+                                        )}
+                                </div>
+                            
                                 
+                                
+                            </div>
+                            <div className="float-end">
                                 <Button onClick={() => setNextForm(false)}>
                                     Back
                                 </Button>
                                 <Button type="submit" disabled={registerUser.isPending}>
                                     {registerUser.isPending ? 'Processing...' : 'Register'}
-                                </Button>
+                                </Button>    
                             </div>
                             </>
                         }

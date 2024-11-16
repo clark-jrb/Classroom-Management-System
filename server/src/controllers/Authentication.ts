@@ -43,11 +43,11 @@ export const login = async (req: Request, res: Response): Promise<any> => {
 export const register = async (req: Request, res: Response): Promise<any> => {
     const { 
         email, password, role, firstname, middlename, lastname, sex, birth_date, contact,
-        gradeLevel, subjects, homeroom 
+        gradeLevel, section, subjects, homeroom 
     } = req.body
 
-    const student_info = { firstname, middlename, lastname, sex, birth_date, contact, email,  gradeLevel }
-    const faculty_info = { firstname, middlename, lastname, sex, birth_date, contact, email,  subjects, homeroom  }
+    const student_info = { firstname, middlename, lastname, sex, birth_date, contact, email, gradeLevel, section }
+    const faculty_info = { firstname, middlename, lastname, sex, birth_date, contact, email, subjects, homeroom  }
 
     const userExist = await User.getByEmail(email, role)
 

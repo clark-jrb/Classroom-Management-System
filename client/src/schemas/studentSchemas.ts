@@ -9,5 +9,5 @@ export const studentInfoSchema = z.object({
     contact: z.string().min(11, { message: 'contact number contains of 11 characters' }),
     birth_date: z.date({
         required_error: "A date of birth is required.",
-    }),
+    })
 })
