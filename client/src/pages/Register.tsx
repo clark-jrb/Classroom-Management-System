@@ -18,7 +18,6 @@ import { registerSchema } from "@/schemas/authSchemas"
 import { useAuthStore } from "@/stores/auth/authSlice"
 import { useNavigate } from "react-router-dom"
 import { DatePicker } from "@/components/ui/date-picker"
-import { Checkbox } from "@/components/ui/checkbox"
 import {
     Select,
     SelectContent,
@@ -26,6 +25,8 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select"
+import { RegisterStudent } from "./Register-student"
+import { RegisterTeacher } from "./Register-teacher"
 
 const subjectsList = [
     { name: 'Math', checked: false },
@@ -33,15 +34,6 @@ const subjectsList = [
     { name: 'Hekasi', checked: false },
     { name: 'Science', checked: false },
 ]
-
-const sectionsList = [
-    { grade: 1, sections: ['Crabs', 'Corals'] },
-    { grade: 2, sections: ['Pearls', 'Shrimps'] },
-    { grade: 3, sections: ['Squids', 'Octopus'] },
-    { grade: 4, sections: ['Lobsters', 'Eels'] },
-    { grade: 5, sections: ['Turtles', 'Dolphins'] },
-    { grade: 6, sections: ['Whales', 'Sharks'] }
-];
 
 export const Register = () => {
     const { registerUser }  = useAuthentication()
@@ -83,7 +75,6 @@ export const Register = () => {
     function onError(errors: any) { console.log("Form errors:", errors) }
 
     const grade_level = form.watch("gradeLevel") || 0
-    const filteredSections = sectionsList.filter((item) => item.grade === grade_level).flatMap((item) => item.sections)
 
     useEffect(() => {
         form.resetField("section")
@@ -238,95 +229,15 @@ export const Register = () => {
                                         />
                                     {/* For Students */}
                                         {role === 'student' && (
-                                            <>
-                                            {/* Grade Level */}
-                                            <FormField
-                                                control={form.control}
-                                                name="gradeLevel"
-                                                render={({ field }) => (
-                                                    <FormItem>
-                                                        <FormLabel>Grade Level:</FormLabel>
-                                                        <FormControl>
-                                                            <Input 
-                                                                type="number" 
-                                                                placeholder="your grade level" 
-                                                                min={1}
-                                                                max={6}
-                                                                onChange={(e) => field.onChange(Number(e.target.value))} 
-                                                                disabled={registerUser.isPending}
-                                                            />
-                                                        </FormControl>
-                                                        <FormMessage/>
-                                                    </FormItem>
-                                                )}
-                                            />
-                                            {/* Section */}
-                                            {grade_level !== 0 && 
-                                                <FormField
-                                                    key={grade_level}
-                                                    control={form.control}
-                                                    name="section"
-                                                    render={({ field }) => (
-                                                        <FormItem>
-                                                            <FormLabel>Section:</FormLabel>
-                                                                <Select onValueChange={field.onChange} defaultValue={field.value}>
-                                                                    <FormControl>
-                                                                        <SelectTrigger>
-                                                                            <SelectValue placeholder="your section" />
-                                                                        </SelectTrigger>
-                                                                    </FormControl>
-                                                                    <SelectContent>
-                                                                        {filteredSections.map((section, index) => (
-                                                                            <SelectItem value={section} key={index}>{section}</SelectItem>
-                                                                        ))}
-                                                                    </SelectContent>
-                                                                </Select>
-                                                            <FormMessage />
-                                                        </FormItem>
-                                                    )}
-                                                />
-                                            }
-                                            </>
+                                            <RegisterStudent form={form} watch_grade={grade_level}/>
                                         )}
                                     {/* For Faculty */}
                                         {role === 'faculty' && (
-                                            <div>
-                                                {subjectsList.map(({ name }, index) => (
-                                                    <FormField
-                                                        key={index}
-                                                        control={form.control}
-                                                        name={`subjects.${index}.checked`}
-                                                        render={({ field }) => (
-                                                            <FormItem>
-                                                                <FormLabel>{name}</FormLabel>
-                                                                <FormControl>
-                                                                    <Checkbox
-                                                                        checked={field.value}
-                                                                        onCheckedChange={field.onChange}
-                                                                        disabled={registerUser.isPending}
-                                                                    />
-                                                                </FormControl>
-                                                                <input
-                                                                    type="hidden"
-                                                                    value={name}
-                                                                    {...form.register(`subjects.${index}.name`)}
-                                                                />
-                                                            </FormItem>
-                                                        )}
-                                                    />
-                                                ))}
-                                                {form.formState.errors.subjects && (
-                                                    <p className="text-red-600">
-                                                        {form.formState.errors.subjects?.root?.message}
-                                                    </p>
-                                                )}
-                                            </div>
+                                            <RegisterTeacher form={form}/>
                                         )}
                                 </div>
-                            
-                                
-                                
                             </div>
+                            {/* BUTTONS */}
                             <div className="float-end">
                                 <Button onClick={() => setNextForm(false)}>
                                     Back

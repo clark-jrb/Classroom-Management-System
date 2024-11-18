@@ -11,15 +11,16 @@ export const login = async (req: Request, res: Response): Promise<any> => {
     const { email, password, role } = req.body
 
     const userExists = await User.getByEmail(email, role)
-    // generates access and refresh tokens 
-    const { accessToken, refreshToken } = createTokens(userExists.id, userExists.role)
-
+    
     try {
         // checks fields if empty
         if (!email || !password) return res.json({ message: 'Incomplete credentials'}) 
 
         // checks if user exists
         if (!userExists) return res.json({ message: "User don't exist"}) 
+
+        // generates access and refresh tokens 
+        const { accessToken, refreshToken } = createTokens(userExists.id, userExists.role)
 
         // checks if password matched 
         const matchPass = await comparePassword(password, userExists.password)
