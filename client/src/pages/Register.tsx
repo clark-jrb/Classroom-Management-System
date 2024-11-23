@@ -59,26 +59,6 @@ export const Register = () => {
         },
     })
 
-    const selectedSubjects = form.watch("subjects");
-
-    const handleCheckboxChange = (value: string, checked: boolean): void => {
-        const currentSubjects = selectedSubjects || [];
-        if (checked) {
-          // Add value if checked
-            form.setValue("subjects", [...currentSubjects, value]);
-        } else {
-          // Remove value if unchecked
-            form.setValue(
-                "subjects",
-                currentSubjects.filter((item) => item !== value)
-            );
-        }
-    };
-
-    useEffect(() => {
-        console.log(selectedSubjects)
-    }, [selectedSubjects]);
-
     function onSubmit(values: z.infer<typeof registerSchema>) {
         registerUser.mutate(values)
         form.reset()
@@ -86,12 +66,6 @@ export const Register = () => {
     }
 
     function onError(errors: any) { console.log("Form errors:", errors) }
-
-    const grade_level = form.watch("gradeLevel") || 0
-
-    useEffect(() => {
-        form.resetField("section")
-    }, [grade_level]);
 
     function handleNextForm() {
         if (form.watch("email") && form.watch("password")) setNextForm(true)
@@ -242,11 +216,11 @@ export const Register = () => {
                                         />
                                     {/* For Students */}
                                         {role === 'student' && (
-                                            <RegisterStudent form={form} watch_grade={grade_level}/>
+                                            <RegisterStudent form={form}/>
                                         )}
                                     {/* For Faculty */}
                                         {role === 'faculty' && (
-                                            <RegisterTeacher form={form} handleCheckbox={handleCheckboxChange}/>
+                                            <RegisterTeacher form={form}/>
                                         )}
                                 </div>
                             </div>

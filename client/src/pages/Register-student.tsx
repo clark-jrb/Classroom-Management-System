@@ -13,13 +13,13 @@ import {
     SelectValue,
 } from "@/components/ui/select"
 import { Input } from "@/components/ui/input"
+import { useEffect } from "react"
 
 interface IRegisterStudent {
     form: any
-    watch_grade: number
 }
 
-export const RegisterStudent = ({ form, watch_grade }: IRegisterStudent) => {
+export const RegisterStudent = ({ form }: IRegisterStudent) => {
     const sectionsList = [
         { grade: 1, sections: ['Crabs', 'Corals'] },
         { grade: 2, sections: ['Pearls', 'Shrimps'] },
@@ -28,7 +28,14 @@ export const RegisterStudent = ({ form, watch_grade }: IRegisterStudent) => {
         { grade: 5, sections: ['Turtles', 'Dolphins'] },
         { grade: 6, sections: ['Whales', 'Sharks'] }
     ];
-    const filteredSections = sectionsList.filter((item) => item.grade === watch_grade).flatMap((item) => item.sections)
+
+    const grade_level = form.watch("gradeLevel") || 0
+
+    const filteredSections = sectionsList.filter((item) => item.grade === grade_level).flatMap((item) => item.sections)
+
+    useEffect(() => {
+        form.resetField("section")
+    }, [grade_level]);
 
     return (
         <>
@@ -54,9 +61,9 @@ export const RegisterStudent = ({ form, watch_grade }: IRegisterStudent) => {
             )}
         />
         {/* Section */}
-        {watch_grade !== 0 && 
+        {grade_level !== 0 && 
             <FormField
-                key={watch_grade}
+                key={grade_level}
                 control={form.control}
                 name="section"
                 render={({ field }) => (

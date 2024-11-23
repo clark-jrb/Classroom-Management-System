@@ -9,10 +9,9 @@ import { Checkbox } from "@/components/ui/checkbox"
 
 interface IRegisterTeacher {
     form: any
-    handleCheckbox: (value: string, checked: boolean) => void
 }
 
-export const RegisterTeacher = ({ form, handleCheckbox }: IRegisterTeacher) => {
+export const RegisterTeacher = ({ form }: IRegisterTeacher) => {
     const subjects = [
         { name: 'Math' },
         { name: 'English' },
@@ -20,6 +19,22 @@ export const RegisterTeacher = ({ form, handleCheckbox }: IRegisterTeacher) => {
         { name: 'Science' },
     ]
 
+    const selectedSubjects = form.watch("subjects");
+
+    const handleCheckboxChange = (value: string, checked: boolean): void => {
+        const currentSubjects = selectedSubjects || [];
+        if (checked) {
+            // Add value if checked
+            form.setValue("subjects", [...currentSubjects, value]);
+        } else {
+            // Remove value if unchecked
+            form.setValue(
+                "subjects",
+                currentSubjects.filter((item: string) => item !== value)
+            );
+        }
+    };
+    
     return (
         <div>
             {subjects.map(({ name }, index) => (
@@ -34,7 +49,7 @@ export const RegisterTeacher = ({ form, handleCheckbox }: IRegisterTeacher) => {
                                 <Checkbox
                                     // checked={field.value}
                                     onCheckedChange={(checked) =>
-                                        handleCheckbox(name, checked as boolean)}
+                                        handleCheckboxChange(name, checked as boolean)}
                                     // disabled={registerUser.isPending}
                                 />
                             </FormControl>
