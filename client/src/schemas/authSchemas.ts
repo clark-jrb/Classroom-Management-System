@@ -20,6 +20,7 @@ export const registerSchema = z.object({
     gradeLevel: z.number().min(1, { message: 'Input your grade level' }).optional(),
     section: z.string().min(1, { message: 'Select your section you are enrolled' }).optional(),
     // for teachers
+    grade_assigned: z.string().min(1, { message: 'Choose grade level you are assigned ' }).optional(),
+    teacher_role: z.string().min(1, { message: 'Select you role' }).optional(),
     subjects: z.array(z.string()).min(1, { message: 'Subjects should not be empty' }).optional(),
-    homeroom: z.boolean().optional()
 })

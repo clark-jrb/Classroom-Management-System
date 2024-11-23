@@ -49,13 +49,14 @@ export const Register = () => {
             role: role,
             subjects: [],
             gradeLevel: 0,
-            homeroom: false,
             firstname: "",
             middlename: "",
             lastname: "",
             sex: "",
             contact: "",
-            section: ""
+            section: "",
+            teacher_role: "",
+            grade_assigned: ""
         },
     })
 
