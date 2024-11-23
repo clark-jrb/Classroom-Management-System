@@ -6,6 +6,7 @@ import {
     // FormMessage
 } from "@/components/ui/form"
 import { Checkbox } from "@/components/ui/checkbox"
+import { toCamelCase } from "@/helpers/camel-case"
 
 interface IRegisterTeacher {
     form: any
@@ -13,10 +14,10 @@ interface IRegisterTeacher {
 
 export const RegisterTeacher = ({ form }: IRegisterTeacher) => {
     const subjects = [
-        { name: 'Math' },
-        { name: 'English' },
-        { name: 'Hekasi' },
-        { name: 'Science' },
+        { name: 'math' },
+        { name: 'english' },
+        { name: 'hekasi' },
+        { name: 'science' },
     ]
 
     const selectedSubjects = form.watch("subjects");
@@ -44,7 +45,7 @@ export const RegisterTeacher = ({ form }: IRegisterTeacher) => {
                     name={'subjects'}
                     render={() => (
                         <FormItem>
-                            <FormLabel>{name}</FormLabel>
+                            <FormLabel>{toCamelCase(name)}</FormLabel>
                             <FormControl>
                                 <Checkbox
                                     // checked={field.value}
