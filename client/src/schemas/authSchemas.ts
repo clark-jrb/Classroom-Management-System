@@ -17,7 +17,7 @@ export const registerSchema = z.object({
     role: z.string().min(1, { message: 'role is required' }),
     contact: z.string().min(11, { message: 'contact number contains of 11 characters' }),
     //for students
-    gradeLevel: z.number().min(1, { message: 'Input your grade level' }).optional(),
+    gradeLevel: z.string().min(1, { message: 'Choose your grade level' }).optional(),
     section: z.string().min(1, { message: 'Select your section you are enrolled' }).optional(),
     // for teachers
     grade_assigned: z.string().min(1, { message: 'Choose grade level you are assigned ' }).optional(),

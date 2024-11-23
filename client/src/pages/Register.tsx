@@ -48,7 +48,7 @@ export const Register = () => {
             password: "",
             role: role,
             subjects: [],
-            gradeLevel: 0,
+            gradeLevel: "",
             firstname: "",
             middlename: "",
             lastname: "",

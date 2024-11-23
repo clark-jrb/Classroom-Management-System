@@ -12,30 +12,35 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select"
-import { Input } from "@/components/ui/input"
-import { useEffect } from "react"
 
 interface IRegisterStudent {
     form: any
 }
 
 export const RegisterStudent = ({ form }: IRegisterStudent) => {
+    const student_classes = [
+        { name: 'Grade 1', value: 'grade_1'},
+        { name: 'Grade 2', value: 'grade_2'},
+        { name: 'Grade 3', value: 'grade_3'},
+        { name: 'Grade 4', value: 'grade_4'},
+        { name: 'Grade 5', value: 'grade_5'},
+        { name: 'Grade 6', value: 'grade_6'},
+    ]
+
     const sectionsList = [
-        { grade: 1, sections: ['Crabs', 'Corals'] },
-        { grade: 2, sections: ['Pearls', 'Shrimps'] },
-        { grade: 3, sections: ['Squids', 'Octopus'] },
-        { grade: 4, sections: ['Lobsters', 'Eels'] },
-        { grade: 5, sections: ['Turtles', 'Dolphins'] },
-        { grade: 6, sections: ['Whales', 'Sharks'] }
+        { grade: 'grade_1', sections: ['Crabs', 'Corals'] },
+        { grade: 'grade_2', sections: ['Pearls', 'Shrimps'] },
+        { grade: 'grade_3', sections: ['Squids', 'Octopus'] },
+        { grade: 'grade_4', sections: ['Lobsters', 'Eels'] },
+        { grade: 'grade_5', sections: ['Turtles', 'Dolphins'] },
+        { grade: 'grade_6', sections: ['Whales', 'Sharks'] }
     ];
+    
+    // watch grade level changes
+    const grade_level = form.watch("gradeLevel") 
 
-    const grade_level = form.watch("gradeLevel") || 0
-
+    // filter section list according to grade level
     const filteredSections = sectionsList.filter((item) => item.grade === grade_level).flatMap((item) => item.sections)
-
-    useEffect(() => {
-        form.resetField("section")
-    }, [grade_level]);
 
     return (
         <>
@@ -46,22 +51,30 @@ export const RegisterStudent = ({ form }: IRegisterStudent) => {
             render={({ field }) => (
                 <FormItem>
                     <FormLabel>Grade Level:</FormLabel>
-                    <FormControl>
-                        <Input 
-                            type="number" 
-                            placeholder="your grade level" 
-                            min={1}
-                            max={6}
-                            onChange={(e) => field.onChange(Number(e.target.value))} 
-                            // disabled={registerUser.isPending}
-                        />
-                    </FormControl>
-                    <FormMessage/>
+                        <Select 
+                            onValueChange={(value) => {
+                                field.onChange(value)
+                                form.resetField("section") // reset section field whenever this grade level changes its value (UI issues) 
+                            }} 
+                            defaultValue={field.value}
+                        >
+                            <FormControl>
+                                <SelectTrigger>
+                                    <SelectValue placeholder="Select your grade level" />
+                                </SelectTrigger>
+                            </FormControl>
+                            <SelectContent>
+                                {student_classes.map(({ name, value }, index) => (
+                                    <SelectItem key={index} value={value}>{name}</SelectItem>
+                                ))}
+                            </SelectContent>
+                        </Select>
+                    <FormMessage />
                 </FormItem>
             )}
         />
         {/* Section */}
-        {grade_level !== 0 && 
+        {grade_level && 
             <FormField
                 key={grade_level}
                 control={form.control}

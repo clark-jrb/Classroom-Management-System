@@ -38,8 +38,10 @@ export const RegisterTeacher = ({ form }: IRegisterTeacher) => {
         { name: 'Grade 6', value: 'grade_6'},
     ]
 
+    // watch subjects changes
     const selectedSubjects = form.watch("subjects");
 
+    // handling checkboxes to add its values in the subjects array
     const handleCheckboxChange = (value: string, checked: boolean): void => {
         const currentSubjects = selectedSubjects || [];
         if (checked) {
