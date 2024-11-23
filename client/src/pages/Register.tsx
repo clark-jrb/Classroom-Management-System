@@ -6,12 +6,11 @@ import {
     FormLabel,
     FormMessage
 } from "@/components/ui/form"
-// import { Checkbox } from "@/components/ui/checkbox"
+import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Input } from "@/components/ui/input"
 import { useForm } from "react-hook-form"
 import { Button } from "@/components/ui/button"
-import { z } from "zod"
 import { useEffect, useState } from "react"
 import { useAuthentication } from "@/hooks/useAuthentication"
 import { registerSchema } from "@/schemas/authSchemas"
@@ -27,6 +26,7 @@ import {
 } from "@/components/ui/select"
 import { RegisterStudent } from "./Register-student"
 import { RegisterTeacher } from "./Register-teacher"
+import { handleNextForm } from "@/helpers/unregister-fields"
 
 export const Register = () => {
     const { registerUser }  = useAuthentication()
@@ -67,12 +67,6 @@ export const Register = () => {
 
     function onError(errors: any) { console.log("Form errors:", errors) }
 
-    function handleNextForm() {
-        if (form.watch("email") && form.watch("password")) setNextForm(true)
-        if (role === 'student') { form.unregister('subjects'); form.unregister('homeroom') }
-        if (role === 'faculty') { form.unregister('gradeLevel'); form.unregister('section') }
-    }
-
     return (
         <div className="register-page">
             <div className="border rounded-md p-6">
@@ -106,98 +100,98 @@ export const Register = () => {
                                         </FormItem>
                                     )}
                                 />
-                                <Button onClick={handleNextForm}>
+                                <Button onClick={() => handleNextForm({ form, role, nextForm: setNextForm })}>
                                     Next
                                 </Button>
                             </>
                             :
                             <>
-                            <div className="flex gap-5">
-                                <div className="w-1/2">
-                                {/* First Name  */}
-                                    <FormField
-                                        control={form.control}
-                                        name="firstname"
-                                        render={({ field }) => (
-                                            <FormItem>
-                                                <FormLabel>First Name:</FormLabel>
-                                                <FormControl>
-                                                    <Input placeholder="your first name" {...field} disabled={registerUser.isPending}/>
-                                                </FormControl>
-                                                <FormMessage/>
-                                            </FormItem>
-                                        )}
-                                    />
-                                {/* Middle Name */}
-                                    <FormField
-                                        control={form.control}
-                                        name="middlename"
-                                        render={({ field }) => (
-                                            <FormItem>
-                                                <FormLabel>Middle Name:</FormLabel>
-                                                <FormControl>
-                                                    <Input placeholder="your middle name" {...field} disabled={registerUser.isPending}/>
-                                                </FormControl>
-                                                <FormMessage/>
-                                            </FormItem>
-                                        )}
-                                    />
-                                {/* Last Name */}
-                                    <FormField
-                                        control={form.control}
-                                        name="lastname"
-                                        render={({ field }) => (
-                                            <FormItem>
-                                                <FormLabel>Last Name:</FormLabel>
-                                                <FormControl>
-                                                    <Input placeholder="your last name" {...field} disabled={registerUser.isPending}/>
-                                                </FormControl>
-                                                <FormMessage/>
-                                            </FormItem>
-                                        )}
-                                    />
-                                {/* Birth Date */}
-                                    <FormField
-                                        name="birth_date"
-                                        control={form.control}
-                                        render={({ field }) => (
-                                            <FormItem>
-                                                <FormLabel>Birth Date:</FormLabel>
-                                                <FormControl>
-                                                    <DatePicker
-                                                        startYear={1950}
-                                                        endYear={2024}
-                                                        value={field.value}
-                                                        onChange={(date) => field.onChange(date)}
-                                                    />
-                                                </FormControl>
-                                                <FormMessage/>
-                                            </FormItem>
-                                        )}
-                                    />
-                                </div>
-                            
-                                <div className="w-1/2">
+                                <div className="flex gap-5">
+                                    <div className="w-1/2">
+                                    {/* First Name  */}
+                                        <FormField
+                                            control={form.control}
+                                            name="firstname"
+                                            render={({ field }) => (
+                                                <FormItem>
+                                                    <FormLabel>First Name:</FormLabel>
+                                                    <FormControl>
+                                                        <Input placeholder="your first name" {...field} disabled={registerUser.isPending}/>
+                                                    </FormControl>
+                                                    <FormMessage/>
+                                                </FormItem>
+                                            )}
+                                        />
+                                    {/* Middle Name */}
+                                        <FormField
+                                            control={form.control}
+                                            name="middlename"
+                                            render={({ field }) => (
+                                                <FormItem>
+                                                    <FormLabel>Middle Name:</FormLabel>
+                                                    <FormControl>
+                                                        <Input placeholder="your middle name" {...field} disabled={registerUser.isPending}/>
+                                                    </FormControl>
+                                                    <FormMessage/>
+                                                </FormItem>
+                                            )}
+                                        />
+                                    {/* Last Name */}
+                                        <FormField
+                                            control={form.control}
+                                            name="lastname"
+                                            render={({ field }) => (
+                                                <FormItem>
+                                                    <FormLabel>Last Name:</FormLabel>
+                                                    <FormControl>
+                                                        <Input placeholder="your last name" {...field} disabled={registerUser.isPending}/>
+                                                    </FormControl>
+                                                    <FormMessage/>
+                                                </FormItem>
+                                            )}
+                                        />
+                                    {/* Birth Date */}
+                                        <FormField
+                                            name="birth_date"
+                                            control={form.control}
+                                            render={({ field }) => (
+                                                <FormItem>
+                                                    <FormLabel>Birth Date:</FormLabel>
+                                                    <FormControl>
+                                                        <DatePicker
+                                                            startYear={1950}
+                                                            endYear={2024}
+                                                            value={field.value}
+                                                            onChange={(date) => field.onChange(date)}
+                                                        />
+                                                    </FormControl>
+                                                    <FormMessage/>
+                                                </FormItem>
+                                            )}
+                                        />
+                                    </div>
+                                
+                                    <div className="w-1/2">
                                     {/* Sex */}
                                         <FormField
-                                        control={form.control}
-                                        name="sex"
-                                        render={({ field }) => (
-                                            <FormItem>
-                                                <FormLabel>Sex:</FormLabel>
-                                                    <Select onValueChange={field.onChange} defaultValue={field.value}>
-                                                        <FormControl>
-                                                            <SelectTrigger>
-                                                                <SelectValue placeholder="your sex" />
-                                                            </SelectTrigger>
-                                                        </FormControl>
-                                                        <SelectContent>
-                                                            <SelectItem value="male">Male</SelectItem>
-                                                            <SelectItem value="female">Female</SelectItem>
-                                                        </SelectContent>
-                                                    </Select>
-                                                <FormMessage />
-                                            </FormItem>
+                                            control={form.control}
+                                            name="sex"
+                                            render={({ field }) => (
+                                                <FormItem>
+                                                    <FormLabel>Sex:</FormLabel>
+                                                        <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                                            <FormControl>
+                                                                <SelectTrigger>
+                                                                    <SelectValue placeholder="your sex" />
+                                                                </SelectTrigger>
+                                                            </FormControl>
+                                                            <SelectContent>
+                                                                <SelectItem value="male">Male</SelectItem>
+                                                                <SelectItem value="female">Female</SelectItem>
+                                                            </SelectContent>
+                                                        </Select>
+                                                    <FormMessage />
+                                                </FormItem>
                                         )}
                                     />
                                     {/* Contact */}
@@ -222,17 +216,17 @@ export const Register = () => {
                                         {role === 'faculty' && (
                                             <RegisterTeacher form={form}/>
                                         )}
+                                    </div>
                                 </div>
-                            </div>
-                            {/* BUTTONS */}
-                            <div className="float-end">
-                                <Button onClick={() => setNextForm(false)}>
-                                    Back
-                                </Button>
-                                <Button type="submit" disabled={registerUser.isPending}>
-                                    {registerUser.isPending ? 'Processing...' : 'Register'}
-                                </Button>    
-                            </div>
+                                {/* BUTTONS */}
+                                <div className="float-end">
+                                    <Button onClick={() => setNextForm(false)}>
+                                        Back
+                                    </Button>
+                                    <Button type="submit" disabled={registerUser.isPending}>
+                                        {registerUser.isPending ? 'Processing...' : 'Register'}
+                                    </Button>    
+                                </div>
                             </>
                         }
                     </form>
