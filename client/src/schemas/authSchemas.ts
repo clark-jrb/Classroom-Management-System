@@ -20,16 +20,8 @@ export const registerSchema = z.object({
     contact: z.string().min(11, { message: 'contact number contains of 11 characters' }),
     //for students
     gradeLevel: z.number().min(1, { message: 'Input your grade level' }).optional(),
-    section: z.string().min(1, { message: 'Select your section you are enrolled' }),
+    section: z.string().min(1, { message: 'Select your section you are enrolled' }).optional(),
     // for teachers
-    subjects: z.array(
-            z.object({
-                name: z.string(),
-                checked: z.boolean()
-            })
-        ).refine(
-            (subjects) => subjects.some((subject) => subject.checked),
-            { message: 'At least one subject must be checked.' }
-        ).optional(),
+    subjects: z.array(z.string()).min(1, { message: 'Subjects should not be empty' }).optional(),
     homeroom: z.boolean().optional()
 })

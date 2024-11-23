@@ -28,13 +28,6 @@ import {
 import { RegisterStudent } from "./Register-student"
 import { RegisterTeacher } from "./Register-teacher"
 
-const subjectsList = [
-    { name: 'Math', checked: false },
-    { name: 'English', checked: false },
-    { name: 'Hekasi', checked: false },
-    { name: 'Science', checked: false },
-]
-
 export const Register = () => {
     const { registerUser }  = useAuthentication()
     const navigate = useNavigate()
@@ -54,7 +47,7 @@ export const Register = () => {
             email: "",
             password: "",
             role: role,
-            subjects: subjectsList.map((subject) => ({ ...subject })),
+            subjects: [],
             gradeLevel: 0,
             homeroom: false,
             firstname: "",
@@ -65,6 +58,26 @@ export const Register = () => {
             section: ""
         },
     })
+
+    const selectedSubjects = form.watch("subjects");
+
+    const handleCheckboxChange = (value: string, checked: boolean): void => {
+        const currentSubjects = selectedSubjects || [];
+        if (checked) {
+          // Add value if checked
+            form.setValue("subjects", [...currentSubjects, value]);
+        } else {
+          // Remove value if unchecked
+            form.setValue(
+                "subjects",
+                currentSubjects.filter((item) => item !== value)
+            );
+        }
+    };
+
+    useEffect(() => {
+        console.log(selectedSubjects)
+    }, [selectedSubjects]);
 
     function onSubmit(values: z.infer<typeof registerSchema>) {
         registerUser.mutate(values)
@@ -83,13 +96,13 @@ export const Register = () => {
     function handleNextForm() {
         if (form.watch("email") && form.watch("password")) setNextForm(true)
         if (role === 'student') { form.unregister('subjects'); form.unregister('homeroom') }
-        if (role === 'faculty') { form.unregister('gradeLevel') }
+        if (role === 'faculty') { form.unregister('gradeLevel'); form.unregister('section') }
     }
 
     return (
         <div className="register-page">
             <div className="border rounded-md p-6">
-            <Form {...form}>
+                <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit, onError)} className="space-y-6">
                         {!nextForm ?
                             <>
@@ -233,7 +246,7 @@ export const Register = () => {
                                         )}
                                     {/* For Faculty */}
                                         {role === 'faculty' && (
-                                            <RegisterTeacher form={form}/>
+                                            <RegisterTeacher form={form} handleCheckbox={handleCheckboxChange}/>
                                         )}
                                 </div>
                             </div>

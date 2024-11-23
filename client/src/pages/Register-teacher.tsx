@@ -9,14 +9,15 @@ import { Checkbox } from "@/components/ui/checkbox"
 
 interface IRegisterTeacher {
     form: any
+    handleCheckbox: (value: string, checked: boolean) => void
 }
 
-export const RegisterTeacher = ({ form }: IRegisterTeacher) => {
+export const RegisterTeacher = ({ form, handleCheckbox }: IRegisterTeacher) => {
     const subjects = [
-        { name: 'Math', checked: false },
-        { name: 'English', checked: false },
-        { name: 'Hekasi', checked: false },
-        { name: 'Science', checked: false },
+        { name: 'Math' },
+        { name: 'English' },
+        { name: 'Hekasi' },
+        { name: 'Science' },
     ]
 
     return (
@@ -25,29 +26,25 @@ export const RegisterTeacher = ({ form }: IRegisterTeacher) => {
                 <FormField
                     key={index}
                     control={form.control}
-                    name={`subjects.${index}.checked`}
-                    render={({ field }) => (
+                    name={'subjects'}
+                    render={() => (
                         <FormItem>
                             <FormLabel>{name}</FormLabel>
                             <FormControl>
                                 <Checkbox
-                                    checked={field.value}
-                                    onCheckedChange={field.onChange}
+                                    // checked={field.value}
+                                    onCheckedChange={(checked) =>
+                                        handleCheckbox(name, checked as boolean)}
                                     // disabled={registerUser.isPending}
                                 />
                             </FormControl>
-                            <input
-                                type="hidden"
-                                value={name}
-                                {...form.register(`subjects.${index}.name`)}
-                            />
                         </FormItem>
                     )}
                 />
-            ))}
+            ))} 
             {form.formState.errors.subjects && (
                 <p className="text-red-600">
-                    {form.formState.errors.subjects?.root?.message}
+                    {form.formState.errors.subjects.message}
                 </p>
             )}
         </div>
