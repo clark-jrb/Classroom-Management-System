@@ -6,7 +6,7 @@ interface INextForm {
 }
 
 export function handleNextForm({ form, role, nextForm }: INextForm) {
-    if (form.watch("email") && form.watch("password")){
+    if (form.watch("email") && form.watch("password") && !form.formState.errors.password){
         nextForm(true)
     }
     if (role === 'student') {

@@ -38,8 +38,22 @@ export const RegisterTeacher = ({ form }: IRegisterTeacher) => {
         { name: 'Grade 6', value: 'grade_6'},
     ]
 
+    const sectionsList = [
+        { grade: 'grade_1', sections: ['Crabs', 'Corals'] },
+        { grade: 'grade_2', sections: ['Pearls', 'Shrimps'] },
+        { grade: 'grade_3', sections: ['Squids', 'Octopus'] },
+        { grade: 'grade_4', sections: ['Lobsters', 'Eels'] },
+        { grade: 'grade_5', sections: ['Turtles', 'Dolphins'] },
+        { grade: 'grade_6', sections: ['Whales', 'Sharks'] }
+    ];
+
     // watch subjects changes
     const selectedSubjects = form.watch("subjects");
+    // watch grade assigned changes
+    const grade_level = form.watch("grade_assigned") 
+
+    // filter section list according to grade level
+    const filteredSections = sectionsList.filter((item) => item.grade === grade_level).flatMap((item) => item.sections)
 
     // handling checkboxes to add its values in the subjects array
     const handleCheckboxChange = (value: string, checked: boolean): void => {
