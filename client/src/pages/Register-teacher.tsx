@@ -39,133 +39,183 @@ export const RegisterTeacher = ({ form }: IRegisterTeacher) => {
     ]
 
     const sectionsList = [
-        { grade: 'grade_1', sections: ['Crabs', 'Corals'] },
-        { grade: 'grade_2', sections: ['Pearls', 'Shrimps'] },
-        { grade: 'grade_3', sections: ['Squids', 'Octopus'] },
-        { grade: 'grade_4', sections: ['Lobsters', 'Eels'] },
-        { grade: 'grade_5', sections: ['Turtles', 'Dolphins'] },
-        { grade: 'grade_6', sections: ['Whales', 'Sharks'] }
-    ];
+        { grade: 'grade_1', sections: ['crabs', 'corals'] },
+        { grade: 'grade_2', sections: ['pearls', 'shrimps'] },
+        { grade: 'grade_3', sections: ['squids', 'octopus'] },
+        { grade: 'grade_4', sections: ['lobsters', 'eels'] },
+        { grade: 'grade_5', sections: ['turtles', 'dolphins'] },
+        { grade: 'grade_6', sections: ['whales', 'sharks'] }
+    ]
 
     // watch subjects changes
-    const selectedSubjects = form.watch("subjects");
+    const selectedSubjects = form.watch("subjects")
+    // watch subjects changes
+    const selectedSections = form.watch("section_handled")
     // watch grade assigned changes
-    const grade_level = form.watch("grade_assigned") 
+    const selectedGradeLevel = form.watch("grade_assigned") 
+    // watch teacher role
+    const selectedTeacherRole = form.watch("teacher_role")
+
+    const maxSubject = selectedTeacherRole === "homeroom" ? 3 : 1
 
     // filter section list according to grade level
-    const filteredSections = sectionsList.filter((item) => item.grade === grade_level).flatMap((item) => item.sections)
+    const filteredSections = sectionsList.filter((item) => item.grade === selectedGradeLevel).flatMap((item) => item.sections)
 
     // handling checkboxes to add its values in the subjects array
-    const handleCheckboxChange = (value: string, checked: boolean): void => {
-        const currentSubjects = selectedSubjects || [];
-        if (checked) {
-            // Add value if checked
-            form.setValue("subjects", [...currentSubjects, value]);
-        } else {
-            // Remove value if unchecked
-            form.setValue(
-                "subjects",
-                currentSubjects.filter((item: string) => item !== value)
-            );
+    const handleSubjectsChange = (value: string, checked: boolean): void => {
+        const currentSubjects = selectedSubjects || []
+        
+        if (selectedTeacherRole === "homeroom") {
+            if (checked) {
+                // Add value if checked and the current array has less than the max allowed elements
+                if (currentSubjects.length < maxSubject) {
+                    form.setValue("subjects", [...currentSubjects, value]);
+                } else {
+                    // Optionally, handle the case where the max is reached
+                    console.log("Maximum number of subjects reached!");
+                }
+            } else {
+                // Remove value if unchecked
+                form.setValue(
+                    "subjects",
+                    currentSubjects.filter((item: string) => item !== value)
+                );
+            }
         }
-    };
+        if (selectedTeacherRole === "subject") {
+            checked ? 
+                form.setValue("subjects", [value]) // (only one, it will replace if there is already one)
+                :
+                form.setValue("subjects", [])
+        }
+    }
+
+    // handling checkboxes to add its values in the subjects array
+    const handleSectionHandledChange = (value: string, checked: boolean): void => {
+        const currentSections = selectedSections || []
+        if (selectedTeacherRole === "homeroom") {
+            checked ? 
+                form.setValue("section_handled", [value]) // (only one, it will replace if there is already one)
+                :
+                form.setValue("section_handled", [])
+        }
+        
+        if (selectedTeacherRole === "subject") {
+            checked ?
+                form.setValue("section_handled", [...currentSections, value]) // Add value if checked
+                :
+                form.setValue(
+                    "section_handled",
+                    currentSections.filter((item: string) => item !== value)
+                ) // Remove value if unchecked
+        }
+    }
     
     return (
         <div>
             <div>
                 <FormField
-                        control={form.control}
-                        name="teacher_role"
-                        render={({ field }) => (
-                            <FormItem>
-                                <FormLabel>Teaching Role:</FormLabel>
-                                    <Select onValueChange={field.onChange} defaultValue={field.value}>
-                                        <FormControl>
-                                            <SelectTrigger>
-                                                <SelectValue placeholder="select role" />
-                                            </SelectTrigger>
-                                        </FormControl>
-                                        <SelectContent>
-                                            <SelectItem value="homeroom">homeroom</SelectItem>
-                                            <SelectItem value="subject">subject</SelectItem>
-                                        </SelectContent>
-                                    </Select>
-                                <FormMessage />
-                            </FormItem>
+                    control={form.control}
+                    name="teacher_role"
+                    render={({ field }) => (
+                        <FormItem>
+                            <FormLabel>Teaching Role:</FormLabel>
+                                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                    <FormControl>
+                                        <SelectTrigger>
+                                            <SelectValue placeholder="Select role" />
+                                        </SelectTrigger>
+                                    </FormControl>
+                                    <SelectContent>
+                                        <SelectItem value="homeroom">homeroom</SelectItem>
+                                        <SelectItem value="subject">subject</SelectItem>
+                                    </SelectContent>
+                                </Select>
+                            <FormMessage />
+                        </FormItem>
                     )}
                 />
                 <FormField
-                        control={form.control}
-                        name="grade_assigned"
-                        render={({ field }) => (
-                            <FormItem>
-                                <FormLabel>Class Assigned:</FormLabel>
-                                    <Select onValueChange={field.onChange} defaultValue={field.value}>
-                                        <FormControl>
-                                            <SelectTrigger>
-                                                <SelectValue placeholder="select grade level" />
-                                            </SelectTrigger>
-                                        </FormControl>
-                                        <SelectContent>
-                                            {student_classes.map(({ name, value }, index) => (
-                                                <SelectItem key={index} value={value}>{name}</SelectItem>
-                                            ))}
-                                        </SelectContent>
-                                    </Select>
-                                <FormMessage />
-                            </FormItem>
+                    control={form.control}
+                    name="grade_assigned"
+                    render={({ field }) => (
+                        <FormItem>
+                            <FormLabel>Class Assigned:</FormLabel>
+                                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                    <FormControl>
+                                        <SelectTrigger>
+                                            <SelectValue placeholder="select grade level" />
+                                        </SelectTrigger>
+                                    </FormControl>
+                                    <SelectContent>
+                                        {student_classes.map(({ name, value }, index) => (
+                                            <SelectItem key={index} value={value}>{name}</SelectItem>
+                                        ))}
+                                    </SelectContent>
+                                </Select>
+                            <FormMessage />
+                        </FormItem>
                     )}
                 />
-                {form.watch("teacher_role") === "homeroom" && (
-                    <FormField
-                        control={form.control}
-                        name="section_handled"
-                        render={({ field }) => (
-                            <FormItem>
-                                <FormLabel>Class Section:</FormLabel>
-                                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                {/* show the checkbox when there is selected grade level */}
+                {selectedGradeLevel &&
+                    <div>
+                        {filteredSections.map((data, index) => (
+                            <FormField
+                                key={index}
+                                control={form.control}
+                                name={'section_handled'}
+                                render={() => (
+                                    <FormItem>
+                                        <FormLabel>{toCamelCase(data)}</FormLabel>
                                         <FormControl>
-                                            <SelectTrigger>
-                                                <SelectValue placeholder="select class section" />
-                                            </SelectTrigger>
+                                            <Checkbox
+                                                checked={form.watch('section_handled')?.includes(data)}
+                                                onCheckedChange={(checked) => handleSectionHandledChange(data, checked as boolean)}
+                                            />
                                         </FormControl>
-                                        <SelectContent>
-                                            <SelectItem value="homeroom">homeroom</SelectItem>
-                                            <SelectItem value="subject">subject</SelectItem>
-                                        </SelectContent>
-                                    </Select>
-                                <FormMessage />
-                            </FormItem>
+                                    </FormItem>
+                                )}
+                            />
+                        ))} 
+                        {form.formState.errors.section_handled && (
+                            <p className="text-red-600">
+                                {form.formState.errors.section_handled.message}
+                            </p>
                         )}
-                    />
-                )}
-            </div>
-            <div>
-                {subjects.map(({ name }, index) => (
-                    <FormField
-                        key={index}
-                        control={form.control}
-                        name={'subjects'}
-                        render={() => (
-                            <FormItem>
-                                <FormLabel>{toCamelCase(name)}</FormLabel>
-                                <FormControl>
-                                    <Checkbox
-                                        // checked={field.value}
-                                        onCheckedChange={(checked) =>
-                                            handleCheckboxChange(name, checked as boolean)}
-                                        // disabled={registerUser.isPending}
-                                    />
-                                </FormControl>
-                            </FormItem>
+                    </div> 
+                }
+                {selectedTeacherRole &&
+                    <div className="py-6">
+                        {subjects.map(({ name }, index) => (
+                            <FormField
+                                key={index}
+                                control={form.control}
+                                name={'subjects'}
+                                render={() => (
+                                    <FormItem>
+                                        <FormLabel>{toCamelCase(name)}</FormLabel>
+                                        <FormControl>
+                                            <Checkbox
+                                                checked={form.watch('subjects')?.includes(name)}
+                                                onCheckedChange={(checked) =>
+                                                    handleSubjectsChange(name, checked as boolean)}
+                                                // disabled={
+                                                //     !selectedSubjects.includes(name) && selectedSubjects.length >= maxSubject
+                                                // }
+                                            />
+                                        </FormControl>
+                                    </FormItem>
+                                )}
+                            />
+                        ))} 
+                        {form.formState.errors.subjects && (
+                            <p className="text-red-600">
+                                {form.formState.errors.subjects.message}
+                            </p>
                         )}
-                    />
-                ))} 
-                {form.formState.errors.subjects && (
-                    <p className="text-red-600">
-                        {form.formState.errors.subjects.message}
-                    </p>
-                )}
+                    </div>
+                }
             </div>
         </div>
     )
