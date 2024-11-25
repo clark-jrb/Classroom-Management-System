@@ -92,12 +92,12 @@ export const Register = () => {
     }
 
     function onSubmitForm3(values: z.infer<typeof registerClassesSchema>) {
-        // registerUser.mutate(values)
         const registerData = {
             account: form1Values,
             information: form2Values,
             classes: values
         }
+        registerUser.mutate(registerData)
         console.log(registerData)
     }
 

@@ -1,7 +1,7 @@
 import { Response, Request } from "express"
 import { UserModel } from "../models/user"
-import { StudentModel, StudentInfoModel } from "../models/student"
-import { TeacherModel, TeacherInfoModel } from "../models/teacher"
+import { StudentModel, StudentInfoModel, StudentClassModel } from "../models/student"
+import { TeacherModel, TeacherInfoModel, TeacherClassModel } from "../models/teacher"
 
 export class UserController {
 
@@ -14,10 +14,9 @@ export class UserController {
 
         const availableModels: any = {
             student: StudentModel,
-            faculty: TeacherModel,
-            default: UserModel
+            faculty: TeacherModel
         }
-        const selectedModel = availableModels[role] || availableModels['default']
+        const selectedModel = availableModels[role]
 
         return selectedModel
     }
@@ -31,12 +30,27 @@ export class UserController {
 
         const availableModels: any = {
             student: StudentInfoModel,
-            faculty: TeacherInfoModel,
-            default: UserModel
+            faculty: TeacherInfoModel
         }
-        const selectedInfoModel = availableModels[role] || availableModels['default']
+        const selectedInfoModel = availableModels[role]
 
         return selectedInfoModel
+    }
+
+    private selectClassModel(role: string) {
+        const validRoles = ['student', 'faculty']
+
+        if (!validRoles.includes(role)) {
+            throw new Error(`Invalid role: ${role}`)
+        }
+
+        const availableModels: any = {
+            student: StudentClassModel,
+            faculty: TeacherClassModel
+        }
+        const selectedClassModel = availableModels[role]
+
+        return selectedClassModel
     }
 
     // get user by email 
@@ -47,17 +61,28 @@ export class UserController {
     }
 
     // create user
-    public async createUser(values: Record<string, any>, infoValues: Record<string, any>, role: string) {
-        const Model = this.selectModel(role)
-        const InfoModel = this.selectInfoModel(role)
+    public async createUser(values: Record<string, any>, infoValues: Record<string, any>, classesValues: Record<string, any>, role: string) {
+        const Model = this.selectModel(role) // Select on StudentModel, TeacherModel
+        const InfoModel = this.selectInfoModel(role) // Select on StudentInfoModel, TeacherInfoModel
+        const ClassModel = this.selectClassModel(role) // Select on StudentInfoModel, TeacherInfoModel
 
-        const user = await new Model(values).save()
-        const userInfo = await new InfoModel(infoValues).save()
+        const user = await Model.create(values) // Save account on database
+        if (role === 'student') {
+            await Promise.all([
+                InfoModel.create({ sid: user._id, ...infoValues }),
+                ClassModel.create({ sid: user._id, ...classesValues })
+            ])
+        }
+        if (role === 'faculty') {
+            await Promise.all([
+                InfoModel.create({ tid: user._id, ...infoValues }),
+                ClassModel.create({ tid: user._id, ...classesValues })
+            ])
+        }
 
         return {
-            user: user.toObject(),
-            userInfo: userInfo.toObject()
-        };
+            message: "User created successfully on database"
+        }
     }
 
     // is user authenticated?
