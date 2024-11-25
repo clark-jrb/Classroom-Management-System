@@ -26,7 +26,7 @@ import {
 } from "@/components/ui/select"
 import { RegisterStudent } from "./Register-student"
 import { RegisterTeacher } from "./Register-teacher"
-// import { handleNextForm } from "@/helpers/unregister-fields"
+import { unregisterFields } from "@/helpers/unregister-fields"
 
 export const Register = () => {
     const { registerUser }  = useAuthentication()
@@ -41,16 +41,7 @@ export const Register = () => {
             console.log('role is empty')
             navigate('/home')
         }
-        if (role === 'student') {
-            form3.unregister('subjects')
-            form3.unregister('teacher_role')
-            form3.unregister('grade_assigned')
-            form3.unregister('section_handled')
-        }
-        if (role === 'faculty') {
-            form3.unregister('gradeLevel')
-            form3.unregister('section')
-        }
+        unregisterFields({form: form3, role})
     }, [role]);
 
     const form1 = useForm<z.infer<typeof registerAccountSchema>>({
