@@ -13,7 +13,7 @@ import { useForm } from "react-hook-form"
 import { Button } from "@/components/ui/button"
 import { useEffect, useState } from "react"
 import { useAuthentication } from "@/hooks/useAuthentication"
-import { registerAccountSchema, registerInformationSchema } from "@/schemas/authSchemas"
+import { registerAccountSchema, registerInformationSchema, registerClassesSchema } from "@/schemas/authSchemas"
 import { useAuthStore } from "@/stores/auth/authSlice"
 import { useNavigate } from "react-router-dom"
 import { DatePicker } from "@/components/ui/date-picker"
@@ -34,6 +34,7 @@ export const Register = () => {
     const { role } = useAuthStore()
     const [nextForm, setNextForm] = useState(1)
     const [form1Values, setform1Values] = useState({})
+    const [form2Values, setform2Values] = useState({})
 
     useEffect(() => {
         if (!role) {
@@ -41,14 +42,14 @@ export const Register = () => {
             navigate('/home')
         }
         if (role === 'student') {
-            form2.unregister('subjects')
-            form2.unregister('teacher_role')
-            form2.unregister('grade_assigned')
-            form2.unregister('section_handled')
+            form3.unregister('subjects')
+            form3.unregister('teacher_role')
+            form3.unregister('grade_assigned')
+            form3.unregister('section_handled')
         }
         if (role === 'faculty') {
-            form2.unregister('gradeLevel')
-            form2.unregister('section')
+            form3.unregister('gradeLevel')
+            form3.unregister('section')
         }
     }, [role]);
 
@@ -70,6 +71,13 @@ export const Register = () => {
             lastname: "",
             sex: "",
             contact: "",
+        },
+        mode: "onBlur"
+    })
+
+    const form3 = useForm<z.infer<typeof registerClassesSchema>>({
+        resolver: zodResolver(registerClassesSchema),
+        defaultValues: {
             // for student
             gradeLevel: "",
             section: "",
@@ -83,31 +91,33 @@ export const Register = () => {
     })
 
     function onSubmitForm1(values: z.infer<typeof registerAccountSchema>) {
-        // registerUser.mutate(values)
-        // form.reset()
-        console.log(values)
         setform1Values(values)
         setNextForm(2)
     }
 
     function onSubmitForm2(values: z.infer<typeof registerInformationSchema>) {
+        setform2Values(values)
+        setNextForm(3)
+    }
+
+    function onSubmitForm3(values: z.infer<typeof registerClassesSchema>) {
         // registerUser.mutate(values)
         const registerData = {
-            accountData: form1Values,
-            informationData: values
+            account: form1Values,
+            information: form2Values,
+            classes: values
         }
         console.log(registerData)
     }
 
-    function onErrorForm1(errors: any) { console.log("Form errors:", errors) }
-    function onErrorForm2(errors: any) { console.log("Form errors:", errors) }
+    function onErrorForm(errors: any) { console.log("Form errors:", errors) }
 
     return (
         <div className="register-page">
             <div className="border rounded-md p-6">
                 {nextForm === 1 && (
                     <Form {...form1}>
-                        <form onSubmit={form1.handleSubmit(onSubmitForm1, onErrorForm1)} className="space-y-6">
+                        <form onSubmit={form1.handleSubmit(onSubmitForm1, onErrorForm)} className="space-y-6">
                             <FormField
                                 control={form1.control}
                                 name="email"
@@ -141,9 +151,10 @@ export const Register = () => {
                         <Button onClick={() => navigate('/home')}>Back</Button>
                     </Form>
                 )}
+
                 {nextForm === 2 && (
                     <Form {...form2}>
-                        <form onSubmit={form2.handleSubmit(onSubmitForm2, onErrorForm2)} className="space-y-6">
+                        <form onSubmit={form2.handleSubmit(onSubmitForm2, onErrorForm)} className="space-y-6">
                             <div className="flex gap-5">
                                 <div className="w-1/2">
                                 {/* First Name  */}
@@ -188,6 +199,9 @@ export const Register = () => {
                                             </FormItem>
                                         )}
                                     />
+                                </div>
+                            
+                                <div className="w-1/2">
                                 {/* Birth Date */}
                                     <FormField
                                         name="birth_date"
@@ -207,9 +221,6 @@ export const Register = () => {
                                             </FormItem>
                                         )}
                                     />
-                                </div>
-                            
-                                <div className="w-1/2">
                                 {/* Sex */}
                                     <FormField
                                         control={form2.control}
@@ -246,20 +257,32 @@ export const Register = () => {
                                             </FormItem>
                                         )}
                                     />
-                                {/* For Students */}
-                                    {role === 'student' && (
-                                        <RegisterStudent form={form2}/>
-                                    )}
-                                {/* For Faculty */}
-                                    {role === 'faculty' && (
-                                        <RegisterTeacher form={form2}/>
-                                    )}
                                 </div>
                             </div>
                             {/* BUTTONS */}
                             <div className="float-end">
                                 <Button type="submit">
-                                    {/* {registerUser.isPending ? 'Processing...' : 'Register'} */}
+                                    Next
+                                </Button>    
+                            </div>
+                        </form>
+                    </Form>
+                )}
+
+                {nextForm === 3 && (
+                    <Form {...form3}>
+                        <form onSubmit={form3.handleSubmit(onSubmitForm3, onErrorForm)} className="space-y-6">
+                        {/* For Students */}
+                            {role === 'student' && (
+                                <RegisterStudent form={form3}/>
+                            )}
+                        {/* For Faculty */}
+                            {role === 'faculty' && (
+                                <RegisterTeacher form={form3}/>
+                            )}
+                        {/* SUBMIT */}
+                            <div className="float-end">
+                                <Button type="submit">
                                     Register
                                 </Button>    
                             </div>

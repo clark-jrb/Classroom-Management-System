@@ -120,7 +120,15 @@ export const RegisterTeacher = ({ form }: IRegisterTeacher) => {
                     render={({ field }) => (
                         <FormItem>
                             <FormLabel>Teaching Role:</FormLabel>
-                                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                <Select 
+                                    // onValueChange={field.onChange} 
+                                    onValueChange={(value) => {
+                                        field.onChange(value)
+                                        form.resetField("section_handled")
+                                        form.resetField("subjects")
+                                    }} 
+                                    defaultValue={field.value}
+                                >
                                     <FormControl>
                                         <SelectTrigger>
                                             <SelectValue placeholder="Select role" />
@@ -141,7 +149,13 @@ export const RegisterTeacher = ({ form }: IRegisterTeacher) => {
                     render={({ field }) => (
                         <FormItem>
                             <FormLabel>Class Assigned:</FormLabel>
-                                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                <Select 
+                                    onValueChange={(value) => {
+                                        field.onChange(value)
+                                        form.resetField("section_handled")
+                                    }} 
+                                    defaultValue={field.value}
+                                >
                                     <FormControl>
                                         <SelectTrigger>
                                             <SelectValue placeholder="select grade level" />

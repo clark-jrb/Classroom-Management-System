@@ -19,6 +19,9 @@ export const registerInformationSchema = z.object({
     sex: z.string().min(1, { message: 'Select you gender' }),
     birth_date: z.date({ required_error: "A date of birth is required." }),
     contact: z.string().min(11, { message: 'contact number contains of 11 characters' }),
+})
+
+export const registerClassesSchema = z.object({
     //for students
     gradeLevel: z.string().min(1, { message: 'Choose your grade level' }).optional(),
     section: z.string().min(1, { message: 'Select your section you are enrolled' }).optional(),
