@@ -156,6 +156,22 @@ export const Profile = () => {
                                                     </FormItem>
                                                 )}
                                             />
+                                        </div>
+                                        <div className="grid gap-4 py-4 w-1/2">
+                                            {/* Contact */}
+                                            <FormField
+                                                control={studentForm.control}
+                                                name="contact"
+                                                render={({ field }) => (
+                                                    <FormItem>
+                                                        <FormLabel>Contact:</FormLabel>
+                                                        <FormControl>
+                                                            <Input placeholder="your contact number" {...field} />
+                                                        </FormControl>
+                                                        <FormMessage />
+                                                    </FormItem>
+                                                )}
+                                            />
                                             {/* Sex */}
                                             <FormField
                                                 control={studentForm.control}
@@ -178,9 +194,6 @@ export const Profile = () => {
                                                     </FormItem>
                                                 )}
                                             />
-                                            
-                                        </div>
-                                        <div className="grid gap-4 py-4 w-1/2">
                                             {/* Birth Date */}
                                             <FormField
                                                 name="birth_date"
@@ -197,34 +210,6 @@ export const Profile = () => {
                                                             />
                                                         </FormControl>
                                                         <FormMessage/>
-                                                    </FormItem>
-                                                )}
-                                            />
-                                            {/* Email */}
-                                            <FormField
-                                                control={studentForm.control}
-                                                name="email"
-                                                render={({ field }) => (
-                                                    <FormItem>
-                                                        <FormLabel>Email:</FormLabel>
-                                                        <FormControl>
-                                                            <Input type="email" placeholder="Your email" {...field} />
-                                                        </FormControl>
-                                                        <FormMessage />
-                                                    </FormItem>
-                                                )}
-                                            />
-                                            {/* Contact */}
-                                            <FormField
-                                                control={studentForm.control}
-                                                name="contact"
-                                                render={({ field }) => (
-                                                    <FormItem>
-                                                        <FormLabel>Contact:</FormLabel>
-                                                        <FormControl>
-                                                            <Input placeholder="your contact number" {...field} />
-                                                        </FormControl>
-                                                        <FormMessage />
                                                     </FormItem>
                                                 )}
                                             />
