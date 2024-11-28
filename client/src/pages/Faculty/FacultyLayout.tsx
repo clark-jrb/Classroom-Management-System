@@ -7,6 +7,7 @@ export const FacultyLayout = ({ children }: any) => {
     const facultyLinks = [
         { name: 'Dashboard', url: '/faculty' },
         { name: 'My Classes', url: '/faculty/classes' },
+        { name: 'Records', url: '/faculty/records' },
         { name: 'My Profile', url: '/faculty/profile' },
     ]
 
