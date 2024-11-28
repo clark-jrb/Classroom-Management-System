@@ -36,7 +36,7 @@ import { studentFunctions } from "@/hooks/useStudentInfo"
 import { z } from "zod"
 import { getChangedFields } from "@/helpers/changed-fields"
 
-export const Profile = () => {
+export const StudentProfile = () => {
     const { fullName, grade, studentData, studentInfoLoading, studentInfoError, studentForm, initialData } = studentInfo()  // this should be complete or else it won't load the loading UI
     const { updateInfo, openDialog, setOpenDialog } = studentFunctions()
 

@@ -1,14 +1,16 @@
 // import { useState } from 'react'
-import './styles/App.scss'
+import '@/styles/App.scss'
 import { Routes, Route } from 'react-router-dom'
-import { Login } from './pages/Login'
-import { Register } from './pages/Register'
-import { StudentDashboard } from './pages/Student/StudentDashboard'
-import { Grades } from './pages/Student/Grades'
-import { Profile } from './pages/Student/Profile'
-import { Home } from './pages/Home'
-import { Student, Faculty } from './pages/Authenticated'
-import { FacultyDashboard } from './pages/Faculty/FacultyDashboard'
+import { Login } from '@/pages/Login'
+import { Register } from '@/pages/Register'
+import { StudentDashboard } from '@/pages/Student/StudentDashboard'
+import { Grades } from '@/pages/Student/Grades'
+import { StudentProfile } from '@/pages/Student/StudentProfile'
+import { Home } from '@/pages/Home'
+import { Student, Faculty } from '@/pages/Authenticated'
+import { FacultyDashboard } from '@/pages/Faculty/FacultyDashboard'
+import { FacultyProfile } from './pages/Faculty/FacultyProfile'
+import { MyClasses } from './pages/Faculty/MyClasses'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
 const queryClient = new QueryClient()
@@ -23,11 +25,13 @@ function App() {
   const studentRoutes = [
     { path: '/', element: <StudentDashboard/> },
     { path: '/grades', element: <Grades/> },
-    { path: '/profile', element: <Profile/> }
+    { path: '/profile', element: <StudentProfile/> }
   ]
   
   const facultyRoutes = [
-    { path: '/faculty', element: <FacultyDashboard/> }
+    { path: '/faculty', element: <FacultyDashboard/> },
+    { path: '/faculty/classes', element: <MyClasses/> },
+    { path: '/faculty/profile', element: <FacultyProfile/> }
   ]
 
   return (
