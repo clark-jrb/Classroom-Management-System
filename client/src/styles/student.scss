@@ -1,15 +1,5 @@
 @import 'App';
 
-.nav-student {
-    background-color: white;
-    position: absolute;
-    color: $dark-navy-blue;
-    width: 13rem;
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
-}
-
 .student-content {
     background-color: $dirty-white;
     margin-left: 13rem;

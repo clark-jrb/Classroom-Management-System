@@ -71,7 +71,13 @@ export const useAuthentication = () => {
             console.log(error)
         }
     })
+    
+    // LOGOUT FUNCTION
+    function handleLogout() {
+        logoutUser.mutate()
+        window.location.href = '/home'
+    }
 
-    return  { loginUser, registerUser, logoutUser }
+    return  { loginUser, registerUser, handleLogout }
 }
 

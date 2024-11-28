@@ -10,3 +10,13 @@ $gray-navy-blue: #495464;
     align-items: center;
     height: 100dvh;
 }
+
+.nav-sidebar {
+    background-color: white;
+    position: absolute;
+    color: $dark-navy-blue;
+    width: 13rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
