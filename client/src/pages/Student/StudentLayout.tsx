@@ -1,15 +1,13 @@
 import OOK_logo from '../../assets/ook_logo.png'
 import { Link } from 'react-router-dom'
-import { useNavigate } from 'react-router-dom'
 import { useAuthentication } from '@/hooks/useAuthentication'
 
 export const StudentLayout = ({ children }: any) => {
-    const navigate = useNavigate()
     const { logoutUser } = useAuthentication()
 
     function handleLogout() {
         logoutUser.mutate()
-        navigate('/home')
+        window.location.href = '/home'
     }
 
     return (

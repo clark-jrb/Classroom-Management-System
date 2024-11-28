@@ -27,17 +27,27 @@ const CurrentUser = () => {
 }
 
 export const Student = () => {
+    const { role } = useAuthStore()
+
     return (
-        <Suspense fallback={<div>Loading...</div>}>
-            <CurrentUser/>
-        </Suspense>
+        role && role !== 'student' ? 
+            <div>Forbidden</div> 
+            :
+            <Suspense fallback={<div>Loading...</div>}>
+                <CurrentUser/>
+            </Suspense>
     )
 }
 
 export const Faculty = () => {
+    const { role } = useAuthStore()
+
     return (
-        <Suspense fallback={<div>Loading...</div>}>
-            <CurrentUser/>
-        </Suspense>
+        role && role !== 'faculty' ? 
+            <div>Forbidden</div> 
+            :
+            <Suspense fallback={<div>Loading...</div>}>
+                <CurrentUser/>
+            </Suspense>
     )
 }
