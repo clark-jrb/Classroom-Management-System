@@ -1,4 +1,4 @@
-import { StudentContainer } from "@/components/student-container"
+import { Container } from "@/components/container"
 import { StudentLayout } from "./StudentLayout"
 import { studentInfo } from "@/hooks/useStudentInfo"
 import { Badge } from "@/components/ui/badge"
@@ -55,7 +55,7 @@ export const Profile = () => {
 
     return (
         <StudentLayout>
-            <StudentContainer>
+            <Container>
                 <Dialog open={openDialog} onOpenChange={setOpenDialog}>
                     {/* PROFILE CONTENT  */}
                     <div className="h-full">
@@ -225,7 +225,7 @@ export const Profile = () => {
                         </Form>
                     </DialogContent>
                 </Dialog>
-            </StudentContainer>
+            </Container>
         </StudentLayout>
     )
 }

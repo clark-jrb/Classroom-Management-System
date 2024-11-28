@@ -1,12 +1,12 @@
 import { StudentLayout } from "./StudentLayout"
-import { StudentContainer } from "@/components/student-container"
+import { Container } from "@/components/container"
 
 export const StudentDashboard = () => {
     return (
         <StudentLayout>
-            <StudentContainer>
+            <Container>
                 im using the student container
-            </StudentContainer>
+            </Container>
         </StudentLayout>
     )
 }
