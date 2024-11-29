@@ -11,7 +11,7 @@ import { Student, Faculty } from '@/pages/Authenticated'
 import { FacultyDashboard } from '@/pages/Faculty/FacultyDashboard'
 import { FacultyProfile } from './pages/Faculty/FacultyProfile'
 import { MyClasses } from './pages/Faculty/MyClasses'
-import { StudentRecords } from './pages/Faculty/StudentRecords'
+import { RecordContainer } from './pages/Faculty/StudentRecord/RecordContainer'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
 const queryClient = new QueryClient()
@@ -32,7 +32,7 @@ function App() {
   const facultyRoutes = [
     { path: '/faculty', element: <FacultyDashboard/> },
     { path: '/faculty/classes', element: <MyClasses/> },
-    { path: '/faculty/records', element: <StudentRecords/> },
+    { path: '/faculty/records/*', element: <RecordContainer path='/faculty/records'/> },
     { path: '/faculty/profile', element: <FacultyProfile/> }
   ]
 
