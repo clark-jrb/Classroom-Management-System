@@ -32,6 +32,6 @@ export const getTeacherInformation = async (id: string) => {
         })
         return response.data
     } catch (error) {
-        console.log('Failed to fetch student information', error)
+        console.log('Failed to fetch teacher information', error)
     }
 }

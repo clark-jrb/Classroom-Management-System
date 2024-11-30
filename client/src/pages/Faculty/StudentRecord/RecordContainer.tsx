@@ -16,6 +16,7 @@ import { Exams } from "./Exams"
 import { Summatives } from "./Summatives"
 import { Projects } from "./Projects"
 import { Recitations } from "./Recitations"
+import { teacherInfo } from '@/hooks/useTeacherInfo'
 
 interface IRecordContainer {
     path: string
@@ -24,6 +25,12 @@ interface IRecordContainer {
 export const RecordContainer = ({ path }: IRecordContainer) => {
     const location = useLocation()
     const currentPath = location.pathname
+
+    const { classes } = teacherInfo()
+
+    if (classes) {
+        console.log(classes)
+    }
 
     const recordsLinks = [
         { name: 'Records', path_name: '/', element: <RecordsHome/> },

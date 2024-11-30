@@ -17,6 +17,10 @@ export const studentInfo = () => {
         queryFn: () => getStudentInformation(user_id),
         enabled: !!user_id,
     })
+    
+        if (studentInfoLoading) {
+            console.log('data loading')
+        }
 
     // destructure data from the api
     const { account, personal, classes } = data || {}
