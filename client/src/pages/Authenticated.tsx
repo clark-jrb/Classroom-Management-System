@@ -11,49 +11,57 @@ import { MyClasses } from "./Faculty/MyClasses"
 import { RecordContainer } from "./Faculty/StudentRecord/RecordContainer"
 import { FacultyProfile } from "./Faculty/FacultyProfile"
 
-export const AuthenticatedRoutes = () => {
-    const { setRole, setUserId } = useAuthStore()
+// GET current user logged in on the server
+const currentAuthenticated = () => {
+    const { setRole, setUserId, role } = useAuthStore() // prepare the zustand global store (state)
     
     const { data } = useSuspenseQuery({
         queryKey: ['currentUser'],
-        queryFn: getCurrentUser,
+        queryFn: getCurrentUser, // get current user on the server
     })
     
     useEffect(() => {
-        if (data && data.currentUser) {
+        if (data && data.currentUser) { // if data is not undefined (usually it is undefined on first call)
             setRole(data.currentUser.role);
             setUserId(data.currentUser._id);
-        }
+        } // set role and the current user id on store to be accessible on children 
     }, [data, setRole, setUserId]);
+
+    return { role } // send the role to the authenticated routes
+}
+
+// Authenticated Routes
+export const AuthenticatedRoutes = () => {
+    const { role } = currentAuthenticated() // get role from the current user on the server
 
     const studentRoutes = [
         { path: '/', element: <StudentDashboard/> },
         { path: '/grades', element: <Grades/> },
         { path: '/profile', element: <StudentProfile/> }
-    ]
+    ] // student routes (can add/delete routes but don't forget the element (react component)) so it is easy to maintain
     
     const facultyRoutes = [
         { path: '/', element: <FacultyDashboard/> },
         { path: '/classes', element: <MyClasses/> },
         { path: '/records/*', element: <RecordContainer/> },
         { path: '/profile', element: <FacultyProfile/> }
-    ]
+    ] // same as the student routes but faculty
 
     return (
         <Routes>
-            {data.currentUser.role === 'student' && (
-                studentRoutes && studentRoutes.map(({ path, element }, index) => (
+            {role === 'student' && ( // if role is student, then i will load all its routes
+                studentRoutes.map(({ path, element }, index) => ( // map student routes array with paths and elements
                     <Route key={index} path={path} element={element}/>
                 ))
             )}
             
-            {data.currentUser.role === 'faculty' && (
-                facultyRoutes && facultyRoutes.map(({ path, element }, index) => (
+            {role === 'faculty' && (
+                facultyRoutes.map(({ path, element }, index) => ( // map faculty routes array with paths and elements
                     <Route key={index} path={path} element={element}/>
                 ))
             )}
-
-            <Route path="*" element={<div>Forbidden</div>} />
+            {/* Fallback when a user accessed a different route (ex. you are student but you cannot access faculty routes!) */}
+            <Route path="*" element={<div>Forbidden</div>} /> 
         </Routes>
     )
 }
