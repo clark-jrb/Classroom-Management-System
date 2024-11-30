@@ -15,8 +15,8 @@ export const RecordsHome = () => {
     return (
         <div>
             {recordsLinks.map(({name, path_name}, index) => (
-                <Link to={`${path_name}`}>
-                    <Button className="me-2" variant={'outline'} key={index}>
+                <Link to={`${path_name}`} key={index}>
+                    <Button className="me-2" variant={'outline'}>
                         {name}
                     </Button>
                 </Link>
