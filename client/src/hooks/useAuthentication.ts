@@ -16,18 +16,8 @@ export const useAuthentication = () => {
     
             setRole(userRole)
             console.log(message)
-    
-            switch (userRole) {
-                case 'student':
-                    navigate('/')
-                    break
-                case 'faculty':
-                    navigate('/faculty')
-                    break
-                default:
-                    navigate('/login')
-                    break
-            }
+
+            userRole ? navigate('/') : navigate('/login')
         },
         onError: (error) => {
             console.log(error)
@@ -44,17 +34,7 @@ export const useAuthentication = () => {
 
             setRole(userRole)
 
-            switch (userRole) {
-                case 'student':
-                    navigate('/')
-                    break
-                case 'faculty':
-                    navigate('/faculty')
-                    break
-                default:
-                    navigate('/login')
-                    break
-            }
+            userRole ? navigate('/') : navigate('/login')
         },
         onError: (error) => {
             console.log(error)

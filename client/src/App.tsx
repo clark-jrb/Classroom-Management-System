@@ -1,18 +1,11 @@
-// import { useState } from 'react'
 import '@/styles/App.scss'
 import { Routes, Route } from 'react-router-dom'
 import { Login } from '@/pages/Login'
 import { Register } from '@/pages/Register'
-import { StudentDashboard } from '@/pages/Student/StudentDashboard'
-import { Grades } from '@/pages/Student/Grades'
-import { StudentProfile } from '@/pages/Student/StudentProfile'
 import { Home } from '@/pages/Home'
-import { Student, Faculty } from '@/pages/Authenticated'
-import { FacultyDashboard } from '@/pages/Faculty/FacultyDashboard'
-import { FacultyProfile } from './pages/Faculty/FacultyProfile'
-import { MyClasses } from './pages/Faculty/MyClasses'
-import { RecordContainer } from './pages/Faculty/StudentRecord/RecordContainer'
+import { AuthenticatedRoutes } from '@/pages/Authenticated'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { Suspense } from 'react'
 
 const queryClient = new QueryClient()
 
@@ -23,19 +16,6 @@ function App() {
     { path: '/home', element: <Home/> },
   ]
 
-  const studentRoutes = [
-    { path: '/', element: <StudentDashboard/> },
-    { path: '/grades', element: <Grades/> },
-    { path: '/profile', element: <StudentProfile/> }
-  ]
-  
-  const facultyRoutes = [
-    { path: '/faculty', element: <FacultyDashboard/> },
-    { path: '/faculty/classes', element: <MyClasses/> },
-    { path: '/faculty/records/*', element: <RecordContainer path='/faculty/records'/> },
-    { path: '/faculty/profile', element: <FacultyProfile/> }
-  ]
-
   return (
     <QueryClientProvider client={queryClient}>
       <Routes>
@@ -43,18 +23,13 @@ function App() {
           {authRoutes && authRoutes.map(({ path, element }, index) => (
             <Route  key={index} path={path} element={element}/>
           ))}
-          {/* Student Routes */}
-          <Route element={<Student/>}>
-            {studentRoutes && studentRoutes.map(({ path, element }, index) => (
-              <Route key={index} path={path} element={element}/>
-            ))}
-          </Route>
-          {/* faculty routes */}
-          <Route element={<Faculty/>}>
-            {facultyRoutes && facultyRoutes.map(({ path, element }, index) => (
-                <Route key={index} path={path} element={element}/>
-            ))}
-          </Route>
+          {/* for authenticated users  */}
+          <Route path='/*' element={
+              <Suspense fallback={<div>Loading...</div>}>
+                <AuthenticatedRoutes/>
+              </Suspense>
+            }
+          />
       </Routes>
     </QueryClientProvider>
   )

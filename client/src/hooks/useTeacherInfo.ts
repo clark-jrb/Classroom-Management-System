@@ -12,7 +12,7 @@ export const teacherInfo = () => {
     const { user_id } = useAuthStore()
 
     const { data, isLoading, isError, error } = useQuery({
-        queryKey: ['student_data', user_id],
+        queryKey: ['teacher_data', user_id],
         queryFn: () => getTeacherInformation(user_id),
         enabled: !!user_id,
     })

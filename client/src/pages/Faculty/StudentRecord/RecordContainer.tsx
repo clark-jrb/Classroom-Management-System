@@ -18,11 +18,7 @@ import { Projects } from "./Projects"
 import { Recitations } from "./Recitations"
 import { teacherInfo } from '@/hooks/useTeacherInfo'
 
-interface IRecordContainer {
-    path: string
-}
-
-export const RecordContainer = ({ path }: IRecordContainer) => {
+export const RecordContainer = () => {
     const location = useLocation()
     const currentPath = location.pathname
 
@@ -33,7 +29,7 @@ export const RecordContainer = ({ path }: IRecordContainer) => {
     }
 
     const recordsLinks = [
-        { name: 'Records', path_name: '/', element: <RecordsHome/> },
+        { name: 'Records', path_name: 'records', element: <RecordsHome/> },
         { name: 'Quizzes', path_name: 'quiz', element: <Quizzes/> },
         { name: 'Activities', path_name: 'activity', element: <Activities/> },
         { name: 'Exams', path_name: 'exam', element: <Exams/> },
@@ -48,10 +44,10 @@ export const RecordContainer = ({ path }: IRecordContainer) => {
                 <Breadcrumb className='mb-3'>
                     <BreadcrumbList>
                         <BreadcrumbItem>
-                            <Link to={path}>Records</Link>
+                            <Link to={'/records'}>Records</Link>
                         </BreadcrumbItem>
                         {recordsLinks.map(({ path_name, name }, index) => 
-                            currentPath === `${path}/${path_name}` && 
+                            currentPath === `/${path_name}` && 
                                 <React.Fragment key={index}>
                                     <BreadcrumbSeparator />
                                     <BreadcrumbPage>
