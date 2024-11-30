@@ -10,5 +10,5 @@ export default (router: express.Router) => {
     router.get('/students', isAuthenticated, getStudents) // GET ALL students
     router.get('/student/:id', isAuthenticated, getStudentById) // GET student information
     router.delete('/student/:id', isAuthenticated, deleteStudentById) // DELETE student
-    router.post('/student/:id', isAuthenticated, updateStudentById) // UPDATE student profile
+    router.patch('/student/:id', isAuthenticated, updateStudentById) // UPDATE student profile
 }
