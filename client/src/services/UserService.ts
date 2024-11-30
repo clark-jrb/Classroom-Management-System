@@ -24,3 +24,14 @@ export const getStudentInformation = async (id: string) => {
         console.log('Failed to fetch student information', error)
     }
 }
+
+export const getTeacherInformation = async (id: string) => {
+    try {
+        const response = await apiClient.get(`${server_url}/teacher/${id}`, {
+            withCredentials: true
+        })
+        return response.data
+    } catch (error) {
+        console.log('Failed to fetch student information', error)
+    }
+}

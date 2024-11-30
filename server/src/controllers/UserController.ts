@@ -60,7 +60,7 @@ export class UserController {
         return await Model.findOne({ email: email })
     }
 
-    // create user
+    // create user (student and teachers) 
     public async createUser(values: Record<string, any>, infoValues: Record<string, any>, classesValues: Record<string, any>, role: string) {
         const Model = this.selectModel(role) // Select on StudentModel, TeacherModel
         const InfoModel = this.selectInfoModel(role) // Select on StudentInfoModel, TeacherInfoModel
@@ -89,7 +89,7 @@ export class UserController {
     public authenticated = async (req: Request, res: Response): Promise<any> => {
         try {
             const user = (req as any).user;
-            const { accessToken } = req.cookies
+            const { accessToken } = req.cookies // get access token from cookie on server
 
             const { role, id } = user
             const Model = this.selectModel(role)

@@ -1,22 +1,22 @@
 import { Response, Request } from "express"
 import { StudentModel, StudentInfoModel, StudentClassModel } from "../models/student"
-import mongoose, { mongo } from "mongoose"
+import mongoose from "mongoose"
 
 export class StudentController {
 
     /**
      * addInformation
      */
-    public addInformation = async (req: Request, res: Response): Promise<any> => {
-        try {
-            const { id, ...values} = req.body
-            const student_info = await new StudentInfoModel({ _id: id, ...values}).save()
+    // public addInformation = async (req: Request, res: Response): Promise<any> => {
+    //     try {
+    //         const { id, ...values} = req.body
+    //         const student_info = await new StudentInfoModel({ _id: id, ...values}).save()
             
-            return res.status(200).json({ student_info: student_info.toObject(), message: 'Successfully added student information' })
-        } catch (error) {
-            return res.status(400).json({ message: 'Failed to add information', error })
-        }
-    }
+    //         return res.status(200).json({ student_info: student_info.toObject(), message: 'Successfully added student information' })
+    //     } catch (error) {
+    //         return res.status(400).json({ message: 'Failed to add information', error })
+    //     }
+    // }
 
     public getStudents = async (req: Request, res: Response): Promise<any> => {
         try {
