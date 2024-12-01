@@ -16,20 +16,14 @@ import { Exams } from "./Exams"
 import { Summatives } from "./Summatives"
 import { Projects } from "./Projects"
 import { Recitations } from "./Recitations"
-import { teacherInfo } from '@/hooks/useTeacherInfo'
+import { Suspense } from 'react'
 
 export const RecordContainer = () => {
     const location = useLocation()
     const currentPath = location.pathname
 
-    const { classes } = teacherInfo()
-
-    if (classes) {
-        console.log(classes)
-    }
-
     const recordsLinks = [
-        { name: 'Records', path_name: 'records', element: <RecordsHome/> },
+        { name: 'Records', path_name: '', element: <RecordsHome/> },
         { name: 'Quizzes', path_name: 'quiz', element: <Quizzes/> },
         { name: 'Activities', path_name: 'activity', element: <Activities/> },
         { name: 'Exams', path_name: 'exam', element: <Exams/> },
@@ -47,7 +41,7 @@ export const RecordContainer = () => {
                             <Link to={'/records'}>Records</Link>
                         </BreadcrumbItem>
                         {recordsLinks.map(({ path_name, name }, index) => 
-                            currentPath === `/${path_name}` && 
+                            currentPath === `/records/${path_name}` && 
                                 <React.Fragment key={index}>
                                     <BreadcrumbSeparator />
                                     <BreadcrumbPage>
@@ -60,7 +54,11 @@ export const RecordContainer = () => {
 
                 <Routes>
                     {recordsLinks.map(({ path_name, element }, index) => (
-                        <Route key={index} path={path_name} element={element}/>
+                        <Route key={index} path={path_name} element={
+                            <Suspense fallback={<div>loading...</div>}>
+                                {element}
+                            </Suspense>
+                        }/>
                     ))}
                 </Routes>
 

@@ -1,6 +1,6 @@
 import { z } from "zod"
 import { useAuthStore } from "@/stores/auth/authSlice"
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
+import { useMutation, useQuery, useQueryClient, useSuspenseQuery } from "@tanstack/react-query"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useEffect, useState } from "react"
@@ -11,10 +11,10 @@ import { getTeacherInformation } from "@/services/UserService"
 export const teacherInfo = () => {
     const { user_id } = useAuthStore()
 
-    const { data, isLoading, isError, error } = useQuery({
+    const { data, isLoading, isError, error } = useSuspenseQuery({
         queryKey: ['teacher_data', user_id],
         queryFn: () => getTeacherInformation(user_id),
-        enabled: !!user_id,
+        // enabled: !!user_id,
     })
 
     if (isLoading) {
@@ -27,9 +27,9 @@ export const teacherInfo = () => {
 
     // destructure data from the api
     const { classes } = data || {}
+    const { teacher_role, grade_assigned, section_handled, subjects } = classes || {}
     // const { email } = account || {}
     // const { firstname, middlename, lastname, sex, contact, birth_date } = personal || {}
-    // const { teacher_role, grade_assigned, section_handled, subjects } = classes || {}
 
-    return { classes }
+    return { teacher_role, grade_assigned, section_handled, subjects }
 }

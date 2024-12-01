@@ -8,8 +8,11 @@ import {
     DialogTrigger
 } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
+import { teacherInfo } from "@/hooks/useTeacherInfo"
 
 export const Recitations = () => {
+    const { teacher_role, grade_assigned, section_handled, subjects } = teacherInfo()
+
     return (
         <div>
             <Dialog>
@@ -30,7 +33,12 @@ export const Recitations = () => {
                             </DialogDescription>
                         </DialogHeader>
                         <div>
-                            content here
+                            <div>
+                                Pick Subject:
+                            </div>
+                            {subjects?.map((data: string, index: number) => (
+                                <Button key={index} variant={'outline'}>{data}</Button>
+                            ))}
                         </div>
                         <DialogFooter>
                             <Button>
