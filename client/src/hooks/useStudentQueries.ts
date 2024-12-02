@@ -3,39 +3,24 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { getStudentInformation } from "@/services/UserService"
 import { z } from "zod"
 import { useForm } from "react-hook-form"
-import { studentInfoSchema } from "@/schemas/studentSchemas"
+import { studentPersonalSchema } from "@/schemas/studentSchemas"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useEffect, useState } from "react"
 import moment from "moment"
 import { updateStudentInfo } from "@/services/StudentService"
 
 export const studentInfo = () => {
-    const { user_id } = useAuthStore()
-
-    const { data, isLoading: studentInfoLoading, isError: studentInfoError, error } = useQuery({
-        queryKey: ['student_data', user_id],
-        queryFn: () => getStudentInformation(user_id),
-        enabled: !!user_id,
-    })
-    
-        if (studentInfoLoading) {
-            console.log('data loading')
-        }
+    const { studentData } = studentFunctions()
 
     // destructure data from the api
-    const { account, personal, classes } = data || {}
+    const { account, personal, classes } = studentData || {}
     const { email } = account || {}
     const { firstname, middlename, lastname, sex, contact, birth_date } = personal || {}
     const { gradeLevel, section } = classes || {}
     const fullName = `${firstname} ${middlename} ${lastname}`
     const grade = gradeLevel
 
-    // initialize data
-    const initialData = {
-        firstname, middlename, lastname, email, sex, contact, birth_date: new Date(birth_date)
-    }
-
-    const studentData = [
+    const studentDataOnUi = [
         { label: 'First Name', value: firstname },
         { label: 'Middle Name', value: middlename },
         { label: 'Last Name', value: lastname },
@@ -46,28 +31,37 @@ export const studentInfo = () => {
         { label: 'Birth Date', value: moment(birth_date).format('LL') },
     ]
     
-    if (studentInfoError) console.log('there is an error: ' + error) 
-
     // student info form for dialog
-    const studentForm = useForm<z.infer<typeof studentInfoSchema>>({
-        resolver: zodResolver(studentInfoSchema)
+    const studentForm = useForm<z.infer<typeof studentPersonalSchema>>({
+        resolver: zodResolver(studentPersonalSchema)
     })
 
     // fill the dialog with data
     useEffect(() => {
-        if (data) {
-            studentForm.reset(initialData)
+        if (studentData) {
+            studentForm.reset(personal)
         }
-    }, [data, studentForm])
+    }, [studentData, studentForm])
 
-    return { studentData, fullName, grade, studentInfoLoading, studentInfoError, error, studentForm, initialData }
+    return { studentDataOnUi, fullName, grade, studentForm, personal }
 }
 
 // this is where the student functions 
 export const studentFunctions = () => {
     const queryClient = useQueryClient()
     const { user_id } = useAuthStore()
-    const [openDialog, setOpenDialog] = useState(false)
+    const [openDialog, setOpenDialog] = useState(false) // this is only for editing personal information
+
+    // get student informations (account, personal, classes)
+    const getStudentData = useQuery({
+        queryKey: ['student_data', user_id],
+        queryFn: () => getStudentInformation(user_id),
+        enabled: !!user_id,
+    })
+
+    if (getStudentData.isError) console.log('there is an error: ' + getStudentData.error) 
+
+    const studentData = getStudentData.data
 
     // student update information
     const updateInfo = useMutation({
@@ -82,5 +76,5 @@ export const studentFunctions = () => {
         }
     })
     
-    return { updateInfo, openDialog, setOpenDialog }
+    return { studentData, updateInfo, openDialog, setOpenDialog }
 }

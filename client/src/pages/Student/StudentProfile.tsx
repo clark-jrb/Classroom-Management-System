@@ -1,6 +1,6 @@
 import { Container } from "@/components/container"
 import { StudentLayout } from "./StudentLayout"
-import { studentInfo } from "@/hooks/useStudentInfo"
+import { studentInfo } from "@/hooks/useStudentQueries"
 import { Badge } from "@/components/ui/badge"
 import { ReactComponent as PenEdit } from '@/assets/icons/pen-edit.svg'
 import {
@@ -31,20 +31,21 @@ import { Input } from "@/components/ui/input"
 // import { Label } from "@radix-ui/react-label"
 import { Button } from "@/components/ui/button"
 import { DatePicker } from "@/components/ui/date-picker"
-import { studentInfoSchema } from "@/schemas/studentSchemas"
-import { studentFunctions } from "@/hooks/useStudentInfo"
+import { studentPersonalSchema } from "@/schemas/studentSchemas"
+import { studentFunctions } from "@/hooks/useStudentQueries"
 import { z } from "zod"
 import { getChangedFields } from "@/helpers/changed-fields"
 
 export const StudentProfile = () => {
-    const { fullName, grade, studentData, studentInfoLoading, studentInfoError, studentForm, initialData } = studentInfo()  // this should be complete or else it won't load the loading UI
+    const { fullName, grade, studentDataOnUi, studentForm, personal } = studentInfo()  // this should be complete or else it won't load the loading UI
     const { updateInfo, openDialog, setOpenDialog } = studentFunctions()
 
-    function onSubmit(values: z.infer<typeof studentInfoSchema>) {
-        const getChanges = getChangedFields(initialData, values)
+    function onSubmit(values: z.infer<typeof studentPersonalSchema>) {
+        const getChanges = getChangedFields(personal, values)
 
         if (Object.keys(getChanges).length !== 0) {
             updateInfo.mutate(getChanges)
+            console.log(values)
             console.log('update successful')
         } else {
             console.log('there is nothing to update')
@@ -59,43 +60,38 @@ export const StudentProfile = () => {
                 <Dialog open={openDialog} onOpenChange={setOpenDialog}>
                     {/* PROFILE CONTENT  */}
                     <div className="h-full">
-                        {studentInfoError && <div>Error</div>}
-                        {studentInfoLoading ? 
-                            <div>Loading...</div> 
-                            : 
-                            <div className="info-cont">
-                                {/* HEADER */}
-                                <div className="info-cont-head h-auto w-full">
-                                    <div className="w-96">
-                                        <div className="student-name mb-2">
-                                            <p>
-                                                {fullName}
-                                            </p>
-                                        </div>
-                                        <div className="flex mb-4">
-                                            <Badge variant="outline">Grade&nbsp;{grade}</Badge>
-                                            <DialogTrigger asChild>
-                                                <span className="edit-profi-btn flex ms-auto text-sm">
-                                                    Edit&nbsp;<PenEdit className="h-5"/>
-                                                </span>
-                                            </DialogTrigger>
-                                            
-                                        </div>
+                        <div className="info-cont">
+                            {/* HEADER */}
+                            <div className="info-cont-head h-auto w-full">
+                                <div className="w-96">
+                                    <div className="student-name mb-2">
+                                        <p>
+                                            {fullName}
+                                        </p>
                                     </div>
-                                </div>
-                                {/* BODY */}
-                                <div className="info-cont-body pt-8 h-full w-full">
-                                    <div className="w-96 flex flex-col gap-5">
-                                        {studentData.map(({ label, value }, index: number) => (
-                                            <div key={index} className="info-data-cont" id={label}>
-                                                <label htmlFor={label}>{label}:</label>
-                                                <span className="text-lg">{value}</span>
-                                            </div>
-                                        ))}
+                                    <div className="flex mb-4">
+                                        <Badge variant="outline">Grade&nbsp;{grade}</Badge>
+                                        <DialogTrigger asChild>
+                                            <span className="edit-profi-btn flex ms-auto text-sm">
+                                                Edit&nbsp;<PenEdit className="h-5"/>
+                                            </span>
+                                        </DialogTrigger>
+                                        
                                     </div>
                                 </div>
                             </div>
-                        }
+                            {/* BODY */}
+                            <div className="info-cont-body pt-8 h-full w-full">
+                                <div className="w-96 flex flex-col gap-5">
+                                    {studentDataOnUi.map(({ label, value }, index: number) => (
+                                        <div key={index} className="info-data-cont" id={label}>
+                                            <label htmlFor={label}>{label}:</label>
+                                            <span className="text-lg">{value}</span>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
 
