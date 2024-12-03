@@ -7,13 +7,22 @@ import {
     DialogTitle,
     DialogTrigger
 } from "@/components/ui/dialog"
+import { 
+    Form,
+    FormControl,
+    FormField,
+    FormItem,
+    FormLabel,
+    FormMessage
+} from "@/components/ui/form"
 import { Button } from "@/components/ui/button"
 import { teacherInfo } from "@/hooks/useTeacherQueries"
 import { useState } from "react"
 import { taskSchema } from "@/schemas/teacherSchemas"
-import { Form, useForm } from "react-hook-form"
+import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
+import { Input } from "@/components/ui/input"
 
 export const Recitations = () => {
     const { teacher_role, grade_assigned, section_handled, subjects } = teacherInfo()
@@ -30,11 +39,11 @@ export const Recitations = () => {
             grade: gradeLevel,
             section,
             type: taskType,
-            task_no: 0,
-            total_items: 0,
+            task_no: 1,
             quarter
         }
     })
+
     function onSubmit(values: z.infer<typeof taskSchema>) {
         console.log(values)
     }
@@ -57,13 +66,14 @@ export const Recitations = () => {
                         <DialogHeader>
                             <DialogTitle>Create Recitation</DialogTitle>
                             <DialogDescription>
-                                Choose students
+                                Complete the form
                             </DialogDescription>
                         </DialogHeader>
+                        <Form {...taskForm}>
                             <form onSubmit={taskForm.handleSubmit(onSubmit, onError)}>
                                 <div>
                                     {!subject && 
-                                        <div className="border-2 border-red-400 h-40">
+                                        <div className="h-40">
                                             <div>Pick Subject:</div>
                                             {subjects?.map((data: string, index: number) => (
                                                 <Button 
@@ -80,7 +90,7 @@ export const Recitations = () => {
                                         </div>
                                     }
                                     {subject && !gradeLevel && 
-                                        <div className="border-2 border-red-400 h-40">
+                                        <div className="h-40">
                                             <div>Pick Students:</div>
                                             <Button 
                                                 variant={'outline'} 
@@ -94,7 +104,7 @@ export const Recitations = () => {
                                         </div>
                                     }
                                     {subject && gradeLevel && !section &&
-                                        <div className="border-2 border-red-400 h-40">
+                                        <div className="h-40">
                                             <div>Pick Section:</div>
                                             {section_handled?.map((data: string, index: number) => (
                                                 <Button 
@@ -110,14 +120,37 @@ export const Recitations = () => {
                                             ))}
                                         </div>
                                     }
+                                    {subject && gradeLevel && section && 
+                                        <FormField
+                                            control={taskForm.control}
+                                            name="total_items"
+                                            render={({ field }) => (
+                                                <FormItem>
+                                                    <FormLabel>Total items:</FormLabel>
+                                                    <FormControl>
+                                                        <Input 
+                                                            type="number"
+                                                            placeholder="total items of the task"
+                                                            onChange={(e) => field.onChange(Number(e.target.value))}
+                                                            min={5}
+                                                            max={100}
+                                                        />
+                                                    </FormControl>
+                                                    <FormMessage/>
+                                                </FormItem>
+                                            )}
+                                        />
+                                    }
                                 </div>
-                                <Button type="submit">
-                                    Create
-                                </Button>
+                                <DialogFooter className="mt-5">
+                                    {subject && gradeLevel && section &&
+                                        <Button type="submit">
+                                            Create
+                                        </Button>
+                                    }
+                                </DialogFooter>
                             </form>
-                        <DialogFooter>
-                            for button
-                        </DialogFooter>
+                        </Form>
                 </DialogContent>
 
             </Dialog>
