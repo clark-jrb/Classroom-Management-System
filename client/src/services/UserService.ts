@@ -1,11 +1,8 @@
-
-import { apiClient } from "./api";
-
-const server_url = import.meta.env.VITE_SERVER_URL
+import { api } from "./api";
 
 export const getCurrentUser = async () => {
     try {
-        const response = await apiClient.get(`${server_url}/authenticated`, {
+        const response = await api.get(`/authenticated`, {
             withCredentials: true
         })
         return response.data
@@ -16,7 +13,7 @@ export const getCurrentUser = async () => {
 
 export const getStudentInformation = async (id: string) => {
     try {
-        const response = await apiClient.get(`${server_url}/student/${id}`, {
+        const response = await api.get(`/student/${id}`, {
             withCredentials: true
         })
         return response.data
@@ -27,7 +24,7 @@ export const getStudentInformation = async (id: string) => {
 
 export const getTeacherInformation = async (id: string) => {
     try {
-        const response = await apiClient.get(`${server_url}/teacher/${id}`, {
+        const response = await api.get(`/teacher/${id}`, {
             withCredentials: true
         })
         return response.data

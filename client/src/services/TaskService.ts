@@ -1,8 +1,8 @@
-import { apiClient } from "./api";
+import { api } from "./api";
 
 export const createTask = async (id: string, value: Record<string, any>): Promise<any> => {
     try {
-        const response = await apiClient.post(`/task/${id}`, value, {
+        const response = await api.post(`/task/${id}`, value, {
             withCredentials: true
         })
         return response.data

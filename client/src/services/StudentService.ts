@@ -1,10 +1,8 @@
-import { apiClient } from "./api";
-
-const server_url = import.meta.env.VITE_SERVER_URL
+import { api } from "./api";
 
 export const updateStudentInfo = async (id: string, value: Record<string, any>): Promise<any> => {
     try {
-        const response = await apiClient.patch(`${server_url}/student/${id}`, value, {
+        const response = await api.patch(`/student/${id}`, value, {
             withCredentials: true
         })
         return response
