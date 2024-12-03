@@ -23,11 +23,44 @@ import {
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { DatePicker } from "@/components/ui/date-picker"
-import { studentFunctions, updatePersonalForm } from "@/hooks/useStudentQueries"
+import { studentFunctions } from "@/hooks/useStudentQueries"
+import { useForm } from "react-hook-form"
+import { z } from "zod"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { getChangedFields } from "@/helpers/changed-fields"
+import { useEffect } from "react"
+import { studentPersonalSchema } from "@/schemas/studentSchemas"
 
 export const ProfileForm = () => {
-    const { personalForm, onSubmit, onError } = updatePersonalForm()
-    const { updatePersonal } = studentFunctions()
+    const { studentData, updatePersonal } = studentFunctions() // from custom hook
+    const { personal } = studentData // destructure studentData but only get the personal data
+    const convertedData = {...personal, birth_date: new Date(personal.birth_date)} // because the birth_date is string from the document
+
+    // personal information form
+    const personalForm = useForm<z.infer<typeof studentPersonalSchema>>({
+        resolver: zodResolver(studentPersonalSchema)
+    })
+
+    function onSubmit(values: z.infer<typeof studentPersonalSchema>) {
+        const getChanges = getChangedFields(convertedData, values)
+
+        if (Object.keys(getChanges).length !== 0) {
+            updatePersonal.mutate(getChanges)
+            // console.log(values)
+            console.log('updated successfully')
+        } else {
+            console.log('there is nothing to update')
+        }
+    }
+
+    function onError(errors: any) { console.log("Form errors:", errors) }
+
+    // fill the dialog form with data
+    useEffect(() => {
+        if (studentData) {
+            personalForm.reset(convertedData)
+        }
+    }, [studentData, personalForm])
 
     return (
         <DialogContent className="sm:max-w-[625px]">

@@ -1,16 +1,36 @@
 import { Badge } from "@/components/ui/badge"
 import { ReactComponent as PenEdit } from '@/assets/icons/pen-edit.svg'
 import { useStudentDialogStore } from "@/stores/studentSlice"
-import { studentInfo } from "@/hooks/useStudentQueries"
+import { studentFunctions } from "@/hooks/useStudentQueries"
 import {
     Dialog,
     DialogTrigger
 } from "@/components/ui/dialog"
 import { ProfileForm } from "./ProfileForm"
+import moment from "moment"
 
 export const ProfileContent = () => {
-    const { fullName, grade, studentDataOnUi } = studentInfo()  // this should be complete or else it won't load the loading UI
+    const { studentData } = studentFunctions()
     const { open, openDialog } = useStudentDialogStore()
+
+    // destructure studentData
+    const { account, personal, classes } = studentData || {}
+    const { email } = account || {}
+    const { firstname, middlename, lastname, sex, contact, birth_date } = personal || {}
+    const { gradeLevel, section } = classes || {}
+    const fullName = `${firstname} ${middlename} ${lastname}`
+    const grade = gradeLevel
+
+    const studentDataOnUi = [
+        { label: 'First Name', value: firstname },
+        { label: 'Middle Name', value: middlename },
+        { label: 'Last Name', value: lastname },
+        { label: 'Email', value: email },
+        { label: 'Sex', value: sex },
+        { label: 'Grade & Section', value: `${gradeLevel}, ${section}` },
+        { label: 'Contact', value: contact },
+        { label: 'Birth Date', value: moment(birth_date).format('LL') },
+    ]
 
     return (
         <>
