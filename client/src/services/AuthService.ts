@@ -1,8 +1,10 @@
 import axios from "axios"
 
+const server_url = import.meta.env.VITE_SERVER_URL
+
 export const login = async (value: any): Promise<any> => {
     try {
-        const response = await axios.post(`/auth/login`, value, {
+        const response = await axios.post(`${server_url}/auth/login`, value, {
             withCredentials: true
         })
         return response.data
@@ -13,7 +15,7 @@ export const login = async (value: any): Promise<any> => {
 
 export const register = async (value: any): Promise<any> => {
     try {
-        const response = await axios.post(`/auth/register`, value, {
+        const response = await axios.post(`${server_url}/auth/register`, value, {
             withCredentials: true
         })
         return response.data
@@ -24,7 +26,7 @@ export const register = async (value: any): Promise<any> => {
 
 export const refreshAccessToken = async () => {
     try {
-        const response = await axios.post(`/auth/refresh`, {}, {
+        const response = await axios.post(`${server_url}/auth/refresh`, {}, {
             withCredentials: true
         })
         return response.data
@@ -36,7 +38,7 @@ export const refreshAccessToken = async () => {
 
 export const logout = async () => {
     try {
-        const response = await axios.post(`/auth/logout`, {}, {
+        const response = await axios.post(`${server_url}/auth/logout`, {}, {
             withCredentials: true
         })
         const { message } = response.data
