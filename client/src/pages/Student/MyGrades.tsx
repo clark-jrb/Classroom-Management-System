@@ -3,7 +3,7 @@
 import { StudentLayout } from "./StudentLayout"
 import { Container } from "@/components/container"
 
-export const Grades = () => {
+export const MyGrades = () => {
 
     return (
         <StudentLayout>

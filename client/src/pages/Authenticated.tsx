@@ -4,7 +4,7 @@ import { useAuthStore } from "@/stores/auth/authSlice"
 import { useEffect } from "react"
 import { Routes, Route } from "react-router-dom"
 import { StudentDashboard } from "./Student/StudentDashboard"
-import { Grades } from "./Student/Grades"
+import { MyGrades } from "./Student/MyGrades"
 import { StudentProfile } from "./Student/StudentProfile"
 import { FacultyDashboard } from "./Faculty/FacultyDashboard"
 import { MyClasses } from "./Faculty/MyClasses"
@@ -36,7 +36,7 @@ export const AuthenticatedRoutes = () => {
 
     const studentRoutes = [
         { path: '/', element: <StudentDashboard/> },
-        { path: '/grades', element: <Grades/> },
+        { path: '/grades', element: <MyGrades/> },
         { path: '/profile', element: <StudentProfile/> }
     ] // student routes (can add/delete routes but don't forget the element (react component)) so it is easy to maintain
     
