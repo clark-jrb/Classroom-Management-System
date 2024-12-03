@@ -23,9 +23,11 @@ import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
 import { Input } from "@/components/ui/input"
+import { taskFunctions } from "@/hooks/useTaskQueries"
 
 export const Recitations = () => {
-    const { teacher_role, grade_assigned, section_handled, subjects } = teacherInfo()
+    const { generateTask } = taskFunctions()
+    const { grade_assigned, section_handled, subjects } = teacherInfo()
     const taskType = 'recitation'
     const quarter = 'q1'
     const [subject, setSubject] = useState('')
@@ -46,6 +48,7 @@ export const Recitations = () => {
 
     function onSubmit(values: z.infer<typeof taskSchema>) {
         console.log(values)
+        generateTask.mutate(values)
     }
 
     function onError(errors: any) { console.log("Form errors:", errors) }

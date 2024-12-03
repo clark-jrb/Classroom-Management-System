@@ -11,7 +11,7 @@ export class TaskController {
             const { id } = req.params
             const data = req.body
 
-            const newTask = TaskModel.create({
+            const newTask = await TaskModel.create({
                 tid: id,
                 ...data
             })
