@@ -25,22 +25,20 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
 import { Input } from "@/components/ui/input"
 import { taskFunctions } from "@/hooks/useTaskQueries"
-import { useTaskDialogStore } from "@/stores/taskSlice"
 
 interface TaskProps {
     taskType: string
 }
 
 export const TaskForm = ({ taskType }: TaskProps) => {
-    const { generateTask } = taskFunctions()
-    const { grade_assigned, section_handled, subjects } = teacherInfo()
-    // const taskType = 'recitation'
-    const quarter = 'q1'
-    const [subject, setSubject] = useState('')
-    const [gradeLevel, setGradeLevel] = useState('')
-    const [section, setSection] = useState('')
-    const [confirmForm, setConfirmForm] = useState(false)
-    const { open, openDialog } = useTaskDialogStore()
+    const { generateTask } = taskFunctions() // mutation function
+    const { grade_assigned, section_handled, subjects } = teacherInfo() // data from the hook
+    const quarter = 'q1' // QUARTER (subject to change)
+    const [subject, setSubject] = useState('') // SUBJECT 
+    const [gradeLevel, setGradeLevel] = useState('') // GRADE LEVEL 
+    const [section, setSection] = useState('') // SECTION 
+    const [confirmForm, setConfirmForm] = useState(false) // CONFIRM VALUES PAGE
+    const [open, openDialog] = useState(false) // DIALOG
 
     const taskForm = useForm<z.infer<typeof taskSchema>>({
         resolver: zodResolver(taskSchema),
@@ -56,14 +54,23 @@ export const TaskForm = ({ taskType }: TaskProps) => {
 
     function onSubmit(values: z.infer<typeof taskSchema>) {
         console.log(values)
-        generateTask.mutate(values)
-        if (!generateTask.isPending) {
-            taskForm.reset()
-            setSubject('')
-            setSection('')
-            setGradeLevel('')
-            setConfirmForm(false)
-        }
+        generateTask.mutateAsync(values, {
+            onSuccess: (data) => {
+                const { message } = data
+                openDialog(false)
+                
+                console.log(message)
+
+                taskForm.reset()
+                setConfirmForm(false)
+                setGradeLevel('')
+                setSection('')
+                setSubject('')
+            },
+            onError: (error) => {
+                console.log(error)
+            }
+        })
     }
 
     function onError(errors: any) { console.log("Form errors:", errors) }
