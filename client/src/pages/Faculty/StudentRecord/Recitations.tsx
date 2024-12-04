@@ -15,6 +15,7 @@ import {
     FormLabel,
     FormMessage
 } from "@/components/ui/form"
+import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
 import { teacherInfo } from "@/hooks/useTeacherQueries"
 import { useState } from "react"
@@ -33,6 +34,7 @@ export const Recitations = () => {
     const [subject, setSubject] = useState('')
     const [gradeLevel, setGradeLevel] = useState('')
     const [section, setSection] = useState('')
+    const [confirmForm, setConfirmForm] = useState(false);
 
     const taskForm = useForm<z.infer<typeof taskSchema>>({
         resolver: zodResolver(taskSchema),
@@ -65,7 +67,7 @@ export const Recitations = () => {
                     </Button>
                 </DialogTrigger>
 
-                <DialogContent className="sm:max-w-[425px]">
+                <DialogContent className="sm:max-w-[525px]">
                         <DialogHeader>
                             <DialogTitle>Create Recitation</DialogTitle>
                             <DialogDescription>
@@ -123,30 +125,60 @@ export const Recitations = () => {
                                             ))}
                                         </div>
                                     }
-                                    {subject && gradeLevel && section && 
-                                        <FormField
-                                            control={taskForm.control}
-                                            name="total_items"
-                                            render={({ field }) => (
-                                                <FormItem>
-                                                    <FormLabel>Total items:</FormLabel>
-                                                    <FormControl>
-                                                        <Input 
-                                                            type="number"
-                                                            placeholder="total items of the task"
-                                                            onChange={(e) => field.onChange(Number(e.target.value))}
-                                                            min={5}
-                                                            max={100}
-                                                        />
-                                                    </FormControl>
-                                                    <FormMessage/>
-                                                </FormItem>
-                                            )}
-                                        />
+                                    {subject && gradeLevel && section && !confirmForm &&
+                                        <>
+                                            <FormField
+                                                control={taskForm.control}
+                                                name="total_items"
+                                                render={({ field }) => (
+                                                    <FormItem>
+                                                        <FormLabel>Total items:</FormLabel>
+                                                        <FormControl>
+                                                            <Input 
+                                                                type="number"
+                                                                placeholder="total items of the task"
+                                                                onChange={(e) => field.onChange(Number(e.target.value))}
+                                                                min={5}
+                                                                max={100}
+                                                            />
+                                                        </FormControl>
+                                                        <FormMessage/>
+                                                    </FormItem>
+                                                )}
+                                            />
+                                            <Button type="button" onClick={() => setConfirmForm(true)}>Next</Button>
+                                        </>
+                                    }
+                                    {subject && gradeLevel && section && confirmForm && 
+                                    <>
+                                        <div>Confirm creation</div>
+                                        <div className="flex gap-8">
+                                            <div>
+                                                <Label>Recit No.</Label>
+                                                <div>{taskForm.watch('task_no')}</div>
+                                            </div>
+                                            <div>
+                                                <Label>Subject</Label>
+                                                <div>{subject}</div>
+                                            </div>
+                                            <div>
+                                                <Label>Grade Level</Label>
+                                                <div>{gradeLevel}</div>
+                                            </div>
+                                            <div>
+                                                <Label>Section</Label>
+                                                <div>{section}</div>
+                                            </div>
+                                            <div>
+                                                <Label>Total Items</Label>
+                                                <div>{taskForm.watch('total_items')}</div>
+                                            </div>
+                                        </div>
+                                    </>
                                     }
                                 </div>
                                 <DialogFooter className="mt-5">
-                                    {subject && gradeLevel && section &&
+                                    {subject && gradeLevel && section && confirmForm &&
                                         <Button type="submit">
                                             Create
                                         </Button>
