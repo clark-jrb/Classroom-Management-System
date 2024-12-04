@@ -1,9 +1,9 @@
-
+import { TaskForm } from "./component/TaskForm"
 
 export const Summatives = () => {
     return (
         <div>
-            Summatives
+            <TaskForm taskType="summative"/>
         </div>
     )
 }

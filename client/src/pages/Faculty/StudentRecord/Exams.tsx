@@ -1,9 +1,9 @@
-
+import { TaskForm } from "./component/TaskForm"
 
 export const Exams = () => {
     return (
         <div>
-            Exams
+            <TaskForm taskType="exam"/>
         </div>
     )
 }

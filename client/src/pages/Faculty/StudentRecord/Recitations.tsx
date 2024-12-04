@@ -1,4 +1,4 @@
-import { TaskForm } from "./TaskForm"
+import { TaskForm } from "./component/TaskForm"
 
 export const Recitations = () => {
     return (

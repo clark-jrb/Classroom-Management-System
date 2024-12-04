@@ -1,7 +1,9 @@
-
+import { TaskForm } from "./component/TaskForm"
 
 export const Activities = () => {
     return (
-        <div>Activities</div>
+        <div>
+            <TaskForm taskType="activity"/>
+        </div>
     )
 }
