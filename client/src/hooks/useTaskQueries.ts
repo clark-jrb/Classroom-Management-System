@@ -10,8 +10,8 @@ export const taskFunctions = () => {
     const generateTask = useMutation({
         mutationFn: (value: Record<string, any>) => createTask(user_id, value), 
         onSuccess: (data) => {
-            const { message } = data
             openDialog(false)
+            const { message } = data
             console.log(message)
         },
         onError: (error) => {

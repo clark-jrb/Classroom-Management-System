@@ -53,14 +53,13 @@ export const Recitations = () => {
     function onSubmit(values: z.infer<typeof taskSchema>) {
         console.log(values)
         generateTask.mutate(values)
-        if (generateTask.isSuccess) {
+        if (!generateTask.isPending) {
             taskForm.reset()
             setSubject('')
             setSection('')
             setGradeLevel('')
             setConfirmForm(false)
         }
-        
     }
 
     function onError(errors: any) { console.log("Form errors:", errors) }
