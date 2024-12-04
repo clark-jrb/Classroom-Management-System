@@ -25,6 +25,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
 import { Input } from "@/components/ui/input"
 import { taskFunctions } from "@/hooks/useTaskQueries"
+import { useTaskDialogStore } from "@/stores/taskSlice"
 
 export const Recitations = () => {
     const { generateTask } = taskFunctions()
@@ -34,7 +35,8 @@ export const Recitations = () => {
     const [subject, setSubject] = useState('')
     const [gradeLevel, setGradeLevel] = useState('')
     const [section, setSection] = useState('')
-    const [confirmForm, setConfirmForm] = useState(false);
+    const [confirmForm, setConfirmForm] = useState(false)
+    const { open, openDialog } = useTaskDialogStore()
 
     const taskForm = useForm<z.infer<typeof taskSchema>>({
         resolver: zodResolver(taskSchema),
@@ -51,13 +53,21 @@ export const Recitations = () => {
     function onSubmit(values: z.infer<typeof taskSchema>) {
         console.log(values)
         generateTask.mutate(values)
+        if (generateTask.isSuccess) {
+            taskForm.reset()
+            setSubject('')
+            setSection('')
+            setGradeLevel('')
+            setConfirmForm(false)
+        }
+        
     }
 
     function onError(errors: any) { console.log("Form errors:", errors) }
 
     return (
         <div>
-            <Dialog>
+            <Dialog open={open} onOpenChange={openDialog}>
                 <div className="mb-3 text-xl">
                     Recitations
                 </div>
@@ -179,8 +189,8 @@ export const Recitations = () => {
                                 </div>
                                 <DialogFooter className="mt-5">
                                     {subject && gradeLevel && section && confirmForm &&
-                                        <Button type="submit">
-                                            Create
+                                        <Button type="submit" disabled={generateTask.isPending}>
+                                            {generateTask.isPending ? 'Creating...' : 'Create'}
                                         </Button>
                                     }
                                 </DialogFooter>
