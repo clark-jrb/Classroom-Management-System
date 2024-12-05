@@ -11,20 +11,28 @@ export const taskFunctions = () => {
         mutationFn: (value: Record<string, any>) => createTask(user_id, value)
     })
 
-    const tasks = useQuery({
+    const getTasks = useQuery({
         queryKey: ['my_tasks'],
         queryFn: () => getTask({ user_id, grade_assigned, section_handled, subjects })
     })
 
-    if (tasks.isLoading) {
-        console.log('loading...')
-    }
-    if (tasks.isError) {
-        console.log('there is an error: ' + tasks.error)
-    }
-    if (tasks.data) {
-        console.log(tasks.data)
+    type TaskFunctionProps = {
+        [key: string]: string
     }
 
-    return { generateTask, tasks }
+    // const tasks = getTasks.data || {}
+    function filterTask(taskType: string) {
+        return getTasks.data?.filter((item: any) => item.type === taskType)
+    }
+
+    function countTask({taskType, subject, section, quarter}: TaskFunctionProps) {
+        return getTasks.data?.filter((item: any) => 
+            item.type === taskType && 
+            item.subject === subject && 
+            item.section === section && 
+            item.quarter === quarter
+        ).length
+    }
+
+    return { generateTask, filterTask, countTask }
 }

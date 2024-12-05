@@ -25,13 +25,14 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
 import { Input } from "@/components/ui/input"
 import { taskFunctions } from "@/hooks/useTaskQueries"
+import { useQueryClient } from "@tanstack/react-query"
 
 interface TaskProps {
     taskType: string
 }
 
 export const TaskForm = ({ taskType }: TaskProps) => {
-    const { generateTask } = taskFunctions() // mutation function
+    const { generateTask, countTask } = taskFunctions() // mutation function
     const { grade_assigned, section_handled, subjects } = teacherInfo() // data from the hook
     const quarter = 'q1' // QUARTER (subject to change)
     const [subject, setSubject] = useState('') // SUBJECT 
@@ -39,6 +40,9 @@ export const TaskForm = ({ taskType }: TaskProps) => {
     const [section, setSection] = useState('') // SECTION 
     const [confirmForm, setConfirmForm] = useState(false) // CONFIRM VALUES PAGE
     const [open, openDialog] = useState(false) // DIALOG
+    const queryClient = useQueryClient()
+
+    const taskCount = countTask({taskType, subject, section, quarter}) // COUNT existing tasks on database
 
     const taskForm = useForm<z.infer<typeof taskSchema>>({
         resolver: zodResolver(taskSchema),
@@ -47,11 +51,11 @@ export const TaskForm = ({ taskType }: TaskProps) => {
             grade: gradeLevel,
             section,
             type: taskType,
-            task_no: 1,
             quarter
         }
     })
 
+    
     function onSubmit(values: z.infer<typeof taskSchema>) {
         console.log(values)
         generateTask.mutateAsync(values, {
@@ -66,6 +70,7 @@ export const TaskForm = ({ taskType }: TaskProps) => {
                 setGradeLevel('')
                 setSection('')
                 setSubject('')
+                queryClient.invalidateQueries({ queryKey: ['my_tasks'] })
             },
             onError: (error) => {
                 console.log(error)
@@ -166,7 +171,16 @@ export const TaskForm = ({ taskType }: TaskProps) => {
                                                     </FormItem>
                                                 )}
                                             />
-                                            <Button type="button" onClick={() => setConfirmForm(true)}>Next</Button>
+                                            <Button 
+                                                type="button" 
+                                                onClick={() => {
+                                                    setConfirmForm(true)
+                                                    // set the value of task count upon clicking next
+                                                    taskForm.setValue('task_no', taskCount + 1)
+                                                }}
+                                            >
+                                                Next
+                                            </Button>
                                         </>
                                     }
                                     {subject && gradeLevel && section && confirmForm && 
@@ -175,7 +189,7 @@ export const TaskForm = ({ taskType }: TaskProps) => {
                                         <div className="flex gap-8">
                                             <div>
                                                 <Label>{taskType} No.</Label>
-                                                <div>{taskForm.watch('task_no')}</div>
+                                                <div>{taskCount + 1}</div>
                                             </div>
                                             <div>
                                                 <Label>Subject</Label>

@@ -1,10 +1,7 @@
 import { Link } from "react-router-dom"
 import { Button } from "@/components/ui/button"
-import { taskFunctions } from "@/hooks/useTaskQueries"
 
 export const RecordsHome = () => {
-    const { tasks } = taskFunctions()
-
     const recordsLinks = [
         { name: 'Recitations', path_name: 'recitation'},
         { name: 'Activities', path_name: 'activity'},

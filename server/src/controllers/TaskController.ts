@@ -44,7 +44,7 @@ export class TaskController {
                 subject: { $in: subjectsArray }
             })
 
-            res.status(200).json({ myTasks })
+            res.status(200).json(myTasks)
         } catch (error) {
             console.log(error)
             return res.status(400).json({ message: 'Failed to find tasks', error })
