@@ -51,6 +51,7 @@ export const TaskForm = ({ taskType }: TaskProps) => {
             grade: gradeLevel,
             section,
             type: taskType,
+            total_items: 0,
             quarter
         }
     })
@@ -171,16 +172,19 @@ export const TaskForm = ({ taskType }: TaskProps) => {
                                                     </FormItem>
                                                 )}
                                             />
-                                            <Button 
-                                                type="button" 
-                                                onClick={() => {
-                                                    setConfirmForm(true)
-                                                    // set the value of task count upon clicking next
-                                                    taskForm.setValue('task_no', taskCount + 1)
-                                                }}
-                                            >
-                                                Next
-                                            </Button>
+                                            {taskForm.watch('total_items') !== 0 && // user should input total of items
+                                                <Button 
+                                                    type="button" 
+                                                    onClick={() => {
+                                                        setConfirmForm(true)
+                                                        // set the value of task count upon clicking next
+                                                        taskForm.setValue('task_no', taskCount + 1)
+                                                    }}
+                                                >
+                                                    Next
+                                                </Button>
+                                            }
+                                            
                                         </>
                                     }
                                     {subject && gradeLevel && section && confirmForm && 
