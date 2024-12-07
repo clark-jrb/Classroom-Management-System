@@ -23,3 +23,14 @@ export const getTask = async (filters: Record<string, string>): Promise<any> => 
         console.log('Failed to get tasks', error)
     }
 }
+
+export const createStudentTasks = async (value: Record<string, any>): Promise<any> => {
+    try {
+        const response = await api.post(`/task/students/create`, value, {
+            withCredentials: true
+        })
+        return response.data
+    } catch (error) {
+        console.log('Failed to create student tasks', error)
+    }
+}

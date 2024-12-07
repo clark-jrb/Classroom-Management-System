@@ -32,7 +32,7 @@ interface TaskProps {
 }
 
 export const TaskForm = ({ taskType }: TaskProps) => {
-    const { generateTask, countTask } = taskFunctions() // mutation function
+    const { generateTask, countTask, createTasks } = taskFunctions() // mutation function
     const { grade_assigned, section_handled, subjects } = teacherInfo() // data from the hook
     const quarter = 'q1' // QUARTER (subject to change)
     const [subject, setSubject] = useState('') // SUBJECT 
@@ -55,16 +55,22 @@ export const TaskForm = ({ taskType }: TaskProps) => {
             quarter
         }
     })
-
     
     function onSubmit(values: z.infer<typeof taskSchema>) {
         console.log(values)
         generateTask.mutateAsync(values, {
             onSuccess: (data) => {
-                const { message } = data
+                const { task, message } = data
                 openDialog(false)
-                
+
+                console.log(task)
                 console.log(message)
+
+                createTasks({ 
+                    task_id: task._id,
+                    grade_lvl: gradeLevel,
+                    section: section
+                })
 
                 taskForm.reset()
                 setConfirmForm(false)
