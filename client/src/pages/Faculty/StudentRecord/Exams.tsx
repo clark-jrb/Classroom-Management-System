@@ -1,9 +1,13 @@
 import { TaskForm } from "./component/TaskForm"
+import { TaskList } from "./component/TaskList"
 
 export const Exams = () => {
     return (
         <div>
-            <TaskForm taskType="exam"/>
+            <div className="mb-3">
+                <TaskForm taskType="exam"/>
+            </div>
+            <TaskList taskType="exam"/>
         </div>
     )
 }
