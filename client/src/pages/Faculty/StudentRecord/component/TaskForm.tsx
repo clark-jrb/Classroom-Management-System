@@ -90,9 +90,6 @@ export const TaskForm = ({ taskType }: TaskProps) => {
     return (
         <div>
             <Dialog open={open} onOpenChange={openDialog}>
-                <div className="mb-3 text-xl">
-                    {taskType}
-                </div>
                 <DialogTrigger asChild>
                     <Button>
                         Create {taskType} record

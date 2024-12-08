@@ -1,5 +1,5 @@
 import { useAuthStore } from "@/stores/auth/authSlice"
-import { useMutation, useQuery } from "@tanstack/react-query"
+import { useMutation, useSuspenseQuery } from "@tanstack/react-query"
 import { createTask, getTask, createStudentTasks } from "@/services/TaskService"
 import { teacherInfo } from "./useTeacherQueries"
 
@@ -11,6 +11,11 @@ export const taskFunctions = () => {
         mutationFn: (value: Record<string, any>) => createTask(user_id, value)
     })
 
+    const getTasks = useSuspenseQuery({
+        queryKey: ['my_tasks'],
+        queryFn: () => getTask({ user_id, grade_assigned, section_handled, subjects })
+    })
+    
     const generateStudentTasks = useMutation({
         mutationFn: (value: Record<string, any>) => createStudentTasks(value),
         onSuccess: (data) => {
@@ -22,10 +27,6 @@ export const taskFunctions = () => {
         }
     })
 
-    const getTasks = useQuery({
-        queryKey: ['my_tasks'],
-        queryFn: () => getTask({ user_id, grade_assigned, section_handled, subjects })
-    })
 
     type TaskFunctionProps = {
         [key: string]: string

@@ -25,9 +25,9 @@ export class TaskController {
     }
 
     /**
-     * FIND task
+     * GET task
      */
-    public findTask = async (req: Request, res: Response): Promise<any> => {
+    public getTasks = async (req: Request, res: Response): Promise<any> => {
         try {
             const { user_id, grade_assigned, section_handled, subjects } = req.query
 
