@@ -1,5 +1,5 @@
-import { TaskForm } from "./component/TaskForm"
-import { TaskList } from "./component/TaskList"
+import { TaskForm } from "../component/TaskForm"
+import { TaskList } from "../component/TaskList"
 
 export const Projects = () => {
     return (

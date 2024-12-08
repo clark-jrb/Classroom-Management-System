@@ -9,13 +9,13 @@ import {
     BreadcrumbSeparator,
     BreadcrumbPage
 } from "@/components/ui/breadcrumb"
-import { Quizzes } from "./Quizzes"
-import { Activities } from "./Activities"
+import { Quizzes } from "./pages/Quizzes"
+import { Activities } from "./pages/Activities"
 import { RecordsHome } from "./RecordsHome"
-import { Exams } from "./Exams"
-import { Summatives } from "./Summatives"
-import { Projects } from "./Projects"
-import { Recitations } from "./Recitations"
+import { Exams } from "./pages/Exams"
+import { Summatives } from "./pages/Summatives"
+import { Projects } from "./pages/Projects"
+import { Recitations } from "./pages/Recitations"
 import { Suspense } from 'react'
 
 export const RecordContainer = () => {
