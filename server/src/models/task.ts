@@ -12,7 +12,7 @@ const TaskSchema = new Schema({
 })
 
 const StudentTaskSchema = new Schema({
-    sid: { type: Schema.Types.ObjectId, ref: "students", required: true },
+    sid: { type: Schema.Types.ObjectId, required: true },
     task_id: { type: Schema.Types.ObjectId, ref: "tasks", required: true },
     score: { type: Number, required: true }
 })

@@ -95,4 +95,28 @@ export class TaskController {
             return res.status(400).json({ message: 'Failed to find tasks', error })
         }
     }
+    
+    /**
+     * GET student tasks
+     */
+    public getStudentTasks = async (req: Request, res: Response): Promise<any> =>  {
+        try {
+            const { id } = req.params
+
+            const studentTasks = await StudentTaskModel.find({ task_id: id })
+                .populate({
+                    path: 'sid',
+                    model: 'students_info',
+                    localField: 'sid',
+                    foreignField: 'sid', 
+                    select: 'firstname lastname'
+                })
+                .populate('task_id')
+
+            res.status(200).json(studentTasks)
+        } catch (error) {
+            console.log(error)
+            return res.status(400).json({ message: 'Failed to find tasks', error })
+        }
+    }
 }

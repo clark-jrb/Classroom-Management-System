@@ -34,3 +34,14 @@ export const createStudentTasks = async (value: Record<string, any>): Promise<an
         console.log('Failed to create student tasks', error)
     }
 }
+
+export const getStudentTask = async (id: string): Promise<any> => {
+    try {
+        const response = await api.get(`/task/students/${id}`, {
+            withCredentials: true
+        })
+        return response.data
+    } catch (error) {
+        console.log('Failed to get students tasks', error)
+    }
+}
