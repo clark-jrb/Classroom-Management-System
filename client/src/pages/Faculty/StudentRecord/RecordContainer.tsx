@@ -49,7 +49,7 @@ export const RecordContainer = () => {
                                         {name}
                                     </BreadcrumbPage>
                                 </React.Fragment>) || 
-                            (currentPath === `/records/${path_name}/view` && 
+                            (currentPath.startsWith(`/records/${path_name}/view/`) && 
                                 <React.Fragment key={index}>
                                     <BreadcrumbSeparator />
                                         <BreadcrumbItem>
@@ -74,7 +74,7 @@ export const RecordContainer = () => {
                             </Suspense>
                         }/>
                     ))}
-                    <Route path=':id/view' element={<TaskView/>}/>
+                    <Route path=':id/view/:taskId' element={<TaskView/>}/>
                 </Routes>
 
             </Container>
