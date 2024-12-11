@@ -16,6 +16,7 @@ import { Exams } from "./pages/Exams"
 import { Summatives } from "./pages/Summatives"
 import { Projects } from "./pages/Projects"
 import { Recitations } from "./pages/Recitations"
+import { TaskView } from './component/TaskView'
 import { Suspense } from 'react'
 
 export const RecordContainer = () => {
@@ -29,7 +30,7 @@ export const RecordContainer = () => {
         { name: 'Exams', path_name: 'exam', element: <Exams/> },
         { name: 'Summatives', path_name: 'summative', element: <Summatives/> },
         { name: 'Projects', path_name: 'project', element: <Projects/> },
-        { name: 'Recitations', path_name: 'recitation', element: <Recitations/> },
+        { name: 'Recitations', path_name: 'recitation', element: <Recitations/> }
     ]
 
     return (
@@ -41,13 +42,26 @@ export const RecordContainer = () => {
                             <Link to={'/records'}>Records</Link>
                         </BreadcrumbItem>
                         {recordsLinks.map(({ path_name, name }, index) => 
-                            currentPath === `/records/${path_name}` && 
+                            (currentPath === `/records/${path_name}` && 
                                 <React.Fragment key={index}>
                                     <BreadcrumbSeparator />
                                     <BreadcrumbPage>
                                         {name}
                                     </BreadcrumbPage>
-                                </React.Fragment>
+                                </React.Fragment>) || 
+                            (currentPath === `/records/${path_name}/view` && 
+                                <React.Fragment key={index}>
+                                    <BreadcrumbSeparator />
+                                        <BreadcrumbItem>
+                                            <Link to={`/records/${path_name}`}>
+                                                {name}
+                                            </Link>
+                                        </BreadcrumbItem>
+                                    <BreadcrumbSeparator />
+                                        <BreadcrumbPage>
+                                            View
+                                        </BreadcrumbPage>
+                                </React.Fragment>)
                         )}
                     </BreadcrumbList>
                 </Breadcrumb>
@@ -60,6 +74,7 @@ export const RecordContainer = () => {
                             </Suspense>
                         }/>
                     ))}
+                    <Route path=':id/view' element={<TaskView/>}/>
                 </Routes>
 
             </Container>

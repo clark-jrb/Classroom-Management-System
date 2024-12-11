@@ -23,7 +23,7 @@ export const TaskList = ({ taskType }: TaskListProps) => {
                 section,
                 subject
             }: DataProps) => (
-                <div key={_id} className="border border-black-500 mb-3 select-none">
+                <div key={_id} className="border border-black-500 mb-3 select-none rounded">
                     <div>{type} {task_no}</div>
                     <div>{subject}</div>
                     <div>{grade} {section}</div>
