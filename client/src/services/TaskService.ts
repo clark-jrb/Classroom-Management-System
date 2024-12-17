@@ -53,7 +53,7 @@ export const updateStudentScores = async (value: z.infer<typeof studentScoreSche
         const response = await api.patch(`/task/students/update`, value, {
             withCredentials: true
         })
-        return response
+        return response.data
     } catch (error) {
         console.log('Failed to fetch current user', error)
     }

@@ -33,7 +33,7 @@ export function getChangedScores(
     newScores: StudentScore
 ) {
     if (!originalScores || originalScores.length !== newScores.length) {
-        throw new Error("Both arrays must have the same length and be defined");
+        throw new Error("Both arrays must have the same length");
     }
 
     const changedScores = newScores.filter((newItem, index) => {

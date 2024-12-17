@@ -133,12 +133,12 @@ export class TaskController {
                         { new: true, runValidators: true }
                     )
                     // console.log('score updated successfuly')
+                    res.status(200).json({ message: 'scores updated successfuly' })
                 } catch (error) {
                     console.log('error updating scores ' + error)
                 }
             })
             
-            res.status(200).json({ message: 'scores updated successfuly' })
         } catch (error) {
             console.log(error)
             return res.status(400).json({ message: 'Failed to update scores', error })

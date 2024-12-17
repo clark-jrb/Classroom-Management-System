@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom"
-import { getStudentTask, updateStudentScores } from "@/services/TaskService"
-import { useMutation, useSuspenseQuery } from "@tanstack/react-query"
-import { StudentTask } from "./types"
+import { getStudentTask } from "@/services/TaskService"
+import { useSuspenseQuery, useQueryClient } from "@tanstack/react-query"
+import { StudentTask, StudentScore } from "./types"
 import {
     Table,
     TableBody,
@@ -12,7 +12,6 @@ import {
     TableRow,
 } from "@/components/ui/table"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { z } from "zod"
 import { useForm } from "react-hook-form"
 import { studentScoreSchema } from "@/schemas/teacherSchemas"
 import { 
@@ -24,26 +23,21 @@ import {
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { getChangedScores } from "@/helpers/changed-fields"
+import { taskFunctions } from "@/hooks/useTaskQueries"
 
 export const TaskView = () => {
     const { taskId } = useParams()
+    const { updateStudentScore } = taskFunctions()
+    const queryClient = useQueryClient()
     
     const { data, isLoading, isError, error } = useSuspenseQuery({
         queryKey: ['student_tasks', taskId],
         queryFn: () => getStudentTask(taskId as string)
     })
 
-    if (isLoading) {
-        console.log('loading...')
-    }
-
-    if (isError) {
-        console.log(error)
-    }
-
-    // if (data) {
-    //     console.log(data)
-    // }
+    if (isLoading) console.log('loading...')
+    if (isError) console.log(error)
+    // if (data) console.log(data)
 
     const studentScoresData = data?.map(({ _id, score, sid }: StudentTask) => ({
         _id,
@@ -51,23 +45,28 @@ export const TaskView = () => {
         score: score
     }))
 
-    const studentScoreForm = useForm<z.infer<typeof studentScoreSchema>>({
+    const studentScoreForm = useForm<StudentScore>({
         resolver: zodResolver(studentScoreSchema),
         defaultValues: {
             student_scores: studentScoresData
         }
     })
-
-    const updateStudentScore = useMutation({
-        mutationFn: (value: z.infer<typeof studentScoreSchema>["student_scores"]) => 
-            updateStudentScores(value),
-    })
     
-    function onSubmit(values: z.infer<typeof studentScoreSchema>) {
+    function onSubmit(values: StudentScore) {
         const getChanges = getChangedScores(studentScoresData, values.student_scores)
         
         if (Object.keys(getChanges).length !== 0) {
-            updateStudentScore.mutate(getChanges)
+            updateStudentScore.mutateAsync(getChanges, {
+                onSuccess: (data) => {
+                    const { message } = data
+                    console.log(message)
+                    queryClient.invalidateQueries({ queryKey: ['student_tasks'] })
+                },
+                onError: (error) => {
+                    console.log(error)
+                }
+            })
+
             console.log(getChanges)
             console.log('updated successfully')
         } else {
@@ -76,7 +75,6 @@ export const TaskView = () => {
     }
 
     function onError(errors: any) { console.log("Form errors:", errors) }
-
 
     return (
         <div>
@@ -126,8 +124,8 @@ export const TaskView = () => {
                             ))}
                         </TableBody>
                     </Table>
-                    <Button type="submit">
-                        Save
+                    <Button type="submit" disabled={updateStudentScore.isPending}>
+                        {updateStudentScore.isPending ? "Processing..." : "Save"}
                     </Button>
                 </form>
             </Form>

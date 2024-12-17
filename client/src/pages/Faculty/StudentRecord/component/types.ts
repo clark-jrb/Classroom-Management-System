@@ -1,3 +1,9 @@
+import { studentScoreSchema } from "@/schemas/teacherSchemas"
+import { z } from "zod"
+
+export type AllString = {
+    [key: string]: string
+}
 
 type Task = {
     total_items: number
@@ -15,3 +21,5 @@ export type StudentTask = {
     sid: StudentInfo,
     task_id: Task
 }
+
+export type StudentScore = z.infer<typeof studentScoreSchema>
