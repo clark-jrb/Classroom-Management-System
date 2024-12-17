@@ -10,5 +10,5 @@ export default (router: express.Router) => {
     router.get('/task', isAuthenticated, getTasks)
     router.post('/task/students/create', isAuthenticated, createStudentTasks)
     router.get('/task/students/:id', isAuthenticated, getStudentTasks)
-    router.patch('/task/students/:id', isAuthenticated, updateStudentScore)
+    router.patch('/task/students/update', isAuthenticated, updateStudentScore)
 }

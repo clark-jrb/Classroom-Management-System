@@ -48,9 +48,9 @@ export const getStudentTask = async (id: string): Promise<any> => {
     }
 }
 
-export const updateStudentScores = async (id: string, value: z.infer<typeof studentScoreSchema>["student_scores"]): Promise<any> => {
+export const updateStudentScores = async (value: z.infer<typeof studentScoreSchema>["student_scores"]): Promise<any> => {
     try {
-        const response = await api.patch(`/task/students/${id}`, value, {
+        const response = await api.patch(`/task/students/update`, value, {
             withCredentials: true
         })
         return response

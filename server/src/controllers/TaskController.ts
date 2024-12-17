@@ -1,8 +1,13 @@
 import { Response, Request } from "express"
 import { TaskModel, StudentTaskModel } from "../models/task"
 import { StudentClassModel } from "../models/student"
-import mongoose, { Types } from "mongoose"
-import { forEach } from "lodash"
+import mongoose from "mongoose"
+
+interface StudentTask {
+    _id: mongoose.Types.ObjectId
+    sid: mongoose.Types.ObjectId
+    score: number
+}
 
 export class TaskController {
     /**
@@ -114,27 +119,26 @@ export class TaskController {
     }
 
     /**
-     * updateStudentScore
+     * UPDATE students scores
      */
     public updateStudentScore = async (req: Request, res: Response): Promise<any> => {
         try {
-            const { id } = req.params
-            const studentScores: [] = req.body
+            const studentScores: StudentTask[] = req.body
 
-            console.log(id)
-            console.log(studentScores)
-
-            // const updateScore = studentScores.forEach(async (data) => {
-            //     try {
-                    
-            //     } catch (error) {
-                    
-            //     }
-            // })
+            studentScores.forEach(async (data) => {
+                try {
+                    await StudentTaskModel.findByIdAndUpdate(
+                        data._id,
+                        { score: data.score },
+                        { new: true, runValidators: true }
+                    )
+                    // console.log('score updated successfuly')
+                } catch (error) {
+                    console.log('error updating scores ' + error)
+                }
+            })
             
-            
-            // StudentTaskModel.findByIdAndUpdate
-            res.status(200).json({ message: 'success' })
+            res.status(200).json({ message: 'scores updated successfuly' })
         } catch (error) {
             console.log(error)
             return res.status(400).json({ message: 'Failed to update scores', error })

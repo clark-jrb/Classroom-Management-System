@@ -60,7 +60,7 @@ export const TaskView = () => {
 
     const updateStudentScore = useMutation({
         mutationFn: (value: z.infer<typeof studentScoreSchema>["student_scores"]) => 
-            updateStudentScores(taskId as string, value),
+            updateStudentScores(value),
     })
     
     function onSubmit(values: z.infer<typeof studentScoreSchema>) {
