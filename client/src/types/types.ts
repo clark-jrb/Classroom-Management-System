@@ -1,25 +1,27 @@
-import { studentScoreSchema } from "@/schemas/teacherSchemas"
+import { studentScoreSchema, taskSchema } from "@/schemas/teacherSchemas"
 import { z } from "zod"
 
 export type AllString = {
     [key: string]: string
 }
 
-type Task = {
-    total_items: number
-}
-
-type StudentInfo = {
-    sid: string,
-    firstname: string,
-    lastname: string
-}
-
 export type StudentTask = {
     _id: string
     score: number,
-    sid: StudentInfo,
-    task_id: Task
+    sid: {
+        sid: string,
+        firstname: string,
+        lastname: string
+    },
+    task_id: {
+        total_items: number
+    }
 }
 
 export type StudentScore = z.infer<typeof studentScoreSchema>
+export type TTaskForm = z.infer<typeof taskSchema>
+
+export type TTasks = TTaskForm & {
+    _id: string
+    tid: string
+}

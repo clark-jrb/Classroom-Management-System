@@ -16,6 +16,8 @@ export const taskFunctions = () => {
         queryKey: ['my_tasks'],
         queryFn: () => getTask({ user_id, grade_assigned, section_handled, subjects })
     })
+
+    const tasks = getTasks.data || []
     
     const generateStudentTasks = useMutation({
         mutationFn: (value: Record<string, any>) => createStudentTasks(value),
@@ -36,13 +38,12 @@ export const taskFunctions = () => {
         generateStudentTasks.mutateAsync({ task_id, grade_lvl, section })
     }
 
-    // const tasks = getTasks.data || {}
     function filterTask(taskType: string) {
-        return getTasks.data?.filter((item: any) => item.type === taskType)
+        return tasks.filter((item) => item.type === taskType)
     }
 
     function countTask({taskType, subject, section, quarter}: AllString) {
-        return getTasks.data?.filter((item: any) => 
+        return tasks.filter((item) => 
             item.type === taskType && 
             item.subject === subject && 
             item.section === section && 

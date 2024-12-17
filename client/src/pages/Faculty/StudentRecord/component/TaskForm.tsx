@@ -22,10 +22,10 @@ import { useState } from "react"
 import { taskSchema } from "@/schemas/teacherSchemas"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { z } from "zod"
 import { Input } from "@/components/ui/input"
 import { taskFunctions } from "@/hooks/useTaskQueries"
 import { useQueryClient } from "@tanstack/react-query"
+import { TTaskForm } from "@/types/types"
 
 export const TaskForm = ({ taskType }: {
     taskType: string
@@ -42,7 +42,7 @@ export const TaskForm = ({ taskType }: {
 
     const taskCount = countTask({taskType, subject, section, quarter}) // COUNT existing tasks on database
 
-    const taskForm = useForm<z.infer<typeof taskSchema>>({
+    const taskForm = useForm<TTaskForm>({
         resolver: zodResolver(taskSchema),
         defaultValues: {
             subject: subject,
@@ -54,7 +54,7 @@ export const TaskForm = ({ taskType }: {
         }
     })
     
-    function onSubmit(values: z.infer<typeof taskSchema>) {
+    function onSubmit(values: TTaskForm) {
         console.log(values)
         generateTask.mutateAsync(values, {
             onSuccess: (data) => {

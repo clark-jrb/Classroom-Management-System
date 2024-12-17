@@ -1,5 +1,6 @@
 import { api } from "./api";
 import { StudentScore } from "@/types/types";
+import { TTasks } from "@/types/types";
 
 export const createTask = async (id: string, value: Record<string, any>): Promise<any> => {
     try {
@@ -12,7 +13,7 @@ export const createTask = async (id: string, value: Record<string, any>): Promis
     }
 }
 
-export const getTask = async (filters: Record<string, string>): Promise<any> => {
+export const getTask = async (filters: Record<string, string>): Promise<TTasks[] | undefined> => {
     try {
         const query = new URLSearchParams(filters as Record<string, string>).toString()
         // console.log(query)

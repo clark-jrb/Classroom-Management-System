@@ -1,19 +1,13 @@
 import { taskFunctions } from "@/hooks/useTaskQueries"
 import { useNavigate } from "react-router-dom"
 
-type TaskListProps = {
+export const TaskList = ({ taskType }: {
     taskType: string
-}
-
-export const TaskList = ({ taskType }: TaskListProps) => {
+}) => {
     const { filterTask } = taskFunctions()
     const navigate = useNavigate()
 
-    type DataProps = {
-        [key: string]: string
-    }
-
-    const data = filterTask(taskType)
+    const data = filterTask(taskType) || []
 
     return (
         <div className="h-auto">
@@ -24,7 +18,7 @@ export const TaskList = ({ taskType }: TaskListProps) => {
                 grade,
                 section,
                 subject
-            }: DataProps) => (
+            }) => (
                 <div 
                     key={_id} 
                     className="border border-black-500 mb-3 select-none rounded cursor-pointer"
