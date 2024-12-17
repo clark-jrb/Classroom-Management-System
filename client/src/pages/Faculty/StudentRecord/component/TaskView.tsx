@@ -23,6 +23,7 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
+import { getChangedScores } from "@/helpers/changed-fields"
 
 export const TaskView = () => {
     const { taskId } = useParams() 
@@ -44,7 +45,8 @@ export const TaskView = () => {
     //     console.log(data)
     // }
 
-    const studentScoresData = data?.map(({ score, sid }: StudentTask) => ({
+    const studentScoresData = data?.map(({ _id, score, sid }: StudentTask) => ({
+        _id,
         sid: sid.sid,
         score: score
     }))
@@ -57,7 +59,15 @@ export const TaskView = () => {
     })
     
     function onSubmit(values: z.infer<typeof studentScoreSchema>) {
-        console.log(values)
+        const getChanges = getChangedScores(studentScoresData, values.student_scores)
+        
+        if (Object.keys(getChanges).length !== 0) {
+            // updatePersonal.mutate(getChanges)
+            console.log(getChanges)
+            // console.log('updated successfully')
+        } else {
+            console.log('there is nothing to update')
+        }
     }
 
     function onError(errors: any) { console.log("Form errors:", errors) }
@@ -95,7 +105,7 @@ export const TaskView = () => {
                                                         <Input 
                                                             type="number"
                                                             className="w-[150px]"
-                                                            placeholder="total items of the task"
+                                                            placeholder="score"
                                                             {...field}
                                                             onChange={(e) => field.onChange(Number(e.target.value))}
                                                             min={0}

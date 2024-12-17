@@ -1,4 +1,5 @@
 import { studentPersonalSchema } from "@/schemas/studentSchemas";
+import { studentScoreSchema } from "@/schemas/teacherSchemas";
 import { z } from "zod";
 
 
@@ -23,6 +24,24 @@ export function getChangedFields(
     });
 
     return changes;
+}
+
+type StudentScore = z.infer<typeof studentScoreSchema>["student_scores"]
+
+export function getChangedScores(
+    originalScores: StudentScore | undefined,
+    newScores: StudentScore
+): Partial<StudentScore> {
+    if (!originalScores || originalScores.length !== newScores.length) {
+        throw new Error("Both arrays must have the same length and be defined");
+    }
+
+    const changedScores = newScores.filter((newItem, index) => {
+        const originalItem = originalScores[index];
+        return newItem.score !== originalItem.score;
+    });
+
+    return changedScores.map(({ _id, sid, score }) => ({ _id, sid, score }));
 }
 
 

@@ -13,6 +13,7 @@ export const taskSchema = z.object({
 export const studentScoreSchema = z.object({
     student_scores: z.array(
         z.object({
+            _id: z.string(),
             sid: z.string(),
             score: z.number().min(0),
         })
