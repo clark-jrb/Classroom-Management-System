@@ -28,12 +28,12 @@ export const RegisterStudent = ({ form }: IRegisterStudent) => {
     ]
 
     const sectionsList = [
-        { grade: 'grade_1', sections: ['Crabs', 'Corals'] },
-        { grade: 'grade_2', sections: ['Pearls', 'Shrimps'] },
-        { grade: 'grade_3', sections: ['Squids', 'Octopus'] },
-        { grade: 'grade_4', sections: ['Lobsters', 'Eels'] },
-        { grade: 'grade_5', sections: ['Turtles', 'Dolphins'] },
-        { grade: 'grade_6', sections: ['Whales', 'Sharks'] }
+        { grade: 'grade_1', sections: ['crabs', 'corals'] },
+        { grade: 'grade_2', sections: ['pearls', 'shrimps'] },
+        { grade: 'grade_3', sections: ['squids', 'octopus'] },
+        { grade: 'grade_4', sections: ['lobsters', 'eels'] },
+        { grade: 'grade_5', sections: ['turtles', 'dolphins'] },
+        { grade: 'grade_6', sections: ['whales', 'sharks'] }
     ];
     
     // watch grade level changes
