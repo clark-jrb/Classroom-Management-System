@@ -60,21 +60,15 @@ export class TaskController {
         try {
             const { task_id, grade_lvl, section } = req.body
 
-            console.log({ task_id, grade_lvl, section })
-            console.log(typeof grade_lvl)
-
             const findStudents = await StudentClassModel.find({
                 gradeLevel: grade_lvl,
                 section: section
             })
 
-            console.log(findStudents)
-
             if (!findStudents) {
                 console.log('there is no students')
                 return res.status(400).json({ message: 'there is no existing students' })
             } else {
-                console.log('students exists')
                 findStudents.forEach(async (student) => {
                     try {
                         await StudentTaskModel.create({
@@ -82,7 +76,6 @@ export class TaskController {
                             task_id: task_id,
                             score: 0
                         })
-                        console.log('successfully created')
                     } catch (error) {
                         console.log('error creating tasks ' + error)
                     }
@@ -117,6 +110,34 @@ export class TaskController {
         } catch (error) {
             console.log(error)
             return res.status(400).json({ message: 'Failed to find tasks', error })
+        }
+    }
+
+    /**
+     * updateStudentScore
+     */
+    public updateStudentScore = async (req: Request, res: Response): Promise<any> => {
+        try {
+            const { id } = req.params
+            const studentScores: [] = req.body
+
+            console.log(id)
+            console.log(studentScores)
+
+            // const updateScore = studentScores.forEach(async (data) => {
+            //     try {
+                    
+            //     } catch (error) {
+                    
+            //     }
+            // })
+            
+            
+            // StudentTaskModel.findByIdAndUpdate
+            res.status(200).json({ message: 'success' })
+        } catch (error) {
+            console.log(error)
+            return res.status(400).json({ message: 'Failed to update scores', error })
         }
     }
 }

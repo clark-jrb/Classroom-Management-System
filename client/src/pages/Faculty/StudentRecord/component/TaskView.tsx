@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom"
-import { getStudentTask } from "@/services/TaskService"
-import { useSuspenseQuery } from "@tanstack/react-query"
+import { getStudentTask, updateStudentScores } from "@/services/TaskService"
+import { useMutation, useSuspenseQuery } from "@tanstack/react-query"
 import { StudentTask } from "./types"
 import {
     Table,
@@ -26,7 +26,7 @@ import { Button } from "@/components/ui/button"
 import { getChangedScores } from "@/helpers/changed-fields"
 
 export const TaskView = () => {
-    const { taskId } = useParams() 
+    const { taskId } = useParams()
     
     const { data, isLoading, isError, error } = useSuspenseQuery({
         queryKey: ['student_tasks', taskId],
@@ -57,14 +57,19 @@ export const TaskView = () => {
             student_scores: studentScoresData
         }
     })
+
+    const updateStudentScore = useMutation({
+        mutationFn: (value: z.infer<typeof studentScoreSchema>["student_scores"]) => 
+            updateStudentScores(taskId as string, value),
+    })
     
     function onSubmit(values: z.infer<typeof studentScoreSchema>) {
         const getChanges = getChangedScores(studentScoresData, values.student_scores)
         
         if (Object.keys(getChanges).length !== 0) {
-            // updatePersonal.mutate(getChanges)
+            updateStudentScore.mutate(getChanges)
             console.log(getChanges)
-            // console.log('updated successfully')
+            console.log('updated successfully')
         } else {
             console.log('there is nothing to update')
         }

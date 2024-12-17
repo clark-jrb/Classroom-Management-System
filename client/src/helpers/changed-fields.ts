@@ -29,9 +29,9 @@ export function getChangedFields(
 type StudentScore = z.infer<typeof studentScoreSchema>["student_scores"]
 
 export function getChangedScores(
-    originalScores: StudentScore | undefined,
+    originalScores: StudentScore,
     newScores: StudentScore
-): Partial<StudentScore> {
+) {
     if (!originalScores || originalScores.length !== newScores.length) {
         throw new Error("Both arrays must have the same length and be defined");
     }

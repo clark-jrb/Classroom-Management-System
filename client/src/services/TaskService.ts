@@ -1,3 +1,5 @@
+import { studentScoreSchema } from "@/schemas/teacherSchemas";
+import { z } from "zod";
 import { api } from "./api";
 
 export const createTask = async (id: string, value: Record<string, any>): Promise<any> => {
@@ -43,5 +45,16 @@ export const getStudentTask = async (id: string): Promise<any> => {
         return response.data
     } catch (error) {
         console.log('Failed to get students tasks', error)
+    }
+}
+
+export const updateStudentScores = async (id: string, value: z.infer<typeof studentScoreSchema>["student_scores"]): Promise<any> => {
+    try {
+        const response = await api.patch(`/task/students/${id}`, value, {
+            withCredentials: true
+        })
+        return response
+    } catch (error) {
+        console.log('Failed to fetch current user', error)
     }
 }
