@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom"
 import { getStudentTask } from "@/services/TaskService"
 import { useSuspenseQuery, useQueryClient } from "@tanstack/react-query"
-import { StudentTask, StudentScore } from "./types"
+import { StudentTask, StudentScore } from "../../../../types/types"
 import {
     Table,
     TableBody,

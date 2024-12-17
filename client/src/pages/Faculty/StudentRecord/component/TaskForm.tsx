@@ -27,11 +27,9 @@ import { Input } from "@/components/ui/input"
 import { taskFunctions } from "@/hooks/useTaskQueries"
 import { useQueryClient } from "@tanstack/react-query"
 
-interface TaskProps {
+export const TaskForm = ({ taskType }: {
     taskType: string
-}
-
-export const TaskForm = ({ taskType }: TaskProps) => {
+}) => {
     const { generateTask, countTask, createTasks } = taskFunctions() // mutation function
     const { grade_assigned, section_handled, subjects } = teacherInfo() // data from the hook
     const quarter = 'q1' // QUARTER (subject to change)

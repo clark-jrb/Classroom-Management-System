@@ -2,7 +2,7 @@ import { useAuthStore } from "@/stores/auth/authSlice"
 import { useMutation, useSuspenseQuery } from "@tanstack/react-query"
 import { createTask, getTask, createStudentTasks, updateStudentScores } from "@/services/TaskService"
 import { teacherInfo } from "./useTeacherQueries"
-import { StudentScore, AllString } from "@/pages/Faculty/StudentRecord/component/types"
+import { StudentScore, AllString } from "@/types/types"
 
 export const taskFunctions = () => {
     const { user_id } = useAuthStore()

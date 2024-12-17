@@ -1,6 +1,5 @@
-import { studentScoreSchema } from "@/schemas/teacherSchemas";
-import { z } from "zod";
 import { api } from "./api";
+import { StudentScore } from "@/types/types";
 
 export const createTask = async (id: string, value: Record<string, any>): Promise<any> => {
     try {
@@ -48,7 +47,7 @@ export const getStudentTask = async (id: string): Promise<any> => {
     }
 }
 
-export const updateStudentScores = async (value: z.infer<typeof studentScoreSchema>["student_scores"]): Promise<any> => {
+export const updateStudentScores = async (value: StudentScore["student_scores"]): Promise<any> => {
     try {
         const response = await api.patch(`/task/students/update`, value, {
             withCredentials: true
