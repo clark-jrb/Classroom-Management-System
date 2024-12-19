@@ -37,9 +37,11 @@ export const TaskView = () => {
 
     if (isLoading) console.log('loading...')
     if (isError) console.log(error)
-    // if (data) console.log(data)
+    if (data) console.log(data)
 
-    const studentScoresData = data?.map(({ _id, score, sid }: StudentTask) => ({
+    const student_task = data || []
+
+    const studentScoresData = student_task.map(({ _id, score, sid }) => ({
         _id,
         sid: sid.sid,
         score: score
@@ -58,7 +60,7 @@ export const TaskView = () => {
         if (Object.keys(getChanges).length !== 0) {
             updateStudentScore.mutateAsync(getChanges, {
                 onSuccess: (data) => {
-                    const { message } = data
+                    const { message } = data || {}
                     console.log(message)
                     queryClient.invalidateQueries({ queryKey: ['student_tasks'] })
                 },

@@ -58,14 +58,14 @@ export const TaskForm = ({ taskType }: {
         console.log(values)
         generateTask.mutateAsync(values, {
             onSuccess: (data) => {
-                const { task, message } = data
+                const { task, message } = data || {}
                 openDialog(false)
 
                 console.log(task)
                 console.log(message)
 
                 createTasks({ 
-                    task_id: task._id,
+                    task_id: task?._id,
                     grade_lvl: gradeLevel,
                     section: section
                 })

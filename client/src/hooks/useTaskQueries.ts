@@ -22,7 +22,7 @@ export const taskFunctions = () => {
     const generateStudentTasks = useMutation({
         mutationFn: (value: Record<string, any>) => createStudentTasks(value),
         onSuccess: (data) => {
-            const { message } = data
+            const { message } = data || {}
             console.log(message)
         },
         onError: (error) => {

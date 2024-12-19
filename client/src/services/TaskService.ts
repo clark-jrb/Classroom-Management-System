@@ -1,8 +1,8 @@
 import { api } from "./api";
 import { StudentScore } from "@/types/types";
-import { TTasks } from "@/types/types";
+import { TTasks, Message, StudentTask } from "@/types/types";
 
-export const createTask = async (id: string, value: Record<string, any>): Promise<any> => {
+export const createTask = async (id: string, value: Record<string, any>): Promise<{task: TTasks} & Message | undefined> => {
     try {
         const response = await api.post(`/task/${id}`, value, {
             withCredentials: true
@@ -26,7 +26,7 @@ export const getTask = async (filters: Record<string, string>): Promise<TTasks[]
     }
 }
 
-export const createStudentTasks = async (value: Record<string, any>): Promise<any> => {
+export const createStudentTasks = async (value: Record<string, any>): Promise<Message | undefined> => {
     try {
         const response = await api.post(`/task/students/create`, value, {
             withCredentials: true
@@ -37,7 +37,7 @@ export const createStudentTasks = async (value: Record<string, any>): Promise<an
     }
 }
 
-export const getStudentTask = async (id: string): Promise<any> => {
+export const getStudentTask = async (id: string): Promise<StudentTask[] | undefined> => {
     try {
         const response = await api.get(`/task/students/${id}`, {
             withCredentials: true
@@ -48,7 +48,7 @@ export const getStudentTask = async (id: string): Promise<any> => {
     }
 }
 
-export const updateStudentScores = async (value: StudentScore["student_scores"]): Promise<any> => {
+export const updateStudentScores = async (value: StudentScore["student_scores"]): Promise<Message | undefined> => {
     try {
         const response = await api.patch(`/task/students/update`, value, {
             withCredentials: true
