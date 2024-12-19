@@ -1,38 +1,32 @@
-import { Response, Request } from "express"
+import { RequestHandler } from "express"
 import { TaskModel, StudentTaskModel } from "../models/task"
 import { StudentClassModel } from "../models/student"
-import mongoose from "mongoose"
-
-interface StudentTask {
-    _id: mongoose.Types.ObjectId
-    sid: mongoose.Types.ObjectId
-    score: number
-}
+import { StudentTask, Task } from "../types/TaskTypes"
 
 export class TaskController {
     /**
      * CREATE Task (for teacher)
      */
-    public createTask = async (req: Request, res: Response): Promise<any> => {
+    public createTask: RequestHandler = async (req, res) => {
         try {
             const { id } = req.params
             const data = req.body
 
-            const newTask = await TaskModel.create({
+            const newTask: Task = await TaskModel.create({
                 tid: id,
                 ...data
             })
 
             res.status(200).json({ task: newTask, message: 'New task succesfully created' })
         } catch (error) {
-            return res.status(400).json({ message: 'Failed to create task', error })
+            res.status(400).json({ message: 'Failed to create task', error })
         }
     }
 
     /**
      * GET task
      */
-    public getTasks = async (req: Request, res: Response): Promise<any> => {
+    public getTasks: RequestHandler = async (req, res) => {
         try {
             const { user_id, grade_assigned, section_handled, subjects } = req.query
 
@@ -54,14 +48,14 @@ export class TaskController {
             res.status(200).json(myTasks)
         } catch (error) {
             console.log(error)
-            return res.status(400).json({ message: 'Failed to find tasks', error })
+            res.status(400).json({ message: 'Failed to find tasks', error })
         }
     }
 
     /**
      * CREATE student tasks
      */
-    public createStudentTasks = async (req: Request, res: Response): Promise<any> => {
+    public createStudentTasks: RequestHandler = async (req, res) => {
         try {
             const { task_id, grade_lvl, section } = req.body
 
@@ -72,7 +66,7 @@ export class TaskController {
 
             if (!findStudents) {
                 console.log('there is no students')
-                return res.status(400).json({ message: 'there is no existing students' })
+                res.status(400).json({ message: 'there is no existing students' })
             } else {
                 findStudents.forEach(async (student) => {
                     try {
@@ -86,18 +80,18 @@ export class TaskController {
                     }
                 })
 
-                return res.status(200).json({ message: 'succcesfully created student tasks' })
+                res.status(200).json({ message: 'succcesfully created student tasks' })
             }
         } catch (error) {
             console.log(error)
-            return res.status(400).json({ message: 'Failed to find tasks', error })
+            res.status(400).json({ message: 'Failed to find tasks', error })
         }
     }
     
     /**
      * GET student tasks
      */
-    public getStudentTasks = async (req: Request, res: Response): Promise<any> =>  {
+    public getStudentTasks: RequestHandler = async (req, res) =>  {
         try {
             const { id } = req.params
 
@@ -114,14 +108,14 @@ export class TaskController {
             res.status(200).json(studentTasks)
         } catch (error) {
             console.log(error)
-            return res.status(400).json({ message: 'Failed to find tasks', error })
+            res.status(400).json({ message: 'Failed to find tasks', error })
         }
     }
 
     /**
      * UPDATE students scores
      */
-    public updateStudentScore = async (req: Request, res: Response): Promise<any> => {
+    public updateStudentScore: RequestHandler = async (req, res) => {
         try {
             const studentScores: StudentTask[] = req.body
 
@@ -141,7 +135,7 @@ export class TaskController {
             
         } catch (error) {
             console.log(error)
-            return res.status(400).json({ message: 'Failed to update scores', error })
+            res.status(400).json({ message: 'Failed to update scores', error })
         }
     }
 }

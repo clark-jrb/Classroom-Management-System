@@ -37,7 +37,7 @@ export const TaskView = () => {
 
     if (isLoading) console.log('loading...')
     if (isError) console.log(error)
-    if (data) console.log(data)
+    // if (data) console.log(data)
 
     const student_task = data || []
 
