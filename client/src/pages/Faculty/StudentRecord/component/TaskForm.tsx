@@ -30,14 +30,14 @@ import { TTaskForm } from "@/types/types"
 export const TaskForm = ({ taskType }: {
     taskType: string
 }) => {
-    const { generateTask, countTask, createTasks } = taskFunctions() // mutation function
+    const { generateTask, countTask, createTasks } = taskFunctions()    // mutation functions
     const { grade_assigned, section_handled, subjects } = teacherInfo() // data from the hook
-    const quarter = 'q1' // QUARTER (subject to change)
-    const [subject, setSubject] = useState('') // SUBJECT 
-    const [gradeLevel, setGradeLevel] = useState('') // GRADE LEVEL 
-    const [section, setSection] = useState('') // SECTION 
-    const [confirmForm, setConfirmForm] = useState(false) // CONFIRM VALUES PAGE
-    const [open, openDialog] = useState(false) // DIALOG
+    const quarter = 'q1'                                                // QUARTER state (subject to change)
+    const [subject, setSubject] = useState('')                          // SUBJECT state
+    const [gradeLevel, setGradeLevel] = useState('')                    // GRADE LEVEL state
+    const [section, setSection] = useState('')                          // SECTION state
+    const [confirmForm, setConfirmForm] = useState(false)               // CONFIRM VALUES DIALOG
+    const [open, openDialog] = useState(false)                          // DIALOG
     const queryClient = useQueryClient()
 
     const taskCount = countTask({taskType, subject, section, quarter}) // COUNT existing tasks on database
@@ -58,14 +58,14 @@ export const TaskForm = ({ taskType }: {
         console.log(values)
         generateTask.mutateAsync(values, {
             onSuccess: (data) => {
-                const { task, message } = data || {}
+                const { task, message } = data
                 openDialog(false)
 
                 console.log(task)
                 console.log(message)
 
                 createTasks({ 
-                    task_id: task?._id,
+                    task_id: task._id,
                     grade_lvl: gradeLevel,
                     section: section
                 })

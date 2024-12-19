@@ -7,7 +7,7 @@ export const TaskList = ({ taskType }: {
     const { filterTask } = taskFunctions()
     const navigate = useNavigate()
 
-    const data = filterTask(taskType) || []
+    const data = filterTask(taskType)
 
     return (
         <div className="h-auto">

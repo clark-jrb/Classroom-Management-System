@@ -2,7 +2,7 @@ import { studentScoreSchema, taskSchema } from "@/schemas/teacherSchemas"
 import { z } from "zod"
 
 export type AllString = {
-    [key: string]: string | undefined
+    [key: string]: string
 }
 
 export type StudentTask = {
@@ -14,6 +14,12 @@ export type StudentTask = {
     task_id: {
         total_items: number
     }
+}
+
+export type StudentTaskCreate = {
+    task_id: string
+    grade_lvl: string
+    section: string
 }
 
 export type StudentScore = z.infer<typeof studentScoreSchema>
