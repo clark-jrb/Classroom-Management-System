@@ -20,7 +20,7 @@ export const taskFunctions = () => {
     const generateStudentTasks = useMutation({
         mutationFn: (value: StudentTaskCreate) => createStudentTasks(value),
         onSuccess: (data) => {
-            const { message } = data || {}
+            const { message } = data
             console.log(message)
         },
         onError: (error) => {
@@ -36,7 +36,7 @@ export const taskFunctions = () => {
         generateStudentTasks.mutateAsync({ task_id, grade_lvl, section })
     }
 
-    const tasks = getTasks.data || []
+    const tasks = getTasks.data
 
     function filterTask(taskType: string) {
         return tasks.filter((item) => item.type === taskType)
