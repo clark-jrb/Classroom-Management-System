@@ -25,22 +25,22 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { Input } from "@/components/ui/input"
 import { taskFunctions } from "@/hooks/useTaskQueries"
 import { useQueryClient } from "@tanstack/react-query"
-import { TTaskForm } from "@/types/types"
+import { TTaskForm, TaskTypes, SubjectTypes, QuarterTypes } from "@/types/types"
 
 export const TaskForm = ({ taskType }: {
-    taskType: string
+    taskType: TaskTypes
 }) => {
     const { generateTask, countTask, createTasks } = taskFunctions()    // mutation functions
     const { grade_assigned, section_handled, subjects } = teacherInfo() // data from the hook
-    const quarter = 'q1'                                                // QUARTER state (subject to change)
-    const [subject, setSubject] = useState('')                          // SUBJECT state
+    const quarter: QuarterTypes = 'q1'                                                // QUARTER state (subject to change)
+    const [subject, setSubject] = useState<SubjectTypes>('')                          // SUBJECT state
     const [gradeLevel, setGradeLevel] = useState('')                    // GRADE LEVEL state
     const [section, setSection] = useState('')                          // SECTION state
     const [confirmForm, setConfirmForm] = useState(false)               // CONFIRM VALUES DIALOG
     const [open, openDialog] = useState(false)                          // DIALOG
     const queryClient = useQueryClient()
 
-    const taskCount = countTask({taskType, subject, section, quarter}) // COUNT existing tasks on database
+    const taskCount = countTask(taskType, subject, section, quarter) // COUNT existing tasks on database
 
     const taskForm = useForm<TTaskForm>({
         resolver: zodResolver(taskSchema),
@@ -107,7 +107,7 @@ export const TaskForm = ({ taskType }: {
                                     {!subject && 
                                         <div className="h-40">
                                             <div>Pick Subject:</div>
-                                            {subjects?.map((data: string, index: number) => (
+                                            {subjects?.map((data: SubjectTypes, index: number) => (
                                                 <Button 
                                                     key={index} 
                                                     variant={'outline'} 

@@ -34,6 +34,6 @@ export type Message = {
     message: string
 }
 
-export type TaskTypes = "recitation" | 'quiz' | 'activity' | 'project' | 'summative' | 'exam'
-export type QuarterTypes = 'q1'| 'q2' | 'q3' | 'q4'
-export type SubjectTypes = 'math'| 'science' | 'english' | 'hekasi' | 'filipino' | 'mapeh'
+export type TaskTypes = "recitation" | 'quiz' | 'activity' | 'project' | 'summative' | 'exam' | ''
+export type QuarterTypes = 'q1'| 'q2' | 'q3' | 'q4' | ''
+export type SubjectTypes = 'math'| 'science' | 'english' | 'hekasi' | 'filipino' | 'mapeh' | ''
