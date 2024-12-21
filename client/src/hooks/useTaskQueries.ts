@@ -2,7 +2,7 @@ import { useAuthStore } from "@/stores/auth/authSlice"
 import { useMutation, useSuspenseQuery } from "@tanstack/react-query"
 import { createTask, getTask, createStudentTasks, updateStudentScores } from "@/services/TaskService"
 import { teacherInfo } from "./useTeacherQueries"
-import { StudentScore, AllString, TTaskForm, StudentTaskCreate } from "@/types/types"
+import { StudentScore, TTaskForm, StudentTaskCreate, TaskTypes, QuarterTypes, SubjectTypes } from "@/types/types"
 
 export const taskFunctions = () => {
     const { user_id } = useAuthStore()
@@ -38,11 +38,16 @@ export const taskFunctions = () => {
 
     const tasks = getTasks.data
 
-    function filterTask(taskType: string) {
+    function filterTask(taskType: TaskTypes) {
         return tasks.filter((item) => item.type === taskType)
     }
 
-    function countTask({ taskType, subject, section, quarter }: AllString) {
+    function countTask(
+        taskType: TaskTypes, 
+        subject: SubjectTypes,
+        section: string,
+        quarter: QuarterTypes
+    ): number {
         return tasks.filter((item) => 
             item.type === taskType && 
             item.subject === subject && 
