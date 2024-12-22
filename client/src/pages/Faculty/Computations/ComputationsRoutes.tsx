@@ -8,14 +8,14 @@ import { Computations } from "./Computations"
 export const ComputationsRoutes = () => {
     return (
         <FacultyLayout>
-            <Container>    
+            <Container>
                 <Routes>
                     <Route path="/" element={
                         <Suspense fallback={<div>Loading...</div>}>
                             <Computations/>
                         </Suspense>
                     }/>
-                    <Route path=":id/view/:subject" element={
+                    <Route path="/view/:section/:subject" element={
                         <Suspense fallback={<div>Loading...</div>}>
                             <SectionView/>
                         </Suspense>
