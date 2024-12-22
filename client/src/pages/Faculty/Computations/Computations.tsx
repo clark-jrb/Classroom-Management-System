@@ -1,14 +1,15 @@
-import { FacultyLayout } from "../FacultyLayout"
-import { Container } from "@/components/container"
-import { Procedures } from "./components/Procedures"
+import { teacherInfo } from "@/hooks/useTeacherQueries"
+import { Sections } from "./pages/Sections"
 
 export const Computations = () => {
+    const { section_handled } = teacherInfo()
+
     return (
-        <FacultyLayout>
-            <Container>
-                Computations
-                <Procedures/>
-            </Container>
-        </FacultyLayout>
+        <div>
+            Computations
+            {section_handled.map((data: string, index: number) => (
+                <Sections key={index} section_assigned={data}/>
+            ))}
+        </div>
     )
 }

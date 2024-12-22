@@ -8,9 +8,9 @@ import { MyGrades } from "./Student/MyGrades"
 import { StudentProfile } from "./Student/StudentProfile"
 import { FacultyDashboard } from "./Faculty/FacultyDashboard"
 import { MyClasses } from "./Faculty/MyClasses"
-import { RecordContainer } from "./Faculty/StudentRecord/RecordContainer"
+import { RecordsRoutes } from "./Faculty/StudentRecord/RecordsRoutes"
 import { FacultyProfile } from "./Faculty/FacultyProfile"
-import { Computations } from "./Faculty/Computations/Computations"
+import { ComputationsRoutes } from "./Faculty/Computations/ComputationsRoutes"
 
 // GET current user logged in on the server
 const currentAuthenticated = () => {
@@ -44,8 +44,8 @@ export const AuthenticatedRoutes = () => {
     const facultyRoutes = [
         { path: '/', element: <FacultyDashboard/> },
         { path: '/classes', element: <MyClasses/> },
-        { path: '/records/*', element: <RecordContainer/> },
-        { path: '/computations', element: <Computations/> },
+        { path: '/records/*', element: <RecordsRoutes/> },
+        { path: '/computations/*', element: <ComputationsRoutes/> },
         { path: '/profile', element: <FacultyProfile/> }
     ] // same as the student routes but faculty
 

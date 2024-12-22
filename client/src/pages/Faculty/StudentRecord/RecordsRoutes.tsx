@@ -19,7 +19,7 @@ import { Recitations } from "./pages/Recitations"
 import { TaskView } from './component/TaskView'
 import { Suspense } from 'react'
 
-export const RecordContainer = () => {
+export const RecordsRoutes = () => {
     const location = useLocation()
     const currentPath = location.pathname
 
