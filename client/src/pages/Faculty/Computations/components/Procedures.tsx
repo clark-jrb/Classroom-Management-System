@@ -1,9 +1,9 @@
 import { taskFunctions } from "@/hooks/useTaskQueries"
-import { TaskTypes, QuarterTypes } from "@/types/types"
+import { TaskTypes, QuarterTypes, SubjectTypes } from "@/types/types"
 
-export const Procedures = ({ section_assigned }: {
+export const Procedures = ({ section_assigned, subject_handled }: {
     section_assigned: string,
-    // subject_handled: SubjectTypes
+    subject_handled: SubjectTypes
 }) => {
     const { countTask } = taskFunctions()
 
@@ -25,7 +25,7 @@ export const Procedures = ({ section_assigned }: {
             <div>Grading Procedures:</div>
             {procedures.map(({ name, type, quarter }, index) => (
                 <div key={index}>
-                    {countTask(type, 'science', section_assigned, quarter)} {name} - %
+                    {countTask(type, subject_handled, section_assigned, quarter)} {name} - %
                 </div>
             ))}
         </div>
