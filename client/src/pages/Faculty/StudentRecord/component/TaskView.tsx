@@ -23,7 +23,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { getChangedScores } from "@/helpers/changed-fields"
-import { taskFunctions } from "@/hooks/useTaskQueries"
+import { taskFunctions } from "@/hooks/TaskQueries"
 
 export const TaskView = () => {
     const { taskId } = useParams()

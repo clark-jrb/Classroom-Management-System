@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom"
 import { Procedures } from "./Procedures"
 import { SubjectTypes, MyStudents } from "@/types/types"
-import { teacherInfo } from "@/hooks/useTeacherQueries"
+import { teacherInfo } from "@/hooks/TeacherQueries"
 import { useSuspenseQuery } from "@tanstack/react-query"
 import { getMyStudents } from "@/services/TeacherService"
 import {
@@ -13,7 +13,7 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
-import { taskFunctions } from "@/hooks/useTaskQueries"
+import { taskFunctions } from "@/hooks/TaskQueries"
 
 export const SectionView = () => {
     const { section, subject } = useParams<{ section: string, subject: SubjectTypes }>()

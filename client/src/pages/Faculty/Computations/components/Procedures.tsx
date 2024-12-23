@@ -1,4 +1,4 @@
-import { taskFunctions } from "@/hooks/useTaskQueries"
+import { taskFunctions } from "@/hooks/TaskQueries"
 import { TaskTypes, QuarterTypes, SubjectTypes } from "@/types/types"
 
 export const Procedures = ({ section_assigned, subject_handled }: {
