@@ -139,7 +139,7 @@ export const TaskForm = ({ taskType }: {
                                     {subject && gradeLevel && !section &&
                                         <div className="h-40">
                                             <div>Pick Section:</div>
-                                            {section_handled?.map((data: string, index: number) => (
+                                            {section_handled.map((data: string, index: number) => (
                                                 <Button 
                                                     key={index} 
                                                     variant={'outline'} 

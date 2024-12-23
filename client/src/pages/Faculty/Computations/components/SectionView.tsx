@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom"
 import { Procedures } from "./Procedures"
-import { SubjectTypes, MyStudents } from "@/types/types"
+import { SubjectTypes } from "@/types/types"
 import { teacherInfo } from "@/hooks/TeacherQueries"
 import { useSuspenseQuery } from "@tanstack/react-query"
 import { getMyStudents } from "@/services/TeacherService"
@@ -13,12 +13,12 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
-import { taskFunctions } from "@/hooks/TaskQueries"
+import { useMyTasks } from "@/hooks/TaskQueries"
 
 export const SectionView = () => {
     const { section, subject } = useParams<{ section: string, subject: SubjectTypes }>()
     const { section_handled, subjects, grade_assigned } = teacherInfo()
-    const { getSpecificTaskTotal } = taskFunctions()
+    const { getSpecificTaskTotal } = useMyTasks()
 
     if (!section || !subject) {
         return <div>Error: Missing required route parameters</div>;
@@ -51,10 +51,10 @@ export const SectionView = () => {
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                        {myStudents && myStudents.map(({
+                        {myStudents.map(({
                             _id,
                             sid: { firstname, lastname }
-                        }: MyStudents) => (
+                        }) => (
                             <TableRow key={_id}>
                                 <TableCell className="font-medium">{lastname}</TableCell>
                                 <TableCell>{firstname}</TableCell>

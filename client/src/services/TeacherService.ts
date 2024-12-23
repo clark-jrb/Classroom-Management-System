@@ -1,6 +1,7 @@
 import { api } from "./api";
+import { MyStudents } from "@/types/types";
 
-export const getMyStudents = async (gradeLevel: string, section: string): Promise<any> => {
+export const getMyStudents = async (gradeLevel: string, section: string): Promise<MyStudents[]> => {
     try {
         const query = new URLSearchParams({
             gradeLevel: gradeLevel,
@@ -13,5 +14,6 @@ export const getMyStudents = async (gradeLevel: string, section: string): Promis
         return response.data
     } catch (error) {
         console.log('Failed to fetch current user', error)
+        throw new Error('Failed to get my students')
     }
 }
