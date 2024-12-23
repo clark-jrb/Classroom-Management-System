@@ -1,4 +1,4 @@
-import { Response, Request } from "express"
+import { Response, Request, RequestHandler } from "express"
 import { StudentModel, StudentInfoModel, StudentClassModel } from "../models/student"
 import mongoose from "mongoose"
 
@@ -83,5 +83,32 @@ export class StudentController {
             return res.sendStatus(400).json({ message: 'Failed to update student', error })
         }
         // return await StudentModel.findByIdAndUpdate(id, values)
+    }
+
+    /**
+     * GET students by its class
+     */
+    public getStudentByClass: RequestHandler = async (req, res) => {
+        try {
+            const { gradeLevel, section } = req.query
+
+            const students = await StudentClassModel.find({
+                gradeLevel: gradeLevel,
+                section: section
+            }).populate({
+                path: 'sid',
+                model: 'students_info',
+                localField: 'sid',
+                foreignField: 'sid', 
+                select: 'firstname lastname'
+            })
+
+            console.log(students)
+
+            res.status(200).json(students)
+        } catch (error) {
+            console.log(error)
+            res.status(400).json({ message: 'Failed to find students', error })
+        }
     }
 }

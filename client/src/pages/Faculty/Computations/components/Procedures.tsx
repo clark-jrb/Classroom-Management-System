@@ -5,7 +5,7 @@ export const Procedures = ({ section_assigned, subject_handled }: {
     section_assigned: string,
     subject_handled: SubjectTypes
 }) => {
-    const { countTask } = taskFunctions()
+    const { countTask, filterTask } = taskFunctions()
 
     const procedures: {
         name: string
@@ -19,6 +19,8 @@ export const Procedures = ({ section_assigned, subject_handled }: {
         { name: 'Recitations', type: 'recitation', quarter: 'q1' },
         { name: 'Projects', type: 'project', quarter: 'q1' }
     ]
+
+    console.log(filterTask('recitation'))
 
     return (
         <div className="border p-5 rounded-md space-y-4">

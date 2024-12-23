@@ -2,6 +2,15 @@ import { useParams } from "react-router-dom"
 import { Procedures } from "./Procedures"
 import { SubjectTypes } from "@/types/types"
 import { teacherInfo } from "@/hooks/useTeacherQueries"
+// import {
+//     Table,
+//     TableBody,
+//     TableCaption,
+//     TableCell,
+//     TableHead,
+//     TableHeader,
+//     TableRow,
+// } from "@/components/ui/table"
 
 export const SectionView = () => {
     const { section, subject } = useParams<{ section: string, subject: SubjectTypes }>()
@@ -16,7 +25,10 @@ export const SectionView = () => {
     }
 
     return (
-        <div>
+        <div className="flex h-full gap-5">
+            <div className="flex-1 border rounded-md">
+                table here
+            </div>
             <Procedures subject_handled={subject} section_assigned={section}/>
         </div>
     )

@@ -1,8 +1,9 @@
 import { taskFunctions } from "@/hooks/useTaskQueries"
 import { useNavigate } from "react-router-dom"
+import { TaskTypes } from "@/types/types"
 
 export const TaskList = ({ taskType }: {
-    taskType: string
+    taskType: TaskTypes
 }) => {
     const { filterTask } = taskFunctions()
     const navigate = useNavigate()
