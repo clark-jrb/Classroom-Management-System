@@ -42,6 +42,12 @@ export const taskFunctions = () => {
         return tasks.filter((item) => item.type === taskType)
     }
 
+    function getSpecificTaskTotal(taskType: TaskTypes) {
+        return tasks
+            .filter((item) => item.type === taskType)
+            .map((item) => ({ total_items: item.total_items }))
+    }
+
     function countTask(
         taskType: TaskTypes, 
         subject: SubjectTypes,
@@ -60,6 +66,7 @@ export const taskFunctions = () => {
         generateTask, 
         generateStudentTasks, 
         filterTask, 
+        getSpecificTaskTotal,
         countTask, 
         createTasks, 
         updateStudentScore 

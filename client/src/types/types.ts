@@ -37,3 +37,12 @@ export type Message = {
 export type TaskTypes = "recitation" | 'quiz' | 'activity' | 'project' | 'summative' | 'exam' | ''
 export type QuarterTypes = 'q1'| 'q2' | 'q3' | 'q4' | ''
 export type SubjectTypes = 'math'| 'science' | 'english' | 'hekasi' | 'filipino' | 'mapeh' | ''
+
+export type MyStudents = {
+    _id: string
+    sid: {
+        [key: string]: string
+    },
+    gradeLevel: string
+    section: string
+}
