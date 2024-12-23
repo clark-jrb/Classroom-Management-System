@@ -2,7 +2,6 @@ import { useAuthStore } from "@/stores/auth/authSlice"
 import { useSuspenseQuery } from "@tanstack/react-query"
 import { getTeacherInformation } from "@/services/UserService"
 
-
 export const teacherInfo = () => {
     const { user_id } = useAuthStore()
 

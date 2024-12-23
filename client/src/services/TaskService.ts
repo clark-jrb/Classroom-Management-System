@@ -14,7 +14,7 @@ export const createTask = async (id: string, value: TTaskForm): Promise<{task: T
     }
 }
 
-export const getTask = async (filters: Record<string, string>): Promise<TTasks[]> => {
+export const getTask = async (filters: Record<string, string | string[]>): Promise<TTasks[]> => {
     try {
         const query = new URLSearchParams(filters as Record<string, string>).toString()
         // console.log(query)
