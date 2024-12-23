@@ -103,8 +103,6 @@ export class StudentController {
                 select: 'firstname lastname'
             })
 
-            console.log(students)
-
             res.status(200).json(students)
         } catch (error) {
             console.log(error)

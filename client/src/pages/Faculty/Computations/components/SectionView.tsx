@@ -2,6 +2,8 @@ import { useParams } from "react-router-dom"
 import { Procedures } from "./Procedures"
 import { SubjectTypes } from "@/types/types"
 import { teacherInfo } from "@/hooks/useTeacherQueries"
+import { useSuspenseQuery } from "@tanstack/react-query"
+import { getMyStudents } from "@/services/TeacherService"
 // import {
 //     Table,
 //     TableBody,
@@ -14,10 +16,19 @@ import { teacherInfo } from "@/hooks/useTeacherQueries"
 
 export const SectionView = () => {
     const { section, subject } = useParams<{ section: string, subject: SubjectTypes }>()
-    const { section_handled, subjects } = teacherInfo()
+    const { section_handled, subjects, grade_assigned } = teacherInfo()
 
     if (!section || !subject) {
         return <div>Error: Missing required route parameters</div>;
+    }
+
+    const fetchMyStudents = useSuspenseQuery({
+        queryKey: ['my_students'],
+        queryFn: () => getMyStudents(grade_assigned, section)
+    })
+
+    if (fetchMyStudents.data) {
+        console.log(fetchMyStudents.data)
     }
 
     if (!subjects.includes(subject as SubjectTypes) || !section_handled.includes(section)) {
