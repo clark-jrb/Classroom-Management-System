@@ -6,15 +6,9 @@ import { StudentScore, TTaskForm, StudentTaskCreate, TaskTypes, QuarterTypes, Su
 
 export const taskFunctions = () => {
     const { user_id } = useAuthStore()
-    const { grade_assigned, section_handled, subjects } = teacherInfo()
     
     const generateTask = useMutation({
         mutationFn: (value: TTaskForm) => createTask(user_id, value)
-    })
-
-    const getTasks = useSuspenseQuery({
-        queryKey: ['my_tasks'],
-        queryFn: () => getTask({ user_id, grade_assigned, section_handled, subjects })
     })
     
     const generateStudentTasks = useMutation({
@@ -36,8 +30,27 @@ export const taskFunctions = () => {
         generateStudentTasks.mutateAsync({ task_id, grade_lvl, section })
     }
 
-    const tasks = getTasks.data
+    return { 
+        generateTask, 
+        generateStudentTasks,
+        createTasks, 
+        updateStudentScore 
+    }
+}
 
+export const useMyTasks = () => {
+    const { user_id } = useAuthStore()
+    const { grade_assigned, section_handled, subjects } = teacherInfo()
+
+    const { data, isError, error } = useSuspenseQuery({
+        queryKey: ['my_tasks'],
+        queryFn: () => getTask({ user_id, grade_assigned, section_handled, subjects })
+    })
+
+    if (isError) console.log('there is an error getting your tasks', error)
+
+    const tasks = data
+    
     function filterTask(taskType: TaskTypes): TTasks[] {
         return tasks.filter((item) => item.type === taskType)
     }
@@ -62,19 +75,5 @@ export const taskFunctions = () => {
         ).length
     }
 
-    return { 
-        generateTask, 
-        generateStudentTasks, 
-        filterTask, 
-        getSpecificTaskTotal,
-        countTask, 
-        createTasks, 
-        updateStudentScore 
-    }
+    return { filterTask, getSpecificTaskTotal, countTask }
 }
-
-// export const useMyTasks = ({ user_id, grade_assigned, section_handled, subjects }: {
-    
-// }) => {
-
-// }

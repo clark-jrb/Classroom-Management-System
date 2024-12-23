@@ -1,5 +1,6 @@
 import { loginSchema, registerInformationSchema } from "@/schemas/authSchemas"
 import { z } from "zod"
+import { SubjectTypes } from "./types"
 
 export type TeacherAccount = {
     _id: string
@@ -16,7 +17,7 @@ export type TeacherClasses = {
     teacher_role: string
     grade_assigned: string
     section_handled: string[]
-    subjects: string[]
+    subjects: SubjectTypes[]
 }
 
 export type TeacherInformation = {

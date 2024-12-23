@@ -23,14 +23,15 @@ import { taskSchema } from "@/schemas/teacherSchemas"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Input } from "@/components/ui/input"
-import { taskFunctions } from "@/hooks/TaskQueries"
+import { taskFunctions, useMyTasks } from "@/hooks/TaskQueries"
 import { useQueryClient } from "@tanstack/react-query"
 import { TTaskForm, TaskTypes, SubjectTypes, QuarterTypes } from "@/types/types"
 
 export const TaskForm = ({ taskType }: {
     taskType: TaskTypes
 }) => {
-    const { generateTask, countTask, createTasks } = taskFunctions()    // mutation functions
+    const { generateTask, createTasks } = taskFunctions()    // mutation functions
+    const { countTask } = useMyTasks() 
     const { grade_assigned, section_handled, subjects } = teacherInfo() // data from the hook
     const quarter: QuarterTypes = 'q1'                                                // QUARTER state (subject to change)
     const [subject, setSubject] = useState<SubjectTypes>('')                          // SUBJECT state
@@ -107,7 +108,7 @@ export const TaskForm = ({ taskType }: {
                                     {!subject && 
                                         <div className="h-40">
                                             <div>Pick Subject:</div>
-                                            {subjects?.map((data: SubjectTypes, index: number) => (
+                                            {subjects.map((data: SubjectTypes, index: number) => (
                                                 <Button 
                                                     key={index} 
                                                     variant={'outline'} 

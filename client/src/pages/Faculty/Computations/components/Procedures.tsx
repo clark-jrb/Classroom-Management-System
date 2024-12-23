@@ -1,11 +1,11 @@
-import { taskFunctions } from "@/hooks/TaskQueries"
+import { useMyTasks } from "@/hooks/TaskQueries"
 import { TaskTypes, QuarterTypes, SubjectTypes } from "@/types/types"
 
 export const Procedures = ({ section_assigned, subject_handled }: {
     section_assigned: string,
     subject_handled: SubjectTypes
 }) => {
-    const { countTask } = taskFunctions()
+    const { countTask } = useMyTasks()
 
     const procedures: {
         name: string
