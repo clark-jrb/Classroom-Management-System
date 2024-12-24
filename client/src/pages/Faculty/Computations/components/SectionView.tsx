@@ -13,12 +13,11 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
-import { useMyTasks } from "@/hooks/TaskQueries"
+import { useSpecStudentTask } from "@/hooks/TaskQueries"
 
 export const SectionView = () => {
     const { section, subject } = useParams<{ section: string, subject: SubjectTypes }>()
     const { section_handled, subjects, grade_assigned } = teacherInfo()
-    const { getSpecificTaskTotal } = useMyTasks()
 
     if (!section || !subject) {
         return <div>Error: Missing required route parameters</div>;
@@ -28,12 +27,25 @@ export const SectionView = () => {
         queryKey: ['my_students'],
         queryFn: () => getMyStudents(grade_assigned, section)
     })
-
+    
     const myStudents = fetchMyStudents.data
-    const recit_total_items = getSpecificTaskTotal('recitation')
+    const specStudentTask = myStudents.map((student) => ({
+        ...student,
+        recit_average: useSpecStudentTask(student.sid.sid, subject, 'recitation'),
+    }))
 
-    const sum = recit_total_items.reduce((accu, curr) => accu + curr.total_items, 0)
-    console.log(sum/sum * 6)
+    // console.log(specStudentTask)
+
+    // const total_items_sum = specStudentTask.map(innerArray => {
+    //     const sumTotalItems = innerArray.reduce((accu, curr) => accu + curr.total_items, 0)
+    //     const sumTotalScores = innerArray.reduce((accu, curr) => accu + curr.score, 0)
+
+    //     const average = sumTotalScores > 0 ? (sumTotalScores / sumTotalItems) * 6 : 0
+
+    //     return [{ sid: innerArray[0].sid, recit_average: average }]
+    // })
+
+    // console.log(total_items_sum)
 
     if (!subjects.includes(subject as SubjectTypes) || !section_handled.includes(section)) {
         return <div>Error: Invalid subject or section parameter</div>;
@@ -51,13 +63,15 @@ export const SectionView = () => {
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                        {myStudents.map(({
+                        {specStudentTask.map(({
                             _id,
-                            sid: { firstname, lastname }
+                            sid: { firstname, lastname },
+                            recit_average
                         }) => (
                             <TableRow key={_id}>
                                 <TableCell className="font-medium">{lastname}</TableCell>
                                 <TableCell>{firstname}</TableCell>
+                                <TableCell>Recitation: {recit_average} %</TableCell>
                             </TableRow>
                         ))}
                     </TableBody>

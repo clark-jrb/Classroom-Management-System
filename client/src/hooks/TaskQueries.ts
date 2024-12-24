@@ -1,6 +1,6 @@
 import { useAuthStore } from "@/stores/auth/authSlice"
 import { useMutation, useSuspenseQuery } from "@tanstack/react-query"
-import { createTask, getTask, createStudentTasks, updateStudentScores } from "@/services/TaskService"
+import { createTask, getTask, createStudentTasks, updateStudentScores, getSpecificStudentTask } from "@/services/TaskService"
 import { teacherInfo } from "./TeacherQueries"
 import { StudentScore, TTaskForm, StudentTaskCreate, TaskTypes, QuarterTypes, SubjectTypes, TTasks } from "@/types/types"
 
@@ -55,11 +55,11 @@ export const useMyTasks = () => {
         return tasks.filter((item) => item.type === taskType)
     }
 
-    function getSpecificTaskTotal(taskType: TaskTypes) {
-        return tasks
-            .filter((item) => item.type === taskType)
-            .map((item) => ({ task_id: item._id, total_items: item.total_items }))
-    }
+    // function getSpecificTaskTotal(taskType: TaskTypes) {
+    //     return tasks
+    //         .filter((item) => item.type === taskType)
+    //         .map((item) => ({ task_id: item._id, total_items: item.total_items }))
+    // }
 
     function countTask(
         taskType: TaskTypes, 
@@ -75,5 +75,29 @@ export const useMyTasks = () => {
         ).length
     }
 
-    return { filterTask, getSpecificTaskTotal, countTask }
+    return { filterTask, countTask }
+}
+
+export function useSpecStudentTask(id: string, subject: string, type: string) {
+    const { data, isError, error } = useSuspenseQuery({
+        queryKey: ['spec_student_tasks', id],
+        queryFn: () => getSpecificStudentTask(id)
+    })
+    
+    if (isError) console.log(error)
+
+    const calculateAverage = data
+        .filter((item) => 
+            item.task_id.subject === subject &&
+            item.task_id.type === type
+        )
+        .map((item) => ({ sid: item.sid, score: item.score, total_items: item.task_id.total_items }))
+
+
+    const sumTotalItems = calculateAverage.reduce((accu, curr) => accu + curr.total_items, 0)
+    const sumTotalScores = calculateAverage.reduce((accu, curr) => accu + curr.score, 0)
+
+    const average = sumTotalScores > 0 ? (sumTotalScores / sumTotalItems) * 6 : 0
+
+    return average
 }
