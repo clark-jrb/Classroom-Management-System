@@ -1,6 +1,5 @@
 import { useParams } from "react-router-dom"
-import { getStudentTask } from "@/services/TaskService"
-import { useSuspenseQuery, useQueryClient } from "@tanstack/react-query"
+import { useQueryClient } from "@tanstack/react-query"
 import { StudentTask, StudentScore } from "../../../../types/types"
 import {
     Table,
@@ -23,17 +22,14 @@ import {
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { getChangedScores } from "@/helpers/changed-fields"
-import { taskFunctions } from "@/hooks/TaskQueries"
+import { taskFunctions, useStudentTasks } from "@/hooks/TaskQueries"
 
 export const TaskView = () => {
     const { taskId } = useParams()
     const { updateStudentScore } = taskFunctions()
     const queryClient = useQueryClient()
     
-    const { data, isLoading, isError, error } = useSuspenseQuery({
-        queryKey: ['student_tasks', taskId],
-        queryFn: () => getStudentTask(taskId as string)
-    })
+    const { data, isLoading, isError, error } = useStudentTasks(taskId as string)
 
     if (isLoading) console.log('loading...')
     if (isError) console.log(error)

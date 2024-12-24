@@ -13,7 +13,7 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
-import { useSpecStudentTask } from "@/hooks/TaskQueries"
+import { calculateAverage } from "@/hooks/TaskQueries"
 
 export const SectionView = () => {
     const { section, subject } = useParams<{ section: string, subject: SubjectTypes }>()
@@ -31,21 +31,12 @@ export const SectionView = () => {
     const myStudents = fetchMyStudents.data
     const specStudentTask = myStudents.map((student) => ({
         ...student,
-        recit_average: useSpecStudentTask(student.sid.sid, subject, 'recitation'),
+        recit_average: calculateAverage(student.sid.sid, subject, 'recitation') ?? 0,
+        act_average: calculateAverage(student.sid.sid, subject, 'activity') ?? 0,
     }))
 
     // console.log(specStudentTask)
 
-    // const total_items_sum = specStudentTask.map(innerArray => {
-    //     const sumTotalItems = innerArray.reduce((accu, curr) => accu + curr.total_items, 0)
-    //     const sumTotalScores = innerArray.reduce((accu, curr) => accu + curr.score, 0)
-
-    //     const average = sumTotalScores > 0 ? (sumTotalScores / sumTotalItems) * 6 : 0
-
-    //     return [{ sid: innerArray[0].sid, recit_average: average }]
-    // })
-
-    // console.log(total_items_sum)
 
     if (!subjects.includes(subject as SubjectTypes) || !section_handled.includes(section)) {
         return <div>Error: Invalid subject or section parameter</div>;
@@ -66,12 +57,14 @@ export const SectionView = () => {
                         {specStudentTask.map(({
                             _id,
                             sid: { firstname, lastname },
-                            recit_average
+                            recit_average,
+                            act_average
                         }) => (
                             <TableRow key={_id}>
                                 <TableCell className="font-medium">{lastname}</TableCell>
                                 <TableCell>{firstname}</TableCell>
-                                <TableCell>Recitation: {recit_average} %</TableCell>
+                                <TableCell>Recitation: {recit_average.toFixed(2)} %</TableCell>
+                                <TableCell>Activity: {act_average.toFixed(2)} %</TableCell>
                             </TableRow>
                         ))}
                     </TableBody>
