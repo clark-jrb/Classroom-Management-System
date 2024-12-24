@@ -58,7 +58,7 @@ export const useMyTasks = () => {
     function getSpecificTaskTotal(taskType: TaskTypes) {
         return tasks
             .filter((item) => item.type === taskType)
-            .map((item) => ({ total_items: item.total_items }))
+            .map((item) => ({ task_id: item._id, total_items: item.total_items }))
     }
 
     function countTask(

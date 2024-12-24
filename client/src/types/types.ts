@@ -16,6 +16,13 @@ export type StudentTask = {
     }
 }
 
+export type SpecStudentTask = {
+    _id: string
+    score: number,
+    sid: string
+    task_id: TTasks
+}
+
 export type StudentTaskCreate = {
     task_id: string
     grade_lvl: string

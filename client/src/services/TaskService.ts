@@ -1,6 +1,6 @@
 import { api } from "./api";
 import { StudentScore } from "@/types/types";
-import { TTasks, TTaskForm, Message, StudentTask, StudentTaskCreate } from "@/types/types";
+import { TTasks, TTaskForm, Message, StudentTask, StudentTaskCreate, SpecStudentTask } from "@/types/types";
 
 export const createTask = async (id: string, value: TTaskForm): Promise<{task: TTasks} & Message> => {
     try {
@@ -61,5 +61,17 @@ export const updateStudentScores = async (value: StudentScore["student_scores"])
     } catch (error) {
         console.log('Failed to update student scores user', error)
         throw new Error('Failed to update student scores user')
+    }
+}
+
+export const getSpecificStudentTask = async (id: string): Promise<SpecStudentTask[]> => {
+    try {
+        const response = await api.get(`/task/student/${id}`, {
+            withCredentials: true
+        })
+        return response.data
+    } catch (error) {
+        console.log('Failed to get student tasks', error)
+        throw new Error('Failed to get student tasks')
     }
 }
