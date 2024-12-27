@@ -17,5 +17,19 @@ const StudentTaskSchema = new Schema({
     score: { type: Number, required: true }
 })
 
+const TaskGrade1Schema = StudentTaskSchema.clone()
+const TaskGrade2Schema = StudentTaskSchema.clone()
+const TaskGrade3Schema = StudentTaskSchema.clone()
+const TaskGrade4Schema = StudentTaskSchema.clone()
+const TaskGrade5Schema = StudentTaskSchema.clone()
+const TaskGrade6Schema = StudentTaskSchema.clone()
+
 export const TaskModel = model('tasks', TaskSchema)
 export const StudentTaskModel = model('student_tasks', StudentTaskSchema)
+
+export const TaskGrade1Model = model('tasks_grade_1', StudentTaskSchema)
+export const TaskGrade2Model = model('tasks_grade_2', StudentTaskSchema)
+export const TaskGrade3Model = model('tasks_grade_3', StudentTaskSchema)
+export const TaskGrade4Model = model('tasks_grade_4', StudentTaskSchema)
+export const TaskGrade5Model = model('tasks_grade_5', StudentTaskSchema)
+export const TaskGrade6Model = model('tasks_grade_6', StudentTaskSchema)
