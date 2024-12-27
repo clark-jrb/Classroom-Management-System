@@ -1,8 +1,9 @@
 import { useAuthStore } from "@/stores/auth/authSlice"
 import { useMutation, useSuspenseQuery } from "@tanstack/react-query"
 import { createTask, getTask, createStudentTasks, updateStudentScores, getSpecificStudentTask, getStudentTask } from "@/services/TaskService"
-import { teacherInfo } from "./TeacherQueries"
+import { teacherInfo } from "./useTeacherQueries"
 import { StudentScore, TTaskForm, StudentTaskCreate, TaskTypes, QuarterTypes, SubjectTypes, TTasks } from "@/types/types"
+import { getPercentage } from "@/helpers/get-percentage"
 
 export const taskFunctions = () => {
     const { user_id } = useAuthStore()
@@ -104,18 +105,4 @@ export function calculateAverage(id: string, subject: SubjectTypes, type: TaskTy
     const average = sumTotalScores > 0 ? (sumTotalScores / sumTotalItems) * getPercentage(type) : 0
 
     return average
-}
-
-export function getPercentage(type: TaskTypes) {
-    const percentageMap: Record<TaskTypes, number> = {
-        recitation: 6,
-        activity: 9,
-        quiz: 12,
-        project: 10,
-        summative: 25,
-        exam: 50,
-        '': 0
-    };
-
-    return percentageMap[type]
 }

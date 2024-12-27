@@ -1,4 +1,4 @@
-import { useAuthentication } from '@/hooks/AuthenticationQueries'
+import { useAuthentication } from '@/hooks/useAuthQueries'
 import { SideNavbar } from '@/components/side-navbar'
 
 export const FacultyLayout = ({ children }: any) => {

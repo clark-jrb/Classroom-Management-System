@@ -1,4 +1,4 @@
-import { useMyTasks } from "@/hooks/TaskQueries"
+import { useMyTasks } from "@/hooks/useTaskQueries"
 import { useNavigate } from "react-router-dom"
 import { TaskTypes } from "@/types/types"
 

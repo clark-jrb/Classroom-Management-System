@@ -1,4 +1,4 @@
-import { teacherInfo } from "@/hooks/TeacherQueries"
+import { teacherInfo } from "@/hooks/useTeacherQueries"
 import { Sections } from "./pages/Sections"
 import { SubjectTypes } from "@/types/types"
 

@@ -1,7 +1,7 @@
 import { Badge } from "@/components/ui/badge"
 import { ReactComponent as PenEdit } from '@/assets/icons/pen-edit.svg'
 import { useStudentDialogStore } from "@/stores/studentSlice"
-import { studentFunctions } from "@/hooks/StudentQueries"
+import { studentFunctions } from "@/hooks/useStudentQueries"
 import {
     Dialog,
     DialogTrigger
