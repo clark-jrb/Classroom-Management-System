@@ -142,7 +142,7 @@ export class TaskController {
      */
     public updateStudentScore: RequestHandler = async (req, res) => {
         try {
-            const { grade_lvl } = req.params
+            const { grade_lvl } = req.query
             const studentScores: StudentTask[] = req.body
             const Model = this.selectTaskGradeModel(grade_lvl as GradeLevels)
 

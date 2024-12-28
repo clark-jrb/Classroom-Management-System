@@ -7,6 +7,7 @@ import { getPercentage } from "@/helpers/get-percentage"
 
 export const taskFunctions = () => {
     const { user_id } = useAuthStore()
+    const { grade_assigned } = teacherInfo()
     
     const generateTask = useMutation({
         mutationFn: (value: TTaskForm) => createTask(user_id, value)
@@ -24,7 +25,7 @@ export const taskFunctions = () => {
     })
 
     const updateStudentScore = useMutation({
-        mutationFn: (value: StudentScore["student_scores"]) => updateStudentScores(value)
+        mutationFn: (value: StudentScore["student_scores"]) => updateStudentScores(value, grade_assigned)
     })
 
     function createTasks({ task_id, grade_lvl, section }: StudentTaskCreate) {
@@ -73,17 +74,18 @@ export const useMyTasks = () => {
     return { filterTask, countTask }
 }
 
-export const useStudentTasks = (task_id: string) => {
+export const useStudentTasks = (task_id: string, grade_lvl: string) => {
     return useSuspenseQuery({
-        queryKey: ['student_tasks', task_id],
-        queryFn: () => getStudentTask(task_id)
+        queryKey: ['student_tasks', task_id, grade_lvl],
+        queryFn: () => getStudentTask(task_id, grade_lvl)
     })
 }
 
-export const useSpecificStudentTask = (id: string) => {
+export const useSpecificStudentTask = (sid: string) => {
+    const { grade_assigned } = teacherInfo()
     return useSuspenseQuery({
-        queryKey: ['spec_student_tasks', id],
-        queryFn: () => getSpecificStudentTask(id)
+        queryKey: ['spec_student_tasks', sid],
+        queryFn: () => getSpecificStudentTask(sid, grade_assigned)
     })
 }
 

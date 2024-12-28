@@ -23,13 +23,15 @@ import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { getChangedScores } from "@/helpers/changed-fields"
 import { taskFunctions, useStudentTasks } from "@/hooks/useTaskQueries"
+import { teacherInfo } from "@/hooks/useTeacherQueries"
 
 export const TaskView = () => {
     const { taskId } = useParams()
     const { updateStudentScore } = taskFunctions()
     const queryClient = useQueryClient()
+    const { grade_assigned } = teacherInfo()
     
-    const { data, isLoading, isError, error } = useStudentTasks(taskId as string)
+    const { data, isLoading, isError, error } = useStudentTasks(taskId as string, grade_assigned)
 
     if (isLoading) console.log('loading...')
     if (isError) console.log(error)

@@ -40,9 +40,13 @@ export const createStudentTasks = async (value: StudentTaskCreate): Promise<Mess
     }
 }
 
-export const getStudentTask = async (id: string): Promise<StudentTask[]> => {
+export const getStudentTask = async (task_id: string, grade_lvl: string): Promise<StudentTask[]> => {
     try {
-        const response = await api.get(`/task/students/${id}`, {
+        const response = await api.get(`/task/students`, {
+            params: {
+                task_id,
+                grade_lvl
+            },
             withCredentials: true
         })
         return response.data
@@ -52,9 +56,12 @@ export const getStudentTask = async (id: string): Promise<StudentTask[]> => {
     }
 }
 
-export const updateStudentScores = async (value: StudentScore["student_scores"]): Promise<Message> => {
+export const updateStudentScores = async (value: StudentScore["student_scores"], grade_lvl: string): Promise<Message> => {
     try {
         const response = await api.patch(`/task/students/update`, value, {
+            params: {
+                grade_lvl
+            },
             withCredentials: true
         })
         return response.data
@@ -64,9 +71,13 @@ export const updateStudentScores = async (value: StudentScore["student_scores"])
     }
 }
 
-export const getSpecificStudentTask = async (id: string): Promise<SpecStudentTask[]> => {
+export const getSpecificStudentTask = async (sid: string, grade_lvl: string): Promise<SpecStudentTask[]> => {
     try {
-        const response = await api.get(`/task/student/${id}`, {
+        const response = await api.get(`/task/student`, {
+            params: {
+                sid,
+                grade_lvl
+            },
             withCredentials: true
         })
         return response.data
