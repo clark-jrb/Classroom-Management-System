@@ -1,4 +1,4 @@
-import { Response, Request, RequestHandler } from "express"
+import { RequestHandler } from "express"
 import { StudentModel, StudentInfoModel, StudentClassModel } from "../models/student"
 import mongoose from "mongoose"
 
@@ -18,58 +18,61 @@ export class StudentController {
     //     }
     // }
 
-    public getStudents = async (req: Request, res: Response): Promise<any> => {
+    public getStudents: RequestHandler = async (req, res) => {
         try {
             const students = await StudentModel.find()
 
-            return res.status(200).json({ students: students })
+            res.status(200).json({ students: students })
         } catch (error) {
-            return res.status(400).json({ message: 'Failed to get students', error })
+            res.status(400).json({ message: 'Failed to get students', error })
         }
     }
 
-    public getStudentById = async (req: Request, res: Response): Promise<any> => {
+    public getStudentById: RequestHandler = async (req, res) => {
         try {
             const { id } = req.params
 
             if (!mongoose.Types.ObjectId.isValid(id)) {
-                return res.status(400).json({ message: 'Invalid ID format' });
+                res.status(400).json({ message: 'Invalid ID format' })
             }
 
             const [account, personal, classes] = await Promise.all([
                 StudentModel.findById(id),
                 StudentInfoModel.findOne({ sid: id }),
                 StudentClassModel.findOne({ sid: id }),
-            ]);
+            ])
     
             if (!account) {
-                return res.status(404).json({ message: 'Student cannot be found' });
+                res.status(404).json({ message: 'Student cannot be found' })
             }
 
-            return res.status(200).json({account, personal, classes})
+            res.status(200).json({account, personal, classes})
         } catch (error) {
-            return res.status(400).json({ message: 'Failed to get student', error })
+            res.status(400).json({ message: 'Failed to get student', error })
         }
     }
 
-    public deleteStudentById = async (req: Request, res: Response): Promise<any> => {
+    public deleteStudentById: RequestHandler = async (req, res) => {
         try {
             const { id } = req.params
             await StudentModel.findOneAndDelete({ _id: id })
 
-            return res.status(200).json({ message: 'Student successfully deleted' })
+            res.status(200).json({ message: 'Student successfully deleted' })
         } catch (error) {
-            return res.status(400).json({ message: 'Failed to delete student', error })
+            res.status(400).json({ message: 'Failed to delete student', error })
         }
     }
     
-    public updateStudentById = async (req: Request, res: Response): Promise<any> => {
+    public updateStudentById: RequestHandler = async (req, res) => {
         try {
             const { id } = req.params
             const data = req.body
 
             const student = await StudentModel.findById(id)
-            if (!student) return res.status(404).json({ message: "Student doesn't exists" })
+
+            if (!student) {
+                res.status(404).json({ message: "Student doesn't exists" })
+            }
 
             const updateStudentInfo = await StudentInfoModel.findOneAndUpdate(
                 { sid: id },
@@ -77,10 +80,10 @@ export class StudentController {
                 { new: true, runValidators: true }
             )
     
-            return res.status(200).json({ updateStudentInfo, message: "profile updated successfully!"}).end()
+            res.status(200).json({ updateStudentInfo, message: "profile updated successfully!"}).end()
         } catch (error) {
             console.log(error)
-            return res.sendStatus(400).json({ message: 'Failed to update student', error })
+            res.sendStatus(400).json({ message: 'Failed to update student', error })
         }
         // return await StudentModel.findByIdAndUpdate(id, values)
     }

@@ -9,8 +9,8 @@ export default (router: express.Router) => {
     router.post('/task/:id', isAuthenticated, createTask)
     router.get('/task', isAuthenticated, getTasks)
     router.post('/task/students/create', isAuthenticated, createStudentTasks)
-    router.get('/task/students/:id', isAuthenticated, getStudentTasks)
-    router.patch('/task/students/update', isAuthenticated, updateStudentScore)
+    router.get('/task/students', isAuthenticated, getStudentTasks)
+    router.patch('/task/students/:grade_lvl', isAuthenticated, updateStudentScore)
 
-    router.get('/task/student/:id', isAuthenticated, getSpecificStudentTasks)
+    router.get('/task/student', isAuthenticated, getSpecificStudentTasks)
 }

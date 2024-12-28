@@ -169,7 +169,7 @@ export class TaskController {
     /**
      * GET student tasks
      */
-    public getSpecificStudentTasks: RequestHandler = async (req, res) =>  {
+    public getSpecificStudentTasks: RequestHandler = async (req, res) => {
         try {
             const { sid, grade_lvl } = req.query
             const Model = this.selectTaskGradeModel(grade_lvl as GradeLevels)

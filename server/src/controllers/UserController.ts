@@ -1,5 +1,4 @@
-import { Response, Request } from "express"
-import { UserModel } from "../models/user"
+import { RequestHandler } from "express"
 import { StudentModel, StudentInfoModel, StudentClassModel } from "../models/student"
 import { TeacherModel, TeacherInfoModel, TeacherClassModel } from "../models/teacher"
 
@@ -86,7 +85,7 @@ export class UserController {
     }
 
     // is user authenticated?
-    public authenticated = async (req: Request, res: Response): Promise<any> => {
+    public authenticated: RequestHandler = async (req, res) => {
         try {
             const user = (req as any).user;
             const { accessToken } = req.cookies // get access token from cookie on server
@@ -95,12 +94,12 @@ export class UserController {
             const Model = this.selectModel(role)
             const currentUser = await Model.findById(id);
 
-            return res.json({ 
+            res.json({ 
                 currentUser: currentUser, 
                 accessToken: accessToken
             });
         } catch (error) {
-            return res.status(401).json({ message: 'Token expired' })
+            res.status(401).json({ message: 'Token expired' })
         }
         
     }
