@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom"
 import { useQueryClient } from "@tanstack/react-query"
-import { StudentTask, StudentScore } from "../../../../types/types"
+import { StudentScore } from "../../../../types/types"
 import {
     Table,
     TableBody,
@@ -89,10 +89,10 @@ export const TaskView = () => {
                             </TableRow>
                         </TableHeader>
                         <TableBody>
-                            {data && data.map(({
+                            {data.map(({
                                 sid: { firstname, lastname },
                                 task_id: { total_items }
-                            }: StudentTask, index: number) => (
+                            }, index: number) => (
                                 <TableRow key={index}>
                                     <TableCell className="font-medium">{lastname}</TableCell>
                                     <TableCell>{firstname}</TableCell>
