@@ -1,9 +1,7 @@
 import { useParams } from "react-router-dom"
 import { Procedures } from "./Procedures"
 import { SubjectTypes } from "@/types/types"
-import { teacherInfo } from "@/hooks/useTeacherQueries"
-import { useSuspenseQuery } from "@tanstack/react-query"
-import { getMyStudents } from "@/services/TeacherService"
+import { teacherInfo, fetchMyStudents } from "@/hooks/useTeacherQueries"
 import {
     Table,
     TableBody,
@@ -13,7 +11,7 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
-import { useSpecificStudentTask } from "@/hooks/useTaskQueries"
+import { useSpecificStudentTask, calculateAverage } from "@/hooks/useTaskQueries"
 
 export const SectionView = () => {
     const { section, subject } = useParams<{ section: string, subject: SubjectTypes }>()
@@ -27,23 +25,15 @@ export const SectionView = () => {
         return <div>Error: Invalid subject or section parameter</div>;
     }
 
-    const fetchMyStudents = useSuspenseQuery({
-        queryKey: ['my_students'],
-        queryFn: () => getMyStudents(grade_assigned, section)
-    })
-
-    const { data } = useSpecificStudentTask()
-
-    if (data) {
-        console.log(data)
-    }
+    const { data: my_students } = fetchMyStudents(grade_assigned, section)
+    const { data: spec_student_tasks } = useSpecificStudentTask()
     
-    const myStudents = fetchMyStudents.data
-    const specStudentTask = myStudents.map((student) => ({
+    const specStudentTask = my_students.map((student) => ({
         ...student,
-        recit_average: 0
+        recit_average: calculateAverage(student.sid.sid, spec_student_tasks, subject, 'recitation')
     }))
 
+    console.log(specStudentTask)
     return (
         <div className="flex h-full gap-5">
             <div className="flex-1 border rounded-md">
