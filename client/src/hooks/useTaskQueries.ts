@@ -3,7 +3,7 @@ import { useMutation, useSuspenseQuery } from "@tanstack/react-query"
 import { createTask, getTask, createStudentTasks, updateStudentScores, getSpecificStudentTask, getStudentTask } from "@/services/TaskService"
 import { teacherInfo } from "./useTeacherQueries"
 import { StudentScore, TTaskForm, StudentTaskCreate, TaskTypes, QuarterTypes, SubjectTypes, TTasks } from "@/types/types"
-import { getPercentage } from "@/helpers/get-percentage"
+// import { getPercentage } from "@/helpers/get-percentage"
 
 export const taskFunctions = () => {
     const { user_id } = useAuthStore()
@@ -81,30 +81,31 @@ export const useStudentTasks = (task_id: string, grade_lvl: string) => {
     })
 }
 
-export const useSpecificStudentTask = (sid: string) => {
+export const useSpecificStudentTask = () => {
+    const { user_id } = useAuthStore()
     const { grade_assigned } = teacherInfo()
     return useSuspenseQuery({
-        queryKey: ['spec_student_tasks', sid],
-        queryFn: () => getSpecificStudentTask(sid, grade_assigned)
+        queryKey: ['spec_student_tasks', user_id],
+        queryFn: () => getSpecificStudentTask(user_id, grade_assigned)
     })
 }
 
-export function calculateAverage(id: string, subject: SubjectTypes, type: TaskTypes) {
-    const { data, isError, error } = useSpecificStudentTask(id)
+// export function calculateAverage(id: string, subject: SubjectTypes, type: TaskTypes) {
+//     const { data, isError, error } = useSpecificStudentTask(id)
     
-    if (isError) console.log(error)
+//     if (isError) console.log(error)
 
-    const calculateAverage = data
-        .filter((item) => 
-            item.task_id.subject === subject &&
-            item.task_id.type === type
-        )
-        .map((item) => ({ sid: item.sid, score: item.score, total_items: item.task_id.total_items }))
+//     const calculateAverage = data
+//         .filter((item) => 
+//             item.task_id.subject === subject &&
+//             item.task_id.type === type
+//         )
+//         .map((item) => ({ sid: item.sid, score: item.score, total_items: item.task_id.total_items }))
 
-    const sumTotalItems = calculateAverage.reduce((accu, curr) => accu + curr.total_items, 0)
-    const sumTotalScores = calculateAverage.reduce((accu, curr) => accu + curr.score, 0)
+//     const sumTotalItems = calculateAverage.reduce((accu, curr) => accu + curr.total_items, 0)
+//     const sumTotalScores = calculateAverage.reduce((accu, curr) => accu + curr.score, 0)
 
-    const average = sumTotalScores > 0 ? (sumTotalScores / sumTotalItems) * getPercentage(type) : 0
+//     const average = sumTotalScores > 0 ? (sumTotalScores / sumTotalItems) * getPercentage(type) : 0
 
-    return average
-}
+//     return average
+// }

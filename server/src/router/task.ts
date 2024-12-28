@@ -3,7 +3,7 @@ import { TaskController } from '../controllers/TaskController'
 import { isAuthenticated } from '../middlewares'
 
 const Task = new TaskController()
-const { createTask, getTasks, createStudentTasks, getStudentTasks, updateStudentScore, getSpecificStudentTasks } = Task
+const { createTask, getTasks, createStudentTasks, getStudentTasks, updateStudentScore, getAllMyStudentsWithTasks } = Task
 
 export default (router: express.Router) => {
     router.post('/task/:id', isAuthenticated, createTask)
@@ -12,5 +12,5 @@ export default (router: express.Router) => {
     router.get('/task/students', isAuthenticated, getStudentTasks)
     router.patch('/task/students/:grade_lvl', isAuthenticated, updateStudentScore)
 
-    router.get('/task/student', isAuthenticated, getSpecificStudentTasks)
+    router.get('/task/student', isAuthenticated, getAllMyStudentsWithTasks)
 }

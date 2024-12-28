@@ -169,13 +169,15 @@ export class TaskController {
     /**
      * GET student tasks
      */
-    public getSpecificStudentTasks: RequestHandler = async (req, res) => {
+    public getAllMyStudentsWithTasks: RequestHandler = async (req, res) => {
         try {
-            const { sid, grade_lvl } = req.query
+            const { tid, grade_lvl } = req.query
+
             const Model = this.selectTaskGradeModel(grade_lvl as GradeLevels)
 
-            const studentTasks = await Model.find({ sid: sid })
-                .populate('task_id')
+            const findTasks = await Model.find().populate('task_id')
+
+            const studentTasks = findTasks.filter((task: any) => task.task_id.tid.toString() === tid)
 
             res.status(200).json(studentTasks)
         } catch (error) {

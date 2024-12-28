@@ -71,11 +71,11 @@ export const updateStudentScores = async (value: StudentScore["student_scores"],
     }
 }
 
-export const getSpecificStudentTask = async (sid: string, grade_lvl: string): Promise<SpecStudentTask[]> => {
+export const getSpecificStudentTask = async (tid: string, grade_lvl: string): Promise<SpecStudentTask[]> => {
     try {
         const response = await api.get(`/task/student`, {
             params: {
-                sid,
+                tid,
                 grade_lvl
             },
             withCredentials: true

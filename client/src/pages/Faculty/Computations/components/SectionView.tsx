@@ -13,7 +13,7 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
-import { calculateAverage } from "@/hooks/useTaskQueries"
+import { useSpecificStudentTask } from "@/hooks/useTaskQueries"
 
 export const SectionView = () => {
     const { section, subject } = useParams<{ section: string, subject: SubjectTypes }>()
@@ -31,16 +31,17 @@ export const SectionView = () => {
         queryKey: ['my_students'],
         queryFn: () => getMyStudents(grade_assigned, section)
     })
+
+    const { data } = useSpecificStudentTask()
+
+    if (data) {
+        console.log(data)
+    }
     
     const myStudents = fetchMyStudents.data
     const specStudentTask = myStudents.map((student) => ({
         ...student,
-        recit_average: calculateAverage(student.sid.sid, subject, 'recitation') ?? 0,
-        // act_average: calculateAverage(student.sid.sid, subject, 'activity') ?? 0,
-        // quiz_average: calculateAverage(student.sid.sid, subject, 'quiz') ?? 0,
-        // proj_average: calculateAverage(student.sid.sid, subject, 'project') ?? 0,
-        // summ_average: calculateAverage(student.sid.sid, subject, 'summative') ?? 0,
-        // exam_average: calculateAverage(student.sid.sid, subject, 'exam') ?? 0
+        recit_average: 0
     }))
 
     return (
@@ -53,33 +54,18 @@ export const SectionView = () => {
                             <TableHead className="w-[200px]">Last Name</TableHead>
                             <TableHead>First Name</TableHead>
                             <TableHead>Recitation</TableHead>
-                            {/* <TableHead>Activity</TableHead>
-                            <TableHead>Quiz</TableHead>
-                            <TableHead>Project</TableHead>
-                            <TableHead>Summative</TableHead>
-                            <TableHead>Exam</TableHead> */}
                         </TableRow>
                     </TableHeader>
                     <TableBody>
                         {specStudentTask.map(({
                             _id,
                             sid: { firstname, lastname },
-                            recit_average,
-                            // act_average,
-                            // quiz_average,
-                            // proj_average,
-                            // summ_average,
-                            // exam_average
+                            recit_average
                         }) => (
                             <TableRow key={_id}>
                                 <TableCell className="font-medium">{lastname}</TableCell>
                                 <TableCell>{firstname}</TableCell>
                                 <TableCell>{recit_average.toFixed(2)} %</TableCell>
-                                {/* <TableCell>{act_average.toFixed(2)} %</TableCell>
-                                <TableCell>{quiz_average.toFixed(2)} %</TableCell>
-                                <TableCell>{proj_average.toFixed(2)} %</TableCell>
-                                <TableCell>{summ_average.toFixed(2)} %</TableCell>
-                                <TableCell>{exam_average.toFixed(2)} %</TableCell> */}
                             </TableRow>
                         ))}
                     </TableBody>
