@@ -1,4 +1,4 @@
-import { RequestHandler } from 'express'
+import { RequestHandler, NextFunction, Request, Response } from 'express'
 import { get } from 'lodash'
 import jwt from 'jsonwebtoken'
 
@@ -8,7 +8,7 @@ export interface JwtPayload {
     role: string
 }
 
-export const isOwner: RequestHandler = async (req, res, next) => {
+export const isOwner: RequestHandler = async (req, res, next: NextFunction) => {
     try {
         const { id } = req.params
         const currentStudentId = get(req, 'identity._id') as string
@@ -28,11 +28,11 @@ export const isOwner: RequestHandler = async (req, res, next) => {
     }
 }
 
-export const isAuthenticated: RequestHandler = async (req, res, next)=> {
+export const isAuthenticated = async (req: Request, res: Response, next: NextFunction): Promise<any> => {
     const token = req.cookies?.accessToken
 
     if (!token) {
-        res.status(401).json({ message: 'No access token, authorization denied' })
+        return res.status(401).json({ message: 'No access token, authorization denied' })
     }
 
     try {
@@ -41,6 +41,6 @@ export const isAuthenticated: RequestHandler = async (req, res, next)=> {
         
         next()
     } catch (err) {
-        res.status(401).json({ message: 'Token is not valid or has expired' })
+        return res.status(401).json({ message: 'Token is not valid or has expired' })
     }
 }
