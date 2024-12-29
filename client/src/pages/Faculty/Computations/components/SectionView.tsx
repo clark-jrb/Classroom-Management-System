@@ -11,7 +11,8 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
-import { useSpecificStudentTask, calculatePerformance } from "@/hooks/useTaskQueries"
+import { useSpecificStudentTask } from "@/hooks/useTaskQueries"
+import { calculatePerformance } from "@/helpers/calculate-performance"
 
 export const SectionView = () => {
     const { section, subject } = useParams<{ section: string, subject: SubjectTypes }>()
@@ -25,9 +26,14 @@ export const SectionView = () => {
         return <div>Error: Invalid subject or section parameter</div>
     }
 
-    const { data: my_students } = fetchMyStudents(grade_assigned, section)
-    const { data: spec_student_tasks } = useSpecificStudentTask() // get all my students with my tasks
+    const { data: my_students } = fetchMyStudents(grade_assigned, section) // get all my students
+    const { data: spec_student_tasks } = useSpecificStudentTask() // get all teacher's students taking his/her tasks
     
+    /** 
+     *  this will map all the teacher's students and then executes the function that has the parameter of
+     *  the spec_student_task to find according to student's id and then gets ALL specific task
+     *  (ex. quiz) then calculates its performance (%)
+     */
     const data = my_students.map(({ sid: { sid, firstname, lastname }, ...student}) => ({
         ...student,
         firstname,
