@@ -2,8 +2,7 @@ import { useAuthStore } from "@/stores/auth/authSlice"
 import { useMutation, useSuspenseQuery } from "@tanstack/react-query"
 import { createTask, getTask, createStudentTasks, updateStudentScores, getSpecificStudentTask, getStudentTask } from "@/services/TaskService"
 import { teacherInfo } from "./useTeacherQueries"
-import { StudentScore, TTaskForm, StudentTaskCreate, TaskTypes, QuarterTypes, SubjectTypes, TTasks, SpecStudentTask } from "@/types/types"
-import { getPercentage } from "@/helpers/get-percentage"
+import { StudentScore, TTaskForm, StudentTaskCreate, TaskTypes, QuarterTypes, SubjectTypes, TTasks } from "@/types/types"
 
 export const taskFunctions = () => {
     const { user_id } = useAuthStore()

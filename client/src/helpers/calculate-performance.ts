@@ -1,8 +1,13 @@
 import { SpecStudentTask, SubjectTypes, TaskTypes } from "@/types/types"
-import { getPercentage } from "./get-percentage"
+import { getWeight } from "./get-weight"
 
-export function calculatePerformance(sid: string, data: SpecStudentTask[], subject: SubjectTypes, type: TaskTypes) {
-    const getScoreAndTotal = data
+export function calculatePerformance(
+    sid: string, 
+    data: SpecStudentTask[], 
+    subject: SubjectTypes, 
+    type: TaskTypes
+) {
+    const ScoresAndTotals = data
         .filter((item) => 
                 item.sid === sid &&
                 item.task_id.subject === subject &&
@@ -14,10 +19,10 @@ export function calculatePerformance(sid: string, data: SpecStudentTask[], subje
             score: item.score
         }))
 
-    const sumTotalItems = getScoreAndTotal.reduce((accu, curr) => accu + curr.total_items, 0)
-    const sumTotalScores = getScoreAndTotal.reduce((accu, curr) => accu + curr.score, 0)
+    const sumTotalItems = ScoresAndTotals.reduce((accu, curr) => accu + curr.total_items, 0)
+    const sumTotalScores = ScoresAndTotals.reduce((accu, curr) => accu + curr.score, 0)
 
-    const average = sumTotalScores > 0 ? (sumTotalScores / sumTotalItems) * getPercentage(type) : 0
+    const average = sumTotalScores > 0 ? (sumTotalScores / sumTotalItems) * getWeight(type) : 0
 
     return average
 }
