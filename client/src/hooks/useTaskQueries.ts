@@ -1,6 +1,6 @@
 import { useAuthStore } from "@/stores/auth/authSlice"
 import { useMutation, useSuspenseQuery } from "@tanstack/react-query"
-import { createTask, getTask, createStudentTasks, updateStudentScores, getSpecificStudentTask, getStudentTask } from "@/services/TaskService"
+import { createTask, getTask, createStudentTasks, updateStudentScores, getMyStudentsWithMyTasks, getStudentTask } from "@/services/TaskService"
 import { teacherInfo } from "./useTeacherQueries"
 import { StudentScore, TTaskForm, StudentTaskCreate, TaskTypes, QuarterTypes, SubjectTypes, TTasks } from "@/types/types"
 
@@ -80,11 +80,15 @@ export const useStudentTasks = (task_id: string, grade_lvl: string) => {
     })
 }
 
-export const useSpecificStudentTask = () => {
-    const { user_id } = useAuthStore()
-    const { grade_assigned } = teacherInfo()
+/**
+ * this query will get all the teacher's students that takes his/her given tasks
+ */
+export const useStudentsWithMyTasks = () => {
+    const { user_id } = useAuthStore()          // grab the user_id of current user of the application (TEACHER)
+    const { grade_assigned } = teacherInfo()    // get teacher's assigned grade level of students
+
     return useSuspenseQuery({
-        queryKey: ['spec_student_tasks', user_id],
-        queryFn: () => getSpecificStudentTask(user_id, grade_assigned)
+        queryKey: ['my_students_with_tasks', user_id],
+        queryFn: () => getMyStudentsWithMyTasks(user_id, grade_assigned)
     })
 }

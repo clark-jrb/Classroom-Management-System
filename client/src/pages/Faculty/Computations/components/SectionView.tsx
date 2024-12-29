@@ -11,7 +11,7 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
-import { useSpecificStudentTask } from "@/hooks/useTaskQueries"
+import { useStudentsWithMyTasks } from "@/hooks/useTaskQueries"
 import { calculatePerformance } from "@/helpers/calculate-performance"
 
 export const SectionView = () => {
@@ -27,7 +27,7 @@ export const SectionView = () => {
     }
 
     const { data: my_students } = fetchMyStudents(grade_assigned, section) // get all my students
-    const { data: spec_student_tasks } = useSpecificStudentTask() // get all teacher's students taking his/her tasks
+    const { data: spec_student_tasks } = useStudentsWithMyTasks() // get all teacher's students taking his/her tasks
     
     /** 
      *  this will map all the teacher's students and then executes the function that has the parameter of

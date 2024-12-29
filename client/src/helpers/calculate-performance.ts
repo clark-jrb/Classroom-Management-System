@@ -22,7 +22,7 @@ export function calculatePerformance(
     const sumTotalItems = ScoresAndTotals.reduce((accu, curr) => accu + curr.total_items, 0)
     const sumTotalScores = ScoresAndTotals.reduce((accu, curr) => accu + curr.score, 0)
 
-    const average = sumTotalScores > 0 ? (sumTotalScores / sumTotalItems) * getWeight(type) : 0
+    const performance = sumTotalScores > 0 ? (sumTotalScores / sumTotalItems) * getWeight(type) : 0
 
-    return average
+    return performance
 }

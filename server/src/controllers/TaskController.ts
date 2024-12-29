@@ -1,32 +1,10 @@
 import { RequestHandler } from "express"
-import { 
-    TaskModel, 
-    StudentTaskModel, 
-    TaskGrade1Model,
-    TaskGrade2Model,
-    TaskGrade3Model,
-    TaskGrade4Model,
-    TaskGrade5Model,
-    TaskGrade6Model 
-} from "../models/task"
+import { TaskModel } from "../models/task"
 import { StudentClassModel } from "../models/student"
 import { StudentTask, Task, GradeLevels } from "../types/TaskTypes"
+import { selectTaskGradeModel } from "../helpers/select-models"
 
 export class TaskController {
-    private selectTaskGradeModel(grade: GradeLevels) {
-        const availableModels: any = {
-            grade_1: TaskGrade1Model,
-            grade_2: TaskGrade2Model,
-            grade_3: TaskGrade3Model,
-            grade_4: TaskGrade4Model,
-            grade_5: TaskGrade5Model,
-            grade_6: TaskGrade6Model,
-        }
-        
-        const selectedModel = availableModels[grade]
-        return selectedModel
-    }
-
     /**
      * CREATE Task (for teacher)
      */
@@ -81,7 +59,7 @@ export class TaskController {
     public createStudentTasks: RequestHandler = async (req, res) => {
         try {
             const { task_id, grade_lvl, section } = req.body
-            const Model = this.selectTaskGradeModel(grade_lvl)
+            const Model = selectTaskGradeModel(grade_lvl)
 
             const findStudents = await StudentClassModel.find({
                 gradeLevel: grade_lvl,
@@ -113,12 +91,14 @@ export class TaskController {
     }
     
     /**
-     * GET student tasks
+     * GET students taking a specific task
+     * this will return all the students taking the specific task
+     * ex. task_id is quiz no. 2 (this will return ALL students taking the quiz no.2)
      */
-    public getStudentTasks: RequestHandler = async (req, res) =>  {
+    public getStudentsTakingTask: RequestHandler = async (req, res) =>  {
         try {
             const { task_id, grade_lvl } = req.query
-            const Model = this.selectTaskGradeModel(grade_lvl as GradeLevels)
+            const Model = selectTaskGradeModel(grade_lvl as GradeLevels)
 
             const studentTasks = await Model.find({ task_id: task_id })
                 .populate({
@@ -144,7 +124,7 @@ export class TaskController {
         try {
             const { grade_lvl } = req.query
             const studentScores: StudentTask[] = req.body
-            const Model = this.selectTaskGradeModel(grade_lvl as GradeLevels)
+            const Model = selectTaskGradeModel(grade_lvl as GradeLevels)
 
             studentScores.forEach(async (data) => {
                 try {
@@ -167,13 +147,15 @@ export class TaskController {
     }
 
     /**
-     * GET student tasks
+     * GET students taking teacher's tasks
+     * this will return all of the students of a specific grade level taking the teacher's tasks
+     * (tasks can be recitation, quiz, activity, etc.)
      */
-    public getAllMyStudentsWithTasks: RequestHandler = async (req, res) => {
+    public getStudentsTakingMyTasks: RequestHandler = async (req, res) => {
         try {
             const { tid, grade_lvl } = req.query
 
-            const Model = this.selectTaskGradeModel(grade_lvl as GradeLevels)
+            const Model = selectTaskGradeModel(grade_lvl as GradeLevels)
 
             const findTasks = await Model.find().populate('task_id')
 
