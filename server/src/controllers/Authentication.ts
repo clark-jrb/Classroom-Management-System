@@ -1,4 +1,4 @@
-import { RequestHandler } from 'express'
+import { Request, Response } from 'express'
 import { UserController } from './UserController'
 import { hashPassword, comparePassword } from '../utils/hashPassword'
 import { createTokens } from '../utils/createToken'
@@ -7,7 +7,7 @@ import { createRefreshTokenOnDB } from '../utils/createToken'
 
 const User = new UserController()
 
-export const login: RequestHandler = async (req, res) => {
+export const login = async (req: Request, res: Response): Promise<any> => {
     const { email, password, role } = req.body
 
     const userExists = await User.getByEmail(email, role)
@@ -15,12 +15,12 @@ export const login: RequestHandler = async (req, res) => {
     try {
         // checks fields if empty
         if (!email || !password) {
-            res.json({ message: 'Incomplete credentials'})
+            return res.json({ message: 'Incomplete credentials'})
         }
 
         // checks if user exists
         if (!userExists) {
-            res.json({ message: "User don't exist"})
+            return res.json({ message: "User don't exist"})
         }
 
         // generates access and refresh tokens 
@@ -30,25 +30,25 @@ export const login: RequestHandler = async (req, res) => {
         const matchPass = await comparePassword(password, userExists.password)
 
         if (!matchPass) {
-            res.json({ message: 'Wrong password' })
+            return res.json({ message: 'Wrong password' })
         }
 
         // creates refresh tokens on database 
         createRefreshTokenOnDB(userExists.id, refreshToken).save()
 
-        res
+        return res
             .cookie("accessToken", accessToken, accessTokenOpt)
             .cookie("refreshToken", refreshToken, refreshTokenOpt)
             .json({ accessToken, refreshToken, userRole: userExists.role, message: "User logged in successfully!" })
             .end()
     } catch (error) {
         console.log(error)
-        res.sendStatus(400)
+        return res.sendStatus(400)
     }
 }
 
 
-export const register: RequestHandler = async (req, res) => {
+export const register = async (req: Request, res: Response): Promise<any> => {
     const { account, information, classes } = req.body
     const { email, password, role } = account
 
@@ -57,12 +57,12 @@ export const register: RequestHandler = async (req, res) => {
     try {
         // check if all fields filled 
         if (!email || !password) {
-            res.json({ message: "Incomplete credentials" })
+            return res.json({ message: "Incomplete credentials" })
         }
 
         // const userExist = await getUserByEmail(email)
         if (userExist) {
-            res.json({ message: "User already exists" })
+            return res.json({ message: "User already exists" })
         }
 
         // hash password 
@@ -87,7 +87,7 @@ export const register: RequestHandler = async (req, res) => {
             createRefreshTokenOnDB(userNowExist.id, refreshToken).save()
 
             // responds with access and refresh token on headers
-            res
+            return res
                 .cookie("accessToken", accessToken, accessTokenOpt)
                 .cookie("refreshToken", refreshToken, refreshTokenOpt)
                 .status(201).json({ userRole: role, message: "User registered successfully!" })
@@ -95,11 +95,11 @@ export const register: RequestHandler = async (req, res) => {
         }
     } catch (error) {
         console.log(error)
-        res.sendStatus(400)
+        return res.sendStatus(400)
     }
 }
 
-export const logout: RequestHandler = async (req, res) => {
+export const logout = (req: Request, res: Response) => {
     res
         .clearCookie('accessToken')
         .clearCookie('refreshToken')
