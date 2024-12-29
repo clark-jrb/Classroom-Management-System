@@ -11,7 +11,7 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
-import { useSpecificStudentTask, calculateAverage } from "@/hooks/useTaskQueries"
+import { useSpecificStudentTask, calculatePerformance } from "@/hooks/useTaskQueries"
 
 export const SectionView = () => {
     const { section, subject } = useParams<{ section: string, subject: SubjectTypes }>()
@@ -26,16 +26,21 @@ export const SectionView = () => {
     }
 
     const { data: my_students } = fetchMyStudents(grade_assigned, section)
-    const { data: spec_student_tasks } = useSpecificStudentTask()
+    const { data: spec_student_tasks } = useSpecificStudentTask() // get all my students with my tasks
     
     const data = my_students.map(({ sid: { sid, firstname, lastname }, ...student}) => ({
         ...student,
         firstname,
         lastname,
-        recit_average: calculateAverage(sid, spec_student_tasks, subject, 'recitation')
+        recitation: calculatePerformance(sid, spec_student_tasks, subject, 'recitation'),
+        activity: calculatePerformance(sid, spec_student_tasks, subject, 'activity'),
+        quiz: calculatePerformance(sid, spec_student_tasks, subject, 'quiz'),
+        project: calculatePerformance(sid, spec_student_tasks, subject, 'project'),
+        summative: calculatePerformance(sid, spec_student_tasks, subject, 'summative'),
+        exam: calculatePerformance(sid, spec_student_tasks, subject, 'exam')
     }))
 
-    console.log(data)
+    // console.log(data)
     return (
         <div className="flex h-full gap-5">
             <div className="flex-1 border rounded-md">
@@ -46,6 +51,11 @@ export const SectionView = () => {
                             <TableHead className="w-[200px]">Last Name</TableHead>
                             <TableHead>First Name</TableHead>
                             <TableHead>Recitation</TableHead>
+                            <TableHead>Activity</TableHead>
+                            <TableHead>Quiz</TableHead>
+                            <TableHead>Project</TableHead>
+                            <TableHead>Summative</TableHead>
+                            <TableHead>Exam</TableHead>
                         </TableRow>
                     </TableHeader>
                     <TableBody>
@@ -53,12 +63,22 @@ export const SectionView = () => {
                             _id,
                             firstname,
                             lastname,
-                            recit_average
+                            recitation,
+                            activity,
+                            quiz,
+                            project,
+                            summative,
+                            exam
                         }) => (
                             <TableRow key={_id}>
                                 <TableCell className="font-medium">{lastname}</TableCell>
                                 <TableCell>{firstname}</TableCell>
-                                <TableCell>{recit_average.toFixed(2)} %</TableCell>
+                                <TableCell>{recitation ? recitation.toFixed(2) : 0} %</TableCell>
+                                <TableCell>{activity ? activity.toFixed(2) : 0} %</TableCell>
+                                <TableCell>{quiz ? quiz.toFixed(2) : 0} %</TableCell>
+                                <TableCell>{project ? project.toFixed(2) : 0} %</TableCell>
+                                <TableCell>{summative ? summative.toFixed(2) : 0} %</TableCell>
+                                <TableCell>{exam ? exam.toFixed(2) : 0} %</TableCell>
                             </TableRow>
                         ))}
                     </TableBody>

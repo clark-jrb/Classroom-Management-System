@@ -90,7 +90,7 @@ export const useSpecificStudentTask = () => {
     })
 }
 
-export function calculateAverage(sid: string, data: SpecStudentTask[], subject: SubjectTypes, type: TaskTypes) {
+export function calculatePerformance(sid: string, data: SpecStudentTask[], subject: SubjectTypes, type: TaskTypes) {
     const getScoreAndTotal = data
         .filter((item) => 
                 item.sid === sid &&
