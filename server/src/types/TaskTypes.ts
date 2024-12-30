@@ -7,7 +7,7 @@ export interface StudentTask {
 }
 
 export interface Task {
-    tid: mongoose.Types.ObjectId
+    // tid: mongoose.Types.ObjectId
     subject: string
     grade: string
     section: string

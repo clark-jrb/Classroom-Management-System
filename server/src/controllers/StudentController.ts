@@ -1,4 +1,4 @@
-import { RequestHandler } from "express"
+import { Request, Response } from "express"
 import { StudentModel, StudentInfoModel, StudentClassModel } from "../models/student"
 import mongoose from "mongoose"
 
@@ -18,7 +18,7 @@ export class StudentController {
     //     }
     // }
 
-    public getStudents: RequestHandler = async (req, res) => {
+    public getStudents = async (req: Request, res: Response): Promise<void> => {
         try {
             const students = await StudentModel.find()
 
@@ -28,7 +28,7 @@ export class StudentController {
         }
     }
 
-    public getStudentById: RequestHandler = async (req, res) => {
+    public getStudentById = async (req: Request, res: Response): Promise<void> => {
         try {
             const { id } = req.params
 
@@ -52,7 +52,7 @@ export class StudentController {
         }
     }
 
-    public deleteStudentById: RequestHandler = async (req, res) => {
+    public deleteStudentById = async (req: Request, res: Response): Promise<void> => {
         try {
             const { id } = req.params
             await StudentModel.findOneAndDelete({ _id: id })
@@ -63,7 +63,7 @@ export class StudentController {
         }
     }
     
-    public updateStudentById: RequestHandler = async (req, res) => {
+    public updateStudentById = async (req: Request, res: Response): Promise<void> => {
         try {
             const { id } = req.params
             const data = req.body
@@ -91,7 +91,7 @@ export class StudentController {
     /**
      * GET students by its class
      */
-    public getStudentByClass: RequestHandler = async (req, res) => {
+    public getStudentByClass = async (req: Request, res: Response): Promise<void> => {
         try {
             const { gradeLevel, section } = req.query
 

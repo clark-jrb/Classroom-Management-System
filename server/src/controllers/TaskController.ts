@@ -1,4 +1,4 @@
-import { RequestHandler } from "express"
+import { Request, Response } from "express"
 import { TaskModel } from "../models/task"
 import { StudentClassModel } from "../models/student"
 import { StudentTask, Task } from "../types/TaskTypes"
@@ -9,17 +9,17 @@ export class TaskController {
     /**
      * CREATE Task (for teacher)
      */
-    public createTask: RequestHandler = async (req, res) => {
+    public createTask = async (req: Request, res: Response): Promise<void> => {
         try {
             const { tid } = req.params
             const data = req.body
 
-            const newTask: Task = await TaskModel.create({
+            const newTask = await TaskModel.create({
                 tid: tid,
                 ...data
             })
 
-            res.status(200).json({ task: newTask, message: 'New task succesfully created' })
+            res.status(201).json({ task: newTask, message: 'New task succesfully created' })
         } catch (error) {
             res.status(400).json({ message: 'Failed to create task', error })
         }
@@ -28,7 +28,7 @@ export class TaskController {
     /**
      * GET task
      */
-    public getTasks: RequestHandler = async (req, res) => {
+    public getTasks = async (req: Request, res: Response): Promise<void> => {
         try {
             const { user_id, grade_assigned, section_handled, subjects } = req.query
 
@@ -57,7 +57,7 @@ export class TaskController {
     /**
      * CREATE student tasks
      */
-    public createTasksToStudents: RequestHandler = async (req, res) => {
+    public createTasksToStudents = async (req: Request, res: Response): Promise<void> => {
         try {
             const { task_id, grade_lvl, section } = req.body
             const Model = selectTaskGradeModel(grade_lvl)
@@ -96,7 +96,7 @@ export class TaskController {
      * this will return all the students taking the specific task
      * ex. task_id is quiz no. 2 (this will return ALL students taking the quiz no.2)
      */
-    public getStudentsTakingTask: RequestHandler = async (req, res) =>  {
+    public getStudentsTakingTask = async (req: Request, res: Response): Promise<void> =>  {
         try {
             const { task_id, grade_lvl } = req.query
             const Model = selectTaskGradeModel(grade_lvl as GradeLevels)
@@ -121,7 +121,7 @@ export class TaskController {
     /**
      * UPDATE students scores
      */
-    public updateStudentsScores: RequestHandler = async (req, res) => {
+    public updateStudentsScores = async (req: Request, res: Response): Promise<void> => {
         try {
             const { grade_lvl } = req.query
             const StudentsScores: StudentTask[] = req.body
@@ -153,7 +153,7 @@ export class TaskController {
      * this will return all of the students of a specific grade level taking the teacher's tasks
      * (tasks can be recitation, quiz, activity, etc.)
      */
-    public getStudentsTakingMyTasks: RequestHandler = async (req, res) => {
+    public getStudentsTakingMyTasks = async (req: Request, res: Response): Promise<void> => {
         try {
             const { tid, grade_lvl } = req.query
 

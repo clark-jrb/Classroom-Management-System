@@ -1,4 +1,4 @@
-import { RequestHandler } from "express"
+import { Request, Response } from "express"
 import { selectModel, selectPersonalModel, selectClassModel } from "../helpers/select-models"
 import { ValidRoles } from "../types/types"
 
@@ -44,7 +44,7 @@ export class UserController {
     }
 
     // is user authenticated?
-    public authenticated: RequestHandler = async (req, res) => {
+    public authenticated = async (req: Request, res: Response): Promise<void> => {
         try {
             const user = (req as any).user
             const { accessToken } = req.cookies // get access token from cookie on server

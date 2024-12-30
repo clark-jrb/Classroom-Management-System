@@ -1,4 +1,4 @@
-import { RequestHandler } from "express"
+import { Request, Response } from "express"
 import { TeacherModel, TeacherInfoModel, TeacherClassModel } from "../models/teacher"
 import mongoose from "mongoose"
 
@@ -7,7 +7,7 @@ export class TeacherController {
     /**
      * GET TEACHERS
      */
-    public getTeachers: RequestHandler = async (req, res) =>{
+    public getTeachers = async (req: Request, res: Response): Promise<void> =>{
         try {
             const teachers = await TeacherModel.find()
 
@@ -20,7 +20,7 @@ export class TeacherController {
     /**
      * GET TEACHER BY ID
      */
-    public getTeacherById: RequestHandler = async (req, res) =>  {
+    public getTeacherById = async (req: Request, res: Response): Promise<void> =>  {
         try {
             const { id } = req.params
 
@@ -47,7 +47,7 @@ export class TeacherController {
     /**
      * DELETE TEACHER BY ID
      */
-    public deleteTeacherById: RequestHandler = async (req, res) => {
+    public deleteTeacherById = async (req: Request, res: Response): Promise<void> => {
         try {
             const { id } = req.params
             await TeacherModel.findOneAndDelete({ _id: id })
@@ -61,7 +61,7 @@ export class TeacherController {
     /**
      * UPDATE TEACHER BY ID
      */
-    public updateTeacherById: RequestHandler = async (req, res) => {
+    public updateTeacherById = async (req: Request, res: Response): Promise<void> => {
         try {
             const { id } = req.params
             const data = req.body
