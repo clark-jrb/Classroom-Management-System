@@ -1,7 +1,8 @@
 import { RequestHandler } from "express"
 import { TaskModel } from "../models/task"
 import { StudentClassModel } from "../models/student"
-import { StudentTask, Task, GradeLevels } from "../types/TaskTypes"
+import { StudentTask, Task } from "../types/TaskTypes"
+import { GradeLevels } from "../types/types"
 import { selectTaskGradeModel } from "../helpers/select-models"
 
 export class TaskController {
@@ -56,7 +57,7 @@ export class TaskController {
     /**
      * CREATE student tasks
      */
-    public createStudentTasks: RequestHandler = async (req, res) => {
+    public createTasksToStudents: RequestHandler = async (req, res) => {
         try {
             const { task_id, grade_lvl, section } = req.body
             const Model = selectTaskGradeModel(grade_lvl)

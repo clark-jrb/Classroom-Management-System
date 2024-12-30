@@ -1,5 +1,7 @@
-import { TaskGrade1Model, TaskGrade2Model, TaskGrade3Model, TaskGrade4Model, TaskGrade5Model, TaskGrade6Model } from "models/task"
-import { GradeLevels } from "types/TaskTypes"
+import { StudentClassModel, StudentInfoModel, StudentModel } from "models/student"
+import { TeacherClassModel, TeacherInfoModel, TeacherModel } from "models/teacher"
+import { TaskGrade1Model, TaskGrade2Model, TaskGrade3Model, TaskGrade4Model, TaskGrade5Model, TaskGrade6Model } from "../models/task"
+import { ValidRoles, GradeLevels } from "types/types"
 
 export const selectTaskGradeModel = (grade: GradeLevels) => {
     const selectedModel: any = {
@@ -12,4 +14,31 @@ export const selectTaskGradeModel = (grade: GradeLevels) => {
     }
 
     return selectedModel[grade]
+}
+
+export const selectModel = (role: ValidRoles) => {
+    const selectedModel: any = {
+        student: StudentModel,
+        faculty: TeacherModel
+    }
+
+    return selectedModel[role]
+}
+
+export const selectPersonalModel = (role: ValidRoles) => {
+    const selectedModel: any = {
+        student: StudentInfoModel,
+        faculty: TeacherInfoModel
+    }
+
+    return selectedModel[role]
+}
+
+export const selectClassModel = (role: ValidRoles) => {
+    const selectedModel: any = {
+        student: StudentClassModel,
+        faculty: TeacherClassModel
+    }
+
+    return selectedModel[role]
 }

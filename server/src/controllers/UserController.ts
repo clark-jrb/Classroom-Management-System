@@ -1,81 +1,40 @@
 import { RequestHandler } from "express"
-import { StudentModel, StudentInfoModel, StudentClassModel } from "../models/student"
-import { TeacherModel, TeacherInfoModel, TeacherClassModel } from "../models/teacher"
+import { selectModel, selectPersonalModel, selectClassModel } from "helpers/select-models"
+import { ValidRoles } from "types/types"
 
 export class UserController {
-
-    private selectModel(role: string) {
-        const validRoles = ['student', 'faculty', 'admin']
-
-        if (!validRoles.includes(role)) {
-            throw new Error(`Invalid role: ${role}`)
-        }
-
-        const availableModels: any = {
-            student: StudentModel,
-            faculty: TeacherModel
-        }
-        const selectedModel = availableModels[role]
-
-        return selectedModel
-    }
-
-    private selectInfoModel(role: string) {
-        const validRoles = ['student', 'faculty']
-
-        if (!validRoles.includes(role)) {
-            throw new Error(`Invalid role: ${role}`)
-        }
-
-        const availableModels: any = {
-            student: StudentInfoModel,
-            faculty: TeacherInfoModel
-        }
-        const selectedInfoModel = availableModels[role]
-
-        return selectedInfoModel
-    }
-
-    private selectClassModel(role: string) {
-        const validRoles = ['student', 'faculty']
-
-        if (!validRoles.includes(role)) {
-            throw new Error(`Invalid role: ${role}`)
-        }
-
-        const availableModels: any = {
-            student: StudentClassModel,
-            faculty: TeacherClassModel
-        }
-        const selectedClassModel = availableModels[role]
-
-        return selectedClassModel
-    }
-
     // get user by email 
-    public async getByEmail(email: string, role: string) {
-        const Model = this.selectModel(role)
+    public async getByEmail(
+        email: string, 
+        role: ValidRoles
+    ) {
+        const Model = selectModel(role)
 
         return await Model.findOne({ email: email })
     }
 
     // create user (student and teachers) 
-    public async createUser(values: Record<string, any>, infoValues: Record<string, any>, classesValues: Record<string, any>, role: string) {
-        const Model = this.selectModel(role) // Select on StudentModel, TeacherModel
-        const InfoModel = this.selectInfoModel(role) // Select on StudentInfoModel, TeacherInfoModel
-        const ClassModel = this.selectClassModel(role) // Select on StudentInfoModel, TeacherInfoModel
+    public async createUser(
+        values: Record<string, any>, 
+        personalData: Record<string, any>, 
+        classData: Record<string, any>, 
+        role: ValidRoles
+    ) {
+        const Model = selectModel(role) // Select on StudentModel, TeacherModel
+        const PersonalModel = selectPersonalModel(role) // Select on StudentPersonalModel, TeacherPersonalModel
+        const ClassModel = selectClassModel(role) // Select on StudentPersonalModel, TeacherPersonalModel
 
         const user = await Model.create(values) // Save account on database
         if (role === 'student') {
             await Promise.all([
-                InfoModel.create({ sid: user._id, ...infoValues }),
-                ClassModel.create({ sid: user._id, ...classesValues })
+                PersonalModel.create({ sid: user._id, ...personalData }),
+                ClassModel.create({ sid: user._id, ...classData })
             ])
         }
         if (role === 'faculty') {
             await Promise.all([
-                InfoModel.create({ tid: user._id, ...infoValues }),
-                ClassModel.create({ tid: user._id, ...classesValues })
+                PersonalModel.create({ tid: user._id, ...personalData }),
+                ClassModel.create({ tid: user._id, ...classData })
             ])
         }
 
@@ -87,17 +46,17 @@ export class UserController {
     // is user authenticated?
     public authenticated: RequestHandler = async (req, res) => {
         try {
-            const user = (req as any).user;
+            const user = (req as any).user
             const { accessToken } = req.cookies // get access token from cookie on server
 
             const { role, id } = user
-            const Model = this.selectModel(role)
-            const currentUser = await Model.findById(id);
+            const Model = selectModel(role)
+            const currentUser = await Model.findById(id)
 
             res.json({ 
                 currentUser: currentUser, 
                 accessToken: accessToken
-            });
+            })
         } catch (error) {
             res.status(401).json({ message: 'Token expired' })
         }
