@@ -15,16 +15,16 @@ export class UserController {
 
     // create user (student and teachers) 
     public async createUser(
-        values: Record<string, any>, 
+        accountData: Record<string, any>, 
         personalData: Record<string, any>, 
         classData: Record<string, any>, 
         role: ValidRoles
     ) {
-        const Model = selectModel(role) // Select on StudentModel, TeacherModel
+        const AccountModel = selectModel(role) // Select on StudentModel, TeacherModel
         const PersonalModel = selectPersonalModel(role) // Select on StudentPersonalModel, TeacherPersonalModel
         const ClassModel = selectClassModel(role) // Select on StudentPersonalModel, TeacherPersonalModel
 
-        const user = await Model.create(values) // Save account on database
+        const user = await AccountModel.create(accountData) // Save account on database
         if (role === 'student') {
             await Promise.all([
                 PersonalModel.create({ sid: user._id, ...personalData }),

@@ -2,9 +2,9 @@ import { api } from "./api";
 import { StudentScore } from "@/types/types";
 import { TTasks, TTaskForm, Message, StudentTask, StudentTaskCreate, SpecStudentTask } from "@/types/types";
 
-export const createTask = async (id: string, value: TTaskForm): Promise<{task: TTasks} & Message> => {
+export const createTask = async (tid: string, value: TTaskForm): Promise<{task: TTasks} & Message> => {
     try {
-        const response = await api.post(`/task/${id}`, value, {
+        const response = await api.post(`/task/${tid}`, value, {
             withCredentials: true
         })
         return response.data
@@ -18,7 +18,7 @@ export const getTask = async (filters: Record<string, string | string[]>): Promi
     try {
         const query = new URLSearchParams(filters as Record<string, string>).toString()
         // console.log(query)
-        const response = await api.get(`/task?${query}`, {
+        const response = await api.get(`/tasks?${query}`, {
             withCredentials: true
         })
         return response.data
@@ -30,7 +30,7 @@ export const getTask = async (filters: Record<string, string | string[]>): Promi
 
 export const createStudentTasks = async (value: StudentTaskCreate): Promise<Message> => {
     try {
-        const response = await api.post(`/task/students/create`, value, {
+        const response = await api.post(`/task/students`, value, {
             withCredentials: true
         })
         return response.data
@@ -42,7 +42,7 @@ export const createStudentTasks = async (value: StudentTaskCreate): Promise<Mess
 
 export const getStudentTask = async (task_id: string, grade_lvl: string): Promise<StudentTask[]> => {
     try {
-        const response = await api.get(`/task/students`, {
+        const response = await api.get(`/students/task`, {
             params: {
                 task_id,
                 grade_lvl
@@ -58,7 +58,7 @@ export const getStudentTask = async (task_id: string, grade_lvl: string): Promis
 
 export const updateStudentScores = async (value: StudentScore["student_scores"], grade_lvl: string): Promise<Message> => {
     try {
-        const response = await api.patch(`/task/students/update`, value, {
+        const response = await api.patch(`/students/scores`, value, {
             params: {
                 grade_lvl
             },
@@ -73,7 +73,7 @@ export const updateStudentScores = async (value: StudentScore["student_scores"],
 
 export const getMyStudentsWithMyTasks = async (tid: string, grade_lvl: string): Promise<SpecStudentTask[]> => {
     try {
-        const response = await api.get(`/task/student`, {
+        const response = await api.get(`/students/my_tasks`, {
             params: {
                 tid,
                 grade_lvl

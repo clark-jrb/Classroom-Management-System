@@ -8,17 +8,16 @@ const {
     getTasks, 
     createTasksToStudents, 
     getStudentsTakingTask, 
-    updateStudentScore, 
+    updateStudentsScores, 
     getStudentsTakingMyTasks 
 } = Task
 
 export default (router: express.Router) => {
-    router.get('/task', isAuthenticated, getTasks)
-    router.post('/task/:id', isAuthenticated, createTask)
+    router.get('/tasks', isAuthenticated, getTasks)
+    router.post('/task/:tid', isAuthenticated, createTask) // gets teacher id params for ownership of the task
+    router.post('/tasks/students', isAuthenticated, createTasksToStudents)
 
-    router.get('/task/students', isAuthenticated, getStudentsTakingTask)
-    router.post('/task/students/create', isAuthenticated, createTasksToStudents)
-    router.patch('/task/students/:grade_lvl', isAuthenticated, updateStudentScore)
-
-    router.get('/task/student', isAuthenticated, getStudentsTakingMyTasks)
+    router.get('/students/task', isAuthenticated, getStudentsTakingTask)
+    router.get('/students/my_tasks', isAuthenticated, getStudentsTakingMyTasks)
+    router.patch('/students/scores/:grade_lvl', isAuthenticated, updateStudentsScores) // find students according to grade level
 }

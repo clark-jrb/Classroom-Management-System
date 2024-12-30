@@ -11,11 +11,11 @@ export class TaskController {
      */
     public createTask: RequestHandler = async (req, res) => {
         try {
-            const { id } = req.params
+            const { tid } = req.params
             const data = req.body
 
             const newTask: Task = await TaskModel.create({
-                tid: id,
+                tid: tid,
                 ...data
             })
 
@@ -121,13 +121,13 @@ export class TaskController {
     /**
      * UPDATE students scores
      */
-    public updateStudentScore: RequestHandler = async (req, res) => {
+    public updateStudentsScores: RequestHandler = async (req, res) => {
         try {
             const { grade_lvl } = req.query
-            const studentScores: StudentTask[] = req.body
+            const StudentsScores: StudentTask[] = req.body
             const Model = selectTaskGradeModel(grade_lvl as GradeLevels)
 
-            studentScores.forEach(async (data) => {
+            StudentsScores.forEach(async (data) => {
                 try {
                     await Model.findByIdAndUpdate(
                         data._id,
@@ -135,9 +135,10 @@ export class TaskController {
                         { new: true, runValidators: true }
                     )
                     // console.log('score updated successfuly')
-                    res.status(200).json({ message: 'scores updated successfuly' })
+                    res.status(200).json({ message: 'A student score updated successfuly' })
                 } catch (error) {
                     console.log('error updating scores ' + error)
+                    res.status(400).json({ message: 'Failed to update a stundent score', error })
                 }
             })
             
