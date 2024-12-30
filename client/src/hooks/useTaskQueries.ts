@@ -1,19 +1,37 @@
 import { useAuthStore } from "@/stores/auth/authSlice"
 import { useMutation, useSuspenseQuery } from "@tanstack/react-query"
-import { createTask, getTask, createStudentTasks, updateStudentScores, getMyStudentsWithMyTasks, getStudentTask } from "@/services/TaskService"
 import { teacherInfo } from "./useTeacherQueries"
-import { StudentScore, TTaskForm, StudentTaskCreate, TaskTypes, QuarterTypes, SubjectTypes, TTasks } from "@/types/types"
+import { 
+    createTask, 
+    getTasks, 
+    createTasksToStudents, 
+    updateStudentsScores, 
+    getStudentsTakingMyTasks, 
+    getStudentsTakingTask 
+} from "@/services/TaskService"
+import { 
+    StudentScore, 
+    TTaskForm, 
+    StudentTaskCreate, 
+    TaskTypes, 
+    QuarterTypes, 
+    SubjectTypes, 
+    TTasks 
+} from "@/types/types"
 
+/**
+ * this hook returns functions for tasks like UPDATE and CREATE 
+ */
 export const taskFunctions = () => {
-    const { user_id } = useAuthStore()
-    const { grade_assigned } = teacherInfo()
+    const { user_id } = useAuthStore()          // grabs id of the current user (IT SHOULD BE TEACHER)
+    const { grade_assigned } = teacherInfo()    // get teacher's assigned grade level of the students
     
-    const generateTask = useMutation({
+    const generateTask = useMutation({  // generates task (ex. generate recitations)
         mutationFn: (value: TTaskForm) => createTask(user_id, value)
     })
     
-    const generateStudentTasks = useMutation({
-        mutationFn: (value: StudentTaskCreate) => createStudentTasks(value),
+    const generateTasksToStudents = useMutation({ // generates task to each student
+        mutationFn: (value: StudentTaskCreate) => createTasksToStudents(value),
         onSuccess: (data) => {
             const { message } = data
             console.log(message)
@@ -23,37 +41,38 @@ export const taskFunctions = () => {
         }
     })
 
-    const updateStudentScore = useMutation({
-        mutationFn: (value: StudentScore["student_scores"]) => updateStudentScores(value, grade_assigned)
+    const updateScores = useMutation({ // updates students scores
+        mutationFn: (value: StudentScore["student_scores"]) => updateStudentsScores(value, grade_assigned)
     })
 
     function createTasks({ task_id, grade_lvl, section }: StudentTaskCreate) {
-        generateStudentTasks.mutateAsync({ task_id, grade_lvl, section })
+        generateTasksToStudents.mutateAsync({ task_id, grade_lvl, section })
     }
 
     return { 
         generateTask, 
-        generateStudentTasks,
+        generateTasksToStudents,
         createTasks, 
-        updateStudentScore 
+        updateScores 
     }
 }
 
+/**
+ * this hook queries teacher's tasks and then returns the functions that filters the tasks
+ */
 export const useMyTasks = () => {
     const { user_id } = useAuthStore()
     const { grade_assigned, section_handled, subjects } = teacherInfo()
 
-    const { data, isError, error } = useSuspenseQuery({
+    const { data, isError, error } = useSuspenseQuery({ // fetch all tasks created by the teacher
         queryKey: ['my_tasks'],
-        queryFn: () => getTask({ user_id, grade_assigned, section_handled, subjects })
+        queryFn: () => getTasks({ user_id, grade_assigned, section_handled, subjects })
     })
 
     if (isError) console.log('there is an error getting your tasks', error)
-
-    const tasks = data
     
     function filterTask(taskType: TaskTypes): TTasks[] {
-        return tasks.filter((item) => item.type === taskType)
+        return data.filter((item) => item.type === taskType)
     }
 
     function countTask(
@@ -62,7 +81,7 @@ export const useMyTasks = () => {
         section: string,
         quarter: QuarterTypes
     ): number {
-        return tasks.filter((item) => 
+        return data.filter((item) => 
             item.type === taskType && 
             item.subject === subject && 
             item.section === section && 
@@ -73,22 +92,27 @@ export const useMyTasks = () => {
     return { filterTask, countTask }
 }
 
+/**
+ * this query will return all students taking a specific task 
+ * (ex. quiz no.2)
+ */
 export const useStudentTasks = (task_id: string, grade_lvl: string) => {
     return useSuspenseQuery({
-        queryKey: ['student_tasks', task_id, grade_lvl],
-        queryFn: () => getStudentTask(task_id, grade_lvl)
+        queryKey: ['students_taking_task', task_id, grade_lvl],
+        queryFn: () => getStudentsTakingTask(task_id, grade_lvl)
     })
 }
 
 /**
- * this query will get all the teacher's students that takes his/her given tasks
+ * this query will return all students taking all of the teacher's tasks
+ * (ex. students taking my recitation, quiz, exam, etc.)
  */
-export const useStudentsWithMyTasks = () => {
-    const { user_id } = useAuthStore()          // grab the user_id of current user of the application (TEACHER)
-    const { grade_assigned } = teacherInfo()    // get teacher's assigned grade level of students
+export const useStudentsTakingMyTasks = () => {
+    const { user_id } = useAuthStore()
+    const { grade_assigned } = teacherInfo()
 
     return useSuspenseQuery({
-        queryKey: ['my_students_with_tasks', user_id],
-        queryFn: () => getMyStudentsWithMyTasks(user_id, grade_assigned)
+        queryKey: ['students_taking_my_tasks', user_id],
+        queryFn: () => getStudentsTakingMyTasks(user_id, grade_assigned)
     })
 }

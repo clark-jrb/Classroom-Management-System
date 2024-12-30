@@ -11,7 +11,7 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
-import { useStudentsWithMyTasks } from "@/hooks/useTaskQueries"
+import { useStudentsTakingMyTasks } from "@/hooks/useTaskQueries"
 import { calculatePerformance } from "@/helpers/calculate-performance"
 
 export const SectionView = () => {
@@ -26,24 +26,25 @@ export const SectionView = () => {
         return <div>Error: Invalid subject or section parameter</div>
     }
 
-    const { data: my_students } = fetchMyStudents(grade_assigned, section) // get all my students
-    const { data: spec_student_tasks } = useStudentsWithMyTasks() // get all teacher's students taking his/her tasks
+    const { data: my_students } = fetchMyStudents(grade_assigned, section)  // gets all teacher's students
+    const { data: students_taking_my_tasks } = useStudentsTakingMyTasks()   // gets all teacher's students taking his/her tasks
     
     /** 
-     *  this will map all the teacher's students and then executes the function that has the parameter of
-     *  the spec_student_task to find according to student's id and then gets ALL specific task
-     *  (ex. quiz) then calculates its performance (%)
+     * this will map all the teacher's students and then executes the function that 
+     * has the parameter of the students_taking_my_tasks array to find according to 
+     * student's id and then gets ALL specific task
+     * (ex. a student has quiz 1, quiz 2, and quiz 3) then calculates its performance (%)
      */
     const data = my_students.map(({ sid: { sid, firstname, lastname }, ...student}) => ({
         ...student,
         firstname,
         lastname,
-        recitation: calculatePerformance(sid, spec_student_tasks, subject, 'recitation'),
-        activity: calculatePerformance(sid, spec_student_tasks, subject, 'activity'),
-        quiz: calculatePerformance(sid, spec_student_tasks, subject, 'quiz'),
-        project: calculatePerformance(sid, spec_student_tasks, subject, 'project'),
-        summative: calculatePerformance(sid, spec_student_tasks, subject, 'summative'),
-        exam: calculatePerformance(sid, spec_student_tasks, subject, 'exam')
+        recitation: calculatePerformance(sid, students_taking_my_tasks, subject, 'recitation'),
+        activity: calculatePerformance(sid, students_taking_my_tasks, subject, 'activity'),
+        quiz: calculatePerformance(sid, students_taking_my_tasks, subject, 'quiz'),
+        project: calculatePerformance(sid, students_taking_my_tasks, subject, 'project'),
+        summative: calculatePerformance(sid, students_taking_my_tasks, subject, 'summative'),
+        exam: calculatePerformance(sid, students_taking_my_tasks, subject, 'exam')
     }))
 
     // console.log(data)

@@ -2,7 +2,10 @@ import { api } from "./api";
 import { StudentScore } from "@/types/types";
 import { TTasks, TTaskForm, Message, StudentTask, StudentTaskCreate, SpecStudentTask } from "@/types/types";
 
-export const createTask = async (tid: string, value: TTaskForm): Promise<{task: TTasks} & Message> => {
+export const createTask = async (
+    tid: string, 
+    value: TTaskForm
+): Promise<{task: TTasks} & Message> => {
     try {
         const response = await api.post(`/task/${tid}`, value, {
             withCredentials: true
@@ -14,7 +17,9 @@ export const createTask = async (tid: string, value: TTaskForm): Promise<{task: 
     }
 }
 
-export const getTask = async (filters: Record<string, string | string[]>): Promise<TTasks[]> => {
+export const getTasks = async (
+    filters: Record<string, string | string[]>
+): Promise<TTasks[]> => {
     try {
         const query = new URLSearchParams(filters as Record<string, string>).toString()
         // console.log(query)
@@ -28,7 +33,9 @@ export const getTask = async (filters: Record<string, string | string[]>): Promi
     }
 }
 
-export const createStudentTasks = async (value: StudentTaskCreate): Promise<Message> => {
+export const createTasksToStudents = async (
+    value: StudentTaskCreate
+): Promise<Message> => {
     try {
         const response = await api.post(`/task/students`, value, {
             withCredentials: true
@@ -40,7 +47,10 @@ export const createStudentTasks = async (value: StudentTaskCreate): Promise<Mess
     }
 }
 
-export const getStudentTask = async (task_id: string, grade_lvl: string): Promise<StudentTask[]> => {
+export const getStudentsTakingTask = async (
+    task_id: string, 
+    grade_lvl: string
+): Promise<StudentTask[]> => {
     try {
         const response = await api.get(`/students/task`, {
             params: {
@@ -56,7 +66,10 @@ export const getStudentTask = async (task_id: string, grade_lvl: string): Promis
     }
 }
 
-export const updateStudentScores = async (value: StudentScore["student_scores"], grade_lvl: string): Promise<Message> => {
+export const updateStudentsScores = async (
+    value: StudentScore["student_scores"], 
+    grade_lvl: string
+): Promise<Message> => {
     try {
         const response = await api.patch(`/students/scores`, value, {
             params: {
@@ -71,7 +84,10 @@ export const updateStudentScores = async (value: StudentScore["student_scores"],
     }
 }
 
-export const getMyStudentsWithMyTasks = async (tid: string, grade_lvl: string): Promise<SpecStudentTask[]> => {
+export const getStudentsTakingMyTasks = async (
+    tid: string, 
+    grade_lvl: string
+): Promise<SpecStudentTask[]> => {
     try {
         const response = await api.get(`/students/my_tasks`, {
             params: {

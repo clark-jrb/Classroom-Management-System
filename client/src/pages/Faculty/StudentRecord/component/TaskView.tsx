@@ -27,7 +27,7 @@ import { teacherInfo } from "@/hooks/useTeacherQueries"
 
 export const TaskView = () => {
     const { taskId } = useParams()
-    const { updateStudentScore } = taskFunctions()
+    const { updateScores } = taskFunctions()
     const queryClient = useQueryClient()
     const { grade_assigned } = teacherInfo()
     
@@ -54,7 +54,7 @@ export const TaskView = () => {
         const getChanges = getChangedScores(studentScoresData, values.student_scores)
         
         if (Object.keys(getChanges).length !== 0) {
-            updateStudentScore.mutateAsync(getChanges, {
+            updateScores.mutateAsync(getChanges, {
                 onSuccess: (data) => {
                     const { message } = data
                     console.log(message)
@@ -122,8 +122,8 @@ export const TaskView = () => {
                             ))}
                         </TableBody>
                     </Table>
-                    <Button type="submit" disabled={updateStudentScore.isPending}>
-                        {updateStudentScore.isPending ? "Processing..." : "Save"}
+                    <Button type="submit" disabled={updateScores.isPending}>
+                        {updateScores.isPending ? "Processing..." : "Save"}
                     </Button>
                 </form>
             </Form>
