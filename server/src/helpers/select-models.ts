@@ -1,7 +1,7 @@
-import { StudentClassModel, StudentInfoModel, StudentModel } from "models/student"
-import { TeacherClassModel, TeacherInfoModel, TeacherModel } from "models/teacher"
+import { StudentClassModel, StudentInfoModel, StudentModel } from "../models/student"
+import { TeacherClassModel, TeacherInfoModel, TeacherModel } from "../models/teacher"
 import { TaskGrade1Model, TaskGrade2Model, TaskGrade3Model, TaskGrade4Model, TaskGrade5Model, TaskGrade6Model } from "../models/task"
-import { ValidRoles, GradeLevels } from "types/types"
+import { ValidRoles, GradeLevels } from "../types/types"
 
 export const selectTaskGradeModel = (grade: GradeLevels) => {
     const selectedModel: any = {

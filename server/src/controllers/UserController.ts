@@ -1,6 +1,6 @@
 import { RequestHandler } from "express"
-import { selectModel, selectPersonalModel, selectClassModel } from "helpers/select-models"
-import { ValidRoles } from "types/types"
+import { selectModel, selectPersonalModel, selectClassModel } from "../helpers/select-models"
+import { ValidRoles } from "../types/types"
 
 export class UserController {
     // get user by email 

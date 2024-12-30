@@ -37,7 +37,7 @@ export const createTasksToStudents = async (
     value: StudentTaskCreate
 ): Promise<Message> => {
     try {
-        const response = await api.post(`/task/students`, value, {
+        const response = await api.post(`/tasks/students`, value, {
             withCredentials: true
         })
         return response.data
