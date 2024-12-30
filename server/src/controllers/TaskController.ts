@@ -127,21 +127,21 @@ export class TaskController {
             const StudentsScores: StudentTask[] = req.body
             const Model = selectTaskGradeModel(grade_lvl as GradeLevels)
 
-            StudentsScores.forEach(async (data) => {
+            for (const data of StudentsScores) {
                 try {
                     await Model.findByIdAndUpdate(
                         data._id,
                         { score: data.score },
                         { new: true, runValidators: true }
-                    )
-                    // console.log('score updated successfuly')
-                    res.status(200).json({ message: 'A student score updated successfuly' })
+                    );
+                    console.log(`Score for student ${data._id} updated successfully`);
                 } catch (error) {
-                    console.log('error updating scores ' + error)
-                    res.status(400).json({ message: 'Failed to update a stundent score', error })
+                    console.log(`Error updating score for student ${data._id}: ${error}`);
+                    // Optional: Track failed updates in a separate list to send back in the response
                 }
-            })
-            
+            }
+    
+            res.status(200).json({ message: 'All student scores updated successfully' });
         } catch (error) {
             console.log(error)
             res.status(400).json({ message: 'Failed to update scores', error })

@@ -58,7 +58,7 @@ export const TaskView = () => {
                 onSuccess: (data) => {
                     const { message } = data
                     console.log(message)
-                    queryClient.invalidateQueries({ queryKey: ['student_tasks'] })
+                    queryClient.invalidateQueries({ queryKey: ['students_taking_task', taskId, grade_assigned] })
                 },
                 onError: (error) => {
                     console.log(error)
