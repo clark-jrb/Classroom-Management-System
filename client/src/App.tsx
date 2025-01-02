@@ -1,7 +1,7 @@
 import '@/styles/App.scss'
 import { Routes, Route } from 'react-router-dom'
 import { Login } from '@/pages/Login'
-import { Register } from '@/pages/Register'
+import { Register } from '@/pages/Register/Register'
 import { Home } from '@/pages/Home'
 import { AuthenticatedRoutes } from '@/pages/Authenticated'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
