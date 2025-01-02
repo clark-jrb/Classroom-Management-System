@@ -22,12 +22,12 @@ import {
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { getChangedScores } from "@/helpers/changed-fields"
-import { taskFunctions, useStudentTasks } from "@/hooks/useTaskQueries"
+import { useTaskMutations, useStudentTasks } from "@/hooks/useTaskQueries"
 import { teacherInfo } from "@/hooks/useTeacherQueries"
 
 export const TaskView = () => {
     const { taskId } = useParams()
-    const { updateScores } = taskFunctions()
+    const { updateScores } = useTaskMutations()
     const queryClient = useQueryClient()
     const { grade_assigned } = teacherInfo()
     

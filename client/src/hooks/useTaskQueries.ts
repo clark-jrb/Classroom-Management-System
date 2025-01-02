@@ -22,15 +22,17 @@ import {
 /**
  * this hook returns functions for tasks like UPDATE and CREATE 
  */
-export const taskFunctions = () => {
+export const useTaskMutations = () => {
     const { user_id } = useAuthStore()          // grabs id of the current user (IT SHOULD BE TEACHER)
     const { grade_assigned } = teacherInfo()    // get teacher's assigned grade level of the students
     
-    const generateTask = useMutation({  // generates task (ex. generate recitations)
+    // generates task (ex. generate recitations)
+    const generateTask = useMutation({
         mutationFn: (value: TTaskForm) => createTask(user_id, value)
     })
     
-    const generateTasksToStudents = useMutation({ // generates task to each student
+    // generates task to each student
+    const generateTasksToStudents = useMutation({
         mutationFn: (value: StudentTaskCreate) => createTasksToStudents(value),
         onSuccess: (data) => {
             const { message } = data
@@ -41,10 +43,12 @@ export const taskFunctions = () => {
         }
     })
 
-    const updateScores = useMutation({ // updates students scores
+    // updates students scores
+    const updateScores = useMutation({
         mutationFn: (value: StudentScore["student_scores"]) => updateStudentsScores(value, grade_assigned)
     })
 
+    // function to mutate generate tasks to students
     function createTasks({ task_id, grade_lvl, section }: StudentTaskCreate) {
         generateTasksToStudents.mutateAsync({ task_id, grade_lvl, section })
     }
@@ -52,13 +56,14 @@ export const taskFunctions = () => {
     return { 
         generateTask, 
         generateTasksToStudents,
-        createTasks, 
-        updateScores 
+        updateScores,
+        createTasks
     }
 }
 
 /**
- * this hook queries teacher's tasks and then returns the functions that filters the tasks
+ * this hook queries to get all teacher's tasks and then returns the functions that filters the tasks
+ * (functions as of now: FILTER and COUNT)
  */
 export const useMyTasks = () => {
     const { user_id } = useAuthStore()
@@ -71,15 +76,17 @@ export const useMyTasks = () => {
 
     if (isError) console.log('there is an error getting your tasks', error)
     
+    // filters tasks by task type (ex. 'quiz')
     function filterTask(taskType: TaskTypes): TTasks[] {
         return data.filter((item) => item.type === taskType)
     }
 
+    // counts existing tasks (ex. quiz) to determine what task number is next to create
     function countTask(
-        taskType: TaskTypes, 
-        subject: SubjectTypes,
-        section: string,
-        quarter: QuarterTypes
+        taskType: TaskTypes,    //  What TYPE
+        subject: SubjectTypes,  //  What SUBJECT
+        section: string,        //  What SECTION
+        quarter: QuarterTypes   //  What QUARTER
     ): number {
         return data.filter((item) => 
             item.type === taskType && 
@@ -94,7 +101,7 @@ export const useMyTasks = () => {
 
 /**
  * this query will return all students taking a specific task 
- * (ex. quiz no.2)
+ * (ex. students taking quiz no.2)
  */
 export const useStudentTasks = (task_id: string, grade_lvl: string) => {
     return useSuspenseQuery({
@@ -105,7 +112,7 @@ export const useStudentTasks = (task_id: string, grade_lvl: string) => {
 
 /**
  * this query will return all students taking all of the teacher's tasks
- * (ex. students taking my recitation, quiz, exam, etc.)
+ * (ex. students taking teacher's given recitation, quiz, exam, etc.)
  */
 export const useStudentsTakingMyTasks = () => {
     const { user_id } = useAuthStore()
