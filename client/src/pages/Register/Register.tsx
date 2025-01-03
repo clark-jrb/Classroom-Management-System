@@ -24,8 +24,8 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select"
-import { RegisterStudent } from "./Register-student"
-import { RegisterTeacher } from "./Register-teacher"
+import { RegisterStudent } from "./student"
+import { RegisterTeacher } from "./teacher"
 import { unregisterFields } from "@/helpers/unregister-fields"
 
 export const Register = () => {
