@@ -49,7 +49,7 @@ export const SectionView = () => {
         exam: calculatePerformance(sid, students_taking_my_tasks, subject, 'exam')
     }))
 
-    // console.log(data)
+    console.log(data)
     return (
         <div className="flex h-full gap-5">
             <div className="flex-1 border rounded-md">
@@ -82,12 +82,12 @@ export const SectionView = () => {
                             <TableRow key={_id}>
                                 <TableCell className="font-medium">{lastname}</TableCell>
                                 <TableCell>{firstname}</TableCell>
-                                <TableCell>{recitation ? recitation.toFixed(2) : 0} %</TableCell>
-                                <TableCell>{activity ? activity.toFixed(2) : 0} %</TableCell>
-                                <TableCell>{quiz ? quiz.toFixed(2) : 0} %</TableCell>
-                                <TableCell>{project ? project.toFixed(2) : 0} %</TableCell>
-                                <TableCell>{summative ? summative.toFixed(2) : 0} %</TableCell>
-                                <TableCell>{exam ? exam.toFixed(2) : 0} %</TableCell>
+                                <TableCell>{recitation ? recitation.toFixed(2) : 0}</TableCell>
+                                <TableCell>{activity ? activity.toFixed(2) : 0}</TableCell>
+                                <TableCell>{quiz ? quiz.toFixed(2) : 0}</TableCell>
+                                <TableCell>{project ? project.toFixed(2) : 0}</TableCell>
+                                <TableCell>{summative ? summative.toFixed(2) : 0}</TableCell>
+                                <TableCell>{exam ? exam.toFixed(2) : 0}</TableCell>
                             </TableRow>
                         ))}
                     </TableBody>
