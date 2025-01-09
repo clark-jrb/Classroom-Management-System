@@ -29,7 +29,7 @@ export const teacherInfo = () => {
 
 export const fetchMyStudents = (grade_assigned: string, section: string) => {
     return useSuspenseQuery({
-        queryKey: ['my_students'],
+        queryKey: ['my_students', grade_assigned, section],
         queryFn: () => getMyStudents(grade_assigned, section)
     })
 }
