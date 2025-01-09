@@ -15,31 +15,40 @@ export const Procedures = ({ section_assigned, subject_handled }: {
         return isThereAProject ? getWeightWithProject(type) : getWeightWithoutProject(type)
     }
 
+    function getTheWeight(type: TaskTypes, quarter: QuarterTypes) {
+        return countTask(type, subject_handled, section_assigned, quarter) > 0 ? getWeight(type) : 0
+    }
+
     const procedures: {
         name: string
-        type: TaskTypes,
+        type: TaskTypes
         quarter: QuarterTypes
+        weight: number
     }[] = [
-        { name: 'Exam', type: 'exam', quarter: 'q1' },
-        { name: 'Summative', type: 'summative', quarter: 'q1' },
-        { name: 'Quizzes', type: 'quiz', quarter: 'q1' },
-        { name: 'Activities', type: 'activity', quarter: 'q1' },
-        { name: 'Recitations', type: 'recitation', quarter: 'q1' },
-        { name: 'Projects', type: 'project', quarter: 'q1' }
+        { name: 'Exam', type: 'exam', quarter: 'q1', weight: getTheWeight('exam', 'q1') },
+        { name: 'Summative', type: 'summative', quarter: 'q1', weight: getTheWeight('summative', 'q1') },
+        { name: 'Quizzes', type: 'quiz', quarter: 'q1', weight: getTheWeight('quiz', 'q1') },
+        { name: 'Activities', type: 'activity', quarter: 'q1', weight: getTheWeight('activity', 'q1') },
+        { name: 'Recitations', type: 'recitation', quarter: 'q1', weight: getTheWeight('recitation', 'q1') },
+        { name: 'Projects', type: 'project', quarter: 'q1', weight: getTheWeight('project', 'q1') }
     ]
+
+    const sumOfWeight = procedures.reduce((accu, curr) => accu + curr.weight, 0)
 
     return (
         <div className="border p-5 rounded-md space-y-4">
             <div>Grading Procedures:</div>
-            {procedures.map(({ name, type, quarter }, index) => (
+            {procedures.map(({ name, type, quarter, weight }, index) => (
                 <div key={index}>
                     {countTask(type, subject_handled, section_assigned, quarter)}&nbsp;
                     {name}
                     &nbsp;-&nbsp;
                     {countTask(type, subject_handled, section_assigned, quarter) > 0 ? 
-                        getWeight(type) : 0}&nbsp;%
+                        weight : 0}&nbsp;%
                 </div>
             ))}
+            <div>Total Weight: <br />{sumOfWeight}</div>
+            {/* <div>{sumOfWeight === 100 ? 'All required tasks complete' : 'Some tasks are still missing'}</div> */}
         </div>
     )
 }

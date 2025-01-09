@@ -49,51 +49,58 @@ export const SectionView = () => {
         exam: calculatePerformance(sid, students_taking_my_tasks, subject, 'exam')
     }))
 
-    console.log(data)
+    // console.log(data)
     return (
-        <div className="flex h-full gap-5">
-            <div className="flex-1 border rounded-md">
-                <Table>
-                    <TableCaption>A list of my students.</TableCaption>
-                    <TableHeader>
-                        <TableRow>
-                            <TableHead className="w-[200px]">Last Name</TableHead>
-                            <TableHead>First Name</TableHead>
-                            <TableHead>Recitation</TableHead>
-                            <TableHead>Activity</TableHead>
-                            <TableHead>Quiz</TableHead>
-                            <TableHead>Project</TableHead>
-                            <TableHead>Summative</TableHead>
-                            <TableHead>Exam</TableHead>
-                        </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                        {data.map(({
-                            _id,
-                            firstname,
-                            lastname,
-                            recitation,
-                            activity,
-                            quiz,
-                            project,
-                            summative,
-                            exam
-                        }) => (
-                            <TableRow key={_id}>
-                                <TableCell className="font-medium">{lastname}</TableCell>
-                                <TableCell>{firstname}</TableCell>
-                                <TableCell>{recitation ? recitation.toFixed(2) : 0}</TableCell>
-                                <TableCell>{activity ? activity.toFixed(2) : 0}</TableCell>
-                                <TableCell>{quiz ? quiz.toFixed(2) : 0}</TableCell>
-                                <TableCell>{project ? project.toFixed(2) : 0}</TableCell>
-                                <TableCell>{summative ? summative.toFixed(2) : 0}</TableCell>
-                                <TableCell>{exam ? exam.toFixed(2) : 0}</TableCell>
-                            </TableRow>
-                        ))}
-                    </TableBody>
-                </Table>
+        <div>
+            <div className="flex gap-5 mb-5">
+                <div>Go back arrow icon</div>
+                <div>Subject: {subject}</div>
+                <div>Grade and Section: {grade_assigned}, {section}</div>
             </div>
-            <Procedures subject_handled={subject} section_assigned={section}/>
+            <div className="flex h-full gap-5">
+                <div className="flex-1 border rounded-md">
+                    <Table>
+                        <TableCaption>A list of my students.</TableCaption>
+                        <TableHeader>
+                            <TableRow>
+                                <TableHead className="w-[200px]">Last Name</TableHead>
+                                <TableHead>First Name</TableHead>
+                                <TableHead>Recitation</TableHead>
+                                <TableHead>Activity</TableHead>
+                                <TableHead>Quiz</TableHead>
+                                <TableHead>Project</TableHead>
+                                <TableHead>Summative</TableHead>
+                                <TableHead>Exam</TableHead>
+                            </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                            {data.map(({
+                                _id,
+                                firstname,
+                                lastname,
+                                recitation,
+                                activity,
+                                quiz,
+                                project,
+                                summative,
+                                exam
+                            }) => (
+                                <TableRow key={_id}>
+                                    <TableCell className="font-medium">{lastname}</TableCell>
+                                    <TableCell>{firstname}</TableCell>
+                                    <TableCell>{recitation ? recitation.toFixed(2) : 0}</TableCell>
+                                    <TableCell>{activity ? activity.toFixed(2) : 0}</TableCell>
+                                    <TableCell>{quiz ? quiz.toFixed(2) : 0}</TableCell>
+                                    <TableCell>{project ? project.toFixed(2) : 0}</TableCell>
+                                    <TableCell>{summative ? summative.toFixed(2) : 0}</TableCell>
+                                    <TableCell>{exam ? exam.toFixed(2) : 0}</TableCell>
+                                </TableRow>
+                            ))}
+                        </TableBody>
+                    </Table>
+                </div>
+                <Procedures subject_handled={subject} section_assigned={section}/>
+            </div>
         </div>
     )
 }
