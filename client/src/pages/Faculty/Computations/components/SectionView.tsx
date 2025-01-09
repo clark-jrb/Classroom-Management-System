@@ -1,13 +1,15 @@
-import { useParams } from "react-router-dom"
+import { useParams, useNavigate } from "react-router-dom"
 import { Procedures } from "./Procedures"
 import { SubjectTypes } from "@/types/types"
 import { teacherInfo } from "@/hooks/useTeacherQueries"
 import { Suspense } from "react"
 import { SectionViewTable } from "./SectionViewTable"
+import { Button } from "@/components/ui/button"
 
 export const SectionView = () => {
     const { section, subject } = useParams<{ section: string, subject: SubjectTypes }>()
     const { section_handled, subjects, grade_assigned } = teacherInfo()
+    const navigate = useNavigate()
 
     // validation of required route parameters
     if (!section || !subject) {
@@ -22,7 +24,7 @@ export const SectionView = () => {
     return (
         <div>
             <div className="flex gap-5 mb-5">
-                <div>Go back arrow icon</div>
+                <Button variant={'outline'} onClick={() => navigate('/computations')}>Go back</Button>
                 <div>Subject: {subject}</div>
                 <div>Grade and Section: {grade_assigned}, {section}</div>
             </div>

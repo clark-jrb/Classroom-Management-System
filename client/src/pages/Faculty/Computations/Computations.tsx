@@ -6,15 +6,17 @@ export const Computations = () => {
     const { section_handled, subjects } = teacherInfo()
 
     return (
-        <div>
+        <div >
             Computations
-            {section_handled.map((section: string, index: number) => (
-                <div key={index} className="space-y-4">
-                    {subjects.map((subject: SubjectTypes, index: number) => (
-                        <Sections key={index} section_assigned={section} subject_handled={subject}/>
-                    ))}
-                </div>
-            ))}
+            <div className="space-y-4">
+                {section_handled.map((section: string, index: number) => (
+                    <div key={index}>
+                        {subjects.map((subject: SubjectTypes, index: number) => (
+                            <Sections key={index} section_assigned={section} subject_handled={subject}/>
+                        ))}
+                    </div>
+                ))}
+            </div>
         </div>
     )
 }
