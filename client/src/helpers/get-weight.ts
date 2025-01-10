@@ -2,8 +2,8 @@ import { TaskTypes } from "@/types/types";
 
 export function getWeightWithoutProject(type: TaskTypes) {
     const percentageMap: Record<TaskTypes, number> = {
-        recitation: 6,
-        activity: 9,
+        recitation: 5,
+        activity: 8,
         quiz: 12,
         project: 0,
         summative: 25,
