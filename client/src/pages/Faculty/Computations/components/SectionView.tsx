@@ -5,11 +5,14 @@ import { teacherInfo } from "@/hooks/useTeacherQueries"
 import { Suspense } from "react"
 import { SectionViewTable } from "./SectionViewTable"
 import { Button } from "@/components/ui/button"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { useQuarterStore } from "@/stores/filterSlice"
 
 export const SectionView = () => {
     const { section, subject } = useParams<{ section: string, subject: SubjectTypes }>()
     const { section_handled, subjects, grade_assigned } = teacherInfo()
     const navigate = useNavigate()
+    const { quarter, setQuarter } = useQuarterStore()
 
     // validation of required route parameters
     if (!section || !subject) {
@@ -27,6 +30,19 @@ export const SectionView = () => {
                 <Button variant={'outline'} onClick={() => navigate('/computations')}>Go back</Button>
                 <div>Subject: {subject}</div>
                 <div>Grade and Section: {grade_assigned}, {section}</div>
+                <div>
+                <Select onValueChange={setQuarter} defaultValue={quarter}>
+                    <SelectTrigger className="w-[180px]">
+                        <SelectValue placeholder="Select Quarter" />
+                    </SelectTrigger>
+                    <SelectContent>
+                        <SelectItem value="q1">Quarter 1</SelectItem>
+                        <SelectItem value="q2">Quarter 2</SelectItem>
+                        <SelectItem value="q3">Quarter 3</SelectItem>
+                        <SelectItem value="q4">Quarter 4</SelectItem>
+                    </SelectContent>
+                </Select>
+                </div>
             </div>
             <div className="flex h-full gap-5">
                 <Procedures subject_handled={subject} section_assigned={section}/>
