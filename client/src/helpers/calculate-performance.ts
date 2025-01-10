@@ -24,7 +24,7 @@ export function calculatePerformance(
             score: item.score
         }))
 
-    const isThereAProject = findProject(data, gradeLvl, section)
+    const isThereAProject = findProject(data, gradeLvl, section, subject)
 
     const sumTotalItems = ScoresAndTotals.reduce((accu, curr) => accu + curr.total_items, 0)
     const sumTotalScores = ScoresAndTotals.reduce((accu, curr) => accu + curr.score, 0)

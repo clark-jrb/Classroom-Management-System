@@ -11,7 +11,7 @@ export const Procedures = ({ section_assigned, subject_handled, grade_assigned }
     const { countTask } = useMyTasks()
     const { data: students_taking_my_tasks } = useStudentsTakingMyTasks()   // gets all teacher's students taking his/her tasks
 
-    const isThereAProject = findProject(students_taking_my_tasks, grade_assigned, section_assigned)
+    const isThereAProject = findProject(students_taking_my_tasks, grade_assigned, section_assigned, subject_handled)
 
     function getWeight(type: TaskTypes) {
         return isThereAProject ? getWeightWithProject(type) : getWeightWithoutProject(type)
