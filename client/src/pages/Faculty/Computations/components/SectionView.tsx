@@ -30,22 +30,22 @@ export const SectionView = () => {
                 <Button variant={'outline'} onClick={() => navigate('/computations')}>Go back</Button>
                 <div>Subject: {subject}</div>
                 <div>Grade and Section: {grade_assigned}, {section}</div>
-                <div>
-                <Select onValueChange={setQuarter} defaultValue={quarter}>
-                    <SelectTrigger className="w-[180px]">
-                        <SelectValue placeholder="Select Quarter" />
-                    </SelectTrigger>
-                    <SelectContent>
-                        <SelectItem value="q1">Quarter 1</SelectItem>
-                        <SelectItem value="q2">Quarter 2</SelectItem>
-                        <SelectItem value="q3">Quarter 3</SelectItem>
-                        <SelectItem value="q4">Quarter 4</SelectItem>
-                    </SelectContent>
-                </Select>
+                <div className="ms-auto">
+                    <Select onValueChange={setQuarter} defaultValue={quarter}>
+                        <SelectTrigger className="w-[180px]">
+                            <SelectValue placeholder="Select Quarter" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectItem value="q1">Quarter 1</SelectItem>
+                            <SelectItem value="q2">Quarter 2</SelectItem>
+                            <SelectItem value="q3">Quarter 3</SelectItem>
+                            <SelectItem value="q4">Quarter 4</SelectItem>
+                        </SelectContent>
+                    </Select>
                 </div>
             </div>
             <div className="flex h-full gap-5">
-                <Procedures subject_handled={subject} section_assigned={section}/>
+                <Procedures subject_handled={subject} section_assigned={section} grade_assigned={grade_assigned}/>
                 <Suspense fallback={<div>loading...</div>}>
                     <SectionViewTable grade_assigned={grade_assigned} section={section} subject={subject}/>
                 </Suspense>

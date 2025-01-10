@@ -28,16 +28,16 @@ export const SectionViewTable = ({ grade_assigned, section, subject }: {
      * student's id and then gets ALL specific task
      * (ex. a student has quiz 1, quiz 2, and quiz 3) then calculates its performance (%)
      */
-    const data = my_students.map(({ sid: { sid, firstname, lastname }, ...student}) => ({
+    const data = my_students.map(({ sid: { sid, firstname, lastname }, gradeLevel, section, ...student}) => ({
         ...student,
         firstname,
         lastname,
-        recitation: calculatePerformance(sid, students_taking_my_tasks, subject, 'recitation', quarter),
-        activity: calculatePerformance(sid, students_taking_my_tasks, subject, 'activity', quarter),
-        quiz: calculatePerformance(sid, students_taking_my_tasks, subject, 'quiz', quarter),
-        project: calculatePerformance(sid, students_taking_my_tasks, subject, 'project', quarter),
-        summative: calculatePerformance(sid, students_taking_my_tasks, subject, 'summative', quarter),
-        exam: calculatePerformance(sid, students_taking_my_tasks, subject, 'exam', quarter)
+        recitation: calculatePerformance(sid, students_taking_my_tasks, subject, 'recitation', quarter, gradeLevel, section),
+        activity: calculatePerformance(sid, students_taking_my_tasks, subject, 'activity', quarter, gradeLevel, section),
+        quiz: calculatePerformance(sid, students_taking_my_tasks, subject, 'quiz', quarter, gradeLevel, section),
+        project: calculatePerformance(sid, students_taking_my_tasks, subject, 'project', quarter, gradeLevel, section),
+        summative: calculatePerformance(sid, students_taking_my_tasks, subject, 'summative', quarter, gradeLevel, section),
+        exam: calculatePerformance(sid, students_taking_my_tasks, subject, 'exam', quarter, gradeLevel, section)
     }))
 
     // console.table(data)

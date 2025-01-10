@@ -6,7 +6,9 @@ export function calculatePerformance(
     data: StudentTakingTask[], 
     subject: SubjectTypes, 
     type: TaskTypes,
-    quarter: QuarterTypes
+    quarter: QuarterTypes,
+    gradeLvl: string,
+    section: string
 ) {
     const ScoresAndTotals = data
         .filter((item) => 
@@ -21,7 +23,11 @@ export function calculatePerformance(
             score: item.score
         }))
 
-    const isThereAProject = data.filter((item) => item.task_id.type === 'project').length > 0
+    const isThereAProject = data.filter((item) => 
+            item.task_id.type === 'project' &&
+            item.task_id.grade === gradeLvl &&
+            item.task_id.section === section
+        ).length > 0
 
     const sumTotalItems = ScoresAndTotals.reduce((accu, curr) => accu + curr.total_items, 0)
     const sumTotalScores = ScoresAndTotals.reduce((accu, curr) => accu + curr.score, 0)
