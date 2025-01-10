@@ -16,7 +16,7 @@ export type StudentTask = {
     }
 }
 
-export type SpecStudentTask = {
+export type StudentTakingTask = {
     _id: string
     score: number,
     sid: string

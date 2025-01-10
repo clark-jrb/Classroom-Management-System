@@ -1,6 +1,6 @@
 import { api } from "./api";
 import { StudentScore } from "@/types/types";
-import { TTasks, TTaskForm, Message, StudentTask, StudentTaskCreate, SpecStudentTask } from "@/types/types";
+import { TTasks, TTaskForm, Message, StudentTask, StudentTaskCreate, StudentTakingTask } from "@/types/types";
 
 export const createTask = async (
     tid: string, 
@@ -87,7 +87,7 @@ export const updateStudentsScores = async (
 export const getStudentsTakingMyTasks = async (
     tid: string, 
     grade_lvl: string
-): Promise<SpecStudentTask[]> => {
+): Promise<StudentTakingTask[]> => {
     try {
         const response = await api.get(`/students/my_tasks`, {
             params: {

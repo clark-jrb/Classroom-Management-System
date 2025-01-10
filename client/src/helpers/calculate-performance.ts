@@ -1,17 +1,19 @@
-import { SpecStudentTask, SubjectTypes, TaskTypes } from "@/types/types"
+import { QuarterTypes, StudentTakingTask, SubjectTypes, TaskTypes } from "@/types/types"
 import { getWeightWithoutProject, getWeightWithProject } from "./get-weight"
 
 export function calculatePerformance(
     sid: string, 
-    data: SpecStudentTask[], 
+    data: StudentTakingTask[], 
     subject: SubjectTypes, 
-    type: TaskTypes
+    type: TaskTypes,
+    quarter: QuarterTypes
 ) {
     const ScoresAndTotals = data
         .filter((item) => 
                 item.sid === sid &&
                 item.task_id.subject === subject &&
-                item.task_id.type === type
+                item.task_id.type === type &&
+                item.task_id.quarter === quarter
             )
         .map((item) => ({
             sid: item.sid,

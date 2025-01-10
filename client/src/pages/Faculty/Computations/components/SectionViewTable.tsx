@@ -11,12 +11,14 @@ import { calculatePerformance } from "@/helpers/calculate-performance"
 import { useStudentsTakingMyTasks } from "@/hooks/useTaskQueries"
 import { fetchMyStudents } from "@/hooks/useTeacherQueries"
 import { SubjectTypes } from "@/types/types"
+import { useQuarterStore } from "@/stores/filterSlice"
 
 export const SectionViewTable = ({ grade_assigned, section, subject }: {
     grade_assigned: string
     section: string
     subject: SubjectTypes
 }) => {
+    const { quarter } = useQuarterStore()
     const { data: my_students } = fetchMyStudents(grade_assigned, section)  // gets all teacher's students
     const { data: students_taking_my_tasks } = useStudentsTakingMyTasks()   // gets all teacher's students taking his/her tasks
 
@@ -30,13 +32,15 @@ export const SectionViewTable = ({ grade_assigned, section, subject }: {
         ...student,
         firstname,
         lastname,
-        recitation: calculatePerformance(sid, students_taking_my_tasks, subject, 'recitation'),
-        activity: calculatePerformance(sid, students_taking_my_tasks, subject, 'activity'),
-        quiz: calculatePerformance(sid, students_taking_my_tasks, subject, 'quiz'),
-        project: calculatePerformance(sid, students_taking_my_tasks, subject, 'project'),
-        summative: calculatePerformance(sid, students_taking_my_tasks, subject, 'summative'),
-        exam: calculatePerformance(sid, students_taking_my_tasks, subject, 'exam')
+        recitation: calculatePerformance(sid, students_taking_my_tasks, subject, 'recitation', quarter),
+        activity: calculatePerformance(sid, students_taking_my_tasks, subject, 'activity', quarter),
+        quiz: calculatePerformance(sid, students_taking_my_tasks, subject, 'quiz', quarter),
+        project: calculatePerformance(sid, students_taking_my_tasks, subject, 'project', quarter),
+        summative: calculatePerformance(sid, students_taking_my_tasks, subject, 'summative', quarter),
+        exam: calculatePerformance(sid, students_taking_my_tasks, subject, 'exam', quarter)
     }))
+
+    // console.table(data)
 
     return (
         <div className="flex-1 border rounded-md">
@@ -44,14 +48,15 @@ export const SectionViewTable = ({ grade_assigned, section, subject }: {
                 <TableCaption>A list of my students.</TableCaption>
                 <TableHeader>
                     <TableRow>
-                        <TableHead className="w-[200px]">Last Name</TableHead>
-                        <TableHead>First Name</TableHead>
+                        <TableHead className="w-[150px]">Last Name</TableHead>
+                        <TableHead className="w-[150px]">First Name</TableHead>
                         <TableHead>Recitation</TableHead>
                         <TableHead>Activity</TableHead>
                         <TableHead>Quiz</TableHead>
                         <TableHead>Project</TableHead>
                         <TableHead>Summative</TableHead>
                         <TableHead>Exam</TableHead>
+                        <TableHead>GWA</TableHead>
                     </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -67,7 +72,7 @@ export const SectionViewTable = ({ grade_assigned, section, subject }: {
                         exam
                     }) => (
                         <TableRow key={_id}>
-                            <TableCell className="font-medium">{lastname}</TableCell>
+                            <TableCell className="font-medium text-base">{lastname}</TableCell>
                             <TableCell>{firstname}</TableCell>
                             <TableCell>{recitation ? recitation.toFixed(2) : 0}</TableCell>
                             <TableCell>{activity ? activity.toFixed(2) : 0}</TableCell>
@@ -75,6 +80,9 @@ export const SectionViewTable = ({ grade_assigned, section, subject }: {
                             <TableCell>{project ? project.toFixed(2) : 0}</TableCell>
                             <TableCell>{summative ? summative.toFixed(2) : 0}</TableCell>
                             <TableCell>{exam ? exam.toFixed(2) : 0}</TableCell>
+                            <TableCell>
+                                {(recitation + activity + quiz + project + summative + exam).toFixed(1)}
+                            </TableCell>
                         </TableRow>
                     ))}
                 </TableBody>
