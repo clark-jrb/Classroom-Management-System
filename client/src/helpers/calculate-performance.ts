@@ -1,5 +1,6 @@
 import { QuarterTypes, StudentTakingTask, SubjectTypes, TaskTypes } from "@/types/types"
 import { getWeightWithoutProject, getWeightWithProject } from "./get-weight"
+import { findProject } from "./is-there-a-project"
 
 export function calculatePerformance(
     sid: string, 
@@ -23,16 +24,17 @@ export function calculatePerformance(
             score: item.score
         }))
 
-    const isThereAProject = data.filter((item) => 
-            item.task_id.type === 'project' &&
-            item.task_id.grade === gradeLvl &&
-            item.task_id.section === section
-        ).length > 0
+    const isThereAProject = findProject(data, gradeLvl, section)
 
     const sumTotalItems = ScoresAndTotals.reduce((accu, curr) => accu + curr.total_items, 0)
     const sumTotalScores = ScoresAndTotals.reduce((accu, curr) => accu + curr.score, 0)
 
-    const performance = sumTotalScores > 0 ? (sumTotalScores / sumTotalItems) * (isThereAProject ? getWeightWithProject(type) : getWeightWithoutProject(type)) : 0
+    const performance = sumTotalScores > 0 ? 
+        (sumTotalScores / sumTotalItems) * (
+            isThereAProject ? 
+            getWeightWithProject(type) : 
+            getWeightWithoutProject(type)
+        ) : 0
 
     return performance
 }

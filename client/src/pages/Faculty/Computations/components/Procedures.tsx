@@ -1,6 +1,7 @@
 import { useMyTasks, useStudentsTakingMyTasks } from "@/hooks/useTaskQueries"
 import { TaskTypes, QuarterTypes, SubjectTypes } from "@/types/types"
 import { getWeightWithProject, getWeightWithoutProject } from "@/helpers/get-weight"
+import { findProject } from "@/helpers/is-there-a-project"
 
 export const Procedures = ({ section_assigned, subject_handled, grade_assigned }: {
     section_assigned: string,
@@ -10,11 +11,7 @@ export const Procedures = ({ section_assigned, subject_handled, grade_assigned }
     const { countTask } = useMyTasks()
     const { data: students_taking_my_tasks } = useStudentsTakingMyTasks()   // gets all teacher's students taking his/her tasks
 
-    const isThereAProject = students_taking_my_tasks.filter((item) => 
-            item.task_id.type === 'project' &&
-            item.task_id.grade === grade_assigned &&
-            item.task_id.section === section_assigned
-        ).length > 0
+    const isThereAProject = findProject(students_taking_my_tasks, grade_assigned, section_assigned)
 
     function getWeight(type: TaskTypes) {
         return isThereAProject ? getWeightWithProject(type) : getWeightWithoutProject(type)
