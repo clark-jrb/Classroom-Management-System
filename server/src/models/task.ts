@@ -25,7 +25,7 @@ const TaskGrade5Schema = StudentTaskSchema.clone()
 const TaskGrade6Schema = StudentTaskSchema.clone()
 
 export const TaskModel = model('tasks', TaskSchema)
-export const StudentTaskModel = model('student_tasks', StudentTaskSchema)
+// export const StudentTaskModel = model('student_tasks', StudentTaskSchema)
 
 export const TaskGrade1Model = model('tasks_grade_1', TaskGrade1Schema)
 export const TaskGrade2Model = model('tasks_grade_2', TaskGrade2Schema)

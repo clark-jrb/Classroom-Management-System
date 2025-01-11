@@ -10,6 +10,6 @@ export function findProject(
         item.task_id.type === 'project' &&
         item.task_id.grade === grade_level &&
         item.task_id.section === section &&
-        item.task_id.subject === subject
+        item.task_id.subject === subject // maybe i should add quarter
     ).length > 0
 }
