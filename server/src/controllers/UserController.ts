@@ -22,7 +22,7 @@ export class UserController {
     ) {
         const AccountModel = selectModel(role) // Select on StudentAccountModel, TeacherAccountModel
         const PersonalModel = selectPersonalModel(role) // Select on StudentPersonalModel, TeacherPersonalModel
-        const ClassModel = selectClassModel(role) // Select on StudentPersonalModel, TeacherPersonalModel
+        const ClassModel = selectClassModel(role) // Select on StudentClassModel, TeacherClassModel
 
         const user = await AccountModel.create(accountData) // Save account on database
         if (role === 'student') {
