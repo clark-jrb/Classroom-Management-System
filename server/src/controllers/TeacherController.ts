@@ -1,5 +1,5 @@
 import { Request, Response } from "express"
-import { TeacherModel, TeacherInfoModel, TeacherClassModel } from "../models/teacher"
+import { TeacherAccountModel, TeacherPersonalModel, TeacherClassModel } from "../models/teacher"
 import mongoose from "mongoose"
 
 export class TeacherController {
@@ -9,7 +9,7 @@ export class TeacherController {
      */
     public getTeachers = async (req: Request, res: Response): Promise<void> =>{
         try {
-            const teachers = await TeacherModel.find()
+            const teachers = await TeacherAccountModel.find()
 
             res.status(200).json({ teachers: teachers })
         } catch (error) {
@@ -29,8 +29,8 @@ export class TeacherController {
             }
 
             const [account, personal, classes] = await Promise.all([
-                TeacherModel.findById(id),
-                TeacherInfoModel.findOne({ tid: id }),
+                TeacherAccountModel.findById(id),
+                TeacherPersonalModel.findOne({ tid: id }),
                 TeacherClassModel.findOne({ tid: id }),
             ]);
     
@@ -50,7 +50,7 @@ export class TeacherController {
     public deleteTeacherById = async (req: Request, res: Response): Promise<void> => {
         try {
             const { id } = req.params
-            await TeacherModel.findOneAndDelete({ _id: id })
+            await TeacherAccountModel.findOneAndDelete({ _id: id })
 
             res.status(200).json({ message: 'Teacher successfully deleted' })
         } catch (error) {
@@ -66,10 +66,10 @@ export class TeacherController {
             const { id } = req.params
             const data = req.body
 
-            const teacher = await TeacherModel.findById(id)
+            const teacher = await TeacherAccountModel.findById(id)
             if (!teacher) res.status(404).json({ message: "Teacher doesn't exists" })
 
-            const updateTeacherInfo = await TeacherInfoModel.findOneAndUpdate(
+            const updateTeacherInfo = await TeacherPersonalModel.findOneAndUpdate(
                 { tid: id },
                 { $set: data },
                 { new: true, runValidators: true }

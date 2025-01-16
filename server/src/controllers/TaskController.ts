@@ -104,7 +104,7 @@ export class TaskController {
             const studentTasks = await Model.find({ task_id: task_id })
                 .populate({
                     path: 'sid',
-                    model: 'students_info',
+                    model: 'students_personals',
                     localField: 'sid',
                     foreignField: 'sid', 
                     select: 'firstname lastname'

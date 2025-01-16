@@ -1,5 +1,5 @@
 import { Request, Response } from "express"
-import { StudentModel, StudentInfoModel, StudentClassModel } from "../models/student"
+import { StudentAccountModel, StudentPersonalModel, StudentClassModel } from "../models/student"
 import mongoose from "mongoose"
 
 export class StudentController {
@@ -10,7 +10,7 @@ export class StudentController {
     // public addInformation = async (req: Request, res: Response): Promise<any> => {
     //     try {
     //         const { id, ...values} = req.body
-    //         const student_info = await new StudentInfoModel({ _id: id, ...values}).save()
+    //         const student_info = await new StudentPersonalModel({ _id: id, ...values}).save()
             
     //         return res.status(200).json({ student_info: student_info.toObject(), message: 'Successfully added student information' })
     //     } catch (error) {
@@ -20,7 +20,7 @@ export class StudentController {
 
     public getStudents = async (req: Request, res: Response): Promise<void> => {
         try {
-            const students = await StudentModel.find()
+            const students = await StudentAccountModel.find()
 
             res.status(200).json({ students: students })
         } catch (error) {
@@ -37,8 +37,8 @@ export class StudentController {
             }
 
             const [account, personal, classes] = await Promise.all([
-                StudentModel.findById(id),
-                StudentInfoModel.findOne({ sid: id }),
+                StudentAccountModel.findById(id),
+                StudentPersonalModel.findOne({ sid: id }),
                 StudentClassModel.findOne({ sid: id }),
             ])
     
@@ -55,7 +55,7 @@ export class StudentController {
     public deleteStudentById = async (req: Request, res: Response): Promise<void> => {
         try {
             const { id } = req.params
-            await StudentModel.findOneAndDelete({ _id: id })
+            await StudentAccountModel.findOneAndDelete({ _id: id })
 
             res.status(200).json({ message: 'Student successfully deleted' })
         } catch (error) {
@@ -68,13 +68,13 @@ export class StudentController {
             const { id } = req.params
             const data = req.body
 
-            const student = await StudentModel.findById(id)
+            const student = await StudentAccountModel.findById(id)
 
             if (!student) {
                 res.status(404).json({ message: "Student doesn't exists" })
             }
 
-            const updateStudentInfo = await StudentInfoModel.findOneAndUpdate(
+            const updateStudentInfo = await StudentPersonalModel.findOneAndUpdate(
                 { sid: id },
                 { $set: data },
                 { new: true, runValidators: true }
@@ -85,7 +85,7 @@ export class StudentController {
             console.log(error)
             res.sendStatus(400).json({ message: 'Failed to update student', error })
         }
-        // return await StudentModel.findByIdAndUpdate(id, values)
+        // return await StudentAccountModel.findByIdAndUpdate(id, values)
     }
 
     /**
@@ -100,7 +100,7 @@ export class StudentController {
                 section: section
             }).populate({
                 path: 'sid',
-                model: 'students_info',
+                model: 'students_personals',
                 localField: 'sid',
                 foreignField: 'sid', 
                 select: 'firstname lastname'

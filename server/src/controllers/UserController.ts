@@ -20,7 +20,7 @@ export class UserController {
         classData: Record<string, any>, 
         role: ValidRoles
     ) {
-        const AccountModel = selectModel(role) // Select on StudentModel, TeacherModel
+        const AccountModel = selectModel(role) // Select on StudentAccountModel, TeacherAccountModel
         const PersonalModel = selectPersonalModel(role) // Select on StudentPersonalModel, TeacherPersonalModel
         const ClassModel = selectClassModel(role) // Select on StudentPersonalModel, TeacherPersonalModel
 

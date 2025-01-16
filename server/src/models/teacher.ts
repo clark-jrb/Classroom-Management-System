@@ -1,13 +1,13 @@
 import { Schema, model } from "mongoose";
 
-const TeacherSchema = new Schema({
+const TeacherAccountSchema = new Schema({
     email: { type: String, required: true , unique: true },
     password: { type: String, requird: true },
     role: { type: String, required: true },
 })
 
-const TeacherInfoSchema = new Schema({
-    tid: { type: Schema.Types.ObjectId, ref: "teachers", required: true },
+const TeacherPersonalSchema = new Schema({
+    tid: { type: Schema.Types.ObjectId, ref: "teachers_accounts", required: true },
     firstname: { type: String, required: true },
     middlename: { type: String, required: false },
     lastname: { type: String, required: true },
@@ -17,17 +17,17 @@ const TeacherInfoSchema = new Schema({
 })
 
 const TeacherClassSchema = new Schema({
-    tid: { type: Schema.Types.ObjectId, ref: "teachers", required: true },
+    tid: { type: Schema.Types.ObjectId, ref: "teachers_accounts", required: true },
     teacher_role: { type: String, required: true },
     grade_assigned: { type: String, required: true },
     section_handled: { type: [String], required: true },
     subjects: { type: [String], required: true }
 })
 
-TeacherInfoSchema.index({ tid: 1 })
+TeacherPersonalSchema.index({ tid: 1 })
 TeacherClassSchema.index({ tid: 1 })
 
-export const TeacherModel = model('teachers', TeacherSchema)
-export const TeacherInfoModel = model('teachers_info', TeacherInfoSchema)
-export const TeacherClassModel = model('teachers_classes', TeacherClassSchema)
+export const TeacherAccountModel = model('teachers_accounts', TeacherAccountSchema)
+export const TeacherPersonalModel = model('teachers_personals', TeacherPersonalSchema)
+export const TeacherClassModel = model('teachers_class', TeacherClassSchema)
 

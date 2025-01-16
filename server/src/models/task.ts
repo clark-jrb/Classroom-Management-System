@@ -13,7 +13,7 @@ const TaskSchema = new Schema({
 
 const StudentTaskSchema = new Schema({
     sid: { type: Schema.Types.ObjectId, required: true },
-    task_id: { type: Schema.Types.ObjectId, ref: "teacher_tasks", required: true },
+    task_id: { type: Schema.Types.ObjectId, ref: "teachers_tasks", required: true },
     score: { type: Number, required: true }
 })
 
@@ -24,7 +24,7 @@ const TaskGrade4Schema = StudentTaskSchema.clone()
 const TaskGrade5Schema = StudentTaskSchema.clone()
 const TaskGrade6Schema = StudentTaskSchema.clone()
 
-export const TaskModel = model('teacher_tasks', TaskSchema)
+export const TaskModel = model('teachers_tasks', TaskSchema)
 // export const StudentTaskModel = model('student_tasks', StudentTaskSchema)
 
 export const TaskGrade1Model = model('tasks_grade_1', TaskGrade1Schema)

@@ -7,4 +7,4 @@ const RefreshTokenSchema = new mongoose.Schema({
     createdAt: { type: Date, default: Date.now },
 })
 
-export const RefreshTokenModel = mongoose.model('refreshtokens', RefreshTokenSchema) 
+export const RefreshTokenModel = mongoose.model('refresh_tokens', RefreshTokenSchema) 
