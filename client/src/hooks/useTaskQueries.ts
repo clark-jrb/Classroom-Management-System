@@ -100,7 +100,7 @@ export const useMyTasks = () => {
 }
 
 /**
- * this query will return all students taking a specific task 
+ * this query will return all students taking a SPECIFIC task 
  * (ex. students taking quiz no.2)
  */
 export const useStudentTasks = (task_id: string, grade_lvl: string) => {
@@ -119,7 +119,7 @@ export const useStudentsTakingMyTasks = () => {
     const { grade_assigned } = teacherInfo()
 
     return useSuspenseQuery({
-        queryKey: ['students_taking_my_tasks', user_id],
+        queryKey: ['students_taking_my_tasks', user_id, grade_assigned],
         queryFn: () => getStudentsTakingMyTasks(user_id, grade_assigned)
     })
 }
