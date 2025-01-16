@@ -22,13 +22,13 @@ const GPASchema = new Schema({
     quarter: { type: String, required: true },
     gradeLevel: { type: String, required: true },
     section: { type: String, required: true },
-    math: { type: Number, required: true },
-    science: { type: Number, required: true },
-    mapeh: { type: Number, required: true },
-    english: { type: Number, required: true },
-    filipino: { type: Number, required: true },
-    hekasi: { type: Number, required: true },
-    gpa: { type: Number, required: true }
+    math: { type: Number, default: 0 },
+    science: { type: Number, default: 0 },
+    mapeh: { type: Number, default: 0 },
+    english: { type: Number, default: 0 },
+    filipino: { type: Number, default: 0 },
+    hekasi: { type: Number, default: 0 },
+    gpa: { type: Number, default: 0 }
 })
 
 export const GWAModel = model('students_gwa', GWASchema)

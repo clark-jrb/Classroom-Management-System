@@ -1,6 +1,10 @@
 import { Request, Response } from "express"
 import { selectModel, selectPersonalModel, selectClassModel } from "../helpers/select-models"
 import { ValidRoles } from "../types/types"
+import { StudentClass } from "../types/StudentTypes"
+import { UserAccount, UserProfile } from "../types/UserTypes"
+import { TeacherClass } from "../types/TeacherTypes"
+import { GPAModel } from "../models/computations"
 
 export class UserController {
     // get user by email 
@@ -15,9 +19,9 @@ export class UserController {
 
     // create user (student and teachers) 
     public async createUser(
-        accountData: Record<string, any>, 
-        personalData: Record<string, any>, 
-        classData: Record<string, any>, 
+        accountData: UserAccount, 
+        personalData: UserProfile, 
+        classData: StudentClass | TeacherClass, 
         role: ValidRoles
     ) {
         const AccountModel = selectModel(role) // Select on StudentAccountModel, TeacherAccountModel
@@ -25,16 +29,28 @@ export class UserController {
         const ClassModel = selectClassModel(role) // Select on StudentClassModel, TeacherClassModel
 
         const user = await AccountModel.create(accountData) // Save account on database
+
         if (role === 'student') {
+            const student_class = classData as StudentClass
+
             await Promise.all([
                 PersonalModel.create({ sid: user._id, ...personalData }),
-                ClassModel.create({ sid: user._id, ...classData })
+                ClassModel.create({ sid: user._id, ...student_class }),
+                GPAModel.create({ 
+                    sid: user._id, 
+                    quarter: 'q1',
+                    gradeLevel: student_class.gradeLevel, 
+                    section: student_class.section 
+                })
             ])
         }
+        
         if (role === 'faculty') {
+            const teacher_class = classData as TeacherClass
+
             await Promise.all([
                 PersonalModel.create({ tid: user._id, ...personalData }),
-                ClassModel.create({ tid: user._id, ...classData })
+                ClassModel.create({ tid: user._id, ...teacher_class })
             ])
         }
 

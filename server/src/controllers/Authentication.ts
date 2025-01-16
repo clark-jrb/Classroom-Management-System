@@ -4,6 +4,9 @@ import { hashPassword, comparePassword } from '../utils/hashPassword'
 import { createTokens } from '../utils/createToken'
 import { accessTokenOpt, refreshTokenOpt } from '../utils/cookieOptions'
 import { createRefreshTokenOnDB } from '../utils/createToken'
+import { UserAccount, UserProfile } from 'types/UserTypes'
+import { StudentClass } from 'types/StudentTypes'
+import { TeacherClass } from 'types/TeacherTypes'
 
 const User = new UserController()
 
@@ -49,7 +52,11 @@ export const login = async (req: Request, res: Response): Promise<any> => {
 
 
 export const register = async (req: Request, res: Response): Promise<any> => {
-    const { account, information, classes } = req.body
+    const { account, profile, classes }: {
+        account: UserAccount,
+        profile: UserProfile,
+        classes: StudentClass | TeacherClass
+    } = req.body
     const { email, password, role } = account
 
     const userExist = await User.getByEmail(email, role)
@@ -75,7 +82,7 @@ export const register = async (req: Request, res: Response): Promise<any> => {
             role
         }
 
-        await User.createUser(credentials, information, classes, role) 
+        await User.createUser(credentials, profile, classes, role) 
         
         const userNowExist = await User.getByEmail(email, role)
 

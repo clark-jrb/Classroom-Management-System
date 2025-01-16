@@ -1,12 +1,12 @@
-import mongoose from "mongoose"
+import { ValidRoles } from '../types/types'
 
-export interface UserAccount {
+export type UserAccount = {
     email: string
     password: string
-    role: string
+    role: ValidRoles
 }
 
-export interface UserProfile {
+export type UserProfile = {
     firstname: string
     middlename: string
     lastname: string
