@@ -169,4 +169,62 @@ export class TaskController {
             res.status(400).json({ message: 'Failed to find tasks', error })
         }
     }
+
+    /**
+     * name
+     */
+    public getStudentsAllPerformance = async (req: Request, res: Response): Promise<void> => {
+        try {
+            const { tid, grade_lvl, section, subject } = req.query
+            const quarter = 'q1'
+
+            const my_students = await StudentClassModel.find({
+                gradeLevel: grade_lvl,
+                section: section
+            })
+            // pick grade level first (selection of model)
+            const TaskGradeModel = selectTaskGradeModel(grade_lvl as GradeLevels)
+            const studentsTakingMyTasks = await TaskGradeModel.find()
+                .populate('task_id')    // populate task_id to get task description
+                .then((tasks: any) => tasks.filter((task: any) => 
+                    task.task_id.tid.toString() === tid &&  // filter by teacher ID
+                    task.task_id.subject === subject &&     // filter by subject
+                    task.task_id.section === section        // filter by section
+                ).map((task: any) => ({     // map by:
+                    sid: task.sid.toString(),               //  sid,
+                    type: task.task_id.type,                //  type,
+                    task_no: task.task_id.task_no,          //  task_no,
+                    score: task.score,                      //  score
+                    total_items: task.task_id.total_items   //  total_items
+                })))
+
+            const studentsTasks = my_students.map(({ sid }) => {
+                const getSumsOfTask = (type: string) => {
+                    return studentsTakingMyTasks
+                        .filter((item: any) => item.sid === sid.toString() && item.type === type)
+                        .reduce(
+                            (accu: { score: number; totalItems: number }, curr: any) => {
+                                return {
+                                    score: accu.score + curr.score,
+                                    totalItems: accu.totalItems + curr.total_items,
+                                }
+                            },
+                            { score: 0, totalItems: 0 }
+                        )
+                }
+                
+                    
+                return {
+                    sid,
+                    recitation: getSumsOfTask('recitation'),
+                    activity: getSumsOfTask('activity')
+                }
+            })
+
+            res.status(200).json(studentsTasks)
+        } catch (error) {
+            console.log(error)
+            res.status(400).json({ message: 'Failed to find tasks', error })
+        }
+    }
 }

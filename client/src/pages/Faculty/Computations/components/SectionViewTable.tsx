@@ -36,45 +36,48 @@ export const SectionViewTable = ({ grade_assigned, section, subject }: {
      * student's id and then gets ALL specific task
      * (ex. a student has quiz 1, quiz 2, and quiz 3) then calculates its performance (%)
      */
-    const data = my_students.map(({ sid: { sid, firstname, lastname }, gradeLevel, section, ...student}) => ({
-        ...student,
-        sid,
-        gradeLevel,
-        section,
-        firstname,
-        lastname,
-        recitation: Number(calculatePerformance(sid, students_taking_my_tasks, subject, 'recitation', quarter, gradeLevel, section).toFixed(2)),
-        activity: Number(calculatePerformance(sid, students_taking_my_tasks, subject, 'activity', quarter, gradeLevel, section).toFixed(2)),
-        quiz: Number(calculatePerformance(sid, students_taking_my_tasks, subject, 'quiz', quarter, gradeLevel, section).toFixed(2)),
-        project: Number(calculatePerformance(sid, students_taking_my_tasks, subject, 'project', quarter, gradeLevel, section).toFixed(2)),
-        summative: Number(calculatePerformance(sid, students_taking_my_tasks, subject, 'summative', quarter, gradeLevel, section).toFixed(2)),
-        exam: Number(calculatePerformance(sid, students_taking_my_tasks, subject, 'exam', quarter, gradeLevel, section).toFixed(2))
-    }))
+    const data = my_students.map(({ sid: { sid, firstname, lastname }, gradeLevel, section, ...student}) => {
+        const recitation = Number(calculatePerformance(sid, students_taking_my_tasks, subject, 'recitation', quarter, gradeLevel, section).toFixed(2));
+        const activity = Number(calculatePerformance(sid, students_taking_my_tasks, subject, 'activity', quarter, gradeLevel, section).toFixed(2));
+        const quiz = Number(calculatePerformance(sid, students_taking_my_tasks, subject, 'quiz', quarter, gradeLevel, section).toFixed(2));
+        const project = Number(calculatePerformance(sid, students_taking_my_tasks, subject, 'project', quarter, gradeLevel, section).toFixed(2));
+        const summative = Number(calculatePerformance(sid, students_taking_my_tasks, subject, 'summative', quarter, gradeLevel, section).toFixed(2));
+        const exam = Number(calculatePerformance(sid, students_taking_my_tasks, subject, 'exam', quarter, gradeLevel, section).toFixed(2));
+
+        const gwa = Number((
+            recitation +
+            activity +
+            quiz +
+            project +
+            summative +
+            exam 
+        ).toFixed(1))
+
+        return {
+            ...student,
+            sid,
+            gradeLevel,
+            section,
+            quarter,
+            subject,
+            firstname,
+            lastname,
+            recitation,
+            activity,
+            quiz,
+            project,
+            summative,
+            exam,
+            gwa
+        }
+    })
 
     console.log(data)
-
-    const studentPerformance = data.map((data) => ({
-        ...data,
-        quarter,
-        subject
-    }))
 
     const studentPerformanceForm = useForm<StudentPerformance>({
         resolver: zodResolver(studentPerformanceSchema),
         defaultValues: {
-            student_performance: studentPerformance.map(data => ({
-                ...data,
-                gwa: Number(
-                    (
-                        data.recitation +
-                        data.activity +
-                        data.quiz +
-                        data.project +
-                        data.summative +
-                        data.exam 
-                    ).toFixed(1)
-                )
-            }))
+            student_performance: data
         }
     })
 
@@ -111,7 +114,8 @@ export const SectionViewTable = ({ grade_assigned, section, subject }: {
                                 quiz,
                                 project,
                                 summative,
-                                exam
+                                exam,
+                                gwa
                             }) => (
                                 <TableRow key={_id}>
                                     <TableCell className="font-medium text-base">{lastname}</TableCell>
@@ -122,9 +126,7 @@ export const SectionViewTable = ({ grade_assigned, section, subject }: {
                                     <TableCell>{project ? project : 0}</TableCell>
                                     <TableCell>{summative ? summative : 0}</TableCell>
                                     <TableCell>{exam ? exam : 0}</TableCell>
-                                    <TableCell>
-                                        {( recitation + activity + quiz + project + summative + exam ).toFixed(1)}
-                                    </TableCell>
+                                    <TableCell>{gwa ? gwa : 0}</TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>
