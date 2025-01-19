@@ -219,10 +219,10 @@ export class TaskController {
                             { score: 0, totalItems: 0 }
                         )
 
-                    return (
+                    return result.score > 0 && result.totalItems > 0 ? (
                         (result.score / result.totalItems) * 
                         (isThereAProject ? getWeightWithProject(type) : getWeightWithoutProject(type))
-                    ).toFixed(2)
+                    ) : 0
                 }
                 
                 return {
