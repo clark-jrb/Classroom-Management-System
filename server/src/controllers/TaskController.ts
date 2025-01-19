@@ -1,9 +1,10 @@
 import { Request, Response } from "express"
 import { TaskModel } from "../models/task"
 import { StudentClassModel } from "../models/student"
-import { StudentTask, Task } from "../types/TaskTypes"
+import { StudentTask, Task, TaskTypes } from "../types/TaskTypes"
 import { GradeLevels } from "../types/types"
 import { selectTaskGradeModel } from "../helpers/select-models"
+import { getWeightWithoutProject, getWeightWithProject } from "../helpers/get-weight"
 
 export class TaskController {
     /**
@@ -173,7 +174,7 @@ export class TaskController {
     /**
      * name
      */
-    public getStudentsAllPerformance = async (req: Request, res: Response): Promise<void> => {
+    public getMyStudentsPerformance = async (req: Request, res: Response): Promise<void> => {
         try {
             const { tid, grade_lvl, section, subject } = req.query
             const quarter = 'q1'
@@ -182,25 +183,31 @@ export class TaskController {
                 gradeLevel: grade_lvl,
                 section: section
             })
-            // pick grade level first (selection of model)
+            //  pick grade level first (selection of model)
             const TaskGradeModel = selectTaskGradeModel(grade_lvl as GradeLevels)
             const studentsTakingMyTasks = await TaskGradeModel.find()
-                .populate('task_id')    // populate task_id to get task description
-                .then((tasks: any) => tasks.filter((task: any) => 
-                    task.task_id.tid.toString() === tid &&  // filter by teacher ID
-                    task.task_id.subject === subject &&     // filter by subject
-                    task.task_id.section === section        // filter by section
-                ).map((task: any) => ({     // map by:
-                    sid: task.sid.toString(),               //  sid,
-                    type: task.task_id.type,                //  type,
-                    task_no: task.task_id.task_no,          //  task_no,
-                    score: task.score,                      //  score
-                    total_items: task.task_id.total_items   //  total_items
-                })))
+                .populate('task_id')    //  populate task_id to get task description
+                .then((tasks: any) => tasks
+                    .filter((task: any) => 
+                        task.task_id.tid.toString() === tid &&  //  filter by teacher ID
+                        task.task_id.subject === subject &&     //  filter by subject
+                        task.task_id.section === section        //  filter by section
+                    )
+                    .map((task: any) => ({     //  map by:
+                        sid: task.sid.toString(),               //  sid,
+                        score: task.score,                      //  score
+                        type: task.task_id.type,                //  type,
+                        task_no: task.task_id.task_no,          //  task_no,
+                        total_items: task.task_id.total_items   //  total_items
+                    }))
+                )
+
+            const isThereAProject = studentsTakingMyTasks.filter((item: any) => 
+                item.type === 'project').length > 0
 
             const studentsTasks = my_students.map(({ sid }) => {
-                const getSumsOfTask = (type: string) => {
-                    return studentsTakingMyTasks
+                const getSumsOfTask = (type: TaskTypes) => {
+                    const result = studentsTakingMyTasks
                         .filter((item: any) => item.sid === sid.toString() && item.type === type)
                         .reduce(
                             (accu: { score: number; totalItems: number }, curr: any) => {
@@ -211,13 +218,21 @@ export class TaskController {
                             },
                             { score: 0, totalItems: 0 }
                         )
+
+                    return (
+                        (result.score / result.totalItems) * 
+                        (isThereAProject ? getWeightWithProject(type) : getWeightWithoutProject(type))
+                    ).toFixed(2)
                 }
                 
-                    
                 return {
                     sid,
                     recitation: getSumsOfTask('recitation'),
-                    activity: getSumsOfTask('activity')
+                    activity: getSumsOfTask('activity'),
+                    quiz: getSumsOfTask('quiz'),
+                    project: getSumsOfTask('project'),
+                    summative: getSumsOfTask('summative'),
+                    exam: getSumsOfTask('exam')
                 }
             })
 

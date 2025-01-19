@@ -1,12 +1,14 @@
 import mongoose from "mongoose"
 
-export interface StudentTask {
+export type TaskTypes = "recitation" | 'quiz' | 'activity' | 'project' | 'summative' | 'exam'
+
+export type StudentTask = {
     _id: mongoose.Types.ObjectId
     sid: mongoose.Types.ObjectId
     score: number
 }
 
-export interface Task {
+export type Task = {
     // tid: mongoose.Types.ObjectId
     subject: string
     grade: string
@@ -16,3 +18,4 @@ export interface Task {
     total_items: number
     quarter: string
 }
+
