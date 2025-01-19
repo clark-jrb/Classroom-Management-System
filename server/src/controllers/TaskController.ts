@@ -1,7 +1,7 @@
 import { Request, Response } from "express"
 import { TaskModel } from "../models/task"
 import { StudentClassModel } from "../models/student"
-import { StudentTask, Task, TaskTypes } from "../types/TaskTypes"
+import { StudentTaskScore, Task, TaskTypes } from "../types/TaskTypes"
 import { GradeLevels } from "../types/types"
 import { selectTaskGradeModel } from "../helpers/select-models"
 import { getWeightWithoutProject, getWeightWithProject } from "../helpers/get-weight"
@@ -125,7 +125,7 @@ export class TaskController {
     public updateStudentsScores = async (req: Request, res: Response): Promise<void> => {
         try {
             const { grade_lvl } = req.query
-            const StudentsScores: StudentTask[] = req.body
+            const StudentsScores: StudentTaskScore[] = req.body
             const Model = selectTaskGradeModel(grade_lvl as GradeLevels)
 
             for (const data of StudentsScores) {
@@ -176,8 +176,7 @@ export class TaskController {
      */
     public getMyStudentsPerformance = async (req: Request, res: Response): Promise<void> => {
         try {
-            const { tid, grade_lvl, section, subject } = req.query
-            const quarter = 'q1'
+            const { tid, grade_lvl, section, subject, quarter } = req.query
 
             const my_students = await StudentClassModel.find({
                 gradeLevel: grade_lvl,
@@ -186,31 +185,33 @@ export class TaskController {
             //  pick grade level first (selection of model)
             const TaskGradeModel = selectTaskGradeModel(grade_lvl as GradeLevels)
             const studentsTakingMyTasks = await TaskGradeModel.find()
-                .populate('task_id')    //  populate task_id to get task description
-                .then((tasks: any) => tasks
-                    .filter((task: any) => 
-                        task.task_id.tid.toString() === tid &&  //  filter by teacher ID
-                        task.task_id.subject === subject &&     //  filter by subject
-                        task.task_id.section === section        //  filter by section
-                    )
-                    .map((task: any) => ({     //  map by:
-                        sid: task.sid.toString(),               //  sid,
-                        score: task.score,                      //  score
-                        type: task.task_id.type,                //  type,
-                        task_no: task.task_id.task_no,          //  task_no,
-                        total_items: task.task_id.total_items   //  total_items
-                    }))
+                .populate<{ task_id: Task }>('task_id')    //  populate task_id to get task description
+                .then((tasks) => 
+                    tasks
+                        .filter((task) => 
+                            task.task_id.tid.toString() === tid &&  //  filter by teacher ID
+                            task.task_id.subject === subject &&     //  filter by subject
+                            task.task_id.quarter === quarter &&     //  filter by subject
+                            task.task_id.section === section        //  filter by section
+                        )
+                        .map((task) => ({     //  map by:
+                            sid: task.sid.toString(),               //  sid,
+                            score: task.score,                      //  score
+                            type: task.task_id.type,                //  type,
+                            task_no: task.task_id.task_no,          //  task_no,
+                            total_items: task.task_id.total_items   //  total_items
+                        }))
                 )
 
-            const isThereAProject = studentsTakingMyTasks.filter((item: any) => 
+            const isThereAProject = studentsTakingMyTasks.filter((item) => 
                 item.type === 'project').length > 0
 
             const studentsTasks = my_students.map(({ sid }) => {
                 const getSumsOfTask = (type: TaskTypes) => {
                     const result = studentsTakingMyTasks
-                        .filter((item: any) => item.sid === sid.toString() && item.type === type)
+                        .filter((item) => item.sid === sid.toString() && item.type === type)
                         .reduce(
-                            (accu: { score: number; totalItems: number }, curr: any) => {
+                            (accu: { score: number; totalItems: number }, curr) => {
                                 return {
                                     score: accu.score + curr.score,
                                     totalItems: accu.totalItems + curr.total_items,

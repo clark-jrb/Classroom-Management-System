@@ -4,7 +4,7 @@ import { TaskGrade1Model, TaskGrade2Model, TaskGrade3Model, TaskGrade4Model, Tas
 import { ValidRoles, GradeLevels } from "../types/types"
 
 export const selectTaskGradeModel = (grade: GradeLevels) => {
-    const selectedModel: any = {
+    const selectedModel = {
         grade_1: TaskGrade1Model,
         grade_2: TaskGrade2Model,
         grade_3: TaskGrade3Model,
