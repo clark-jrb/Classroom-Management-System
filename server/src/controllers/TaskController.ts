@@ -20,9 +20,14 @@ export class TaskController {
                 ...data
             })
 
-            res.status(201).json({ task: newTask, message: 'New task succesfully created' })
+            res.status(201).json({ 
+                task: newTask, 
+                message: 'New task succesfully created' 
+            })
         } catch (error) {
-            res.status(400).json({ message: 'Failed to create task', error })
+            res.status(400).json({ 
+                message: 'Failed to create task', error 
+            })
         }
     }
 
@@ -51,7 +56,9 @@ export class TaskController {
             res.status(200).json(myTasks)
         } catch (error) {
             console.log(error)
-            res.status(400).json({ message: 'Failed to find tasks', error })
+            res.status(400).json({ 
+                message: 'Failed to find tasks', error 
+            })
         }
     }
 
@@ -84,11 +91,15 @@ export class TaskController {
                     }
                 })
 
-                res.status(200).json({ message: 'succcesfully created student tasks' })
+                res.status(200).json({ 
+                    message: 'succcesfully created student tasks' 
+                })
             }
         } catch (error) {
             console.log(error)
-            res.status(400).json({ message: 'Failed to find tasks', error })
+            res.status(400).json({ 
+                message: 'Failed to find tasks', error 
+            })
         }
     }
     
@@ -115,7 +126,9 @@ export class TaskController {
             res.status(200).json(studentTasks)
         } catch (error) {
             console.log(error)
-            res.status(400).json({ message: 'Failed to find tasks', error })
+            res.status(400).json({ 
+                message: 'Failed to find tasks', error 
+            })
         }
     }
 
@@ -142,10 +155,14 @@ export class TaskController {
                 }
             }
     
-            res.status(200).json({ message: 'All student scores updated successfully' });
+            res.status(200).json({ 
+                message: 'All student scores updated successfully' 
+            });
         } catch (error) {
             console.log(error)
-            res.status(400).json({ message: 'Failed to update scores', error })
+            res.status(400).json({ 
+                message: 'Failed to update student scores', error 
+            })
         }
     }
 
@@ -160,14 +177,16 @@ export class TaskController {
 
             const Model = selectTaskGradeModel(grade_lvl as GradeLevels)
 
-            const findTasks = await Model.find().populate('task_id')
+            const findTasks = await Model.find().populate<{ task_id: Task }>('task_id')
 
-            const studentTasks = findTasks.filter((task: any) => task.task_id.tid.toString() === tid)
+            const studentTasks = findTasks.filter((task) => task.task_id.tid.toString() === tid)
 
             res.status(200).json(studentTasks)
         } catch (error) {
             console.log(error)
-            res.status(400).json({ message: 'Failed to find tasks', error })
+            res.status(400).json({ 
+                message: 'Failed to find tasks', error 
+            })
         }
     }
 
@@ -220,10 +239,11 @@ export class TaskController {
                             { score: 0, totalItems: 0 }
                         )
 
-                    return result.score > 0 && result.totalItems > 0 ? (
-                        (result.score / result.totalItems) * 
-                        (isThereAProject ? getWeightWithProject(type) : getWeightWithoutProject(type))
-                    ) : 0
+                    return result.score > 0 && result.totalItems > 0 
+                        ? ((result.score / result.totalItems) * (isThereAProject 
+                            ? getWeightWithProject(type) 
+                            : getWeightWithoutProject(type))) 
+                        : 0
                 }
                 
                 return {
@@ -237,10 +257,16 @@ export class TaskController {
                 }
             })
 
-            res.status(200).json(studentsTasks)
+            const data = studentsTasks.length > 0 
+                ? studentsTasks 
+                : { message: 'students do not exists yet' }
+
+            res.status(200).json(data)
         } catch (error) {
             console.log(error)
-            res.status(400).json({ message: 'Failed to find tasks', error })
+            res.status(400).json({ 
+                message: 'Failed to get students performance', error 
+            })
         }
     }
 }
