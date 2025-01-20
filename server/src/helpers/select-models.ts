@@ -17,7 +17,7 @@ export const selectTaskGradeModel = (grade: GradeLevels) => {
 }
 
 export const selectAccountModel = (role: ValidRoles) => {
-    const selectedModel = {
+    const selectedModel: any = {
         student: StudentAccountModel,
         faculty: TeacherAccountModel
     }

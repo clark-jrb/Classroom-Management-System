@@ -1,3 +1,4 @@
+import { StudentPerfo } from "@/types/computationTypes";
 import { api } from "./api";
 import { StudentScore } from "@/types/types";
 import { TTasks, TTaskForm, Message, StudentTask, StudentTaskCreate, StudentTakingTask } from "@/types/types";
@@ -100,5 +101,26 @@ export const getStudentsTakingMyTasks = async (
     } catch (error) {
         console.log('Failed to get student tasks', error)
         throw new Error('Failed to get student tasks')
+    }
+}
+
+export const getMyStudentsPerformance = async (
+    tid: string,
+    grade_lvl: string,
+    section: string,
+    subject: string,
+    quarter: string
+): Promise<StudentPerfo[]> => {
+    try {
+        const response = await api.get(`/students/performance`, {
+            params: {
+                tid, grade_lvl, section, subject, quarter
+            },
+            withCredentials: true
+        })
+        return response.data
+    } catch (error) {
+        console.log('Failed to get students performance', error)
+        throw new Error('Failed to get students performance')
     }
 }

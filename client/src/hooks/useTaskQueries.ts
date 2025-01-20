@@ -7,7 +7,8 @@ import {
     createTasksToStudents, 
     updateStudentsScores, 
     getStudentsTakingMyTasks, 
-    getStudentsTakingTask 
+    getStudentsTakingTask, 
+    getMyStudentsPerformance
 } from "@/services/TaskService"
 import { 
     StudentScore, 
@@ -121,5 +122,16 @@ export const useStudentsTakingMyTasks = () => {
     return useSuspenseQuery({
         queryKey: ['students_taking_my_tasks', user_id, grade_assigned],
         queryFn: () => getStudentsTakingMyTasks(user_id, grade_assigned)
+    })
+}
+
+
+export const useStudentsPerformance = (section: string, subject: SubjectTypes, quarter: QuarterTypes) => {
+    const { user_id } = useAuthStore()
+    const { grade_assigned } = teacherInfo()
+
+    return useSuspenseQuery({
+        queryKey: ['students_performance', user_id, grade_assigned, section, subject, quarter],
+        queryFn: () => getMyStudentsPerformance(user_id, grade_assigned, section, subject, quarter)
     })
 }

@@ -1,3 +1,4 @@
+import mongoose from 'mongoose'
 import { ValidRoles } from '../types/types'
 
 export type UserAccount = {
@@ -7,6 +8,8 @@ export type UserAccount = {
 }
 
 export type UserProfile = {
+    sid: mongoose.Types.ObjectId
+    tid: mongoose.Types.ObjectId
     firstname: string
     middlename: string
     lastname: string

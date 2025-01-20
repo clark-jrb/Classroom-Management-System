@@ -5,6 +5,7 @@ import { StudentTaskScore, Task, TaskTypes } from "../types/TaskTypes"
 import { GradeLevels } from "../types/types"
 import { selectTaskGradeModel } from "../helpers/select-models"
 import { getWeightWithoutProject, getWeightWithProject } from "../helpers/get-weight"
+import { UserProfile } from "types/UserTypes"
 
 export class TaskController {
     /**
@@ -197,10 +198,18 @@ export class TaskController {
         try {
             const { tid, grade_lvl, section, subject, quarter } = req.query
 
-            const my_students = await StudentClassModel.find({
-                gradeLevel: grade_lvl,
-                section: section
-            })
+            const my_students = await StudentClassModel
+                .find({
+                    gradeLevel: grade_lvl,
+                    section: section
+                })
+                .populate<{ sid: UserProfile }>({
+                    path: 'sid',
+                    model: 'students_personals',
+                    localField: 'sid',
+                    foreignField: 'sid', 
+                    select: 'firstname lastname'
+                })
             //  pick grade level first (selection of model)
             const TaskGradeModel = selectTaskGradeModel(grade_lvl as GradeLevels)
             const studentsTakingMyTasks = await TaskGradeModel.find()
@@ -225,7 +234,7 @@ export class TaskController {
             const isThereAProject = studentsTakingMyTasks.filter((item) => 
                 item.type === 'project').length > 0
 
-            const studentsTasks = my_students.map(({ sid }) => {
+            const studentsTasks = my_students.map(({ sid: { sid, firstname, lastname } }) => {
                 const getSumsOfTask = (type: TaskTypes) => {
                     const result = studentsTakingMyTasks
                         .filter((item) => item.sid === sid.toString() && item.type === type)
@@ -248,6 +257,8 @@ export class TaskController {
                 
                 return {
                     sid,
+                    firstname,
+                    lastname,
                     recitation: getSumsOfTask('recitation'),
                     activity: getSumsOfTask('activity'),
                     quiz: getSumsOfTask('quiz'),

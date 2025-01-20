@@ -8,7 +8,7 @@ import {
     TableRow,
 } from "@/components/ui/table"
 import { calculatePerformance } from "@/helpers/calculate-performance"
-import { useStudentsTakingMyTasks } from "@/hooks/useTaskQueries"
+import { useStudentsPerformance, useStudentsTakingMyTasks } from "@/hooks/useTaskQueries"
 import { fetchMyStudents } from "@/hooks/useTeacherQueries"
 import { SubjectTypes } from "@/types/types"
 import { useQuarterStore } from "@/stores/filterSlice"
@@ -27,57 +27,12 @@ export const SectionViewTable = ({ grade_assigned, section, subject }: {
     subject: SubjectTypes
 }) => {
     const { quarter } = useQuarterStore()
-    const { data: my_students } = fetchMyStudents(grade_assigned, section)  // gets all teacher's students
-    const { data: students_taking_my_tasks } = useStudentsTakingMyTasks()   // gets all teacher's students taking his/her tasks
-
-    /** 
-     * this will map all the teacher's students and then executes the function that 
-     * has the parameter of the students_taking_my_tasks array to find according to 
-     * student's id and then gets ALL specific task
-     * (ex. a student has quiz 1, quiz 2, and quiz 3) then calculates its performance (%)
-     */
-    const data = my_students.map(({ sid: { sid, firstname, lastname }, gradeLevel, section, ...student}) => {
-        const recitation = Number(calculatePerformance(sid, students_taking_my_tasks, subject, 'recitation', quarter, gradeLevel, section).toFixed(2));
-        const activity = Number(calculatePerformance(sid, students_taking_my_tasks, subject, 'activity', quarter, gradeLevel, section).toFixed(2));
-        const quiz = Number(calculatePerformance(sid, students_taking_my_tasks, subject, 'quiz', quarter, gradeLevel, section).toFixed(2));
-        const project = Number(calculatePerformance(sid, students_taking_my_tasks, subject, 'project', quarter, gradeLevel, section).toFixed(2));
-        const summative = Number(calculatePerformance(sid, students_taking_my_tasks, subject, 'summative', quarter, gradeLevel, section).toFixed(2));
-        const exam = Number(calculatePerformance(sid, students_taking_my_tasks, subject, 'exam', quarter, gradeLevel, section).toFixed(2));
-
-        const gwa = Number((
-            recitation +
-            activity +
-            quiz +
-            project +
-            summative +
-            exam 
-        ).toFixed(1))
-
-        return {
-            ...student,
-            sid,
-            gradeLevel,
-            section,
-            quarter,
-            subject,
-            firstname,
-            lastname,
-            recitation,
-            activity,
-            quiz,
-            project,
-            summative,
-            exam,
-            gwa
-        }
-    })
-
-    console.log(data)
+    const { data: students_performance } = useStudentsPerformance(section, subject, quarter)
 
     const studentPerformanceForm = useForm<StudentPerformance>({
         resolver: zodResolver(studentPerformanceSchema),
         defaultValues: {
-            student_performance: data
+            student_performance: students_performance
         }
     })
 
@@ -105,8 +60,8 @@ export const SectionViewTable = ({ grade_assigned, section, subject }: {
                             </TableRow>
                         </TableHeader>
                         <TableBody>
-                            {data.map(({
-                                _id,
+                            {students_performance.map(({
+                                sid,
                                 firstname,
                                 lastname,
                                 recitation,
@@ -114,19 +69,18 @@ export const SectionViewTable = ({ grade_assigned, section, subject }: {
                                 quiz,
                                 project,
                                 summative,
-                                exam,
-                                gwa
+                                exam
                             }) => (
-                                <TableRow key={_id}>
+                                <TableRow key={sid}>
                                     <TableCell className="font-medium text-base">{lastname}</TableCell>
                                     <TableCell>{firstname}</TableCell>
-                                    <TableCell>{recitation ? recitation : 0}</TableCell>
-                                    <TableCell>{activity ? activity : 0}</TableCell>
-                                    <TableCell>{quiz ? quiz : 0}</TableCell>
-                                    <TableCell>{project ? project : 0}</TableCell>
-                                    <TableCell>{summative ? summative : 0}</TableCell>
-                                    <TableCell>{exam ? exam : 0}</TableCell>
-                                    <TableCell>{gwa ? gwa : 0}</TableCell>
+                                    <TableCell>{recitation ? recitation.toFixed(2) : 0}</TableCell>
+                                    <TableCell>{activity ? activity.toFixed(2) : 0}</TableCell>
+                                    <TableCell>{quiz ? quiz.toFixed(2) : 0}</TableCell>
+                                    <TableCell>{project ? project.toFixed(2) : 0}</TableCell>
+                                    <TableCell>{summative ? summative.toFixed(2) : 0}</TableCell>
+                                    <TableCell>{exam ? exam.toFixed(2) : 0}</TableCell>
+                                    {/* <TableCell>{gwa ? gwa : 0}</TableCell> */}
                                 </TableRow>
                             ))}
                         </TableBody>
