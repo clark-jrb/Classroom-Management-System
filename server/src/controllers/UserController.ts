@@ -1,5 +1,5 @@
 import { Request, Response } from "express"
-import { selectModel, selectPersonalModel, selectClassModel } from "../helpers/select-models"
+import { selectAccountModel, selectPersonalModel, selectClassModel } from "../helpers/select-models"
 import { ValidRoles } from "../types/types"
 import { StudentClass } from "../types/StudentTypes"
 import { UserAccount, UserProfile } from "../types/UserTypes"
@@ -12,7 +12,7 @@ export class UserController {
         email: string, 
         role: ValidRoles
     ) {
-        const Model = selectModel(role)
+        const Model = selectAccountModel(role)
 
         return await Model.findOne({ email: email })
     }
@@ -24,7 +24,7 @@ export class UserController {
         classData: StudentClass | TeacherClass, 
         role: ValidRoles
     ) {
-        const AccountModel = selectModel(role) // Select on StudentAccountModel, TeacherAccountModel
+        const AccountModel = selectAccountModel(role) // Select on StudentAccountModel, TeacherAccountModel
         const PersonalModel = selectPersonalModel(role) // Select on StudentPersonalModel, TeacherPersonalModel
         const ClassModel = selectClassModel(role) // Select on StudentClassModel, TeacherClassModel
 
@@ -66,7 +66,7 @@ export class UserController {
             const { accessToken } = req.cookies // get access token from cookie on server
 
             const { role, id } = user
-            const Model = selectModel(role)
+            const Model = selectAccountModel(role)
             const currentUser = await Model.findById(id)
 
             res.json({ 
