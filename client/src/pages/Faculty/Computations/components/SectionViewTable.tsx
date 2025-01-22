@@ -26,21 +26,26 @@ export const SectionViewTable = ({ section, subject }: {
     const { quarter } = useQuarterStore()
     const { data: students_performance } = useStudentsPerformance(section, subject, quarter)
 
+    const students_gwas = students_performance.map(({ sid, recitation, activity, quiz, project, summative, exam }) => ({
+        sid,
+        section,
+        subject,
+        gwa: (recitation + activity + quiz + project + summative + exam) || 0,
+        quarter: quarter
+    }))
+
+    // console.log(students_gwas)
+
     const form = useForm<StudentGWA>({
         resolver: zodResolver(studentGWASchema),
         defaultValues: {
-            student_gwa: students_performance.map(({ sid }) => ({
-                sid,
-                section,
-                subject,
-                gwa: 0,
-                quarter: quarter
-            }))
+            student_gwa: students_gwas
         }
     })
     
     function onSubmit(values: StudentGWA) {
         console.log(values)
+        // console.log(students_gwas)
     }
 
     function onError(errors: any) { 
@@ -104,16 +109,8 @@ export const SectionViewTable = ({ section, subject }: {
                     <Button 
                         type="submit" 
                         onClick={() => {
-                            students_performance.forEach((student, index) => {
-                                const totalScore = 
-                                    (student.recitation || 0) + 
-                                    (student.activity || 0) + 
-                                    (student.quiz || 0) + 
-                                    (student.project || 0) + 
-                                    (student.summative || 0) + 
-                                    (student.exam || 0);
-                        
-                                form.setValue(`student_gwa.${index}.gwa`, totalScore)
+                            students_gwas.forEach(({ gwa }, index) => {
+                                form.setValue(`student_gwa.${index}.gwa`, gwa)
                             })
                         }}
                     >

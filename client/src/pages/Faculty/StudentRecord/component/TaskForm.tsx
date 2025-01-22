@@ -77,7 +77,6 @@ export const TaskForm = ({ taskType }: {
                 setSection('')
                 setSubject('')
                 queryClient.invalidateQueries({ queryKey: ['my_tasks'] })
-                // queryClient.invalidateQueries({ queryKey: ['students_performance'] })
             },
             onError: (error) => {
                 console.log(error)

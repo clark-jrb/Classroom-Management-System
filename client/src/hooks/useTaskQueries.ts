@@ -131,7 +131,7 @@ export const useStudentsPerformance = (section: string, subject: SubjectTypes, q
     const { grade_assigned } = teacherInfo()
 
     return useSuspenseQuery({
-        queryKey: ['students_performance', user_id, grade_assigned, section, subject, quarter],
+        queryKey: ['students_performance', section, subject, quarter],
         queryFn: () => getMyStudentsPerformance(user_id, grade_assigned, section, subject, quarter)
     })
 }
