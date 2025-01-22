@@ -47,7 +47,7 @@ export const SectionView = () => {
             <div className="flex h-full gap-5">
                 <Procedures subject_handled={subject} section_assigned={section} grade_assigned={grade_assigned}/>
                 <Suspense fallback={<div>loading...</div>}>
-                    <SectionViewTable grade_assigned={grade_assigned} section={section} subject={subject}/>
+                    <SectionViewTable section={section} subject={subject}/>
                 </Suspense>
             </div>
         </div>

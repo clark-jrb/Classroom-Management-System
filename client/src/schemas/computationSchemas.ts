@@ -16,3 +16,15 @@ export const studentPerformanceSchema = z.object({
         })
     )
 })
+
+export const studentGWASchema = z.object({
+    student_gwa: z.array(
+        z.object({
+            sid: z.string(),
+            section: z.string(),
+            subject: z.string(),
+            gwa: z.number(),
+            quarter: z.string()
+        })
+    )
+})
