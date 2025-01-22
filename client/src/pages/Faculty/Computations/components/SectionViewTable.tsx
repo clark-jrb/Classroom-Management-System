@@ -7,9 +7,7 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
-import { calculatePerformance } from "@/helpers/calculate-performance"
-import { useStudentsPerformance, useStudentsTakingMyTasks } from "@/hooks/useTaskQueries"
-import { fetchMyStudents } from "@/hooks/useTeacherQueries"
+import { useStudentsPerformance } from "@/hooks/useTaskQueries"
 import { SubjectTypes } from "@/types/types"
 import { useQuarterStore } from "@/stores/filterSlice"
 import { useForm } from "react-hook-form"
