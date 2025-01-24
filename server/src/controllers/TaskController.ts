@@ -288,9 +288,10 @@ export class TaskController {
     public createStudentGWA = async (req: Request, res: Response): Promise<void> => {
         try {
             const data = req.body
-            console.log(data)
+            
+            await GWAModel.create(data)
 
-            res.status(200).json({ message: 'success creating gwas' })
+            res.status(200).json({ message: 'success creating students gwas' })
         } catch (error) {
             console.log(error)
             res.status(400).json({ 
