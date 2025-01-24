@@ -8,7 +8,8 @@ import {
     updateStudentsScores, 
     getStudentsTakingMyTasks, 
     getStudentsTakingTask, 
-    getMyStudentsPerformance
+    getMyStudentsPerformance,
+    createStudentGWA
 } from "@/services/TaskService"
 import { 
     StudentScore, 
@@ -19,6 +20,7 @@ import {
     SubjectTypes, 
     TTasks 
 } from "@/types/types"
+import { StudentGWA } from "@/types/computationTypes"
 
 /**
  * this hook returns functions for tasks like UPDATE and CREATE 
@@ -141,7 +143,22 @@ export const useStudentsPerformance = (section: string, subject: SubjectTypes, q
 }
 
 export const useStudentsPerformanceMutation = () => {
-    // const generateStudentGWA = useMutation({
-    //     mutationFn: () => 
-    // })
+    const generateStudentGWA = useMutation({
+        mutationFn: (value: StudentGWA['student_gwa']) => createStudentGWA(value),
+        onSuccess: (data) => {
+            const { message } = data
+            console.log(message)
+        },
+        onError: (error) => {
+            console.log('there is an error generating student gwas: ' + error)
+        }
+    })
+
+    function createGWA (value: StudentGWA['student_gwa']) {
+        generateStudentGWA.mutateAsync(value)
+    }
+
+    return {
+        createGWA
+    }
 }

@@ -5,8 +5,8 @@ import { StudentTaskScore, Task, TaskTypes } from "../types/TaskTypes"
 import { GradeLevels } from "../types/types"
 import { selectTaskGradeModel } from "../helpers/select-models"
 import { getWeightWithoutProject, getWeightWithProject } from "../helpers/get-weight"
-import { UserProfile } from "types/UserTypes"
-import { GWAModel } from "models/computations"
+import { UserProfile } from "../types/UserTypes"
+import { GWAModel } from "../models/computations"
 
 export class TaskController {
     /**
@@ -287,33 +287,10 @@ export class TaskController {
      */
     public createStudentGWA = async (req: Request, res: Response): Promise<void> => {
         try {
-            const { section, subject, quarter } = req.body
+            const data = req.body
+            console.log(data)
 
-            const findStudents = await StudentClassModel.find({
-                section: section
-            })
-
-            if (!findStudents) {
-                console.log('there is no students')
-                res.status(400).json({ message: 'there is no existing students' })
-            } else {
-                findStudents.forEach(async (student) => {
-                    try {
-                        await GWAModel.create({
-                            sid: student.sid,
-                            subject,
-                            quarter,
-                            section
-                        })
-                    } catch (error) {
-                        console.log('error creating gwas for students ' + error)
-                    }
-                })
-
-                res.status(200).json({ 
-                    message: 'succcesfully created students gwas' 
-                })
-            }
+            res.status(200).json({ message: 'success creating gwas' })
         } catch (error) {
             console.log(error)
             res.status(400).json({ 

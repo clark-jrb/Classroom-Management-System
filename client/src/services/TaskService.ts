@@ -1,4 +1,4 @@
-import { StudentPerformance } from "@/types/computationTypes";
+import { StudentGWA, StudentPerformance } from "@/types/computationTypes";
 import { api } from "./api";
 import { StudentScore } from "@/types/types";
 import { TTasks, TTaskForm, Message, StudentTask, StudentTaskCreate, StudentTakingTask } from "@/types/types";
@@ -122,5 +122,20 @@ export const getMyStudentsPerformance = async (
     } catch (error) {
         console.log('Failed to get students performance', error)
         throw new Error('Failed to get students performance')
+    }
+}
+
+export const createStudentGWA = async (
+    value: StudentGWA['student_gwa']
+): Promise<Message> => {
+    try {
+        const response = await api.post(`/students/gwa`, value, {
+            withCredentials: true
+        })
+        
+        return response.data
+    } catch (error) {
+        console.log('Failed to create students gwa', error)
+        throw new Error('Failed to create students gwa')
     }
 }
