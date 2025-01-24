@@ -34,7 +34,7 @@ export const SectionViewTable = ({ section, subject }: {
         quarter: quarter
     }))
 
-    // console.log(students_gwas)
+    console.log(students_gwas)
 
     const form = useForm<StudentGWA>({
         resolver: zodResolver(studentGWASchema),

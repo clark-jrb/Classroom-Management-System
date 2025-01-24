@@ -125,13 +125,23 @@ export const useStudentsTakingMyTasks = () => {
     })
 }
 
-
+/**
+ * this query will return all students calculated performances
+ * (ex. student 1's total scores on quizzes, activity, project, etc.)
+ * (ex. total scores on quiz 1, quiz 2, and quiz 3)
+ */
 export const useStudentsPerformance = (section: string, subject: SubjectTypes, quarter: QuarterTypes) => {
     const { user_id } = useAuthStore()
     const { grade_assigned } = teacherInfo()
 
     return useSuspenseQuery({
-        queryKey: ['students_performance', section, subject, quarter],
+        queryKey: ['students_performance', user_id, grade_assigned, section, subject, quarter],
         queryFn: () => getMyStudentsPerformance(user_id, grade_assigned, section, subject, quarter)
     })
+}
+
+export const useStudentsPerformanceMutation = () => {
+    // const generateStudentGWA = useMutation({
+    //     mutationFn: () => 
+    // })
 }
