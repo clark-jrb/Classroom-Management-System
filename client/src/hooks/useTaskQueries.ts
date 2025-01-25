@@ -1,5 +1,5 @@
 import { useAuthStore } from "@/stores/auth/authSlice"
-import { useMutation, useSuspenseQuery } from "@tanstack/react-query"
+import { useMutation, useQueryClient, useSuspenseQuery } from "@tanstack/react-query"
 import { teacherInfo } from "./useTeacherQueries"
 import { 
     createTask, 
@@ -9,7 +9,8 @@ import {
     getStudentsTakingMyTasks, 
     getStudentsTakingTask, 
     getMyStudentsPerformance,
-    createMyStudentsGWA
+    createMyStudentsGWA,
+    getMyStudentsGWA
 } from "@/services/TaskService"
 import { 
     StudentScore, 
@@ -142,12 +143,15 @@ export const useStudentsPerformance = (section: string, subject: SubjectTypes, q
     })
 }
 
-export const useStudentsPerformanceMutations = () => {
+export const useStudentsPerformanceMutations = (section: string, subject: SubjectTypes) => {
+    const queryClient = useQueryClient()
+
     const generateStudentGWA = useMutation({
         mutationFn: (value: StudentGWA['student_gwa']) => createMyStudentsGWA(value),
         onSuccess: (data) => {
             const { message } = data
             console.log(message)
+            queryClient.invalidateQueries({ queryKey: ['students_gwas', section, subject] })
         },
         onError: (error) => {
             console.log('there is an error generating student gwas: ' + error)
@@ -161,4 +165,11 @@ export const useStudentsPerformanceMutations = () => {
     return {
         createGWA
     }
+}
+
+export const useStudentsGWA = (section: string, subject: SubjectTypes) => {
+    return useSuspenseQuery({
+        queryKey: ['students_gwas', section, subject],
+        queryFn: () => getMyStudentsGWA(section, subject)
+    })
 }

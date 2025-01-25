@@ -19,16 +19,18 @@ import { studentGWASchema } from "@/schemas/computationSchemas"
 import { StudentGWA } from "@/types/computationTypes"
 import { Button } from "@/components/ui/button"
 import { useStudentsPerformanceMutations } from "@/hooks/useTaskQueries"
+import { useStudentsGWA } from "@/hooks/useTaskQueries"
 
 export const SectionViewTable = ({ section, subject }: {
     section: string
     subject: SubjectTypes
 }) => {
-    const { createGWA } = useStudentsPerformanceMutations()
+    const { createGWA } = useStudentsPerformanceMutations(section, subject)
     const { quarter } = useQuarterStore()
+    const { data: students_gwas } = useStudentsGWA(section, subject)
     const { data: students_performance } = useStudentsPerformance(section, subject, quarter)
 
-    const students_gwas = students_performance.map(({ sid, recitation, activity, quiz, project, summative, exam }) => ({
+    const students_calculated_gwas = students_performance.map(({ sid, recitation, activity, quiz, project, summative, exam }) => ({
         sid,
         section,
         subject,
@@ -36,10 +38,12 @@ export const SectionViewTable = ({ section, subject }: {
         quarter: quarter
     }))
 
+    const students_gwas_by_quarter = students_gwas.filter((items) => items.quarter === quarter).length
+
     const form = useForm<StudentGWA>({
         resolver: zodResolver(studentGWASchema),
         defaultValues: {
-            student_gwa: students_gwas
+            student_gwa: students_calculated_gwas
         }
     })
     
@@ -106,16 +110,20 @@ export const SectionViewTable = ({ section, subject }: {
             </Table>
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit, onError)}>
-                    <Button 
-                        type="submit" 
-                        onClick={() => {
-                            students_gwas.forEach(({ gwa }, index) => {
-                                form.setValue(`student_gwa.${index}.gwa`, gwa)
-                            })
-                        }}
-                    >
-                        Save
-                    </Button>
+                    {students_gwas_by_quarter > 0 
+                        ?   <Button type="button">Update GWA</Button>
+                        :   <Button 
+                                type="submit" 
+                                onClick={() => {
+                                    students_calculated_gwas.forEach(({ gwa }, index) => {
+                                        form.setValue(`student_gwa.${index}.gwa`, gwa)
+                                        form.setValue(`student_gwa.${index}.quarter`, quarter)
+                                    })
+                                }}
+                            >
+                                Save GWA
+                            </Button>
+                    }
                 </form>
             </Form>
         </div>

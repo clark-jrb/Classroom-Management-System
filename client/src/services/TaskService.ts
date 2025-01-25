@@ -143,7 +143,7 @@ export const createMyStudentsGWA = async (
 export const getMyStudentsGWA = async (
     section: string, 
     subject: SubjectTypes, 
-): Promise<StudentGWA> => {
+): Promise<StudentGWA['student_gwa']> => {
     try {
         const response = await api.get(`/students/gwa`, {
             params: { section, subject },
