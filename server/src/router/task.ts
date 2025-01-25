@@ -11,7 +11,8 @@ const {
     updateStudentsScores, 
     getStudentsTakingMyTasks,
     getMyStudentsPerformance,
-    createStudentGWA
+    createStudentGWA,
+    getStudentGWA
 } = Task
 
 export default (router: express.Router) => {
@@ -25,4 +26,5 @@ export default (router: express.Router) => {
 
     router.get('/students/performance', isAuthenticated, getMyStudentsPerformance)
     router.post('/students/gwa', isAuthenticated, createStudentGWA)
+    router.get('/students/gwa', isAuthenticated, getStudentGWA)
 }

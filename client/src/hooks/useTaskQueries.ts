@@ -9,7 +9,7 @@ import {
     getStudentsTakingMyTasks, 
     getStudentsTakingTask, 
     getMyStudentsPerformance,
-    createStudentGWA
+    createMyStudentsGWA
 } from "@/services/TaskService"
 import { 
     StudentScore, 
@@ -142,9 +142,9 @@ export const useStudentsPerformance = (section: string, subject: SubjectTypes, q
     })
 }
 
-export const useStudentsPerformanceMutation = () => {
+export const useStudentsPerformanceMutations = () => {
     const generateStudentGWA = useMutation({
-        mutationFn: (value: StudentGWA['student_gwa']) => createStudentGWA(value),
+        mutationFn: (value: StudentGWA['student_gwa']) => createMyStudentsGWA(value),
         onSuccess: (data) => {
             const { message } = data
             console.log(message)

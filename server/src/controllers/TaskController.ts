@@ -299,4 +299,22 @@ export class TaskController {
             })
         }
     }
+
+    /**
+     * name
+     */
+    public getStudentGWA = async (req: Request, res: Response): Promise<void> => {
+        try {
+            const { section, subject } = req.query
+            
+            const getStudentGWA = await GWAModel.find({ section: section, subject: subject })
+
+            res.status(200).json(getStudentGWA)
+        } catch (error) {
+            console.log(error)
+            res.status(400).json({ 
+                message: 'Failed to create students gwas', error 
+            })
+        }
+    }
 }

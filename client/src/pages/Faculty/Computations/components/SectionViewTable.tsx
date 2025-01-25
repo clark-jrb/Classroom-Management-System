@@ -18,13 +18,13 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { studentGWASchema } from "@/schemas/computationSchemas"
 import { StudentGWA } from "@/types/computationTypes"
 import { Button } from "@/components/ui/button"
-import { useStudentsPerformanceMutation } from "@/hooks/useTaskQueries"
+import { useStudentsPerformanceMutations } from "@/hooks/useTaskQueries"
 
 export const SectionViewTable = ({ section, subject }: {
     section: string
     subject: SubjectTypes
 }) => {
-    const { createGWA } = useStudentsPerformanceMutation()
+    const { createGWA } = useStudentsPerformanceMutations()
     const { quarter } = useQuarterStore()
     const { data: students_performance } = useStudentsPerformance(section, subject, quarter)
 
@@ -36,8 +36,6 @@ export const SectionViewTable = ({ section, subject }: {
         quarter: quarter
     }))
 
-    console.log(students_gwas)
-
     const form = useForm<StudentGWA>({
         resolver: zodResolver(studentGWASchema),
         defaultValues: {
@@ -46,7 +44,7 @@ export const SectionViewTable = ({ section, subject }: {
     })
     
     function onSubmit(values: StudentGWA) {
-        console.log(values.student_gwa)
+        // console.log(values.student_gwa)
         createGWA(values.student_gwa)
     }
 
