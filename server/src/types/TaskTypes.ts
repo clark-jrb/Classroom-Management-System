@@ -31,3 +31,10 @@ export type PopulatedST = {
     score: number
 }
 
+export type StudentsGWAs = {
+    sid: string
+    section: string
+    subject: string
+    gwa: number
+    quarter: string
+}

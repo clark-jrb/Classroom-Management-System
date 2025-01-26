@@ -1,7 +1,7 @@
 import { Request, Response } from "express"
 import { TaskModel } from "../models/task"
 import { StudentClassModel } from "../models/student"
-import { StudentTaskScore, Task, TaskTypes } from "../types/TaskTypes"
+import { StudentsGWAs, StudentTaskScore, Task, TaskTypes } from "../types/TaskTypes"
 import { GradeLevels } from "../types/types"
 import { selectTaskGradeModel } from "../helpers/select-models"
 import { getWeightWithoutProject, getWeightWithProject } from "../helpers/get-weight"
@@ -285,7 +285,7 @@ export class TaskController {
     /**
      * createStudentGWA
      */
-    public createStudentGWA = async (req: Request, res: Response): Promise<void> => {
+    public createStudentsGWAs = async (req: Request, res: Response): Promise<void> => {
         try {
             const data = req.body
             
@@ -303,7 +303,7 @@ export class TaskController {
     /**
      * name
      */
-    public getStudentGWA = async (req: Request, res: Response): Promise<void> => {
+    public getStudentsGWAs = async (req: Request, res: Response): Promise<void> => {
         try {
             const { section, subject } = req.query
             
@@ -314,6 +314,37 @@ export class TaskController {
             console.log(error)
             res.status(400).json({ 
                 message: 'Failed to create students gwas', error 
+            })
+        }
+    }
+
+    public updateStudentsGWAs = async (req: Request, res: Response): Promise<void> => {
+        try {
+            const { subject, quarter } = req.query
+            const StudentsScores: StudentsGWAs[] = req.body
+
+            await Promise.all(
+                StudentsScores.map(async (student) => {
+                    try {
+                        await GWAModel.findOneAndUpdate(
+                            { sid: student.sid, subject, quarter },
+                            { gwa: student.gwa },
+                            { new: true, runValidators: true }
+                        );
+                        console.log(`GWA for student ${student.sid} updated successfully`)
+                    } catch (error) {
+                        console.error(`Error updating GWA for student ${student.sid}:`, error)
+                    }
+                })
+            );
+    
+            res.status(200).json({ 
+                message: 'All students GWAs updated successfully' 
+            });
+        } catch (error) {
+            console.log(error)
+            res.status(400).json({ 
+                message: 'Failed to update students GWAs', error 
             })
         }
     }

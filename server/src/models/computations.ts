@@ -8,7 +8,7 @@ const GWASchema = new Schema({
     gwa: { type: Number, required: true, default: 0 }
 })
 
-GWASchema.index({ section: 1, subject: 1 })
+// GWASchema.index({ section: 1, subject: 1 })
 
 const GPASchema = new Schema({
     sid: { type: Schema.Types.ObjectId, required: true },

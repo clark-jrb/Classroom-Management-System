@@ -20,12 +20,13 @@ import { StudentGWA } from "@/types/computationTypes"
 import { Button } from "@/components/ui/button"
 import { useStudentsPerformanceMutations } from "@/hooks/useTaskQueries"
 import { useStudentsGWA } from "@/hooks/useTaskQueries"
+import { getChangedGWAs } from "@/helpers/changed-fields"
 
 export const SectionViewTable = ({ section, subject }: {
     section: string
     subject: SubjectTypes
 }) => {
-    const { createGWA } = useStudentsPerformanceMutations(section, subject)
+    const { createGWA, updateGWAs } = useStudentsPerformanceMutations(section, subject)
     const { quarter } = useQuarterStore()
     const { data: students_gwas } = useStudentsGWA(section, subject)
     const { data: students_performance } = useStudentsPerformance(section, subject, quarter)
@@ -38,7 +39,7 @@ export const SectionViewTable = ({ section, subject }: {
         quarter: quarter
     }))
 
-    const students_gwas_by_quarter = students_gwas.filter((items) => items.quarter === quarter).length
+    const students_gwas_by_quarter = students_gwas.filter((items) => items.quarter === quarter)
 
     const form = useForm<StudentGWA>({
         resolver: zodResolver(studentGWASchema),
@@ -49,7 +50,23 @@ export const SectionViewTable = ({ section, subject }: {
     
     function onSubmit(values: StudentGWA) {
         // console.log(values.student_gwa)
-        createGWA(values.student_gwa)
+        // console.log(students_gwas_by_quarter)
+        if (students_gwas_by_quarter.length > 0) {
+            const getChanges = getChangedGWAs(students_gwas_by_quarter, values.student_gwa)
+
+            if (Object.keys(getChanges).length === 0) {
+                console.log('there is nothing to update')
+            } else {
+                // updateGWAs.mutateAsync({
+                //     value: values.student_gwa,
+                //     subject,
+                //     quarter
+                // })
+                console.log(getChanges)
+            }
+        } else {
+            createGWA(values.student_gwa)
+        }
     }
 
     function onError(errors: any) { 
@@ -110,20 +127,20 @@ export const SectionViewTable = ({ section, subject }: {
             </Table>
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit, onError)}>
-                    {students_gwas_by_quarter > 0 
-                        ?   <Button type="button">Update GWA</Button>
-                        :   <Button 
-                                type="submit" 
-                                onClick={() => {
-                                    students_calculated_gwas.forEach(({ gwa }, index) => {
-                                        form.setValue(`student_gwa.${index}.gwa`, gwa)
-                                        form.setValue(`student_gwa.${index}.quarter`, quarter)
-                                    })
-                                }}
-                            >
-                                Save GWA
-                            </Button>
-                    }
+                    <Button 
+                        type="submit" 
+                        onClick={() => {
+                            students_calculated_gwas.forEach(({ gwa }, index) => {
+                                form.setValue(`student_gwa.${index}.gwa`, gwa)
+                                form.setValue(`student_gwa.${index}.quarter`, quarter)
+                            })
+                        }}
+                    >
+                        {students_gwas_by_quarter.length > 0
+                            ? 'Update GWA'
+                            : 'Save GWA'
+                        }
+                    </Button>
                 </form>
             </Form>
         </div>

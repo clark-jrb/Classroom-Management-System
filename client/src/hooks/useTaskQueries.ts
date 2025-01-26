@@ -10,7 +10,8 @@ import {
     getStudentsTakingTask, 
     getMyStudentsPerformance,
     createMyStudentsGWA,
-    getMyStudentsGWA
+    getMyStudentsGWA,
+    updateMyStudentsGWA
 } from "@/services/TaskService"
 import { 
     StudentScore, 
@@ -158,12 +159,27 @@ export const useStudentsPerformanceMutations = (section: string, subject: Subjec
         }
     })
 
+    const updateGWAs = useMutation({
+        mutationFn: ({ value, subject, quarter }: { 
+            value: StudentGWA['student_gwa']; 
+            subject: SubjectTypes; 
+            quarter: QuarterTypes; 
+        }) => updateMyStudentsGWA(subject, quarter, value),
+        onSuccess: (data) => {
+            const { message } = data
+            console.log(message)
+        },
+        onError: (error) => {
+            console.log(error)
+        }
+    })
+
     function createGWA (value: StudentGWA['student_gwa']) {
         generateStudentGWA.mutateAsync(value)
     }
 
     return {
-        createGWA
+        createGWA, updateGWAs
     }
 }
 

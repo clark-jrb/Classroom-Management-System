@@ -1,6 +1,6 @@
 import { StudentGWA, StudentPerformance } from "@/types/computationTypes";
 import { api } from "./api";
-import { StudentScore, SubjectTypes } from "@/types/types";
+import { QuarterTypes, StudentScore, SubjectTypes } from "@/types/types";
 import { TTasks, TTaskForm, Message, StudentTask, StudentTaskCreate, StudentTakingTask } from "@/types/types";
 
 export const createTask = async (
@@ -147,6 +147,24 @@ export const getMyStudentsGWA = async (
     try {
         const response = await api.get(`/students/gwa`, {
             params: { section, subject },
+            withCredentials: true
+        })
+        
+        return response.data
+    } catch (error) {
+        console.log('Failed to create students gwa', error)
+        throw new Error('Failed to create students gwa')
+    }
+}
+
+export const updateMyStudentsGWA = async (
+    subject: SubjectTypes, 
+    quarter: QuarterTypes,
+    values: StudentGWA['student_gwa']
+): Promise<Message> => {
+    try {
+        const response = await api.patch(`/students/gwa`, values, {
+            params: { subject, quarter },
             withCredentials: true
         })
         
