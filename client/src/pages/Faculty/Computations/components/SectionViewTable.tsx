@@ -49,20 +49,19 @@ export const SectionViewTable = ({ section, subject }: {
     })
     
     function onSubmit(values: StudentGWA) {
-        // console.log(values.student_gwa)
-        // console.log(students_gwas_by_quarter)
+        // A condition where should the values submitted update or create?
         if (students_gwas_by_quarter.length > 0) {
-            const getChanges = getChangedGWAs(students_gwas_by_quarter, values.student_gwa)
+            const changedValues = getChangedGWAs(students_gwas_by_quarter, values.student_gwa)
 
-            if (Object.keys(getChanges).length === 0) {
+            if (Object.keys(changedValues).length === 0) {
                 console.log('there is nothing to update')
             } else {
-                // updateGWAs.mutateAsync({
-                //     value: values.student_gwa,
-                //     subject,
-                //     quarter
-                // })
-                console.log(getChanges)
+                updateGWAs.mutateAsync({
+                    value: changedValues,
+                    subject,
+                    quarter
+                })
+                console.log(changedValues)
             }
         } else {
             createGWA(values.student_gwa)

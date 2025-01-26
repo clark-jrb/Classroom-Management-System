@@ -161,13 +161,14 @@ export const useStudentsPerformanceMutations = (section: string, subject: Subjec
 
     const updateGWAs = useMutation({
         mutationFn: ({ value, subject, quarter }: { 
-            value: StudentGWA['student_gwa']; 
-            subject: SubjectTypes; 
-            quarter: QuarterTypes; 
+            value: StudentGWA['student_gwa']
+            subject: SubjectTypes 
+            quarter: QuarterTypes
         }) => updateMyStudentsGWA(subject, quarter, value),
         onSuccess: (data) => {
             const { message } = data
             console.log(message)
+            queryClient.invalidateQueries({ queryKey: ['students_gwas', section, subject] })
         },
         onError: (error) => {
             console.log(error)
