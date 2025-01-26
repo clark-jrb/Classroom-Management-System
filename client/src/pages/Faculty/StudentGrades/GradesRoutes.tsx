@@ -4,6 +4,7 @@ import { Navigate, Route, Routes } from "react-router-dom"
 import { Suspense } from "react"
 // import { SectionView } from "../Computations/components/SectionView"
 import { Grades } from "./Grades"
+import { GradesView } from "./components/GradesView"
 
 export const GradesRoutes = () => {
     return (
@@ -15,11 +16,11 @@ export const GradesRoutes = () => {
                             <Grades/>
                         </Suspense>
                     }/>
-                    {/* <Route path="/view/:section/:subject" element={
+                    <Route path="/view/:section/:subject" element={
                         <Suspense fallback={<div>Loading...</div>}>
-                            <SectionView/>
+                            <GradesView/>
                         </Suspense>
-                    }/> */}
+                    }/>
                     <Route path="/view" element={<Navigate to={'/'} replace />}/>
                 </Routes>
             </Container>
