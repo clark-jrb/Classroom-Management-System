@@ -3,12 +3,12 @@ import { Procedures } from "./Procedures"
 import { SubjectTypes } from "@/types/types"
 import { teacherInfo } from "@/hooks/useTeacherQueries"
 import { Suspense } from "react"
-import { SectionViewTable } from "./SectionViewTable"
+import { ComputationViewTable } from "./ComputationViewTable"
 import { Button } from "@/components/ui/button"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { useQuarterStore } from "@/stores/filterSlice"
 
-export const SectionView = () => {
+export const ComputationView = () => {
     const { section, subject } = useParams<{ section: string, subject: SubjectTypes }>()
     const { section_handled, subjects, grade_assigned } = teacherInfo()
     const navigate = useNavigate()
@@ -47,7 +47,7 @@ export const SectionView = () => {
             <div className="flex h-full gap-5">
                 <Procedures subject_handled={subject} section_assigned={section} grade_assigned={grade_assigned}/>
                 <Suspense fallback={<div>loading...</div>}>
-                    <SectionViewTable section={section} subject={subject}/>
+                    <ComputationViewTable section={section} subject={subject}/>
                 </Suspense>
             </div>
         </div>

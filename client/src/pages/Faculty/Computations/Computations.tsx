@@ -1,5 +1,5 @@
 import { teacherInfo } from "@/hooks/useTeacherQueries"
-import { Sections } from "./pages/Sections"
+import { Sections } from "../../../components/Sections"
 import { SubjectTypes } from "@/types/types"
 
 export const Computations = () => {

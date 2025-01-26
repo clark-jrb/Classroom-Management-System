@@ -1,5 +1,5 @@
 import { teacherInfo } from "@/hooks/useTeacherQueries"
-import { Sections } from "../Computations/pages/Sections"
+import { Sections } from "../../../components/Sections"
 import { SubjectTypes } from "@/types/types"
 
 export const Grades = () => {
@@ -7,7 +7,7 @@ export const Grades = () => {
 
     return (
         <div>
-            Grades
+            Student Grades
             <div className="space-y-4">
                 {section_handled.map((section: string, index: number) => (
                     <div key={index}>

@@ -22,7 +22,7 @@ import { useStudentsPerformanceMutations } from "@/hooks/useTaskQueries"
 import { useStudentsGWA } from "@/hooks/useTaskQueries"
 import { getChangedGWAs } from "@/helpers/changed-fields"
 
-export const SectionViewTable = ({ section, subject }: {
+export const ComputationViewTable = ({ section, subject }: {
     section: string
     subject: SubjectTypes
 }) => {
