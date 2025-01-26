@@ -1,4 +1,4 @@
-import { StudentGWA, StudentPerformance } from "@/types/computationTypes";
+import { StudentGWA, StudentGWAWithProfile, StudentPerformance } from "@/types/computationTypes";
 import { api } from "./api";
 import { QuarterTypes, StudentScore, SubjectTypes } from "@/types/types";
 import { TTasks, TTaskForm, Message, StudentTask, StudentTaskCreate, StudentTakingTask } from "@/types/types";
@@ -143,7 +143,7 @@ export const createMyStudentsGWA = async (
 export const getMyStudentsGWA = async (
     section: string, 
     subject: SubjectTypes, 
-): Promise<StudentGWA['student_gwa']> => {
+): Promise<StudentGWAWithProfile> => {
     try {
         const response = await api.get(`/students/gwa`, {
             params: { section, subject },

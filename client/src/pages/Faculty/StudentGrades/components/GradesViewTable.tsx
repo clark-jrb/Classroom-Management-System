@@ -28,18 +28,22 @@ export const GradesViewTable = ({ section, subject }: {
                 <TableHeader>
                     <TableRow>
                         <TableHead className="w-[150px]">Last Name</TableHead>
-                        {/* <TableHead className="w-[150px]">First Name</TableHead> */}
+                        <TableHead className="w-[150px]">First Name</TableHead>
                         <TableHead>GWA</TableHead>
                     </TableRow>
                 </TableHeader>
                 <TableBody>
                     {students_gwas_by_quarter.map(({
-                        sid,
+                        sid: {
+                            sid,
+                            firstname,
+                            lastname
+                        },
                         gwa
                     }) => (
                         <TableRow key={sid}>
-                            {/* <TableCell className="font-medium text-base">{lastname}</TableCell> */}
-                            <TableCell>{sid}</TableCell>
+                            <TableCell className="font-medium text-base">{lastname}</TableCell>
+                            <TableCell>{firstname}</TableCell>
                             <TableCell>{gwa}</TableCell>
                         </TableRow>
                     ))}

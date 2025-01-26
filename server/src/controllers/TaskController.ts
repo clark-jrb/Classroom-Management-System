@@ -308,6 +308,13 @@ export class TaskController {
             const { section, subject } = req.query
             
             const getStudentGWA = await GWAModel.find({ section: section, subject: subject })
+                .populate({
+                    path: 'sid',
+                    model: 'students_personals',
+                    localField: 'sid',
+                    foreignField: 'sid', 
+                    select: 'firstname lastname'
+                })
 
             res.status(200).json(getStudentGWA)
         } catch (error) {

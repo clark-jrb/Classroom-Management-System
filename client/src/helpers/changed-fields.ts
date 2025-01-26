@@ -1,6 +1,6 @@
 import { studentPersonalSchema } from "@/schemas/studentSchemas";
 import { studentScoreSchema } from "@/schemas/teacherSchemas";
-import { StudentGWA } from "@/types/computationTypes";
+import { StudentGWA, StudentGWAWithProfile } from "@/types/computationTypes";
 import { z } from "zod";
 
 
@@ -47,7 +47,7 @@ export function getChangedScores(
 
 
 export function getChangedGWAs(
-    originalGWAs: StudentGWA['student_gwa'],
+    originalGWAs: StudentGWAWithProfile,
     newGWAs: StudentGWA['student_gwa']
 ) {
     if (!originalGWAs || originalGWAs.length !== newGWAs.length) {
@@ -56,7 +56,7 @@ export function getChangedGWAs(
 
     const changedScores = newGWAs.filter((newItem) => {
         // const originalItem = originalGWAs[index];
-        const originalItem = originalGWAs.find(original => original.sid === newItem.sid);
+        const originalItem = originalGWAs.find(original => original.sid.sid === newItem.sid);
         return originalItem && newItem.gwa !== originalItem.gwa;
     });
 
