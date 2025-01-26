@@ -9,6 +9,7 @@ export const FacultyLayout = ({ children }: any) => {
         { name: 'My Classes', url: '/classes' },
         { name: 'Records', url: '/records' },
         { name: 'Computations', url: '/computations' },
+        { name: 'Grades', url: '/grades' },
         { name: 'My Profile', url: '/profile' },
     ]
 

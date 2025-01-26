@@ -1,13 +1,14 @@
 import { Link } from "react-router-dom"
 import { SubjectTypes } from "@/types/types"
 
-export const Sections = ({ section_assigned, subject_handled }: {
+export const Sections = ({ section_assigned, subject_handled, route }: {
     section_assigned: string
     subject_handled: SubjectTypes
+    route: string
 }) => {
 
     return (
-        <Link to={`/computations/view/${section_assigned}/${subject_handled}`} className="block">
+        <Link to={`/${route}/view/${section_assigned}/${subject_handled}`} className="block">
             <div className="border p-8 rounded-md">
                 {section_assigned} {subject_handled}
             </div>

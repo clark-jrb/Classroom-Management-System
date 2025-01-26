@@ -1,13 +1,13 @@
 import { teacherInfo } from "@/hooks/useTeacherQueries"
-import { Sections } from "./pages/Sections"
+import { Sections } from "../Computations/pages/Sections"
 import { SubjectTypes } from "@/types/types"
 
-export const Computations = () => {
+export const Grades = () => {
     const { section_handled, subjects } = teacherInfo()
 
     return (
-        <div >
-            Computations
+        <div>
+            Grades
             <div className="space-y-4">
                 {section_handled.map((section: string, index: number) => (
                     <div key={index}>
@@ -16,7 +16,7 @@ export const Computations = () => {
                                 key={index} 
                                 section_assigned={section} 
                                 subject_handled={subject}
-                                route="computations"
+                                route="grades"
                             />
                         ))}
                     </div>
