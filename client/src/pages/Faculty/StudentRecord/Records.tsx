@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom"
 import { Button } from "@/components/ui/button"
 
-export const RecordsHome = () => {
+export const Records = () => {
     const recordsLinks = [
         { name: 'Recitations', path_name: 'recitation'},
         { name: 'Activities', path_name: 'activity'},

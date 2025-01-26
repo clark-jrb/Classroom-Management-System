@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/breadcrumb"
 import { Quizzes } from "./pages/Quizzes"
 import { Activities } from "./pages/Activities"
-import { RecordsHome } from "./RecordsHome"
+import { Records } from './Records'
 import { Exams } from "./pages/Exams"
 import { Summatives } from "./pages/Summatives"
 import { Projects } from "./pages/Projects"
@@ -24,7 +24,7 @@ export const RecordsRoutes = () => {
     const currentPath = location.pathname
 
     const recordsLinks = [
-        { name: 'Records', path_name: '', element: <RecordsHome/> },
+        { name: 'Records', path_name: '', element: <Records/> },
         { name: 'Quizzes', path_name: 'quiz', element: <Quizzes/> },
         { name: 'Activities', path_name: 'activity', element: <Activities/> },
         { name: 'Exams', path_name: 'exam', element: <Exams/> },
