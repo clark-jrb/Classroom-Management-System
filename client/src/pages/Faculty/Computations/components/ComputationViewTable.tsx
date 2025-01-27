@@ -22,9 +22,10 @@ import { useStudentsPerformanceMutations } from "@/hooks/useTaskQueries"
 import { useStudentsGWA } from "@/hooks/useTaskQueries"
 import { getChangedGWAs } from "@/helpers/changed-fields"
 
-export const ComputationViewTable = ({ section, subject }: {
+export const ComputationViewTable = ({ section, subject, weight }: {
     section: string
     subject: SubjectTypes
+    weight: number
 }) => {
     const { createGWA, updateGWAs } = useStudentsPerformanceMutations(section, subject)
     const { quarter } = useQuarterStore()
@@ -134,6 +135,7 @@ export const ComputationViewTable = ({ section, subject }: {
                                 form.setValue(`student_gwa.${index}.quarter`, quarter)
                             })
                         }}
+                        disabled={weight !== 100}
                     >
                         {students_gwas_by_quarter.length > 0
                             ? 'Update GWA'

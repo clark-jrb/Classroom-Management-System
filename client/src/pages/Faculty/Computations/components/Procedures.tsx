@@ -2,11 +2,15 @@ import { useMyTasks, useStudentsTakingMyTasks } from "@/hooks/useTaskQueries"
 import { TaskTypes, QuarterTypes, SubjectTypes } from "@/types/types"
 import { getWeightWithProject, getWeightWithoutProject } from "@/helpers/get-weight"
 import { findProject } from "@/helpers/is-there-a-project"
+import { Input } from "@/components/ui/input"
+import { useEffect } from "react"
 
-export const Procedures = ({ section_assigned, subject_handled, grade_assigned }: {
-    section_assigned: string,
-    subject_handled: SubjectTypes,
+export const Procedures = ({ section_assigned, subject_handled, grade_assigned, weight, setWeight }: {
+    section_assigned: string
+    subject_handled: SubjectTypes
     grade_assigned: string
+    weight: number
+    setWeight: (weight: number) => void
 }) => {
     const { countTask } = useMyTasks()
     const { data: students_taking_my_tasks } = useStudentsTakingMyTasks()   // gets all teacher's students taking his/her tasks
@@ -36,6 +40,12 @@ export const Procedures = ({ section_assigned, subject_handled, grade_assigned }
     ]
 
     const sumOfWeight = procedures.reduce((accu, curr) => accu + curr.weight, 0)
+    
+    useEffect(() => {
+        if (sumOfWeight) {
+            setWeight(sumOfWeight)
+        }
+    }, [sumOfWeight])
 
     return (
         <div className="border p-5 rounded-md space-y-4">
