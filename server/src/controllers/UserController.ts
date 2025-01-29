@@ -32,16 +32,18 @@ export class UserController {
 
         if (role === 'student') {
             const student_class = classData as StudentClass
+            const quarters = ['q1', 'q2', 'q3', 'q4']
+
+            const studentGPAs = quarters.map(quarter => ({
+                sid: user._id, 
+                quarter: quarter,
+                ...student_class
+            }))
 
             await Promise.all([
                 PersonalModel.create({ sid: user._id, ...personalData }),
                 ClassModel.create({ sid: user._id, ...student_class }),
-                GPAModel.create({ 
-                    sid: user._id, 
-                    quarter: 'q1',
-                    gradeLevel: student_class.gradeLevel, 
-                    section: student_class.section 
-                })
+                GPAModel.insertMany(studentGPAs)
             ])
         }
         
