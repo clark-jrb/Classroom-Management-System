@@ -1,6 +1,7 @@
 import { Request, Response } from "express"
 import { StudentAccountModel, StudentPersonalModel, StudentClassModel } from "../models/student"
 import mongoose from "mongoose"
+import { GPAModel } from "../models/computations"
 
 export class StudentController {
 
@@ -110,6 +111,24 @@ export class StudentController {
         } catch (error) {
             console.log(error)
             res.status(400).json({ message: 'Failed to find students', error })
+        }
+    }
+
+    /**
+     * name
+     */
+    public getStudentGPAs = async (req: Request, res: Response): Promise<void> => {
+        try {
+            const { sid } = req.params
+
+            const student_gpa = await GPAModel.find({
+                sid: sid
+            })
+
+            res.status(200).json(student_gpa)
+        } catch (error) {
+            console.log(error)
+            res.status(400).json({ message: 'Failed to find student gpa', error })
         }
     }
 }
