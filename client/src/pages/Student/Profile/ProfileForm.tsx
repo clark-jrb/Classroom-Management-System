@@ -23,7 +23,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { DatePicker } from "@/components/ui/date-picker"
-import { studentFunctions } from "@/hooks/useStudentQueries"
+import { useStudentQueries } from "@/hooks/useStudentQueries"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -32,7 +32,7 @@ import { useEffect } from "react"
 import { studentPersonalSchema } from "@/schemas/studentSchemas"
 
 export const ProfileForm = () => {
-    const { studentData, updatePersonal } = studentFunctions() // from custom hook
+    const { studentData, updatePersonal } = useStudentQueries() // from custom hook
     const { personal } = studentData // destructure studentData but only get the personal data
     const convertedData = {...personal, birth_date: new Date(personal.birth_date)} // because the birth_date is string from the document
 

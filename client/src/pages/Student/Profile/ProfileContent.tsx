@@ -1,7 +1,7 @@
 import { Badge } from "@/components/ui/badge"
 import { ReactComponent as PenEdit } from '@/assets/icons/pen-edit.svg'
 import { useStudentDialogStore } from "@/stores/studentSlice"
-import { studentFunctions } from "@/hooks/useStudentQueries"
+import { useStudentQueries } from "@/hooks/useStudentQueries"
 import {
     Dialog,
     DialogTrigger
@@ -10,7 +10,7 @@ import { ProfileForm } from "./ProfileForm"
 import moment from "moment"
 
 export const ProfileContent = () => {
-    const { studentData } = studentFunctions()
+    const { studentData } = useStudentQueries()
     const { open, openDialog } = useStudentDialogStore()
 
     // destructure studentData

@@ -1,11 +1,11 @@
 import { useAuthStore } from "@/stores/auth/authSlice"
 import { useMutation, useQueryClient, useSuspenseQuery } from "@tanstack/react-query"
 import { getStudentInformation } from "@/services/UserService"
-import { updateStudentInfo } from "@/services/StudentService"
+import { getStudentGPAs, updateStudentInfo } from "@/services/StudentService"
 import { useStudentDialogStore } from "@/stores/studentSlice"
 
 // this is where the student queries 
-export const studentFunctions = () => {
+export const useStudentQueries = () => {
     const queryClient = useQueryClient()
     const { user_id } = useAuthStore()
     const { openDialog } = useStudentDialogStore()
@@ -35,4 +35,11 @@ export const studentFunctions = () => {
     })
     
     return { studentData, updatePersonal }
+}
+
+export const useStudentGPAs = (sid: string) => {
+    return useSuspenseQuery({
+        queryKey: ['student_gpas', sid],
+        queryFn: () => getStudentGPAs(sid)
+    })
 }
