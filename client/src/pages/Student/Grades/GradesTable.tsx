@@ -44,7 +44,9 @@ export const GradesTable = () => {
                             <div className="flex-col w-14" key={data._id}>
                                 {/* <div className="border-b border-l p-3">{data.quarter}</div> */}
                                 {subjects.map((item, index) => (
-                                    <div key={index} className="border-b border-l p-3">{data[item]}</div>
+                                    <div key={index} className="border-b border-l p-3">{
+                                        data[item] === 0 ? '--' : data[item]
+                                    }</div>
                                 ))}
                             </div>
                         ))}
@@ -56,7 +58,9 @@ export const GradesTable = () => {
                 <div className="w-20">
                     <div className="border-b border-l p-3 h-[5rem]">Final <br/> Grade</div>
                     {subjects.map((item, index) => (
-                        <div key={index} className="border-b border-l p-3">{calculateGPA(data, item)}</div>
+                        <div key={index} className="border-b border-l p-3">{
+                            calculateGPA(data, item) === 0 ? '--' : calculateGPA(data, item)
+                        }</div>
                     ))}
                     <div className="border-b p-3">--</div>
                 </div>
