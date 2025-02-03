@@ -42,7 +42,7 @@ export const login = async (req: Request, res: Response): Promise<any> => {
         return res
             .cookie("accessToken", accessToken, accessTokenOpt)
             .cookie("refreshToken", refreshToken, refreshTokenOpt)
-            .json({ accessToken, refreshToken, userRole: userExists.role, message: "User logged in successfully!" })
+            .json({ userRole: userExists.role, message: "User logged in successfully!" })
             .end()
     } catch (error) {
         console.log(error)
@@ -110,5 +110,5 @@ export const logout = (req: Request, res: Response) => {
     res
         .clearCookie('accessToken')
         .clearCookie('refreshToken')
-        .json({ message: 'User successfully logged out'})
+        .json({ message: 'User successfully logged out' })
 }

@@ -19,8 +19,9 @@ api.interceptors.response.use(
 
             try {
                 // Refresh the access token using the refresh token
-                await refreshAccessToken()
+                const { message } = await refreshAccessToken()
                 console.log('access token refreshed')
+                console.log(message + 'from server')
                 // Retry the original request since the token is now refreshed
                 return api(originalRequest)
             } catch (error) {
