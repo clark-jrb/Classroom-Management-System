@@ -1,3 +1,4 @@
+import { StudentInformation } from "@/types/StudentTypes";
 import { api } from "./api";
 import { TeacherInformation } from "@/types/TeacherTypes";
 
@@ -12,7 +13,9 @@ export const getCurrentUser = async () => {
     }
 }
 
-export const getStudentInformation = async (id: string) => {
+export const getStudentInformation = async (
+    id: string
+): Promise<StudentInformation> => {
     try {
         const response = await api.get(`/student/${id}`, {
             withCredentials: true
@@ -24,7 +27,9 @@ export const getStudentInformation = async (id: string) => {
     }
 }
 
-export const getTeacherInformation = async (id: string): Promise<TeacherInformation> => {
+export const getTeacherInformation = async (
+    id: string
+): Promise<TeacherInformation> => {
     try {
         const response = await api.get(`/teacher/${id}`, {
             withCredentials: true
