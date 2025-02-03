@@ -23,7 +23,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { DatePicker } from "@/components/ui/date-picker"
-import { useStudentQueries } from "@/hooks/useStudentQueries"
+import { useProfileMutation, useStudentData } from "@/hooks/useStudentQueries"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -32,12 +32,13 @@ import { useEffect } from "react"
 import { studentPersonalSchema } from "@/schemas/studentSchemas"
 
 export const ProfileForm = () => {
-    const { studentData, updatePersonal } = useStudentQueries() // from custom hook
-    const { personal } = studentData // destructure studentData but only get the personal data
+    const { data: student_data } = useStudentData()
+    const { updateProfile } = useProfileMutation() // from custom hook
+    const { personal } = student_data // destructure student_data but only get the personal data
     const convertedData = {...personal, birth_date: new Date(personal.birth_date)} // because the birth_date is string from the document
 
     // personal information form
-    const personalForm = useForm<z.infer<typeof studentPersonalSchema>>({
+    const profile_form = useForm<z.infer<typeof studentPersonalSchema>>({
         resolver: zodResolver(studentPersonalSchema)
     })
 
@@ -45,7 +46,7 @@ export const ProfileForm = () => {
         const getChanges = getChangedFields(convertedData, values)
 
         if (Object.keys(getChanges).length !== 0) {
-            updatePersonal.mutate(getChanges)
+            updateProfile.mutateAsync(getChanges)
             // console.log(values)
             console.log('updated successfully')
         } else {
@@ -57,15 +58,15 @@ export const ProfileForm = () => {
 
     // fill the dialog form with data
     useEffect(() => {
-        if (studentData) {
-            personalForm.reset(convertedData)
+        if (student_data) {
+            profile_form.reset(convertedData)
         }
-    }, [studentData, personalForm])
+    }, [student_data, profile_form])
 
     return (
         <DialogContent className="sm:max-w-[625px]">
-            <Form {...personalForm}>
-                <form onSubmit={personalForm.handleSubmit(onSubmit, onError)} className="space-y-6">
+            <Form {...profile_form}>
+                <form onSubmit={profile_form.handleSubmit(onSubmit, onError)} className="space-y-6">
                     {/* header  */}
                     <DialogHeader>
                         <DialogTitle>Edit profile</DialogTitle>
@@ -78,7 +79,7 @@ export const ProfileForm = () => {
                             <div className="grid gap-4 py-4 w-1/2">
                                 {/* First Name */}
                                 <FormField
-                                    control={personalForm.control}
+                                    control={profile_form.control}
                                     name="firstname"
                                     render={({ field }) => (
                                         <FormItem>
@@ -92,7 +93,7 @@ export const ProfileForm = () => {
                                 />
                                 {/* Middle Name */}
                                 <FormField
-                                    control={personalForm.control}
+                                    control={profile_form.control}
                                     name="middlename"
                                     render={({ field }) => (
                                         <FormItem>
@@ -106,7 +107,7 @@ export const ProfileForm = () => {
                                 />
                                 {/* Last Name */}
                                 <FormField
-                                    control={personalForm.control}
+                                    control={profile_form.control}
                                     name="lastname"
                                     render={({ field }) => (
                                         <FormItem>
@@ -122,7 +123,7 @@ export const ProfileForm = () => {
                             <div className="grid gap-4 py-4 w-1/2">
                                 {/* Contact */}
                                 <FormField
-                                    control={personalForm.control}
+                                    control={profile_form.control}
                                     name="contact"
                                     render={({ field }) => (
                                         <FormItem>
@@ -136,7 +137,7 @@ export const ProfileForm = () => {
                                 />
                                 {/* Sex */}
                                 <FormField
-                                    control={personalForm.control}
+                                    control={profile_form.control}
                                     name="sex"
                                     render={({ field }) => (
                                         <FormItem>
@@ -159,7 +160,7 @@ export const ProfileForm = () => {
                                 {/* Birth Date */}
                                 <FormField
                                     name="birth_date"
-                                    control={personalForm.control}
+                                    control={profile_form.control}
                                     render={({ field }) => (
                                         <FormItem>
                                             <FormLabel>Birth Date:</FormLabel>
@@ -179,8 +180,8 @@ export const ProfileForm = () => {
                         </div>
                         {/* footer  */}
                     <DialogFooter>
-                        <Button type="submit" disabled={updatePersonal.isPending}>
-                            {updatePersonal.isPending ? "Loading..." : "Save changes"}
+                        <Button type="submit" disabled={updateProfile.isPending}>
+                            {updateProfile.isPending ? "Loading..." : "Save changes"}
                         </Button>
                     </DialogFooter>
                 </form>
