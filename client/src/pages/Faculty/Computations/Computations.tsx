@@ -10,7 +10,7 @@ export const Computations = () => {
             Computations
             <div className="space-y-4">
                 {section_handled.map((section: string, index: number) => (
-                    <div key={index}>
+                    <div key={index} className="space-y-4">
                         {subjects.map((subject: SubjectTypes, index: number) => (
                             <Sections 
                                 key={index} 
