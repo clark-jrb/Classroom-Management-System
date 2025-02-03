@@ -271,7 +271,7 @@ export class TaskController {
 
             const data = studentsTasks.length > 0 
                 ? studentsTasks 
-                : { message: 'students do not exists yet' }
+                : []
 
             res.status(200).json(data)
         } catch (error) {
