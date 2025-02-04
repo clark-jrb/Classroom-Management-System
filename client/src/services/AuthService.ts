@@ -31,13 +31,13 @@ export const register = async (
 
 export const refreshAccessToken = async (): Promise<Message> => {
     try {
-        const response = await api.post(`/auth/refresh`, {}, {
+        const response = await api.post(`/auth/refresh`, {
             withCredentials: true
         })
         return response.data
     } catch (error) {
-        console.error('Error refreshing access token', error)
-        throw new Error('Error refreshing access token')
+        // console.error('Error refreshing access token', error)
+        throw new Error('Error refreshing access token lol')
     }
 }
 
