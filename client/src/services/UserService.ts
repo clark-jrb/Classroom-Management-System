@@ -1,8 +1,10 @@
 import { StudentInformation } from "@/types/StudentTypes";
 import { api } from "./api";
 import { TeacherInformation } from "@/types/TeacherTypes";
+import { CurrentUser } from "@/types/types";
 
-export const getCurrentUser = async () => {
+export const getCurrentUser = async ():
+Promise<CurrentUser> => {
     try {
         const response = await api.get(`/authenticated`, {
             withCredentials: true
@@ -10,6 +12,7 @@ export const getCurrentUser = async () => {
         return response.data
     } catch (error) {
         console.log('Failed to fetch current user', error)
+        throw new Error('Failed to fetch current user')
     }
 }
 

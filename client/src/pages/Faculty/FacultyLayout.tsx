@@ -6,8 +6,6 @@ export const FacultyLayout = ({ children }: any) => {
     const { handleLogout } = useAuthentication()
     const { teacher_role } = useTeacherStore()
 
-    console.log(teacher_role)
-
     const facultyLinks = [
         { name: 'Dashboard', url: '/' },
         { name: 'My Classes', url: '/classes' },

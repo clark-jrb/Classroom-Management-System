@@ -63,7 +63,7 @@ export class UserController {
     }
 
     // is user authenticated?
-    public authenticated = async (req: Request, res: Response): Promise<void> => {
+    public authenticated = async (req: Request, res: Response) => {
         try {
             const user = (req as any).user
             const { accessToken } = req.cookies // get access token from cookie on server
@@ -83,7 +83,7 @@ export class UserController {
                 })
             } else {
                 const student = await Model.findById(id)
-                
+
                 res.json({ 
                     currentUser: student, 
                     accessToken: accessToken

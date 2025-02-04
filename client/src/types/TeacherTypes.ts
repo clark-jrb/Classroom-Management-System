@@ -4,7 +4,8 @@ import { SubjectTypes } from "./types"
 
 export type TeacherAccount = {
     _id: string
-} & z.infer<typeof loginSchema>
+    // role: 'faculty'
+} & Omit<z.infer<typeof loginSchema>, 'role'>
 
 export type TeacherPersonal = {
     _id: string
@@ -25,3 +26,8 @@ export type TeacherInformation = {
     personal: TeacherPersonal
     classes: TeacherClasses
 }
+
+export type TeacherAuthenticated = {
+    details: TeacherClasses
+    role: 'faculty'
+} & TeacherAccount

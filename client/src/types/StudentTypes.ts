@@ -3,7 +3,8 @@ import { z } from "zod"
 
 export type StudentAccount = {
     _id: string
-} & z.infer<typeof loginSchema>
+    role: 'student'
+} & Omit<z.infer<typeof loginSchema>, 'role'>
 
 export type StudentProfile = {
     _id: string

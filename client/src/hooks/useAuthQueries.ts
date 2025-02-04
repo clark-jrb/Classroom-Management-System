@@ -1,7 +1,8 @@
 import { useNavigate } from "react-router-dom"
-import { useMutation } from "@tanstack/react-query"
+import { useMutation, useSuspenseQuery } from "@tanstack/react-query"
 import { useAuthStore } from "@/stores/auth/authSlice"
 import { login, register, logout } from "@/services/AuthService"
+import { getCurrentUser } from "@/services/UserService"
 
 export const useAuthentication = () => {
     const { setRole } = useAuthStore()
@@ -61,3 +62,9 @@ export const useAuthentication = () => {
     return  { loginUser, registerUser, handleLogout }
 }
 
+export const useCurrentUser = () => {
+    return useSuspenseQuery({
+        queryKey: ['currentUser'],
+        queryFn: getCurrentUser, // get current user on the server
+    })
+}

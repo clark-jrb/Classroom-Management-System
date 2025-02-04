@@ -1,5 +1,3 @@
-import { useSuspenseQuery } from "@tanstack/react-query"
-import { getCurrentUser } from "@/services/UserService"
 import { useAuthStore, useTeacherStore } from "@/stores/auth/authSlice"
 import { useEffect } from "react"
 import { Routes, Route } from "react-router-dom"
@@ -13,33 +11,33 @@ import { FacultyProfile } from "./Faculty/FacultyProfile"
 import { ComputationsRoutes } from "./Faculty/Computations/ComputationsRoutes"
 import { GradesRoutes } from "./Faculty/StudentGrades/GradesRoutes"
 import { EvaluationRoutes } from "./Faculty/Evaluation/EvaluationRoutes"
+import { useCurrentUser } from "@/hooks/useAuthQueries"
 
 // GET current user logged in on the server
 const currentAuthenticated = () => {
-    const { setRole, setUserId, role } = useAuthStore() // prepare the zustand global store (state)
+    const { setRole, setUserId } = useAuthStore() // prepare the zustand global store (state)
     const { setTeacherRole } = useTeacherStore()
-    
-    const { data } = useSuspenseQuery({
-        queryKey: ['currentUser'],
-        queryFn: getCurrentUser, // get current user on the server
-    })
+    const { data } = useCurrentUser()
+    const { currentUser } = data
     
     useEffect(() => {
-        if (data && data.currentUser) { // if data is not undefined (usually it is undefined on first call)
-            setRole(data.currentUser.role);
-            setUserId(data.currentUser._id);
-            if (data.currentUser.role === 'faculty') {
-                setTeacherRole(data.currentUser.details.teacher_role)
+        const user_role = currentUser.role
+
+        if (data) { // if data is not undefined (usually it is undefined on first call)
+            setRole(user_role)
+            setUserId(currentUser._id)
+
+            if (user_role === 'faculty') {
+                setTeacherRole(currentUser.details.teacher_role)
             }
         } // set role and the current user id on store to be accessible on children 
-    }, [data, setRole, setUserId]);
-
-    return { role } // send the role to the authenticated routes
+    }, [data, setRole, setUserId])
 }
 
 // Authenticated Routes
 export const AuthenticatedRoutes = () => {
-    const { role } = currentAuthenticated() // get role from the current user on the server
+    currentAuthenticated()  // function to set role on auth store
+    const { role } = useAuthStore()
 
     const studentRoutes = [
         { path: '/', element: <StudentDashboard/> },

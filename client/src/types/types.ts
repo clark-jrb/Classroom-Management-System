@@ -1,5 +1,7 @@
 import { studentScoreSchema, taskSchema } from "@/schemas/teacherSchemas"
 import { z } from "zod"
+import { TeacherAuthenticated } from "./TeacherTypes"
+import { StudentAccount } from "./StudentTypes"
 
 export type AllString = {
     [key: string]: string
@@ -52,4 +54,9 @@ export type MyStudents = {
     },
     gradeLevel: string
     section: string
+}
+
+export type CurrentUser = {
+    currentUser: TeacherAuthenticated | StudentAccount
+    accessToken: string
 }
