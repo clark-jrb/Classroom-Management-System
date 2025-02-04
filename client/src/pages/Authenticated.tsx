@@ -12,6 +12,7 @@ import { RecordsRoutes } from "./Faculty/StudentRecord/RecordsRoutes"
 import { FacultyProfile } from "./Faculty/FacultyProfile"
 import { ComputationsRoutes } from "./Faculty/Computations/ComputationsRoutes"
 import { GradesRoutes } from "./Faculty/StudentGrades/GradesRoutes"
+import { EvaluationRoutes } from "./Faculty/Evaluation/EvaluationRoutes"
 
 // GET current user logged in on the server
 const currentAuthenticated = () => {
@@ -48,6 +49,7 @@ export const AuthenticatedRoutes = () => {
         { path: '/records/*', element: <RecordsRoutes/> },
         { path: '/computations/*', element: <ComputationsRoutes/> },
         { path: '/grades/*', element: <GradesRoutes/> },
+        { path: '/evaluation/*', element: <EvaluationRoutes/> },
         { path: '/profile', element: <FacultyProfile/> }
     ] // same as the student routes but faculty
 

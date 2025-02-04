@@ -4,20 +4,7 @@ import { getTeacherInformation } from "@/services/UserService"
 import { getMyStudents } from "@/services/TeacherService"
 
 export const teacherInfo = () => {
-    const { user_id } = useAuthStore()
-
-    const { data, isLoading, isError, error } = useSuspenseQuery({
-        queryKey: ['teacher_data', user_id],
-        queryFn: () => getTeacherInformation(user_id),
-    })
-
-    if (isLoading) {
-        console.log('loading teacher data...')
-    }
-
-    if (isError) {
-        console.log(error)
-    }
+    const { data } = useTeacherData()
 
     // destructure data from the api
     const { teacher_role, grade_assigned, section_handled, subjects } = data.classes
@@ -25,6 +12,15 @@ export const teacherInfo = () => {
     // const { firstname, middlename, lastname, sex, contact, birth_date } = personal || {}
 
     return { teacher_role, grade_assigned, section_handled, subjects }
+}
+
+export const useTeacherData = () => {
+    const { user_id } = useAuthStore()
+
+    return useSuspenseQuery({
+        queryKey: ['teacher_data', user_id],
+        queryFn: () => getTeacherInformation(user_id)
+    })
 }
 
 export const fetchMyStudents = (grade_assigned: string, section: string) => {
