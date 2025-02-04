@@ -11,9 +11,9 @@ export const createTask = async (
         const response = await api.post(`/task/${tid}`, value, {
             withCredentials: true
         })
+
         return response.data
     } catch (error) {
-        console.log('Failed to create a new task', error)
         throw new Error('Failed to create a new task')
     }
 }
@@ -23,13 +23,12 @@ export const getTasks = async (
 ): Promise<TTasks[]> => {
     try {
         const query = new URLSearchParams(filters as Record<string, string>).toString()
-        // console.log(query)
         const response = await api.get(`/tasks?${query}`, {
             withCredentials: true
         })
+
         return response.data
     } catch (error) {
-        console.log('Failed to get tasks', error)
         throw new Error('Failed to get tasks')
     }
 }
@@ -41,10 +40,10 @@ export const createTasksToStudents = async (
         const response = await api.post(`/tasks/students`, value, {
             withCredentials: true
         })
+
         return response.data
     } catch (error) {
-        console.log('Failed to create student tasks', error)
-        throw new Error('Failed to create student tasks')
+        throw new Error('Failed to create tasks to students')
     }
 }
 
@@ -60,10 +59,10 @@ export const getStudentsTakingTask = async (
             },
             withCredentials: true
         })
+
         return response.data
     } catch (error) {
-        console.log('Failed to get students tasks', error)
-        throw new Error('Failed to get students tasks')
+        throw new Error('Failed to get students taking tasks')
     }
 }
 
@@ -78,10 +77,10 @@ export const updateStudentsScores = async (
             },
             withCredentials: true
         })
+
         return response.data
     } catch (error) {
-        console.log('Failed to update student scores user', error)
-        throw new Error('Failed to update student scores user')
+        throw new Error('Failed to update student scores')
     }
 }
 
@@ -97,10 +96,10 @@ export const getStudentsTakingMyTasks = async (
             },
             withCredentials: true
         })
+
         return response.data
     } catch (error) {
-        console.log('Failed to get student tasks', error)
-        throw new Error('Failed to get student tasks')
+        throw new Error('Failed to get students taking my tasks')
     }
 }
 
@@ -118,9 +117,9 @@ export const getMyStudentsPerformance = async (
             },
             withCredentials: true
         })
+
         return response.data
     } catch (error) {
-        console.log('Failed to get students performance', error)
         throw new Error('Failed to get students performance')
     }
 }
@@ -135,7 +134,6 @@ export const createMyStudentsGWA = async (
         
         return response.data
     } catch (error) {
-        console.log('Failed to create students gwa', error)
         throw new Error('Failed to create students gwa')
     }
 }
@@ -152,8 +150,7 @@ export const getMyStudentsGWA = async (
         
         return response.data
     } catch (error) {
-        console.log('Failed to create students gwa', error)
-        throw new Error('Failed to create students gwa')
+        throw new Error('Failed to get students gwa')
     }
 }
 
@@ -170,7 +167,6 @@ export const updateMyStudentsGWA = async (
         
         return response.data
     } catch (error) {
-        console.log('Failed to create students gwa', error)
-        throw new Error('Failed to create students gwa')
+        throw new Error('Failed to update students gwa')
     }
 }

@@ -13,9 +13,11 @@ export const useProfileMutation = () => {
     // student update information
     const updateProfile = useMutation({
         mutationFn: (value: Record<string, any>) => updateStudentInfo(user_id, value), // post in the api
-        onSuccess: () => {
+        onSuccess: (data) => {
+            const { message } = data
+            console.log(message)
             queryClient.invalidateQueries({ queryKey: ['student_data', user_id] }) // refetch data
-            // console.log('success on hook')
+
             openDialog(false) // close dialog
         },
         onError: (error) => {

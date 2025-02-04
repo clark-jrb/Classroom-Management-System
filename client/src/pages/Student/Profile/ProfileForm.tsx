@@ -47,8 +47,6 @@ export const ProfileForm = () => {
 
         if (Object.keys(getChanges).length !== 0) {
             updateProfile.mutateAsync(getChanges)
-            // console.log(values)
-            console.log('updated successfully')
         } else {
             console.log('there is nothing to update')
         }
