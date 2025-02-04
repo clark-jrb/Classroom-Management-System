@@ -13,3 +13,13 @@ export const useAuthStore = create<AuthStore>((set) => ({
     setRole: (newRole) => set({ role: newRole }),
     setUserId: (newUserId) => set({ user_id: newUserId })
 }))
+
+type TeacherStore = {
+    teacher_role: string
+    setTeacherRole: (newTeacherRole: string) => void,
+}
+
+export const useTeacherStore = create<TeacherStore>((set) => ({
+    teacher_role: "",
+    setTeacherRole: (newTeacherRole) => set({ teacher_role: newTeacherRole })
+}))

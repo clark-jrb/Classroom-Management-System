@@ -1,10 +1,12 @@
 import { useAuthentication } from '@/hooks/useAuthQueries'
 import { SideNavbar } from '@/components/side-navbar'
-import { teacherInfo } from '@/hooks/useTeacherQueries'
+import { useTeacherStore } from '@/stores/auth/authSlice'
 
 export const FacultyLayout = ({ children }: any) => {
     const { handleLogout } = useAuthentication()
-    const { teacher_role } = teacherInfo()
+    const { teacher_role } = useTeacherStore()
+
+    console.log(teacher_role)
 
     const facultyLinks = [
         { name: 'Dashboard', url: '/' },

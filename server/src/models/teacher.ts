@@ -27,6 +27,16 @@ const TeacherClassSchema = new Schema({
 TeacherPersonalSchema.index({ tid: 1 })
 TeacherClassSchema.index({ tid: 1 })
 
+TeacherAccountSchema.virtual("details", {
+    ref: "teachers_class",
+    localField: "_id",
+    foreignField: "tid",
+    justOne: true
+})
+
+TeacherAccountSchema.set("toJSON", { virtuals: true })
+TeacherAccountSchema.set("toObject", { virtuals: true })
+
 export const TeacherAccountModel = model('teachers_accounts', TeacherAccountSchema)
 export const TeacherPersonalModel = model('teachers_personals', TeacherPersonalSchema)
 export const TeacherClassModel = model('teachers_class', TeacherClassSchema)

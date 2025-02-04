@@ -5,6 +5,7 @@ import { StudentClass } from "../types/StudentTypes"
 import { UserAccount, UserProfile } from "../types/UserTypes"
 import { TeacherClass } from "../types/TeacherTypes"
 import { GPAModel } from "../models/computations"
+import path from "path"
 
 export class UserController {
     // get user by email 
@@ -69,12 +70,26 @@ export class UserController {
 
             const { role, id } = user
             const Model = selectAccountModel(role)
-            const currentUser = await Model.findById(id)
+            if (role === 'faculty') {
+                const faculty = await Model
+                    .findById(id)
+                    .populate({
+                        path: "details"
+                    })
 
-            res.json({ 
-                currentUser: currentUser, 
-                accessToken: accessToken
-            })
+                res.json({ 
+                    currentUser: faculty, 
+                    accessToken: accessToken
+                })
+            } else {
+                const student = await Model.findById(id)
+                
+                res.json({ 
+                    currentUser: student, 
+                    accessToken: accessToken
+                })
+            }
+            
         } catch (error) {
             res.status(401).json({ message: 'Token expired' })
         }
