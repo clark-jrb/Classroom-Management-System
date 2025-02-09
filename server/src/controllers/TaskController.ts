@@ -359,17 +359,50 @@ export class TaskController {
     public getStudentsGPAs = async (req: Request, res: Response): Promise<void> => {
         try {
             const { grade_lvl, section } = req.query
-            
-            const getStudentGPA = await GPAModel.find({ gradeLevel: grade_lvl, section: section })
-                // .populate({
-                //     path: 'sid',
-                //     model: 'students_personals',
-                //     localField: 'sid',
-                //     foreignField: 'sid', 
-                //     select: 'firstname lastname'
-                // })
 
-            res.status(200).json(getStudentGPA)
+            const students_gpas = await GPAModel.find({ gradeLevel: grade_lvl, section: section })
+            const quarters = ['q1', 'q2', 'q3', 'q4']
+            const total_quarters = quarters.length
+
+            const my_students_gpas = await StudentClassModel
+                .find({ gradeLevel: grade_lvl, section: section })
+                .populate<({ sid: UserProfile })>({
+                    path: 'sid',
+                    model: 'students_personals',
+                    localField: 'sid',
+                    foreignField: 'sid', 
+                    select: 'firstname lastname'
+                })
+                .then((student) => 
+                    student.map(({ sid: { sid, firstname, lastname } }) => ({
+                        sid,
+                        firstname,
+                        lastname,
+                        gpa: students_gpas
+                            .filter(item => item.sid.toString() === sid.toString())
+                            .reduce((accu, curr) => {
+                                    return {
+                                        math: accu.math + curr.math / total_quarters,
+                                        science: accu.science + curr.science / total_quarters,
+                                        english: accu.english + curr.english / total_quarters,
+                                        filipino: accu.filipino + curr.filipino / total_quarters,
+                                        hekasi: accu.hekasi + curr.hekasi / total_quarters,
+                                        mapeh: accu.mapeh + curr.mapeh / total_quarters
+                                    }
+                                },
+                                { 
+                                    english: 0,
+                                    math: 0,
+                                    filipino: 0,
+                                    mapeh: 0,
+                                    hekasi: 0,
+                                    science: 0
+                                }
+                            )
+                    }))
+                )
+
+            res.status(200).json(my_students_gpas)
         } catch (error) {
             console.log(error)
             res.status(400).json({ 

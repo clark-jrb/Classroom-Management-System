@@ -1,5 +1,5 @@
 import { useStudentsGPA } from "@/hooks/useTaskQueries"
-import { useMyStudentsData, useTeacherData } from "@/hooks/useTeacherQueries"
+import { useTeacherData } from "@/hooks/useTeacherQueries"
 
 
 export const Evaluation = () => {
@@ -17,17 +17,8 @@ export const Evaluation = () => {
     const section = section_handled.join('')
 
     const { data: students_gpas } = useStudentsGPA(grade_assigned, section)
-    const { data: my_students } = useMyStudentsData(grade_assigned, section)
 
-    const filterGPAByStudent = my_students.map(({ sid: { sid, firstname, lastname } }) =>
-        ({ 
-            firstname,
-            lastname,
-            gpas: students_gpas.filter(item => item.sid === sid)
-        })
-    );
-
-    console.log(filterGPAByStudent)
+    console.log(students_gpas)
 
     return (
         <div>
