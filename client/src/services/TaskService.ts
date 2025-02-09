@@ -1,4 +1,4 @@
-import { StudentGWA, StudentGWAWithProfile, StudentPerformance } from "@/types/computationTypes";
+import { StudentGPA, StudentGWA, StudentGWAWithProfile, StudentPerformance } from "@/types/computationTypes";
 import { api } from "./api";
 import { QuarterTypes, StudentScore, SubjectTypes } from "@/types/types";
 import { TTasks, TTaskForm, Message, StudentTask, StudentTaskCreate, StudentTakingTask } from "@/types/types";
@@ -168,5 +168,21 @@ export const updateMyStudentsGWA = async (
         return response.data
     } catch (error) {
         throw new Error('Failed to update students gwa')
+    }
+}
+
+export const getMyStudentsGPAs = async (
+    grade_lvl: string, 
+    section: string
+): Promise<StudentGPA[]> => {
+    try {
+        const response = await api.get(`/students/gpa`, {
+            params: { grade_lvl, section },
+            withCredentials: true
+        })
+        
+        return response.data
+    } catch (error) {
+        throw new Error('Failed to get students gpa')
     }
 }

@@ -6,7 +6,7 @@ import { GradeLevels } from "../types/types"
 import { selectTaskGradeModel } from "../helpers/select-models"
 import { getWeightWithoutProject, getWeightWithProject } from "../helpers/get-weight"
 import { UserProfile } from "../types/UserTypes"
-import { GWAModel } from "../models/computations"
+import { GPAModel, GWAModel } from "../models/computations"
 
 export class TaskController {
     /**
@@ -352,6 +352,28 @@ export class TaskController {
             console.log(error)
             res.status(400).json({ 
                 message: 'Failed to update students GWAs', error 
+            })
+        }
+    }
+
+    public getStudentsGPAs = async (req: Request, res: Response): Promise<void> => {
+        try {
+            const { grade_lvl, section } = req.query
+            
+            const getStudentGPA = await GPAModel.find({ gradeLevel: grade_lvl, section: section })
+                // .populate({
+                //     path: 'sid',
+                //     model: 'students_personals',
+                //     localField: 'sid',
+                //     foreignField: 'sid', 
+                //     select: 'firstname lastname'
+                // })
+
+            res.status(200).json(getStudentGPA)
+        } catch (error) {
+            console.log(error)
+            res.status(400).json({ 
+                message: 'Failed to get students gpas', error 
             })
         }
     }

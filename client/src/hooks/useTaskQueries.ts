@@ -11,7 +11,8 @@ import {
     getMyStudentsPerformance,
     createMyStudentsGWA,
     getMyStudentsGWA,
-    updateMyStudentsGWA
+    updateMyStudentsGWA,
+    getMyStudentsGPAs
 } from "@/services/TaskService"
 import { 
     StudentScore, 
@@ -188,5 +189,12 @@ export const useStudentsGWA = (section: string, subject: SubjectTypes) => {
     return useSuspenseQuery({
         queryKey: ['students_gwas', section, subject],
         queryFn: () => getMyStudentsGWA(section, subject)
+    })
+}
+
+export const useStudentsGPA = (grade_lvl: string, section: string) => {
+    return useSuspenseQuery({
+        queryKey: ['students_gpas', grade_lvl, section],
+        queryFn: () => getMyStudentsGPAs(grade_lvl, section)
     })
 }

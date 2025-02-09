@@ -24,5 +24,7 @@ const GPASchema = new Schema({
     gpa: { type: Number, default: 0 }
 })
 
+GPASchema.index({ section: 1 })
+
 export const GWAModel = model('students_gwa', GWASchema)
 export const GPAModel = model('students_gpa', GPASchema)
