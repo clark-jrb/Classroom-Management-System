@@ -1,25 +1,18 @@
-import { useTeacherData } from "@/hooks/useTeacherQueries"
-import { EvaluationTable } from "./components/EvaluationTable"
-
+import { Button } from "@/components/ui/button"
+import { useNavigate } from "react-router-dom"
 
 export const Evaluation = () => {
-    const { data: teacher_data } = useTeacherData()
-    const { teacher_role, grade_assigned, section_handled } = teacher_data.classes
-    
-    if (teacher_role !== 'homeroom' || section_handled.length > 1) {
-        return (
-            <div>
-                You are not homeroom teacher
-            </div>
-        )
-    }
-
-    const section = section_handled.join('')
+    const navigate = useNavigate()
 
     return (
-        <div>
-            Evaluation
-            <EvaluationTable section={section} grade_assigned={grade_assigned} />
+        <div className="space-y-4">
+            <div>Student Grades Evaluation</div>
+            <Button variant={'outline'} size={'lg'} className="block" onClick={() => navigate('/evaluation/gpa')}>
+                Students General Point Average
+            </Button>
+            <Button variant={'outline'} size={'lg'} className="block" onClick={() => navigate('/evaluation/ga')}>
+                Students General Average
+            </Button>
         </div>
     )
 }
