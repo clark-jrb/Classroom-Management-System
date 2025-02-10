@@ -1,5 +1,5 @@
-import { useStudentsGPA } from "@/hooks/useTaskQueries"
 import { useTeacherData } from "@/hooks/useTeacherQueries"
+import { EvaluationTable } from "./components/EvaluationTable"
 
 
 export const Evaluation = () => {
@@ -16,13 +16,10 @@ export const Evaluation = () => {
 
     const section = section_handled.join('')
 
-    const { data: students_gpas } = useStudentsGPA(grade_assigned, section)
-
-    console.log(students_gpas)
-
     return (
         <div>
             Evaluation
+            <EvaluationTable section={section} grade_assigned={grade_assigned} />
         </div>
     )
 }
