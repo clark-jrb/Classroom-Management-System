@@ -23,7 +23,12 @@ export type StudentGWAFilter = {
 }
 
 export type StudentGPA = {
-    sid: string
+    _id: string
+    sid: {
+        sid: string
+        firstname: string
+        lastname: string
+    }
     section: string
     quarter: QuarterTypes;
     gradeLevel: string

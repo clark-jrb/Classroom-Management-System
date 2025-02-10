@@ -202,7 +202,7 @@ export const useStudentsGPA = (grade_lvl: string, section: string) => {
 
 export const useStudentsCalculatedGPA = (grade_lvl: string, section: string) => {
     return useSuspenseQuery({
-        queryKey: ['students_gpas', grade_lvl, section],
+        queryKey: ['students_calculated_gpas', grade_lvl, section],
         queryFn: () => getMyStudentsCalculatedGPAs(grade_lvl, section)
     })
 }

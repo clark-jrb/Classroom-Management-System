@@ -14,8 +14,6 @@ export const GATable = ({ section, grade_assigned }: {
 }) => {
     const { data: students_gpas } = useStudentsCalculatedGPA(grade_assigned, section)
 
-    console.log(students_gpas)
-
     return (
         <div>
             <Table>
