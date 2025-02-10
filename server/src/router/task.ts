@@ -14,7 +14,8 @@ const {
     createStudentsGWAs,
     getStudentsGWAs,
     updateStudentsGWAs,
-    getStudentsGPAs
+    getStudentsGPAs,
+    getStudentsCalculatedGPAs
 } = Task
 
 export default (router: express.Router) => {
@@ -33,4 +34,5 @@ export default (router: express.Router) => {
     router.patch('/students/gwa', isAuthenticated, updateStudentsGWAs)
 
     router.get('/students/gpa', isAuthenticated, getStudentsGPAs)
+    router.get('/students/calculated/gpa', isAuthenticated, getStudentsCalculatedGPAs)
 }

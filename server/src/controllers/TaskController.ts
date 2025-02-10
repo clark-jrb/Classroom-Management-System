@@ -359,6 +359,28 @@ export class TaskController {
     public getStudentsGPAs = async (req: Request, res: Response): Promise<void> => {
         try {
             const { grade_lvl, section } = req.query
+            
+            const students_gpas = await GPAModel.find({ gradeLevel: grade_lvl, section: section })
+                .populate({
+                    path: 'sid',
+                    model: 'students_personals',
+                    localField: 'sid',
+                    foreignField: 'sid', 
+                    select: 'firstname lastname'
+                })
+
+            res.status(200).json(students_gpas)
+        } catch (error) {
+            console.log(error)
+            res.status(400).json({ 
+                message: 'Failed to create students gwas', error 
+            })
+        }
+    }
+
+    public getStudentsCalculatedGPAs = async (req: Request, res: Response): Promise<void> => {
+        try {
+            const { grade_lvl, section } = req.query
 
             const students_gpas = await GPAModel.find({ gradeLevel: grade_lvl, section: section })
             const quarters = ['q1', 'q2', 'q3', 'q4']
@@ -406,7 +428,7 @@ export class TaskController {
         } catch (error) {
             console.log(error)
             res.status(400).json({ 
-                message: 'Failed to get students gpas', error 
+                message: 'Failed to get students calculated gpas', error 
             })
         }
     }

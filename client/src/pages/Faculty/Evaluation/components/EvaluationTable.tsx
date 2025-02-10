@@ -6,13 +6,13 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
-import { useStudentsGPA } from "@/hooks/useTaskQueries"
+import { useStudentsCalculatedGPA } from "@/hooks/useTaskQueries"
 
 export const EvaluationTable = ({ section, grade_assigned }: {
     section: string
     grade_assigned: string
 }) => {
-    const { data: students_gpas } = useStudentsGPA(grade_assigned, section)
+    const { data: students_gpas } = useStudentsCalculatedGPA(grade_assigned, section)
 
     console.log(students_gpas)
 

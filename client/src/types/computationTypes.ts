@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { studentPerformanceSchema, studentGWASchema } from "@/schemas/computationSchemas";
-import { SubjectTypes } from "./types";
+import { QuarterTypes, SubjectTypes } from "./types";
 
 export type StudentPerformance = z.infer<typeof studentPerformanceSchema>
 export type StudentGWA = z.infer<typeof studentGWASchema>
@@ -23,6 +23,20 @@ export type StudentGWAFilter = {
 }
 
 export type StudentGPA = {
+    sid: string
+    section: string
+    quarter: QuarterTypes;
+    gradeLevel: string
+    math: number
+    science: number
+    filipino: number
+    hekasi: number
+    english: number
+    mapeh: number
+    gpa: number
+}
+
+export type StudentCalculatedGPA = {
     sid: string
     firstname: string
     lastname: string

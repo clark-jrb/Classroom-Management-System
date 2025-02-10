@@ -12,6 +12,7 @@ import {
     createMyStudentsGWA,
     getMyStudentsGWA,
     updateMyStudentsGWA,
+    getMyStudentsCalculatedGPAs,
     getMyStudentsGPAs
 } from "@/services/TaskService"
 import { 
@@ -196,5 +197,12 @@ export const useStudentsGPA = (grade_lvl: string, section: string) => {
     return useSuspenseQuery({
         queryKey: ['students_gpas', grade_lvl, section],
         queryFn: () => getMyStudentsGPAs(grade_lvl, section)
+    })
+}
+
+export const useStudentsCalculatedGPA = (grade_lvl: string, section: string) => {
+    return useSuspenseQuery({
+        queryKey: ['students_gpas', grade_lvl, section],
+        queryFn: () => getMyStudentsCalculatedGPAs(grade_lvl, section)
     })
 }
