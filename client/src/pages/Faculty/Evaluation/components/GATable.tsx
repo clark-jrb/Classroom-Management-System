@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/table"
 import { useStudentsCalculatedGPA } from "@/hooks/useTaskQueries"
 
-export const EvaluationTable = ({ section, grade_assigned }: {
+export const GATable = ({ section, grade_assigned }: {
     section: string
     grade_assigned: string
 }) => {
