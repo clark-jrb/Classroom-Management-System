@@ -51,7 +51,7 @@ export const GradesView = () => {
                     </Select>
                 </div>
             </div>
-            <div className="flex h-full gap-5">
+            <div className="h-full gap-5">
                 <Suspense fallback={<div>loading...</div>}>
                     <GradesViewTable section={section} subject={subject}/>
                 </Suspense>

@@ -432,4 +432,35 @@ export class TaskController {
             })
         }
     }
+
+    public updateStudentsGPAs = async (req: Request, res: Response): Promise<void> => {
+        try {
+            const { section, quarter } = req.query
+            const StudentsScores: StudentsGWAs[] = req.body
+
+            await Promise.all(
+                StudentsScores.map(async (student) => {
+                    try {
+                        await GPAModel.findOneAndUpdate(
+                            { sid: student.sid, section, quarter },
+                            { [student.subject]: student.gwa },
+                            { new: true, runValidators: true }
+                        );
+                        console.log(`GWA of subjct ${student.subject} for student ${student.sid} updated successfully`)
+                    } catch (error) {
+                        console.error(`Error updating GWA of subject ${student.subject} for student ${student.sid}:`, error)
+                    }
+                })
+            );
+    
+            res.status(200).json({ 
+                message: 'All students GWAs updated successfully' 
+            });
+        } catch (error) {
+            console.log(error)
+            res.status(400).json({ 
+                message: 'Failed to update students GWAs', error 
+            })
+        }
+    }
 }
