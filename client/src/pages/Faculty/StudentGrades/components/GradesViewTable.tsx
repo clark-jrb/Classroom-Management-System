@@ -31,7 +31,7 @@ export const GradesViewTable = ({ section, subject }: {
     
     // for form state
     const students_gwas_by_quarter = students_gwas.filter((items) => items.quarter === quarter)
-    const converted_students_gwas = students_gwas_by_quarter.map(({ sid: { sid }, ...data }) => ({
+    const formatted_students_gwas = students_gwas_by_quarter.map(({ sid: { sid }, ...data }) => ({
         sid,
         ...data
     }))
@@ -39,19 +39,19 @@ export const GradesViewTable = ({ section, subject }: {
     const form = useForm<StudentGWA>({
         resolver: zodResolver(studentGWASchema),
         defaultValues: {
-            student_gwa: converted_students_gwas
+            student_gwa: formatted_students_gwas
         }
     })
 
     // console.log('student gwas: ', converted_students_gwas)
     
     function onSubmit(values: StudentGWA) {
-        if (converted_students_gwas.length === 0) {
+        if (students_gwas.length === 0) {
             console.log('there is no data')
         } else {
-            const isAllZero = students_sub_gpa.every(item => item.gwa === 0)
+            const isGWAZero = students_sub_gpa.every(item => item.gwa === 0)
     
-            if (!isAllZero) {
+            if (!isGWAZero) {
                 const changedValues = getChangedGWAs(students_sub_gpa_by_quarter, values.student_gwa)
     
                 if (Object.keys(changedValues).length === 0) {
@@ -108,7 +108,10 @@ export const GradesViewTable = ({ section, subject }: {
             <div>
                 <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit, onError)}>
-                        <Button type="submit">
+                        <Button 
+                            type="submit"
+                            disabled={students_gwas.length === 0}
+                        >
                             Submit
                         </Button>
                     </form>
