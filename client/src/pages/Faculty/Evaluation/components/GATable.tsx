@@ -8,10 +8,11 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
-import { useStudentsCalculatedGPA, useStudentsGAMutations } from "@/hooks/useTaskQueries"
+import { useStudentsCalculatedGPA, useStudentsGA, useStudentsGAMutations } from "@/hooks/useTaskQueries"
 import { studentGASchema } from "@/schemas/computationSchemas"
 import { StudentGA } from "@/types/computationTypes"
 import { zodResolver } from "@hookform/resolvers/zod"
+import { useQueryClient } from "@tanstack/react-query"
 import { useEffect } from "react"
 import { useForm } from "react-hook-form"
 
@@ -19,10 +20,12 @@ export const GATable = ({ section, grade_assigned }: {
     section: string
     grade_assigned: string
 }) => {
-    const { data: students_gpas } = useStudentsCalculatedGPA(grade_assigned, section)
-    const { createGA } = useStudentsGAMutations()
+    const queryClient = useQueryClient()
+    const { data: students_gpa } = useStudentsCalculatedGPA(grade_assigned, section)
+    const { generateGeneralAverage } = useStudentsGAMutations()
+    const { data: students_ga } = useStudentsGA(section)
 
-    const calculated_students_gpas = students_gpas.map(({ sid, gpa: { math, mapeh, science, english, filipino, hekasi } }) => ({
+    const calculated_students_gpa = students_gpa.map(({ sid, gpa: { math, mapeh, science, english, filipino, hekasi } }) => ({
         sid,
         section,
         grade_level: grade_assigned,
@@ -35,18 +38,31 @@ export const GATable = ({ section, grade_assigned }: {
         ga: (math + science + filipino + hekasi + english + mapeh) / 6
     }))
 
-    // console.log(calculated_students_gpas)
+    // console.log(calculated_students_gpa)
+
+    function getGA(sid: string) {
+        return students_ga.find(data => data.sid === sid)?.ga
+    }
 
     const form = useForm<StudentGA>({
         resolver: zodResolver(studentGASchema),
         defaultValues: {
-            student_ga: calculated_students_gpas
+            student_ga: calculated_students_gpa
         }
     })
 
     function onSubmit(values: StudentGA) {
         console.log(values)
-        createGA(values.student_ga)
+        generateGeneralAverage.mutateAsync(values.student_ga, {
+            onSuccess: (data) => {
+                const { message } = data
+                console.log(message)
+                queryClient.invalidateQueries({ queryKey: ['students_ga', section] })
+            },
+            onError: (error) => {
+                console.log(error)
+            }
+        })
     }
 
     function onError(errors: any) { 
@@ -54,10 +70,10 @@ export const GATable = ({ section, grade_assigned }: {
     }
 
     useEffect(() => {
-        if (calculated_students_gpas) {
-            form.reset({ student_ga: calculated_students_gpas })
+        if (calculated_students_gpa) {
+            form.reset({ student_ga: calculated_students_gpa })
         }
-    }, [students_gpas])
+    }, [students_gpa])
 
     return (
         <div>
@@ -78,7 +94,7 @@ export const GATable = ({ section, grade_assigned }: {
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                        {students_gpas.map(({
+                        {students_gpa.map(({
                             sid,
                             firstname,
                             lastname,
@@ -93,7 +109,7 @@ export const GATable = ({ section, grade_assigned }: {
                                 <TableCell>{gpa.filipino.toFixed(0)}</TableCell>
                                 <TableCell>{gpa.mapeh.toFixed(0)}</TableCell>
                                 <TableCell>{gpa.hekasi.toFixed(0)}</TableCell>
-                                <TableCell>--</TableCell>
+                                <TableCell>{getGA(sid)}</TableCell>
                                 <TableCell>--</TableCell>
                             </TableRow>
                         ))}
@@ -103,7 +119,7 @@ export const GATable = ({ section, grade_assigned }: {
             <div>
                 <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit, onError)}>
-                        <Button type="submit">
+                        <Button type="submit" disabled={students_ga.length > 0}>
                             Submit
                         </Button>
                     </form>

@@ -244,20 +244,8 @@ export const useStudentsGAMutations = () => {
         mutationFn: (value: StudentGA['student_ga']) => createStudentsGA(value)
     })
 
-    function createGA(value: StudentGA['student_ga']) {
-        generateGeneralAverage.mutateAsync(value, {
-            onSuccess: (data) => {
-                const { message } = data
-                console.log(message)
-            },
-            onError: (error) => {
-                console.log(error)
-            }
-        })
-    }
-
     return {
-        createGA
+        generateGeneralAverage
     }
 }
 

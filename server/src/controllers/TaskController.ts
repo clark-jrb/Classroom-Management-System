@@ -520,7 +520,7 @@ export class TaskController {
         try {
             const { section } = req.query
             
-            const students_ga = await GPAModel.find({ section: section })
+            const students_ga = await GAModel.find({ section: section })
 
             res.status(200).json(students_ga)
         } catch (error) {
@@ -535,7 +535,7 @@ export class TaskController {
         try {
             const { sid } = req.params
             
-            const student_ga = await GPAModel.findOne({ sid: sid })
+            const student_ga = await GAModel.findOne({ sid: sid })
 
             res.status(200).json(student_ga)
         } catch (error) {
