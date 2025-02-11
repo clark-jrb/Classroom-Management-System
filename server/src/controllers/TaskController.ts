@@ -432,21 +432,57 @@ export class TaskController {
             })
         }
     }
-
-    public updateStudentsGPAs = async (req: Request, res: Response): Promise<void> => {
+    
+    public getStudentsSubjectGPA = async (req: Request, res: Response): Promise<void> => {
         try {
-            const { section, quarter } = req.query
+            const { section, subject } = req.query
+            
+            const students_gpas = await GPAModel.find({ section: section })
+                .select(`sid ${subject} quarter section`)
+                .populate({
+                    path: 'sid',
+                    model: 'students_personals',
+                    localField: 'sid',
+                    foreignField: 'sid', 
+                    select: 'firstname lastname'
+                })
+                .lean()
+
+            const format_students_gpas = students_gpas.map(data => ({
+                _id: data._id,
+                sid: data.sid,
+                quarter: data.quarter,
+                section: section,
+                subject: subject,
+                gwa: data[subject as keyof typeof data]
+            }))
+
+            res.status(200).json(format_students_gpas)
+        } catch (error) {
+            console.log(error)
+            res.status(400).json({ 
+                message: 'Failed to get students subject gpa', error 
+            })
+        }
+    }
+
+    public updateStudentsSubjectGPA = async (req: Request, res: Response): Promise<void> => {
+        try {
             const StudentsScores: StudentsGWAs[] = req.body
 
             await Promise.all(
                 StudentsScores.map(async (student) => {
                     try {
                         await GPAModel.findOneAndUpdate(
-                            { sid: student.sid, section, quarter },
+                            { 
+                                sid: student.sid, 
+                                section: student.section, 
+                                quarter: student.quarter 
+                            },
                             { [student.subject]: student.gwa },
                             { new: true, runValidators: true }
                         );
-                        console.log(`GWA of subjct ${student.subject} for student ${student.sid} updated successfully`)
+                        console.log(`GWA of subject ${student.subject} for student ${student.sid} updated successfully`)
                     } catch (error) {
                         console.error(`Error updating GWA of subject ${student.subject} for student ${student.sid}:`, error)
                     }
@@ -454,12 +490,12 @@ export class TaskController {
             );
     
             res.status(200).json({ 
-                message: 'All students GWAs updated successfully' 
+                message: 'All students subject GPA updated successfully' 
             });
         } catch (error) {
             console.log(error)
             res.status(400).json({ 
-                message: 'Failed to update students GWAs', error 
+                message: 'Failed to update students subject GPA', error 
             })
         }
     }

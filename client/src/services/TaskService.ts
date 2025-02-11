@@ -202,3 +202,34 @@ export const getMyStudentsCalculatedGPAs = async (
         throw new Error('Failed to get students gpa')
     }
 }
+
+
+export const getMyStudentsSubjectGPA = async (
+    section: string, 
+    subject: SubjectTypes, 
+): Promise<StudentGWAWithProfile> => {
+    try {
+        const response = await api.get(`/students/subject/gpa`, {
+            params: { section, subject },
+            withCredentials: true
+        })
+        
+        return response.data
+    } catch (error) {
+        throw new Error('Failed to get students gwa')
+    }
+}
+
+export const updateMyStudentsSubjectGPA = async (
+    values: StudentGWA['student_gwa'],
+): Promise<Message> => {
+    try {
+        const response = await api.patch(`/students/subject/gpa`, values, {
+            withCredentials: true
+        })
+        
+        return response.data
+    } catch (error) {
+        throw new Error('Failed to get students gwa')
+    }
+}

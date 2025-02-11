@@ -13,7 +13,9 @@ import {
     getMyStudentsGWA,
     updateMyStudentsGWA,
     getMyStudentsCalculatedGPAs,
-    getMyStudentsGPAs
+    getMyStudentsGPAs,
+    getMyStudentsSubjectGPA,
+    updateMyStudentsSubjectGPA
 } from "@/services/TaskService"
 import { 
     StudentScore, 
@@ -205,4 +207,31 @@ export const useStudentsCalculatedGPA = (grade_lvl: string, section: string) => 
         queryKey: ['students_calculated_gpas', grade_lvl, section],
         queryFn: () => getMyStudentsCalculatedGPAs(grade_lvl, section)
     })
+}
+
+export const useStudentsSubjectGPA = (section: string, subject: SubjectTypes) => {
+    return useSuspenseQuery({
+        queryKey: ['students_subject_gpas', section, subject],
+        queryFn: () => getMyStudentsSubjectGPA(section, subject)
+    })
+}
+
+// updateStudentsSubjectsGPA
+
+export const useStudentsGPAMutations = (section: string, subject: SubjectTypes) => {
+    const queryClient = useQueryClient()
+
+    const updateSubjectGPA = useMutation({
+        mutationFn: (values: StudentGWA['student_gwa']) => updateMyStudentsSubjectGPA(values),
+        onSuccess: (data) => {
+            const { message } = data
+            console.log(message)
+            queryClient.invalidateQueries({ queryKey: ['students_subject_gpas', section, subject] })
+        },
+        onError: (error) => {
+            console.log(error)
+        }
+    })
+
+    return { updateSubjectGPA }
 }
