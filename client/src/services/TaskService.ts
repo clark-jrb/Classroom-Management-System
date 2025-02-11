@@ -235,7 +235,7 @@ export const updateMyStudentsSubjectGPA = async (
 }
 
 export const createStudentsGA = async (
-    value: StudentGA[]
+    value: StudentGA['student_ga']
 ): Promise<Message> => {
     try {
         const response = await api.post(`/students/ga`, value, {
@@ -250,7 +250,7 @@ export const createStudentsGA = async (
 
 export const getStudentsGA = async (
     section: string
-): Promise<StudentGA[]> => {
+): Promise<StudentGA['student_ga']> => {
     try {
         const response = await api.get(`/students/ga`, {
             params: { section },
@@ -265,7 +265,7 @@ export const getStudentsGA = async (
 
 export const getStudentGA = async (
     sid: string
-): Promise<StudentGA[]> => {
+): Promise<StudentGA['student_ga']> => {
     try {
         const response = await api.get(`/student/ga/${sid}`, {
             withCredentials: true

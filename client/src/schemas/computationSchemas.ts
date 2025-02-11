@@ -28,3 +28,20 @@ export const studentGWASchema = z.object({
         })
     )
 })
+
+export const studentGASchema = z.object({
+    student_ga: z.array(
+        z.object({
+            sid: z.string(),
+            section: z.string(),
+            grade_level: z.string(),
+            math: z.number(),
+            science: z.number(),
+            filipino: z.number(),
+            hekasi: z.number(),
+            english: z.number(),
+            mapeh: z.number(),
+            ga: z.number()
+        })
+    )
+})

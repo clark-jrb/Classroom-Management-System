@@ -241,11 +241,19 @@ export const useStudentsGPAMutations = (section: string, subject: SubjectTypes) 
 
 export const useStudentsGAMutations = () => {
     const generateGeneralAverage = useMutation({
-        mutationFn: (value: StudentGA[]) => createStudentsGA(value)
+        mutationFn: (value: StudentGA['student_ga']) => createStudentsGA(value)
     })
 
-    function createGA(value: StudentGA[]) {
-        generateGeneralAverage.mutateAsync(value)
+    function createGA(value: StudentGA['student_ga']) {
+        generateGeneralAverage.mutateAsync(value, {
+            onSuccess: (data) => {
+                const { message } = data
+                console.log(message)
+            },
+            onError: (error) => {
+                console.log(error)
+            }
+        })
     }
 
     return {

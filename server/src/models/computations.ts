@@ -26,7 +26,7 @@ const GPASchema = new Schema({
 
 const GASchema = new Schema({
     sid: { type: Schema.Types.ObjectId, required: true },
-    gradeLevel: { type: String, required: true },
+    grade_level: { type: String, required: true },
     section: { type: String, required: true },
     math: { type: Number, default: 0 },
     science: { type: Number, default: 0 },
