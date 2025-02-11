@@ -40,12 +40,12 @@ export const GATable = ({ section, grade_assigned }: {
                         <TableRow key={sid}>
                             <TableCell className="font-medium text-base">{lastname}</TableCell>
                             <TableCell>{firstname}</TableCell>
-                            <TableCell>{gpa.science}</TableCell>
-                            <TableCell>{gpa.math}</TableCell>
-                            <TableCell>{gpa.english}</TableCell>
-                            <TableCell>{gpa.filipino}</TableCell>
-                            <TableCell>{gpa.mapeh}</TableCell>
-                            <TableCell>{gpa.hekasi}</TableCell>
+                            <TableCell>{gpa.science.toFixed(0)}</TableCell>
+                            <TableCell>{gpa.math.toFixed(0)}</TableCell>
+                            <TableCell>{gpa.english.toFixed(0)}</TableCell>
+                            <TableCell>{gpa.filipino.toFixed(0)}</TableCell>
+                            <TableCell>{gpa.mapeh.toFixed(0)}</TableCell>
+                            <TableCell>{gpa.hekasi.toFixed(0)}</TableCell>
                             <TableCell>--</TableCell>
                         </TableRow>
                     ))}

@@ -39,12 +39,12 @@ export const GPATable = ({ section, grade_assigned, quarter }: {
                         <TableRow key={data._id}>
                             <TableCell className="font-medium text-base">{data.sid.lastname}</TableCell>
                             <TableCell>{data.sid.firstname}</TableCell>
-                            <TableCell>{data.science}</TableCell>
-                            <TableCell>{data.math}</TableCell>
-                            <TableCell>{data.english}</TableCell>
-                            <TableCell>{data.filipino}</TableCell>
-                            <TableCell>{data.mapeh}</TableCell>
-                            <TableCell>{data.hekasi}</TableCell>
+                            <TableCell>{data.science.toFixed(0)}</TableCell>
+                            <TableCell>{data.math.toFixed(0)}</TableCell>
+                            <TableCell>{data.english.toFixed(0)}</TableCell>
+                            <TableCell>{data.filipino.toFixed(0)}</TableCell>
+                            <TableCell>{data.mapeh.toFixed(0)}</TableCell>
+                            <TableCell>{data.hekasi.toFixed(0)}</TableCell>
                             <TableCell>--</TableCell>
                         </TableRow>
                     ))}
