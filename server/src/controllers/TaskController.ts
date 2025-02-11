@@ -6,7 +6,7 @@ import { GradeLevels } from "../types/types"
 import { selectTaskGradeModel } from "../helpers/select-models"
 import { getWeightWithoutProject, getWeightWithProject } from "../helpers/get-weight"
 import { UserProfile } from "../types/UserTypes"
-import { GPAModel, GWAModel } from "../models/computations"
+import { GAModel, GPAModel, GWAModel } from "../models/computations"
 
 export class TaskController {
     /**
@@ -496,6 +496,52 @@ export class TaskController {
             console.log(error)
             res.status(400).json({ 
                 message: 'Failed to update students subject GPA', error 
+            })
+        }
+    }
+
+    public createStudentsGA = async (req: Request, res: Response): Promise<void> => {
+        try {
+            const data = req.body
+
+            await GAModel.create(data)
+
+            res.status(201).json({
+                message: 'Students general average succesfully created' 
+            })
+        } catch (error) {
+            res.status(400).json({ 
+                message: 'Failed to create students general average', error 
+            })
+        }
+    }
+
+    public getStudentsGA = async (req: Request, res: Response): Promise<void> => {
+        try {
+            const { section } = req.query
+            
+            const students_ga = await GPAModel.find({ section: section })
+
+            res.status(200).json(students_ga)
+        } catch (error) {
+            console.log(error)
+            res.status(400).json({ 
+                message: 'Failed to get students general average', error 
+            })
+        }
+    }
+
+    public getStudentGA = async (req: Request, res: Response): Promise<void> => {
+        try {
+            const { sid } = req.params
+            
+            const student_ga = await GPAModel.findOne({ sid: sid })
+
+            res.status(200).json(student_ga)
+        } catch (error) {
+            console.log(error)
+            res.status(400).json({ 
+                message: 'Failed to get student general average', error 
             })
         }
     }
