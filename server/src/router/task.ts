@@ -46,5 +46,5 @@ export default (router: express.Router) => {
 
     router.post('/students/ga', isAuthenticated, createStudentsGA)
     router.get('/students/ga', isAuthenticated, getStudentsGA)
-    router.get('/student/ga', isAuthenticated, getStudentGA)
+    router.get('/student/ga/:sid', isAuthenticated, getStudentGA)
 }

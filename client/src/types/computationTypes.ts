@@ -54,3 +54,17 @@ export type StudentCalculatedGPA = {
         mapeh: number
     }
 }
+
+export type StudentGA = {
+    _id: string
+    sid: string
+    section: string
+    gradeLevel: string
+    math: number
+    science: number
+    filipino: number
+    hekasi: number
+    english: number
+    mapeh: number
+    ga: number
+}

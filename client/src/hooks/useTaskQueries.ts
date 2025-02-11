@@ -15,7 +15,10 @@ import {
     getMyStudentsCalculatedGPAs,
     getMyStudentsGPAs,
     getMyStudentsSubjectGPA,
-    updateMyStudentsSubjectGPA
+    updateMyStudentsSubjectGPA,
+    createStudentsGA,
+    getStudentsGA,
+    getStudentGA
 } from "@/services/TaskService"
 import { 
     StudentScore, 
@@ -26,7 +29,7 @@ import {
     SubjectTypes, 
     TTasks 
 } from "@/types/types"
-import { StudentGWA } from "@/types/computationTypes"
+import { StudentGA, StudentGWA } from "@/types/computationTypes"
 
 /**
  * this hook returns functions for tasks like UPDATE and CREATE 
@@ -234,4 +237,32 @@ export const useStudentsGPAMutations = (section: string, subject: SubjectTypes) 
     })
 
     return { updateSubjectGPA }
+}
+
+export const useStudentsGAMutations = () => {
+    const generateGeneralAverage = useMutation({
+        mutationFn: (value: StudentGA[]) => createStudentsGA(value)
+    })
+
+    function createGA(value: StudentGA[]) {
+        generateGeneralAverage.mutateAsync(value)
+    }
+
+    return {
+        createGA
+    }
+}
+
+export const useStudentsGA = (section: string) => {
+    return useSuspenseQuery({
+        queryKey: ['students_ga', section],
+        queryFn: () => getStudentsGA(section)
+    })
+}
+
+export const useStudentGA = (sid: string) => {
+    return useSuspenseQuery({
+        queryKey: ['my_general_average', sid],
+        queryFn: () => getStudentGA(sid)
+    })
 }

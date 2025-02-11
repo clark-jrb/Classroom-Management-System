@@ -1,4 +1,4 @@
-import { StudentCalculatedGPA, StudentGPA, StudentGWA, StudentGWAWithProfile, StudentPerformance } from "@/types/computationTypes";
+import { StudentCalculatedGPA, StudentGA, StudentGPA, StudentGWA, StudentGWAWithProfile, StudentPerformance } from "@/types/computationTypes";
 import { api } from "./api";
 import { QuarterTypes, StudentScore, SubjectTypes } from "@/types/types";
 import { TTasks, TTaskForm, Message, StudentTask, StudentTaskCreate, StudentTakingTask } from "@/types/types";
@@ -199,7 +199,7 @@ export const getMyStudentsCalculatedGPAs = async (
         
         return response.data
     } catch (error) {
-        throw new Error('Failed to get students gpa')
+        throw new Error('Failed to get students calculated gpa')
     }
 }
 
@@ -216,7 +216,7 @@ export const getMyStudentsSubjectGPA = async (
         
         return response.data
     } catch (error) {
-        throw new Error('Failed to get students gwa')
+        throw new Error('Failed to get students subject gpa')
     }
 }
 
@@ -230,6 +230,49 @@ export const updateMyStudentsSubjectGPA = async (
         
         return response.data
     } catch (error) {
-        throw new Error('Failed to get students gwa')
+        throw new Error('Failed to update students subject gpa')
+    }
+}
+
+export const createStudentsGA = async (
+    value: StudentGA[]
+): Promise<Message> => {
+    try {
+        const response = await api.post(`/students/ga`, value, {
+            withCredentials: true
+        })
+
+        return response.data
+    } catch (error) {
+        throw new Error('Failed to create students general average')
+    }
+}
+
+export const getStudentsGA = async (
+    section: string
+): Promise<StudentGA[]> => {
+    try {
+        const response = await api.get(`/students/ga`, {
+            params: { section },
+            withCredentials: true
+        })
+
+        return response.data
+    } catch (error) {
+        throw new Error('Failed to get students general average')
+    }
+}
+
+export const getStudentGA = async (
+    sid: string
+): Promise<StudentGA[]> => {
+    try {
+        const response = await api.get(`/student/ga/${sid}`, {
+            withCredentials: true
+        })
+
+        return response.data
+    } catch (error) {
+        throw new Error('Failed to get general average')
     }
 }
