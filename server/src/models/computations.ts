@@ -1,16 +1,16 @@
 import { Schema, model } from "mongoose";
 
-const GWASchema = new Schema({
+const SubjectGradeSchema = new Schema({
     sid: { type: Schema.Types.ObjectId, required: true },
     quarter: { type: String, required: true },
     section: { type: String, required: true },
     subject: { type: String, required: true },
-    gwa: { type: Number, required: true, default: 0 }
+    subj_grade: { type: Number, required: true, default: 0 }
 })
 
-// GWASchema.index({ section: 1, subject: 1 })
+// SubjectGradeSchema.index({ section: 1, subject: 1 })
 
-const GPASchema = new Schema({
+const QuarterlyAverageSchema = new Schema({
     sid: { type: Schema.Types.ObjectId, required: true },
     quarter: { type: String, required: true },
     gradeLevel: { type: String, required: true },
@@ -21,10 +21,10 @@ const GPASchema = new Schema({
     english: { type: Number, default: 0 },
     filipino: { type: Number, default: 0 },
     hekasi: { type: Number, default: 0 },
-    gpa: { type: Number, default: 0 }
+    quarter_ave: { type: Number, default: 0 }
 })
 
-const GASchema = new Schema({
+const GeneralAverageSchema = new Schema({
     sid: { type: Schema.Types.ObjectId, required: true },
     grade_level: { type: String, required: true },
     section: { type: String, required: true },
@@ -34,12 +34,16 @@ const GASchema = new Schema({
     english: { type: Number, default: 0 },
     filipino: { type: Number, default: 0 },
     hekasi: { type: Number, default: 0 },
-    ga: { type: Number, default: 0 }
+    general_ave: { type: Number, default: 0 }
 })
 
-GPASchema.index({ section: 1 })
-GASchema.index({ section: 1 })
+QuarterlyAverageSchema.index({ section: 1 })
+GeneralAverageSchema.index({ section: 1 })
 
-export const GWAModel = model('students_gwa', GWASchema)
-export const GPAModel = model('students_gpa', GPASchema)
-export const GAModel = model('students_ga', GASchema)
+export const SubjectGradeModel = model('students_sgs', SubjectGradeSchema)
+export const QuarterlyAverageModel = model('students_qas', QuarterlyAverageSchema)
+export const GeneralAverageModel = model('students_gas', GeneralAverageSchema)
+
+// sgs = subject grade(s)
+// qas = quarterly average(s)
+// gas = general average(s)

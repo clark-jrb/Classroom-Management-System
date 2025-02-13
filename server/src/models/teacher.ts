@@ -6,7 +6,7 @@ const TeacherAccountSchema = new Schema({
     role: { type: String, required: true },
 })
 
-const TeacherPersonalSchema = new Schema({
+const TeacherProfileSchema = new Schema({
     tid: { type: Schema.Types.ObjectId, ref: "teachers_accounts", required: true },
     firstname: { type: String, required: true },
     middlename: { type: String, required: false },
@@ -24,7 +24,7 @@ const TeacherClassSchema = new Schema({
     subjects: { type: [String], required: true }
 })
 
-TeacherPersonalSchema.index({ tid: 1 })
+TeacherProfileSchema.index({ tid: 1 })
 TeacherClassSchema.index({ tid: 1 })
 
 TeacherAccountSchema.virtual("details", {
@@ -38,6 +38,6 @@ TeacherAccountSchema.set("toJSON", { virtuals: true })
 TeacherAccountSchema.set("toObject", { virtuals: true })
 
 export const TeacherAccountModel = model('teachers_accounts', TeacherAccountSchema)
-export const TeacherPersonalModel = model('teachers_personals', TeacherPersonalSchema)
+export const TeacherProfileModel = model('teachers_profiles', TeacherProfileSchema)
 export const TeacherClassModel = model('teachers_class', TeacherClassSchema)
 

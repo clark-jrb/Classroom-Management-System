@@ -6,7 +6,7 @@ const StudentAccountSchema = new Schema({
     role: { type: String, required: true },
 })
 
-const StudentPersonalSchema = new Schema({
+const StudentProfileSchema = new Schema({
     sid: { type: Schema.Types.ObjectId, ref: "students_accounts", required: true },
     firstname: { type: String, required: true },
     middlename: { type: String, required: false },
@@ -23,9 +23,9 @@ const StudentClassSchema = new Schema({
 })
 
 
-StudentPersonalSchema.index({ sid: 1 })
+StudentProfileSchema.index({ sid: 1 })
 StudentClassSchema.index({ sid: 1 })
 
 export const StudentAccountModel = model('students_accounts', StudentAccountSchema)
-export const StudentPersonalModel = model('students_personals', StudentPersonalSchema)
+export const StudentProfileModel = model('students_profiles', StudentProfileSchema)
 export const StudentClassModel = model('students_class', StudentClassSchema)

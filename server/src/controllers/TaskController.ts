@@ -6,7 +6,7 @@ import { GradeLevels } from "../types/types"
 import { selectTaskGradeModel } from "../helpers/select-models"
 import { getWeightWithoutProject, getWeightWithProject } from "../helpers/get-weight"
 import { UserProfile } from "../types/UserTypes"
-import { GAModel, GPAModel, GWAModel } from "../models/computations"
+import { GeneralAverageModel, QuarterlyAverageModel, SubjectGradeModel } from "../models/computations"
 
 export class TaskController {
     /**
@@ -118,7 +118,7 @@ export class TaskController {
             const studentTasks = await Model.find({ task_id: task_id })
                 .populate({
                     path: 'sid',
-                    model: 'students_personals',
+                    model: 'students_profiles',
                     localField: 'sid',
                     foreignField: 'sid', 
                     select: 'firstname lastname'
@@ -206,7 +206,7 @@ export class TaskController {
                 })
                 .populate<{ sid: UserProfile }>({
                     path: 'sid',
-                    model: 'students_personals',
+                    model: 'students_profiles',
                     localField: 'sid',
                     foreignField: 'sid', 
                     select: 'firstname lastname'
@@ -289,7 +289,7 @@ export class TaskController {
         try {
             const data = req.body
             
-            await GWAModel.create(data)
+            await SubjectGradeModel.create(data)
 
             res.status(200).json({ message: 'success creating students gwas' })
         } catch (error) {
@@ -307,10 +307,10 @@ export class TaskController {
         try {
             const { section, subject } = req.query
             
-            const getStudentGWA = await GWAModel.find({ section: section, subject: subject })
+            const getStudentGWA = await SubjectGradeModel.find({ section: section, subject: subject })
                 .populate({
                     path: 'sid',
-                    model: 'students_personals',
+                    model: 'students_profiles',
                     localField: 'sid',
                     foreignField: 'sid', 
                     select: 'firstname lastname'
@@ -333,7 +333,7 @@ export class TaskController {
             await Promise.all(
                 StudentsScores.map(async (student) => {
                     try {
-                        await GWAModel.findOneAndUpdate(
+                        await SubjectGradeModel.findOneAndUpdate(
                             { sid: student.sid, subject, quarter },
                             { gwa: student.gwa },
                             { new: true, runValidators: true }
@@ -360,10 +360,10 @@ export class TaskController {
         try {
             const { grade_lvl, section } = req.query
             
-            const students_gpas = await GPAModel.find({ gradeLevel: grade_lvl, section: section })
+            const students_gpas = await QuarterlyAverageModel.find({ gradeLevel: grade_lvl, section: section })
                 .populate({
                     path: 'sid',
-                    model: 'students_personals',
+                    model: 'students_profiles',
                     localField: 'sid',
                     foreignField: 'sid', 
                     select: 'firstname lastname'
@@ -382,7 +382,7 @@ export class TaskController {
         try {
             const { grade_lvl, section } = req.query
 
-            const students_gpas = await GPAModel.find({ gradeLevel: grade_lvl, section: section })
+            const students_gpas = await QuarterlyAverageModel.find({ gradeLevel: grade_lvl, section: section })
             const quarters = ['q1', 'q2', 'q3', 'q4']
             const total_quarters = quarters.length
 
@@ -390,7 +390,7 @@ export class TaskController {
                 .find({ gradeLevel: grade_lvl, section: section })
                 .populate<({ sid: UserProfile })>({
                     path: 'sid',
-                    model: 'students_personals',
+                    model: 'students_profiles',
                     localField: 'sid',
                     foreignField: 'sid', 
                     select: 'firstname lastname'
@@ -437,11 +437,11 @@ export class TaskController {
         try {
             const { section, subject } = req.query
             
-            const students_gpas = await GPAModel.find({ section: section })
+            const students_gpas = await QuarterlyAverageModel.find({ section: section })
                 .select(`sid ${subject} quarter section`)
                 .populate({
                     path: 'sid',
-                    model: 'students_personals',
+                    model: 'students_profiles',
                     localField: 'sid',
                     foreignField: 'sid', 
                     select: 'firstname lastname'
@@ -473,7 +473,7 @@ export class TaskController {
             await Promise.all(
                 StudentsScores.map(async (student) => {
                     try {
-                        await GPAModel.findOneAndUpdate(
+                        await QuarterlyAverageModel.findOneAndUpdate(
                             { 
                                 sid: student.sid, 
                                 section: student.section, 
@@ -504,7 +504,7 @@ export class TaskController {
         try {
             const data = req.body
 
-            await GAModel.create(data)
+            await GeneralAverageModel.create(data)
 
             res.status(201).json({
                 message: 'Students general average succesfully created' 
@@ -520,7 +520,7 @@ export class TaskController {
         try {
             const { section } = req.query
             
-            const students_ga = await GAModel.find({ section: section })
+            const students_ga = await GeneralAverageModel.find({ section: section })
 
             res.status(200).json(students_ga)
         } catch (error) {
@@ -535,7 +535,7 @@ export class TaskController {
         try {
             const { sid } = req.params
             
-            const student_ga = await GAModel.findOne({ sid: sid })
+            const student_ga = await GeneralAverageModel.findOne({ sid: sid })
 
             res.status(200).json(student_ga)
         } catch (error) {

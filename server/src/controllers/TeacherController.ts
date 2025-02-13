@@ -1,5 +1,5 @@
 import { Request, Response } from "express"
-import { TeacherAccountModel, TeacherPersonalModel, TeacherClassModel } from "../models/teacher"
+import { TeacherAccountModel, TeacherProfileModel, TeacherClassModel } from "../models/teacher"
 import mongoose from "mongoose"
 
 export class TeacherController {
@@ -28,9 +28,9 @@ export class TeacherController {
                 res.status(400).json({ message: 'Invalid ID format' });
             }
 
-            const [account, personal, classes] = await Promise.all([
+            const [account, profile, classes] = await Promise.all([
                 TeacherAccountModel.findById(id),
-                TeacherPersonalModel.findOne({ tid: id }),
+                TeacherProfileModel.findOne({ tid: id }),
                 TeacherClassModel.findOne({ tid: id }),
             ]);
     
@@ -38,7 +38,7 @@ export class TeacherController {
                 res.status(404).json({ message: 'Teacher cannot be found' });
             }
 
-            res.status(200).json({account, personal, classes})
+            res.status(200).json({account, profile, classes})
         } catch (error) {
             res.status(400).json({ message: 'Failed to get teacher', error })
         }
@@ -69,7 +69,7 @@ export class TeacherController {
             const teacher = await TeacherAccountModel.findById(id)
             if (!teacher) res.status(404).json({ message: "Teacher doesn't exists" })
 
-            const updateTeacherInfo = await TeacherPersonalModel.findOneAndUpdate(
+            const updateTeacherInfo = await TeacherProfileModel.findOneAndUpdate(
                 { tid: id },
                 { $set: data },
                 { new: true, runValidators: true }

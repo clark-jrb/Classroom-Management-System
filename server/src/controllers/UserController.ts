@@ -1,10 +1,10 @@
 import { Request, Response } from "express"
-import { selectAccountModel, selectPersonalModel, selectClassModel } from "../helpers/select-models"
+import { selectAccountModel, selectProfileModel, selectClassModel } from "../helpers/select-models"
 import { ValidRoles } from "../types/types"
 import { StudentClass } from "../types/StudentTypes"
 import { UserAccount, UserProfile } from "../types/UserTypes"
 import { TeacherClass } from "../types/TeacherTypes"
-import { GPAModel } from "../models/computations"
+import { QuarterlyAverageModel } from "../models/computations"
 import path from "path"
 
 export class UserController {
@@ -21,12 +21,12 @@ export class UserController {
     // create user (student and teachers) 
     public async createUser(
         accountData: UserAccount, 
-        personalData: UserProfile, 
+        profileData: UserProfile, 
         classData: StudentClass | TeacherClass, 
         role: ValidRoles
     ) {
         const AccountModel = selectAccountModel(role) // Select on StudentAccountModel, TeacherAccountModel
-        const PersonalModel = selectPersonalModel(role) // Select on StudentPersonalModel, TeacherPersonalModel
+        const ProfileModel = selectProfileModel(role) // Select on StudentProfileModel, TeacherProfileModel
         const ClassModel = selectClassModel(role) // Select on StudentClassModel, TeacherClassModel
 
         const user = await AccountModel.create(accountData) // Save account on database
@@ -35,16 +35,16 @@ export class UserController {
             const student_class = classData as StudentClass
             const quarters = ['q1', 'q2', 'q3', 'q4']
 
-            const studentGPAs = quarters.map(quarter => ({
+            const for_students_qa = quarters.map(quarter => ({
                 sid: user._id, 
                 quarter: quarter,
                 ...student_class
             }))
 
             await Promise.all([
-                PersonalModel.create({ sid: user._id, ...personalData }),
+                ProfileModel.create({ sid: user._id, ...profileData }),
                 ClassModel.create({ sid: user._id, ...student_class }),
-                GPAModel.insertMany(studentGPAs)
+                QuarterlyAverageModel.insertMany(for_students_qa)
             ])
         }
         
@@ -52,7 +52,7 @@ export class UserController {
             const teacher_class = classData as TeacherClass
 
             await Promise.all([
-                PersonalModel.create({ tid: user._id, ...personalData }),
+                ProfileModel.create({ tid: user._id, ...profileData }),
                 ClassModel.create({ tid: user._id, ...teacher_class })
             ])
         }

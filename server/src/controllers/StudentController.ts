@@ -1,7 +1,7 @@
 import { Request, Response } from "express"
-import { StudentAccountModel, StudentPersonalModel, StudentClassModel } from "../models/student"
+import { StudentAccountModel, StudentProfileModel, StudentClassModel } from "../models/student"
 import mongoose from "mongoose"
-import { GPAModel } from "../models/computations"
+import { QuarterlyAverageModel } from "../models/computations"
 
 export class StudentController {
 
@@ -11,7 +11,7 @@ export class StudentController {
     // public addInformation = async (req: Request, res: Response): Promise<any> => {
     //     try {
     //         const { id, ...values} = req.body
-    //         const student_info = await new StudentPersonalModel({ _id: id, ...values}).save()
+    //         const student_info = await new StudentProfileModel({ _id: id, ...values}).save()
             
     //         return res.status(200).json({ student_info: student_info.toObject(), message: 'Successfully added student information' })
     //     } catch (error) {
@@ -37,9 +37,9 @@ export class StudentController {
                 res.status(400).json({ message: 'Invalid ID format' })
             }
 
-            const [account, personal, classes] = await Promise.all([
+            const [account, profile, classes] = await Promise.all([
                 StudentAccountModel.findById(id),
-                StudentPersonalModel.findOne({ sid: id }),
+                StudentProfileModel.findOne({ sid: id }),
                 StudentClassModel.findOne({ sid: id }),
             ])
     
@@ -47,7 +47,7 @@ export class StudentController {
                 res.status(404).json({ message: 'Student cannot be found' })
             }
 
-            res.status(200).json({account, personal, classes})
+            res.status(200).json({account, profile, classes})
         } catch (error) {
             res.status(400).json({ message: 'Failed to get student', error })
         }
@@ -75,7 +75,7 @@ export class StudentController {
                 res.status(404).json({ message: "Student doesn't exists" })
             }
 
-            await StudentPersonalModel.findOneAndUpdate(
+            await StudentProfileModel.findOneAndUpdate(
                 { sid: id },
                 { $set: data },
                 { new: true, runValidators: true }
@@ -101,7 +101,7 @@ export class StudentController {
                 section: section
             }).populate({
                 path: 'sid',
-                model: 'students_personals',
+                model: 'students_profiles',
                 localField: 'sid',
                 foreignField: 'sid', 
                 select: 'firstname lastname'
@@ -122,7 +122,7 @@ export class StudentController {
             const { sid } = req.params
             const quarters = ['q1', 'q2', 'q3', 'q4']
 
-            const student_gpa = await GPAModel.find({
+            const student_gpa = await QuarterlyAverageModel.find({
                 sid: sid
             })
 
