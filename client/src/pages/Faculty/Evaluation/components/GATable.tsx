@@ -15,15 +15,16 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useQueryClient } from "@tanstack/react-query"
 import { useEffect } from "react"
 import { useForm } from "react-hook-form"
+import "@/styles/computation_styles.scss"
 
 export const GATable = ({ section, grade_assigned }: {
     section: string
     grade_assigned: string
 }) => {
     const queryClient = useQueryClient()
-    const { data: students_gpa } = useStudentsCalculatedGPA(grade_assigned, section)
-    const { generateGeneralAverage } = useStudentsGAMutations()
-    const { data: students_ga } = useStudentsGA(section)
+    const { data: students_gpa } = useStudentsCalculatedGPA(grade_assigned, section)    // student_gpas collection (calculated on server)
+    const { data: students_ga } = useStudentsGA(section)    // students_gas collection
+    const { generateGeneralAverage } = useStudentsGAMutations()     // generate mutation
 
     const calculated_students_gpa = students_gpa.map(({ sid, gpa: { math, mapeh, science, english, filipino, hekasi } }) => ({
         sid,
@@ -38,12 +39,7 @@ export const GATable = ({ section, grade_assigned }: {
         ga: (math + science + filipino + hekasi + english + mapeh) / 6
     }))
 
-    // console.log(calculated_students_gpa)
-
-    function getGA(sid: string) {
-        return students_ga.find(data => data.sid === sid)?.ga
-    }
-
+    
     const form = useForm<StudentGA>({
         resolver: zodResolver(studentGASchema),
         defaultValues: {
@@ -64,7 +60,7 @@ export const GATable = ({ section, grade_assigned }: {
             }
         })
     }
-
+    
     function onError(errors: any) { 
         console.log("Form errors:", errors) 
     }
@@ -74,7 +70,20 @@ export const GATable = ({ section, grade_assigned }: {
             form.reset({ student_ga: calculated_students_gpa })
         }
     }, [students_gpa])
+    
+    const getRemarksAndGA = (sid: string) => {
+        const get_ga = students_ga.find(data => data.sid === sid)?.ga // returns number
+        const remarks = !get_ga 
+            ? '--'
+            : get_ga && get_ga >= 75
+                ? 'PASSED'
+                : 'FAILED'
 
+        const general_average = get_ga?.toFixed(0) // returns string
+
+        return { general_average, remarks }
+    }
+    
     return (
         <div>
             <div>
@@ -99,20 +108,26 @@ export const GATable = ({ section, grade_assigned }: {
                             firstname,
                             lastname,
                             gpa
-                        }) => (
-                            <TableRow key={sid}>
-                                <TableCell className="font-medium text-base">{lastname}</TableCell>
-                                <TableCell>{firstname}</TableCell>
-                                <TableCell>{gpa.science.toFixed(0)}</TableCell>
-                                <TableCell>{gpa.math.toFixed(0)}</TableCell>
-                                <TableCell>{gpa.english.toFixed(0)}</TableCell>
-                                <TableCell>{gpa.filipino.toFixed(0)}</TableCell>
-                                <TableCell>{gpa.mapeh.toFixed(0)}</TableCell>
-                                <TableCell>{gpa.hekasi.toFixed(0)}</TableCell>
-                                <TableCell>{getGA(sid)}</TableCell>
-                                <TableCell>--</TableCell>
-                            </TableRow>
-                        ))}
+                        }) => {
+                            const general_average = getRemarksAndGA(sid).general_average
+                            const remarks = getRemarksAndGA(sid).remarks
+                            
+                            return (
+                                <TableRow key={sid}>
+                                    <TableCell className="font-medium text-base">{lastname}</TableCell>
+                                    <TableCell>{firstname}</TableCell>
+                                    <TableCell>{gpa.science.toFixed(0)}</TableCell>
+                                    <TableCell>{gpa.math.toFixed(0)}</TableCell>
+                                    <TableCell>{gpa.english.toFixed(0)}</TableCell>
+                                    <TableCell>{gpa.filipino.toFixed(0)}</TableCell>
+                                    <TableCell>{gpa.mapeh.toFixed(0)}</TableCell>
+                                    <TableCell>{gpa.hekasi.toFixed(0)}</TableCell>
+                                    <TableCell>{general_average}</TableCell>
+                                    <TableCell className={`${remarks}`}>
+                                        {remarks}
+                                    </TableCell>
+                                </TableRow>
+                        )})}
                     </TableBody>
                 </Table>
             </div>
