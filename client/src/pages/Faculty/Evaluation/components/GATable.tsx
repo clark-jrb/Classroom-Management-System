@@ -76,8 +76,8 @@ export const GATable = ({ section, grade_assigned }: {
         const remarks = !get_ga 
             ? '--'
             : get_ga && get_ga >= 75
-                ? 'PASSED'
-                : 'FAILED'
+                ? 'passed'
+                : 'failed'
 
         const general_average = get_ga?.toFixed(0) // returns string
 
@@ -99,7 +99,6 @@ export const GATable = ({ section, grade_assigned }: {
                             <TableHead>MAPEH</TableHead>
                             <TableHead>Hekasi</TableHead>
                             <TableHead>General Average</TableHead>
-                            <TableHead>Remarks</TableHead>
                         </TableRow>
                     </TableHeader>
                     <TableBody>
@@ -122,10 +121,7 @@ export const GATable = ({ section, grade_assigned }: {
                                     <TableCell>{gpa.filipino.toFixed(0)}</TableCell>
                                     <TableCell>{gpa.mapeh.toFixed(0)}</TableCell>
                                     <TableCell>{gpa.hekasi.toFixed(0)}</TableCell>
-                                    <TableCell>{general_average}</TableCell>
-                                    <TableCell className={`${remarks}`}>
-                                        {remarks}
-                                    </TableCell>
+                                    <TableCell className={`${remarks}`}>{general_average}</TableCell>
                                 </TableRow>
                         )})}
                     </TableBody>

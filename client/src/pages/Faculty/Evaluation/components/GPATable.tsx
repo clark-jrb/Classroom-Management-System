@@ -31,7 +31,7 @@ export const GPATable = ({ section, grade_assigned, quarter }: {
                         <TableHead>Filipino</TableHead>
                         <TableHead>MAPEH</TableHead>
                         <TableHead>Hekasi</TableHead>
-                        {/* <TableHead>GPA</TableHead> */}
+                        <TableHead>GPA</TableHead>
                     </TableRow>
                 </TableHeader>
                 <TableBody>
