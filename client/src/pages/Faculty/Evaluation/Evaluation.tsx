@@ -11,7 +11,7 @@ export const Evaluation = () => {
                 variant={'outline'} 
                 size={'lg'} 
                 className="block" 
-                onClick={() => navigate('/evaluation/gpa')}
+                onClick={() => navigate('/evaluation/qa')}
             >
                 Students General Point Average
             </Button>

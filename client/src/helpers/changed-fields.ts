@@ -1,6 +1,6 @@
 import { studentPersonalSchema } from "@/schemas/studentSchemas";
 import { studentScoreSchema } from "@/schemas/teacherSchemas";
-import { StudentGWA, StudentGWAWithProfile } from "@/types/computationTypes";
+import { StudentSG, StudentSGWithProfile } from "@/types/computationTypes";
 import { z } from "zod";
 
 
@@ -46,18 +46,18 @@ export function getChangedScores(
 }
 
 
-export function getChangedGWAs(
-    originalGWAs: StudentGWAWithProfile,
-    newGWAs: StudentGWA['student_gwa']
+export function getChangedSG(
+    oldSG: StudentSGWithProfile,
+    newSG: StudentSG['student_sg']
 ) {
-    if (!originalGWAs || originalGWAs.length !== newGWAs.length) {
+    if (!oldSG || oldSG.length !== newSG.length) {
         throw new Error("Both arrays must have the same length");
     }
 
-    const changedScores = newGWAs.filter((newItem) => {
-        // const originalItem = originalGWAs[index];
-        const originalItem = originalGWAs.find(original => original.sid.sid === newItem.sid);
-        return originalItem && newItem.gwa !== originalItem.gwa;
+    const changedScores = newSG.filter((newItem) => {
+        // const originalItem = oldSG[index];
+        const originalItem = oldSG.find(original => original.sid.sid === newItem.sid);
+        return originalItem && newItem.subj_grade !== originalItem.subj_grade;
     });
 
     return changedScores.map((data) => (data));

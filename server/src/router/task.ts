@@ -11,13 +11,13 @@ const {
     updateStudentsScores, 
     getStudentsTakingMyTasks,
     getMyStudentsPerformance,
-    createStudentsGWAs,
-    getStudentsGWAs,
-    updateStudentsGWAs,
-    getStudentsGPAs,
-    getStudentsCalculatedGPAs,
-    updateStudentsSubjectGPA,
-    getStudentsSubjectGPA,
+    createStudentsSGs,
+    getStudentsSGs,
+    updateStudentsSGs,
+    getStudentsQAs,
+    getStudentsCalculatedQA,
+    updateStudentsSGfromQA,
+    getStudentsSGfromQA,
     createStudentsGA,
     getStudentsGA,
     getStudentGA
@@ -34,15 +34,15 @@ export default (router: express.Router) => {
 
     router.get('/students/performance', isAuthenticated, getMyStudentsPerformance)
     
-    router.post('/students/gwa', isAuthenticated, createStudentsGWAs)
-    router.get('/students/gwa', isAuthenticated, getStudentsGWAs)
-    router.patch('/students/gwa', isAuthenticated, updateStudentsGWAs)
+    router.post('/students/sg', isAuthenticated, createStudentsSGs)
+    router.get('/students/sg', isAuthenticated, getStudentsSGs)
+    router.patch('/students/sg', isAuthenticated, updateStudentsSGs)
 
-    router.get('/students/gpa', isAuthenticated, getStudentsGPAs)
-    router.get('/students/calculated/gpa', isAuthenticated, getStudentsCalculatedGPAs)
+    router.get('/students/qa', isAuthenticated, getStudentsQAs)
+    router.get('/students/calculated/qa', isAuthenticated, getStudentsCalculatedQA)
     
-    router.patch('/students/subject/gpa', isAuthenticated, updateStudentsSubjectGPA)
-    router.get('/students/subject/gpa', isAuthenticated, getStudentsSubjectGPA)
+    router.patch('/students/qa/sg', isAuthenticated, updateStudentsSGfromQA)
+    router.get('/students/qa/sg', isAuthenticated, getStudentsSGfromQA)
 
     router.post('/students/ga', isAuthenticated, createStudentsGA)
     router.get('/students/ga', isAuthenticated, getStudentsGA)

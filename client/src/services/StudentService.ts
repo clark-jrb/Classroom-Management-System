@@ -1,4 +1,4 @@
-import { StudentGPA } from "@/types/computationTypes";
+import { StudentQA } from "@/types/computationTypes";
 import { api } from "./api";
 import { Message } from "@/types/types";
 
@@ -16,16 +16,16 @@ export const updateStudentInfo = async (
     }
 }
 
-export const getStudentGPAs = async (
+export const getStudentQAs = async (
     sid: string
-): Promise<StudentGPA[]> => {
+): Promise<StudentQA[]> => {
     try {
-        const response = await api.get(`/student/gpa/${sid}`, {
+        const response = await api.get(`/student/qa/${sid}`, {
             withCredentials: true
         })
 
         return response.data
     } catch (error) {
-        throw new Error('Failed to get student gpas')
+        throw new Error('Failed to get student qas')
     }
 }

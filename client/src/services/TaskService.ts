@@ -1,4 +1,4 @@
-import { StudentCalculatedGPA, StudentGA, StudentGPA, StudentGWA, StudentGWAWithProfile, StudentPerformance } from "@/types/computationTypes";
+import { StudentCalculatedQA, StudentGA, StudentQA, StudentSG, StudentSGWithProfile, StudentPerformance } from "@/types/computationTypes";
 import { api } from "./api";
 import { QuarterTypes, StudentScore, SubjectTypes } from "@/types/types";
 import { TTasks, TTaskForm, Message, StudentTask, StudentTaskCreate, StudentTakingTask } from "@/types/types";
@@ -14,7 +14,7 @@ export const createTask = async (
 
         return response.data
     } catch (error) {
-        throw new Error('Failed to create a new task')
+        throw new Error('Client: Failed to create task')
     }
 }
 
@@ -29,7 +29,7 @@ export const getTasks = async (
 
         return response.data
     } catch (error) {
-        throw new Error('Failed to get tasks')
+        throw new Error('Client: Failed to get tasks')
     }
 }
 
@@ -43,7 +43,7 @@ export const createTasksToStudents = async (
 
         return response.data
     } catch (error) {
-        throw new Error('Failed to create tasks to students')
+        throw new Error('Client: Failed to create tasks to students')
     }
 }
 
@@ -62,7 +62,7 @@ export const getStudentsTakingTask = async (
 
         return response.data
     } catch (error) {
-        throw new Error('Failed to get students taking tasks')
+        throw new Error('Client: Failed to get students taking a specific tasks')
     }
 }
 
@@ -80,7 +80,7 @@ export const updateStudentsScores = async (
 
         return response.data
     } catch (error) {
-        throw new Error('Failed to update student scores')
+        throw new Error('Client: Failed to update student scores')
     }
 }
 
@@ -99,7 +99,7 @@ export const getStudentsTakingMyTasks = async (
 
         return response.data
     } catch (error) {
-        throw new Error('Failed to get students taking my tasks')
+        throw new Error('Client: Failed to get students taking my(teacher) tasks')
     }
 }
 
@@ -120,117 +120,117 @@ export const getMyStudentsPerformance = async (
 
         return response.data
     } catch (error) {
-        throw new Error('Failed to get students performance')
+        throw new Error('Client: Failed to get students performance')
     }
 }
 
-export const createMyStudentsGWA = async (
-    value: StudentGWA['student_gwa']
+export const createStudentsSGs = async (
+    value: StudentSG['student_sg']
 ): Promise<Message> => {
     try {
-        const response = await api.post(`/students/gwa`, value, {
+        const response = await api.post(`/students/sg`, value, {
             withCredentials: true
         })
         
         return response.data
     } catch (error) {
-        throw new Error('Failed to create students gwa')
+        throw new Error('Client: Failed to create students subject grade')
     }
 }
 
-export const getMyStudentsGWA = async (
+export const getStudentsSGs = async (
     section: string, 
     subject: SubjectTypes, 
-): Promise<StudentGWAWithProfile> => {
+): Promise<StudentSGWithProfile> => {
     try {
-        const response = await api.get(`/students/gwa`, {
+        const response = await api.get(`/students/sg`, {
             params: { section, subject },
             withCredentials: true
         })
         
         return response.data
     } catch (error) {
-        throw new Error('Failed to get students gwa')
+        throw new Error('Failed to get students subject grade')
     }
 }
 
-export const updateMyStudentsGWA = async (
+export const updateStudentsSGs = async (
     subject: SubjectTypes, 
     quarter: QuarterTypes,
-    values: StudentGWA['student_gwa']
+    values: StudentSG['student_sg']
 ): Promise<Message> => {
     try {
-        const response = await api.patch(`/students/gwa`, values, {
+        const response = await api.patch(`/students/sg`, values, {
             params: { subject, quarter },
             withCredentials: true
         })
         
         return response.data
     } catch (error) {
-        throw new Error('Failed to update students gwa')
+        throw new Error('Failed to update students subject grade')
     }
 }
 
-export const getMyStudentsGPAs = async (
+export const getStudentsQAs = async (
     grade_lvl: string, 
     section: string
-): Promise<StudentGPA[]> => {
+): Promise<StudentQA[]> => {
     try {
-        const response = await api.get(`/students/gpa`, {
+        const response = await api.get(`/students/qa`, {
             params: { grade_lvl, section },
             withCredentials: true
         })
         
         return response.data
     } catch (error) {
-        throw new Error('Failed to get students gpa')
+        throw new Error('Failed to get students quarterly average')
     }
 }
 
-export const getMyStudentsCalculatedGPAs = async (
+export const getStudentsCalculatedQA = async (
     grade_lvl: string, 
     section: string
-): Promise<StudentCalculatedGPA[]> => {
+): Promise<StudentCalculatedQA[]> => {
     try {
-        const response = await api.get(`/students/calculated/gpa`, {
+        const response = await api.get(`/students/calculated/qa`, {
             params: { grade_lvl, section },
             withCredentials: true
         })
         
         return response.data
     } catch (error) {
-        throw new Error('Failed to get students calculated gpa')
+        throw new Error('Failed to get students calculated quarterly average')
     }
 }
 
 
-export const getMyStudentsSubjectGPA = async (
+export const getStudentsSGfromQA = async (
     section: string, 
     subject: SubjectTypes, 
-): Promise<StudentGWAWithProfile> => {
+): Promise<StudentSGWithProfile> => {
     try {
-        const response = await api.get(`/students/subject/gpa`, {
+        const response = await api.get(`/students/qa/sg`, {
             params: { section, subject },
             withCredentials: true
         })
         
         return response.data
     } catch (error) {
-        throw new Error('Failed to get students subject gpa')
+        throw new Error('Failed to get students subject grade from QA')
     }
 }
 
-export const updateMyStudentsSubjectGPA = async (
-    values: StudentGWA['student_gwa'],
+export const updateStudentsSGfromQA = async (
+    values: StudentSG['student_sg'],
 ): Promise<Message> => {
     try {
-        const response = await api.patch(`/students/subject/gpa`, values, {
+        const response = await api.patch(`/students/qa/sg`, values, {
             withCredentials: true
         })
         
         return response.data
     } catch (error) {
-        throw new Error('Failed to update students subject gpa')
+        throw new Error('Failed to update students subject grade from quarterly average data')
     }
 }
 

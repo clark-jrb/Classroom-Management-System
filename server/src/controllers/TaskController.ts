@@ -59,7 +59,7 @@ export class TaskController {
         } catch (error) {
             console.log(error)
             res.status(400).json({ 
-                message: 'Failed to find tasks', error 
+                message: 'Failed to get tasks', error 
             })
         }
     }
@@ -78,8 +78,8 @@ export class TaskController {
             })
 
             if (!findStudents) {
-                console.log('there is no students')
-                res.status(400).json({ message: 'there is no existing students' })
+                console.log('There is no students')
+                res.status(400).json({ message: 'There is no existing students' })
             } else {
                 findStudents.forEach(async (student) => {
                     try {
@@ -89,18 +89,18 @@ export class TaskController {
                             score: 0
                         })
                     } catch (error) {
-                        console.log('error creating tasks ' + error)
+                        console.log('Error creating tasks to students' + error)
                     }
                 })
 
                 res.status(200).json({ 
-                    message: 'succcesfully created student tasks' 
+                    message: 'Succcesfully created tasks to students' 
                 })
             }
         } catch (error) {
             console.log(error)
             res.status(400).json({ 
-                message: 'Failed to find tasks', error 
+                message: 'Failed to create tasks to students', error 
             })
         }
     }
@@ -129,7 +129,7 @@ export class TaskController {
         } catch (error) {
             console.log(error)
             res.status(400).json({ 
-                message: 'Failed to find tasks', error 
+                message: 'Failed to get students taking specific task', error 
             })
         }
     }
@@ -150,9 +150,9 @@ export class TaskController {
                         { score: student.score },
                         { new: true, runValidators: true }
                     );
-                    console.log(`Score for student ${student._id} updated successfully`);
+                    console.log(`Score of student ${student._id} updated successfully`);
                 } catch (error) {
-                    console.log(`Error updating score for student ${student._id}: ${error}`);
+                    console.log(`Error updating score of student ${student._id}: ${error}`);
                     // Optional: Track failed updates in a separate list to send back in the response
                 }
             }
@@ -163,7 +163,7 @@ export class TaskController {
         } catch (error) {
             console.log(error)
             res.status(400).json({ 
-                message: 'Failed to update student scores', error 
+                message: 'Failed to update students scores', error 
             })
         }
     }
@@ -187,7 +187,7 @@ export class TaskController {
         } catch (error) {
             console.log(error)
             res.status(400).json({ 
-                message: 'Failed to find tasks', error 
+                message: `Failed to find students taking teacher's tasks`, error 
             })
         }
     }
@@ -283,19 +283,19 @@ export class TaskController {
     }
 
     /**
-     * createStudentGWA
+     * create
      */
-    public createStudentsGWAs = async (req: Request, res: Response): Promise<void> => {
+    public createStudentsSGs = async (req: Request, res: Response): Promise<void> => {
         try {
             const data = req.body
             
             await SubjectGradeModel.create(data)
 
-            res.status(200).json({ message: 'success creating students gwas' })
+            res.status(200).json({ message: 'Success creating students subject grade' })
         } catch (error) {
             console.log(error)
             res.status(400).json({ 
-                message: 'Failed to create students gwas', error 
+                message: 'Failed to create students subject grade', error 
             })
         }
     }
@@ -303,11 +303,11 @@ export class TaskController {
     /**
      * name
      */
-    public getStudentsGWAs = async (req: Request, res: Response): Promise<void> => {
+    public getStudentsSGs = async (req: Request, res: Response): Promise<void> => {
         try {
             const { section, subject } = req.query
             
-            const getStudentGWA = await SubjectGradeModel.find({ section: section, subject: subject })
+            const students_sg = await SubjectGradeModel.find({ section: section, subject: subject })
                 .populate({
                     path: 'sid',
                     model: 'students_profiles',
@@ -316,16 +316,16 @@ export class TaskController {
                     select: 'firstname lastname'
                 })
 
-            res.status(200).json(getStudentGWA)
+            res.status(200).json(students_sg)
         } catch (error) {
             console.log(error)
             res.status(400).json({ 
-                message: 'Failed to create students gwas', error 
+                message: 'Failed to get students subject grade', error 
             })
         }
     }
 
-    public updateStudentsGWAs = async (req: Request, res: Response): Promise<void> => {
+    public updateStudentsSGs = async (req: Request, res: Response): Promise<void> => {
         try {
             const { subject, quarter } = req.query
             const StudentsScores: StudentsGWAs[] = req.body
@@ -338,29 +338,29 @@ export class TaskController {
                             { gwa: student.gwa },
                             { new: true, runValidators: true }
                         );
-                        console.log(`GWA for student ${student.sid} updated successfully`)
+                        console.log(`${subject} grade for student ${student.sid} updated successfully`)
                     } catch (error) {
-                        console.error(`Error updating GWA for student ${student.sid}:`, error)
+                        console.error(`Error updating ${subject} grade for student ${student.sid}:`, error)
                     }
                 })
             );
     
             res.status(200).json({ 
-                message: 'All students GWAs updated successfully' 
+                message: `All students ${subject} grade updated successfully`
             });
         } catch (error) {
             console.log(error)
             res.status(400).json({ 
-                message: 'Failed to update students GWAs', error 
+                message: 'Failed to update students subject grade', error 
             })
         }
     }
 
-    public getStudentsGPAs = async (req: Request, res: Response): Promise<void> => {
+    public getStudentsQAs = async (req: Request, res: Response): Promise<void> => {
         try {
             const { grade_lvl, section } = req.query
             
-            const students_gpas = await QuarterlyAverageModel.find({ gradeLevel: grade_lvl, section: section })
+            const students_qa = await QuarterlyAverageModel.find({ gradeLevel: grade_lvl, section: section })
                 .populate({
                     path: 'sid',
                     model: 'students_profiles',
@@ -369,24 +369,24 @@ export class TaskController {
                     select: 'firstname lastname'
                 })
 
-            res.status(200).json(students_gpas)
+            res.status(200).json(students_qa)
         } catch (error) {
             console.log(error)
             res.status(400).json({ 
-                message: 'Failed to create students gwas', error 
+                message: 'Failed to create students quarterly average', error 
             })
         }
     }
 
-    public getStudentsCalculatedGPAs = async (req: Request, res: Response): Promise<void> => {
+    public getStudentsCalculatedQA = async (req: Request, res: Response): Promise<void> => {
         try {
             const { grade_lvl, section } = req.query
 
-            const students_gpas = await QuarterlyAverageModel.find({ gradeLevel: grade_lvl, section: section })
+            const students_qa = await QuarterlyAverageModel.find({ gradeLevel: grade_lvl, section: section })
             const quarters = ['q1', 'q2', 'q3', 'q4']
             const total_quarters = quarters.length
 
-            const my_students_gpas = await StudentClassModel
+            const students_total_qa = await StudentClassModel
                 .find({ gradeLevel: grade_lvl, section: section })
                 .populate<({ sid: UserProfile })>({
                     path: 'sid',
@@ -400,7 +400,7 @@ export class TaskController {
                         sid,
                         firstname,
                         lastname,
-                        gpa: students_gpas
+                        total_qa: students_qa
                             .filter(item => item.sid.toString() === sid.toString())
                             .reduce((accu, curr) => {
                                     return {
@@ -424,20 +424,20 @@ export class TaskController {
                     }))
                 )
 
-            res.status(200).json(my_students_gpas)
+            res.status(200).json(students_total_qa)
         } catch (error) {
             console.log(error)
             res.status(400).json({ 
-                message: 'Failed to get students calculated gpas', error 
+                message: 'Failed to get students calculated quarterly average', error 
             })
         }
     }
     
-    public getStudentsSubjectGPA = async (req: Request, res: Response): Promise<void> => {
+    public getStudentsSGfromQA = async (req: Request, res: Response): Promise<void> => {
         try {
             const { section, subject } = req.query
             
-            const students_gpas = await QuarterlyAverageModel.find({ section: section })
+            const students_qas = await QuarterlyAverageModel.find({ section: section })
                 .select(`sid ${subject} quarter section`)
                 .populate({
                     path: 'sid',
@@ -448,7 +448,7 @@ export class TaskController {
                 })
                 .lean()
 
-            const format_students_gpas = students_gpas.map(data => ({
+            const format_students_qas = students_qas.map(data => ({
                 _id: data._id,
                 sid: data.sid,
                 quarter: data.quarter,
@@ -457,16 +457,16 @@ export class TaskController {
                 gwa: data[subject as keyof typeof data]
             }))
 
-            res.status(200).json(format_students_gpas)
+            res.status(200).json(format_students_qas)
         } catch (error) {
             console.log(error)
             res.status(400).json({ 
-                message: 'Failed to get students subject gpa', error 
+                message: 'Failed to get students subject grade from QA', error 
             })
         }
     }
 
-    public updateStudentsSubjectGPA = async (req: Request, res: Response): Promise<void> => {
+    public updateStudentsSGfromQA = async (req: Request, res: Response): Promise<void> => {
         try {
             const StudentsScores: StudentsGWAs[] = req.body
 
@@ -482,20 +482,20 @@ export class TaskController {
                             { [student.subject]: student.gwa },
                             { new: true, runValidators: true }
                         );
-                        console.log(`GWA of subject ${student.subject} for student ${student.sid} updated successfully`)
+                        console.log(`Subject ${student.subject} grade of student ${student.sid} updated successfully`)
                     } catch (error) {
-                        console.error(`Error updating GWA of subject ${student.subject} for student ${student.sid}:`, error)
+                        console.error(`Error updating subject ${student.subject} grade of student ${student.sid}: `, error)
                     }
                 })
             );
     
             res.status(200).json({ 
-                message: 'All students subject GPA updated successfully' 
+                message: 'All students subject grade from quarterly average data updated successfully' 
             });
         } catch (error) {
             console.log(error)
             res.status(400).json({ 
-                message: 'Failed to update students subject GPA', error 
+                message: 'Failed to update students subject grade from quarterly average data', error 
             })
         }
     }

@@ -8,7 +8,7 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
-import { useStudentsCalculatedGPA, useStudentsGA, useStudentsGAMutations } from "@/hooks/useTaskQueries"
+import { useStudentsCalculatedQA, useStudentsGA, useStudentsGAMutations } from "@/hooks/useTaskQueries"
 import { studentGASchema } from "@/schemas/computationSchemas"
 import { StudentGA } from "@/types/computationTypes"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -22,11 +22,11 @@ export const GATable = ({ section, grade_assigned }: {
     grade_assigned: string
 }) => {
     const queryClient = useQueryClient()
-    const { data: students_gpa } = useStudentsCalculatedGPA(grade_assigned, section)    // student_gpas collection (calculated on server)
+    const { data: students_calculated_qa } = useStudentsCalculatedQA(grade_assigned, section)    // student_qas collection (calculated on server)
     const { data: students_ga } = useStudentsGA(section)    // students_gas collection
     const { generateGeneralAverage } = useStudentsGAMutations()     // generate mutation
 
-    const calculated_students_gpa = students_gpa.map(({ sid, gpa: { math, mapeh, science, english, filipino, hekasi } }) => ({
+    const student_ga_template = students_calculated_qa.map(({ sid, calculated_qa: { math, mapeh, science, english, filipino, hekasi } }) => ({
         sid,
         section,
         grade_level: grade_assigned,
@@ -43,7 +43,7 @@ export const GATable = ({ section, grade_assigned }: {
     const form = useForm<StudentGA>({
         resolver: zodResolver(studentGASchema),
         defaultValues: {
-            student_ga: calculated_students_gpa
+            student_ga: student_ga_template
         }
     })
 
@@ -66,10 +66,10 @@ export const GATable = ({ section, grade_assigned }: {
     }
 
     useEffect(() => {
-        if (calculated_students_gpa) {
-            form.reset({ student_ga: calculated_students_gpa })
+        if (student_ga_template) {
+            form.reset({ student_ga: student_ga_template })
         }
-    }, [students_gpa])
+    }, [students_calculated_qa])
     
     const getRemarksAndGA = (sid: string) => {
         const get_ga = students_ga.find(data => data.sid === sid)?.ga // returns number
@@ -102,11 +102,11 @@ export const GATable = ({ section, grade_assigned }: {
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                        {students_gpa.map(({
+                        {students_calculated_qa.map(({
                             sid,
                             firstname,
                             lastname,
-                            gpa
+                            calculated_qa
                         }) => {
                             const general_average = getRemarksAndGA(sid).general_average
                             const remarks = getRemarksAndGA(sid).remarks
@@ -115,12 +115,12 @@ export const GATable = ({ section, grade_assigned }: {
                                 <TableRow key={sid}>
                                     <TableCell className="font-medium text-base">{lastname}</TableCell>
                                     <TableCell>{firstname}</TableCell>
-                                    <TableCell>{gpa.science.toFixed(0)}</TableCell>
-                                    <TableCell>{gpa.math.toFixed(0)}</TableCell>
-                                    <TableCell>{gpa.english.toFixed(0)}</TableCell>
-                                    <TableCell>{gpa.filipino.toFixed(0)}</TableCell>
-                                    <TableCell>{gpa.mapeh.toFixed(0)}</TableCell>
-                                    <TableCell>{gpa.hekasi.toFixed(0)}</TableCell>
+                                    <TableCell>{calculated_qa.science.toFixed(0)}</TableCell>
+                                    <TableCell>{calculated_qa.math.toFixed(0)}</TableCell>
+                                    <TableCell>{calculated_qa.english.toFixed(0)}</TableCell>
+                                    <TableCell>{calculated_qa.filipino.toFixed(0)}</TableCell>
+                                    <TableCell>{calculated_qa.mapeh.toFixed(0)}</TableCell>
+                                    <TableCell>{calculated_qa.hekasi.toFixed(0)}</TableCell>
                                     <TableCell className={`${remarks}`}>{general_average}</TableCell>
                                 </TableRow>
                         )})}

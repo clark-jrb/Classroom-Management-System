@@ -9,13 +9,13 @@ import {
     getStudentsTakingMyTasks, 
     getStudentsTakingTask, 
     getMyStudentsPerformance,
-    createMyStudentsGWA,
-    getMyStudentsGWA,
-    updateMyStudentsGWA,
-    getMyStudentsCalculatedGPAs,
-    getMyStudentsGPAs,
-    getMyStudentsSubjectGPA,
-    updateMyStudentsSubjectGPA,
+    createStudentsSGs,
+    getStudentsSGs,
+    updateStudentsSGs,
+    getStudentsCalculatedQA,
+    getStudentsQAs,
+    getStudentsSGfromQA,
+    updateStudentsSGfromQA,
     createStudentsGA,
     getStudentsGA,
     getStudentGA
@@ -29,7 +29,7 @@ import {
     SubjectTypes, 
     TTasks 
 } from "@/types/types"
-import { StudentGA, StudentGWA } from "@/types/computationTypes"
+import { StudentGA, StudentSG } from "@/types/computationTypes"
 
 /**
  * this hook returns functions for tasks like UPDATE and CREATE 
@@ -154,89 +154,87 @@ export const useStudentsPerformance = (section: string, subject: SubjectTypes, q
 export const useStudentsPerformanceMutations = (section: string, subject: SubjectTypes) => {
     const queryClient = useQueryClient()
 
-    const generateStudentGWA = useMutation({
-        mutationFn: (value: StudentGWA['student_gwa']) => createMyStudentsGWA(value),
+    const generateStudentSG = useMutation({
+        mutationFn: (value: StudentSG['student_sg']) => createStudentsSGs(value),
         onSuccess: (data) => {
             const { message } = data
             console.log(message)
-            queryClient.invalidateQueries({ queryKey: ['students_gwas', section, subject] })
+            queryClient.invalidateQueries({ queryKey: ['students_subject_grade', section, subject] })
         },
         onError: (error) => {
-            console.log('there is an error generating student gwas: ' + error)
+            console.log('there is an error generating students subject grade: ' + error)
         }
     })
 
-    const updateGWAs = useMutation({
+    const updateSG = useMutation({
         mutationFn: ({ value, subject, quarter }: { 
-            value: StudentGWA['student_gwa']
+            value: StudentSG['student_sg']
             subject: SubjectTypes 
             quarter: QuarterTypes
-        }) => updateMyStudentsGWA(subject, quarter, value),
+        }) => updateStudentsSGs(subject, quarter, value),
         onSuccess: (data) => {
             const { message } = data
             console.log(message)
-            queryClient.invalidateQueries({ queryKey: ['students_gwas', section, subject] })
+            queryClient.invalidateQueries({ queryKey: ['students_subject_grade', section, subject] })
         },
         onError: (error) => {
             console.log(error)
         }
     })
 
-    function createGWA (value: StudentGWA['student_gwa']) {
-        generateStudentGWA.mutateAsync(value)
+    function createSG (value: StudentSG['student_sg']) {
+        generateStudentSG.mutateAsync(value)
     }
 
     return {
-        createGWA, updateGWAs
+        createSG, updateSG
     }
 }
 
-export const useStudentsGWA = (section: string, subject: SubjectTypes) => {
+export const useStudentsSG = (section: string, subject: SubjectTypes) => {
     return useSuspenseQuery({
-        queryKey: ['students_gwas', section, subject],
-        queryFn: () => getMyStudentsGWA(section, subject)
+        queryKey: ['students_subject_grade', section, subject],
+        queryFn: () => getStudentsSGs(section, subject)
     })
 }
 
-export const useStudentsGPA = (grade_lvl: string, section: string) => {
+export const useStudentsQA = (grade_lvl: string, section: string) => {
     return useSuspenseQuery({
-        queryKey: ['students_gpas', grade_lvl, section],
-        queryFn: () => getMyStudentsGPAs(grade_lvl, section)
+        queryKey: ['students_qa', grade_lvl, section],
+        queryFn: () => getStudentsQAs(grade_lvl, section)
     })
 }
 
-export const useStudentsCalculatedGPA = (grade_lvl: string, section: string) => {
+export const useStudentsCalculatedQA = (grade_lvl: string, section: string) => {
     return useSuspenseQuery({
-        queryKey: ['students_calculated_gpas', grade_lvl, section],
-        queryFn: () => getMyStudentsCalculatedGPAs(grade_lvl, section)
+        queryKey: ['students_calculated_qa', grade_lvl, section],
+        queryFn: () => getStudentsCalculatedQA(grade_lvl, section)
     })
 }
 
-export const useStudentsSubjectGPA = (section: string, subject: SubjectTypes) => {
+export const useStudentsSGfromQA = (section: string, subject: SubjectTypes) => {
     return useSuspenseQuery({
-        queryKey: ['students_subject_gpas', section, subject],
-        queryFn: () => getMyStudentsSubjectGPA(section, subject)
+        queryKey: ['students_sg_from_qa', section, subject],
+        queryFn: () => getStudentsSGfromQA(section, subject)
     })
 }
 
-// updateStudentsSubjectsGPA
-
-export const useStudentsGPAMutations = (section: string, subject: SubjectTypes) => {
+export const useStudentsQAMutations = (section: string, subject: SubjectTypes) => {
     const queryClient = useQueryClient()
 
-    const updateSubjectGPA = useMutation({
-        mutationFn: (values: StudentGWA['student_gwa']) => updateMyStudentsSubjectGPA(values),
+    const updateSGfromQA = useMutation({
+        mutationFn: (values: StudentSG['student_sg']) => updateStudentsSGfromQA(values),
         onSuccess: (data) => {
             const { message } = data
             console.log(message)
-            queryClient.invalidateQueries({ queryKey: ['students_subject_gpas', section, subject] })
+            queryClient.invalidateQueries({ queryKey: ['students_sg_from_qa', section, subject] })
         },
         onError: (error) => {
             console.log(error)
         }
     })
 
-    return { updateSubjectGPA }
+    return { updateSGfromQA }
 }
 
 export const useStudentsGAMutations = () => {

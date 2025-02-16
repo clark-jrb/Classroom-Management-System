@@ -117,21 +117,21 @@ export class StudentController {
     /**
      * name
      */
-    public getStudentGPAs = async (req: Request, res: Response): Promise<void> => {
+    public getStudentQAs = async (req: Request, res: Response): Promise<void> => {
         try {
             const { sid } = req.params
             const quarters = ['q1', 'q2', 'q3', 'q4']
 
-            const student_gpa = await QuarterlyAverageModel.find({
+            const student_qas = await QuarterlyAverageModel.find({
                 sid: sid
             })
 
-            const sorted_gpa = student_gpa.sort((a, b) => quarters.indexOf(a.quarter) - quarters.indexOf(b.quarter))
+            const sorted_qas = student_qas.sort((a, b) => quarters.indexOf(a.quarter) - quarters.indexOf(b.quarter))
 
-            res.status(200).json(sorted_gpa)
+            res.status(200).json(sorted_qas)
         } catch (error) {
             console.log(error)
-            res.status(400).json({ message: 'Failed to find student gpa', error })
+            res.status(400).json({ message: 'Failed to find student qa', error })
         }
     }
 }

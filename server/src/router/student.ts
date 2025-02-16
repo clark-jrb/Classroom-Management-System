@@ -3,7 +3,7 @@ import { StudentController } from '../controllers/StudentController'
 import { isAuthenticated } from '../middlewares'
 
 const Student = new StudentController()
-const { getStudents, getStudentById, deleteStudentById, updateStudentById, getStudentByClass, getStudentGPAs } = Student
+const { getStudents, getStudentById, deleteStudentById, updateStudentById, getStudentByClass, getStudentQAs } = Student
 
 export default (router: express.Router) => {
     // router.post('/student/addInfo', isAuthenticated, addInformation)
@@ -13,5 +13,5 @@ export default (router: express.Router) => {
     router.patch('/student/:id', isAuthenticated, updateStudentById) // UPDATE student profile
 
     router.get('/my_students', isAuthenticated, getStudentByClass)
-    router.get('/student/gpa/:sid', isAuthenticated, getStudentGPAs)
+    router.get('/student/qa/:sid', isAuthenticated, getStudentQAs)
 }

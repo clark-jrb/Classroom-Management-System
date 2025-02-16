@@ -7,64 +7,62 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
-import { useStudentsGPAMutations, useStudentsGWA, useStudentsSubjectGPA } from "@/hooks/useTaskQueries"
+import { useStudentsQAMutations, useStudentsSG, useStudentsSGfromQA } from "@/hooks/useTaskQueries"
 import { useQuarterStore } from "@/stores/filterSlice"
 import { Button } from "@/components/ui/button"
 import { useForm } from "react-hook-form"
-import { StudentGWA } from "@/types/computationTypes"
+import { StudentSG } from "@/types/computationTypes"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { studentGWASchema } from "@/schemas/computationSchemas"
+import { StudentSGSchema } from "@/schemas/computationSchemas"
 import { Form } from "@/components/ui/form"
-import { getChangedGWAs } from "@/helpers/changed-fields"
+import { getChangedSG } from "@/helpers/changed-fields"
 
 export const GradesViewTable = ({ section, subject }: {
     section: string
     subject: SubjectTypes
 }) => {
-    const { data: students_gwas } = useStudentsGWA(section, subject)
-    const { data: students_sub_gpa } = useStudentsSubjectGPA(section, subject)
-    const { updateSubjectGPA } = useStudentsGPAMutations(section, subject)
+    const { data: students_sg } = useStudentsSG(section, subject)
+    const { data: students_sg_from_qa } = useStudentsSGfromQA(section, subject)
+    const { updateSGfromQA } = useStudentsQAMutations(section, subject)
     const { quarter } = useQuarterStore()
 
     // for compare
-    const students_sub_gpa_by_quarter = students_sub_gpa.filter((items) => items.quarter === quarter)
+    const sg_from_qa_by_quarter = students_sg_from_qa.filter((items) => items.quarter === quarter)
     
     // for form state
-    const students_gwas_by_quarter = students_gwas.filter((items) => items.quarter === quarter)
-    const formatted_students_gwas = students_gwas_by_quarter.map(({ sid: { sid }, ...data }) => ({
+    const students_sg_by_quarter = students_sg.filter((items) => items.quarter === quarter)
+    const formatted_students_sg = students_sg_by_quarter.map(({ sid: { sid }, ...data }) => ({
         sid,
         ...data
     }))
     
-    const form = useForm<StudentGWA>({
-        resolver: zodResolver(studentGWASchema),
+    const form = useForm<StudentSG>({
+        resolver: zodResolver(StudentSGSchema),
         defaultValues: {
-            student_gwa: formatted_students_gwas
+            student_sg: formatted_students_sg
         }
     })
-
-    // console.log('student gwas: ', converted_students_gwas)
     
-    function onSubmit(values: StudentGWA) {
-        if (students_gwas.length === 0) {
+    function onSubmit(values: StudentSG) {
+        if (students_sg.length === 0) {
             console.log('there is no data')
         } else {
-            const isGWAZero = students_sub_gpa.every(item => item.gwa === 0)
+            const isSGZero = students_sg_from_qa.every(item => item.subj_grade === 0)
     
-            if (!isGWAZero) {
-                const changedValues = getChangedGWAs(students_sub_gpa_by_quarter, values.student_gwa)
+            if (!isSGZero) {
+                const changedValues = getChangedSG(sg_from_qa_by_quarter, values.student_sg)
     
                 if (Object.keys(changedValues).length === 0) {
                     // console.log(values)
                     console.log('there is nothing to update')
                 } else {
-                    updateSubjectGPA.mutateAsync(values.student_gwa)
-                    console.log('gwas re-submitted')
+                    updateSGfromQA.mutateAsync(values.student_sg)
+                    console.log('subject grade re-submitted')
                 }
             } else {
-                updateSubjectGPA.mutateAsync(values.student_gwa)
-                // console.log(values.student_gwa)
-                console.log('gwas submitted')
+                updateSGfromQA.mutateAsync(values.student_sg)
+                // console.log(values.student_sg)
+                console.log('subject grade submitted')
             }
         }
     }
@@ -81,24 +79,24 @@ export const GradesViewTable = ({ section, subject }: {
                         <TableRow>
                             <TableHead className="w-[150px]">Last Name</TableHead>
                             <TableHead className="w-[150px]">First Name</TableHead>
-                            <TableHead>GWA</TableHead>
+                            <TableHead>Subject Grade</TableHead>
                             <TableHead>Remarks</TableHead>
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                        {students_gwas_by_quarter.map(({
+                        {students_sg_by_quarter.map(({
                             sid: {
                                 sid,
                                 firstname,
                                 lastname
                             },
-                            gwa
+                            subj_grade
                         }) => (
                             <TableRow key={sid}>
                                 <TableCell className="font-medium text-base">{lastname}</TableCell>
                                 <TableCell>{firstname}</TableCell>
-                                <TableCell>{gwa.toFixed(0)}</TableCell>
-                                <TableCell>{gwa >= 75 ? 'PASSED' : 'FAILED'}</TableCell>
+                                <TableCell>{subj_grade.toFixed(0)}</TableCell>
+                                <TableCell>{subj_grade >= 75 ? 'PASSED' : 'FAILED'}</TableCell>
                             </TableRow>
                         ))}
                     </TableBody>
@@ -110,7 +108,7 @@ export const GradesViewTable = ({ section, subject }: {
                     <form onSubmit={form.handleSubmit(onSubmit, onError)}>
                         <Button 
                             type="submit"
-                            disabled={students_gwas.length === 0}
+                            disabled={students_sg.length === 0}
                         >
                             Submit
                         </Button>

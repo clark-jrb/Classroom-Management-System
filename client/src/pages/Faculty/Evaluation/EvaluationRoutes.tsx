@@ -1,7 +1,7 @@
 import { Route, Routes } from "react-router-dom"
 import { Suspense } from "react"
 import { Evaluation } from "./Evaluation"
-import { ViewGPA } from "./components/ViewGPA"
+import { ViewQA } from "./components/ViewQA"
 import { ViewGA } from "./components/ViewGA"
 import { useTeacherData } from "@/hooks/useTeacherQueries"
 
@@ -22,9 +22,9 @@ export const EvaluationRoutes = () => {
                     <Evaluation/>
                 </Suspense>
             } />
-            <Route path="/gpa" element={
+            <Route path="/qa" element={
                 <Suspense fallback={<div>Loading...</div>}>
-                    <ViewGPA grade_assigned={grade_assigned} section={section}/>
+                    <ViewQA grade_assigned={grade_assigned} section={section}/>
                 </Suspense>
             } />
             <Route path="/ga" element={

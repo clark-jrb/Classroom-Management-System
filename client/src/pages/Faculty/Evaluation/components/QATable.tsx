@@ -6,17 +6,17 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
-import { useStudentsGPA } from "@/hooks/useTaskQueries"
+import { useStudentsQA } from "@/hooks/useTaskQueries"
 import { QuarterTypes } from "@/types/types"
 
-export const GPATable = ({ section, grade_assigned, quarter }: {
+export const QATable = ({ section, grade_assigned, quarter }: {
     section: string
     grade_assigned: string
     quarter: QuarterTypes
 }) => {
-    const { data: students_gpas } = useStudentsGPA(grade_assigned, section)
+    const { data: students_qa } = useStudentsQA(grade_assigned, section)
 
-    const filtered_gpas = students_gpas.filter(data => data.quarter === quarter)
+    const filtered_qa = students_qa.filter(data => data.quarter === quarter)
 
     return (
         <div>
@@ -31,11 +31,11 @@ export const GPATable = ({ section, grade_assigned, quarter }: {
                         <TableHead>Filipino</TableHead>
                         <TableHead>MAPEH</TableHead>
                         <TableHead>Hekasi</TableHead>
-                        <TableHead>GPA</TableHead>
+                        <TableHead>Quarterly Average</TableHead>
                     </TableRow>
                 </TableHeader>
                 <TableBody>
-                    {filtered_gpas.map((data) => (
+                    {filtered_qa.map((data) => (
                         <TableRow key={data._id}>
                             <TableCell className="font-medium text-base">{data.sid.lastname}</TableCell>
                             <TableCell>{data.sid.firstname}</TableCell>

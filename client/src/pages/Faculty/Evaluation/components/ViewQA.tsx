@@ -1,11 +1,11 @@
 import { Button } from "@/components/ui/button"
 import { useNavigate } from "react-router-dom"
-import { GPATable } from "./GPATable"
+import { QATable } from "./QATable"
 import { useState } from "react"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { QuarterTypes } from "@/types/types"
 
-export const ViewGPA = ({ grade_assigned, section }: {
+export const ViewQA = ({ grade_assigned, section }: {
     grade_assigned: string
     section: string 
 }) => {
@@ -33,7 +33,7 @@ export const ViewGPA = ({ grade_assigned, section }: {
                 </div>
             </div>
             
-            <GPATable 
+            <QATable 
                 section={section} 
                 grade_assigned={grade_assigned} 
                 quarter={quarter as QuarterTypes}

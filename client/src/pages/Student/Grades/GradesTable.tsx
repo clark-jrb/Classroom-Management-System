@@ -1,17 +1,18 @@
-import { calculateGPA } from "@/helpers/calculate-gpa"
+import { calculateQA } from "@/helpers/calculate-qa"
 import { toCamelCase } from "@/helpers/camel-case"
-import { useStudentGPAs } from "@/hooks/useStudentQueries"
+import { useStudentQAs } from "@/hooks/useStudentQueries"
 import { useAuthStore } from "@/stores/auth/authSlice"
 import { SubjectTypes } from "@/types/types"
 
 export const GradesTable = () => {
     const { user_id } = useAuthStore()
-    const { data } = useStudentGPAs(user_id)
+    const { data } = useStudentQAs(user_id)
 
     function passOrFail(subject: SubjectTypes) {
-        const gpa = calculateGPA(data, subject) 
-        if (gpa !== 0) {
-            return gpa >= 75 ? 'PASSED' : 'FAILED'
+        const subj_average = calculateQA(data, subject) 
+
+        if (subj_average !== 0) {
+            return subj_average >= 75 ? 'PASSED' : 'FAILED'
         } else {
             return '--'
         }
@@ -59,7 +60,7 @@ export const GradesTable = () => {
                     <div className="border-b border-l p-3 h-[5rem]">Final <br/> Grade</div>
                     {subjects.map((item, index) => (
                         <div key={index} className="border-b border-l p-3">{
-                            calculateGPA(data, item) === 0 ? '--' : calculateGPA(data, item)
+                            calculateQA(data, item) === 0 ? '--' : calculateQA(data, item)
                         }</div>
                     ))}
                     <div className="border-b p-3">--</div>
