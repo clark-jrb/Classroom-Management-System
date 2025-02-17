@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const studentPersonalSchema = z.object({
+export const studentProfileSchema = z.object({
     firstname: z.string().min(2, { message: 'first name should be 2 characters above' }),
     middlename: z.string().min(2, { message: 'middle ame should be 2 characters above' }),
     lastname: z.string().min(2, { message: 'last name should be 2 characters above' }),

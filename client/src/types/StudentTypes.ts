@@ -20,6 +20,6 @@ export type StudentClasses = {
 
 export type StudentInformation = {
     account: StudentAccount
-    personal: StudentProfile
+    profile: StudentProfile
     classes: StudentClasses
 }

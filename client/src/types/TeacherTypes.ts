@@ -7,7 +7,7 @@ export type TeacherAccount = {
     // role: 'faculty'
 } & Omit<z.infer<typeof loginSchema>, 'role'>
 
-export type TeacherPersonal = {
+export type TeacherProfile = {
     _id: string
     tid: string
 } & z.infer<typeof registerInformationSchema>
@@ -23,7 +23,7 @@ export type TeacherClasses = {
 
 export type TeacherInformation = {
     account: TeacherAccount
-    personal: TeacherPersonal
+    profile: TeacherProfile
     classes: TeacherClasses
 }
 

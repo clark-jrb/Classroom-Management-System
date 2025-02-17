@@ -14,9 +14,9 @@ export const ProfileContent = () => {
     const { open, openDialog } = useStudentDialogStore()
 
     // destructure student_data
-    const { account, personal, classes } = student_data || {}
+    const { account, profile, classes } = student_data || {}
     const { email } = account || {}
-    const { firstname, middlename, lastname, sex, contact, birth_date } = personal || {}
+    const { firstname, middlename, lastname, sex, contact, birth_date } = profile || {}
     const { gradeLevel, section } = classes || {}
     const fullName = `${firstname} ${middlename} ${lastname}`
     const grade = gradeLevel

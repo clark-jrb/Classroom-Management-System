@@ -1,12 +1,12 @@
-import { studentPersonalSchema } from "@/schemas/studentSchemas";
+import { studentProfileSchema } from "@/schemas/studentSchemas";
 import { studentScoreSchema } from "@/schemas/teacherSchemas";
 import { StudentSG, StudentSGWithProfile } from "@/types/computationTypes";
 import { z } from "zod";
 
 
 export function getChangedFields(
-    existingData: z.infer<typeof studentPersonalSchema>,
-    newData: z.infer<typeof studentPersonalSchema>
+    existingData: z.infer<typeof studentProfileSchema>,
+    newData: z.infer<typeof studentProfileSchema>
 ) {
     const changes: Record<string, any> = {};
 

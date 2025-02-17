@@ -29,20 +29,20 @@ import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { getChangedFields } from "@/helpers/changed-fields"
 import { useEffect } from "react"
-import { studentPersonalSchema } from "@/schemas/studentSchemas"
+import { studentProfileSchema } from "@/schemas/studentSchemas"
 
 export const ProfileForm = () => {
     const { data: student_data } = useStudentData()
     const { updateProfile } = useProfileMutation() // from custom hook
-    const { personal } = student_data // destructure student_data but only get the personal data
-    const convertedData = {...personal, birth_date: new Date(personal.birth_date)} // because the birth_date is string from the document
+    const { profile } = student_data // destructure student_data but only get the profile data
+    const convertedData = {...profile, birth_date: new Date(profile.birth_date)} // because the birth_date is string from the document
 
-    // personal information form
-    const profile_form = useForm<z.infer<typeof studentPersonalSchema>>({
-        resolver: zodResolver(studentPersonalSchema)
+    // profile information form
+    const profile_form = useForm<z.infer<typeof studentProfileSchema>>({
+        resolver: zodResolver(studentProfileSchema)
     })
 
-    function onSubmit(values: z.infer<typeof studentPersonalSchema>) {
+    function onSubmit(values: z.infer<typeof studentProfileSchema>) {
         const getChanges = getChangedFields(convertedData, values)
 
         if (Object.keys(getChanges).length !== 0) {
