@@ -9,7 +9,7 @@ import {
     TableRow,
 } from "@/components/ui/table"
 import { useStudentsCalculatedQA, useStudentsGA, useStudentsGAMutations } from "@/hooks/useTaskQueries"
-import { studentGASchema } from "@/schemas/computationSchemas"
+import { StudentGASchema } from "@/schemas/computationSchemas"
 import { StudentGA } from "@/types/computationTypes"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useQueryClient } from "@tanstack/react-query"
@@ -41,7 +41,7 @@ export const GATable = ({ section, grade_assigned }: {
 
     
     const form = useForm<StudentGA>({
-        resolver: zodResolver(studentGASchema),
+        resolver: zodResolver(StudentGASchema),
         defaultValues: {
             student_ga: student_ga_template
         }

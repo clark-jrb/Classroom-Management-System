@@ -1,8 +1,8 @@
 import { z } from "zod";
-import { studentPerformanceSchema, StudentSGSchema, studentGASchema } from "@/schemas/computationSchemas";
+import { StudentPerformanceSchema, StudentSGSchema, StudentGASchema } from "@/schemas/computationSchemas";
 import { QuarterTypes, SubjectTypes } from "./types";
 
-export type StudentPerformance = z.infer<typeof studentPerformanceSchema>
+export type StudentPerformance = z.infer<typeof StudentPerformanceSchema>
 export type StudentSG = z.infer<typeof StudentSGSchema>
 export type StudentSGWithProfile = {
     sid: {
@@ -55,4 +55,4 @@ export type StudentCalculatedQA = {
     }
 }
 
-export type StudentGA = z.infer<typeof studentGASchema>
+export type StudentGA = z.infer<typeof StudentGASchema>

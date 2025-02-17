@@ -1,6 +1,6 @@
 import { z } from "zod"
 
-export const studentPerformanceSchema = z.object({
+export const StudentPerformanceSchema = z.object({
     student_performance: z.array(
         z.object({
             sid: z.string(),
@@ -11,8 +11,7 @@ export const studentPerformanceSchema = z.object({
             quiz: z.number(),
             project: z.number(),
             summative: z.number(),
-            exam: z.number(),
-            // gwa: z.number()
+            exam: z.number()
         })
     )
 })
@@ -29,7 +28,7 @@ export const StudentSGSchema = z.object({
     )
 })
 
-export const studentGASchema = z.object({
+export const StudentGASchema = z.object({
     student_ga: z.array(
         z.object({
             sid: z.string(),

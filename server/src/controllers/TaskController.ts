@@ -1,7 +1,7 @@
 import { Request, Response } from "express"
 import { TaskModel } from "../models/task"
 import { StudentClassModel } from "../models/student"
-import { StudentsGWAs, StudentTaskScore, Task, TaskTypes } from "../types/TaskTypes"
+import { StudentsSubjectGrade, StudentTaskScore, Task, TaskTypes } from "../types/TaskTypes"
 import { GradeLevels } from "../types/types"
 import { selectTaskGradeModel } from "../helpers/select-models"
 import { getWeightWithoutProject, getWeightWithProject } from "../helpers/get-weight"
@@ -328,14 +328,14 @@ export class TaskController {
     public updateStudentsSGs = async (req: Request, res: Response): Promise<void> => {
         try {
             const { subject, quarter } = req.query
-            const StudentsScores: StudentsGWAs[] = req.body
+            const StudentsScores: StudentsSubjectGrade[] = req.body
 
             await Promise.all(
                 StudentsScores.map(async (student) => {
                     try {
                         await SubjectGradeModel.findOneAndUpdate(
                             { sid: student.sid, subject, quarter },
-                            { gwa: student.gwa },
+                            { subj_grade: student.subj_grade },
                             { new: true, runValidators: true }
                         );
                         console.log(`${subject} grade for student ${student.sid} updated successfully`)
@@ -454,7 +454,7 @@ export class TaskController {
                 quarter: data.quarter,
                 section: section,
                 subject: subject,
-                gwa: data[subject as keyof typeof data]
+                subj_grade: data[subject as keyof typeof data]
             }))
 
             res.status(200).json(format_students_qas)
@@ -468,7 +468,7 @@ export class TaskController {
 
     public updateStudentsSGfromQA = async (req: Request, res: Response): Promise<void> => {
         try {
-            const StudentsScores: StudentsGWAs[] = req.body
+            const StudentsScores: StudentsSubjectGrade[] = req.body
 
             await Promise.all(
                 StudentsScores.map(async (student) => {
@@ -479,7 +479,7 @@ export class TaskController {
                                 section: student.section, 
                                 quarter: student.quarter 
                             },
-                            { [student.subject]: student.gwa },
+                            { [student.subject]: student.subj_grade },
                             { new: true, runValidators: true }
                         );
                         console.log(`Subject ${student.subject} grade of student ${student.sid} updated successfully`)
