@@ -1,6 +1,7 @@
 import { useAuthentication } from '@/hooks/useAuthQueries'
 import { SideNavbar } from '@/components/Side-Navbar'
 import { useTeacherStore } from '@/stores/auth/authSlice'
+import { Toaster } from '@/components/ui/sonner'
 
 export const FacultyLayout = ({ children }: any) => {
     const { handleLogout } = useAuthentication()
@@ -22,13 +23,18 @@ export const FacultyLayout = ({ children }: any) => {
 
     return (
         <>
-            <SideNavbar role={'faculty'} handleLogout={handleLogout} links={
-                teacher_role !== 'homeroom'
-                ? removeEvaluation()
-                : facultyLinks
-            }/>
+            <SideNavbar 
+                role={'faculty'} 
+                handleLogout={handleLogout} 
+                links={
+                    teacher_role !== 'homeroom'
+                    ? removeEvaluation()
+                    : facultyLinks
+                }
+            />
             <main className="h-dvh student-content">
                 { children }
+                <Toaster/>
             </main>
         </>
     )

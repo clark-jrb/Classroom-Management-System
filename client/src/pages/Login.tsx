@@ -39,8 +39,7 @@ export const Login = () => {
     })
 
     function onSubmit(values: z.infer<typeof loginSchema>) {
-        loginUser.mutate(values)
-        // console.log(values)
+        loginUser.mutateAsync(values)
     }
 
     return (
