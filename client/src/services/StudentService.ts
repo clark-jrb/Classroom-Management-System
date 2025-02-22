@@ -1,6 +1,6 @@
-import { StudentQA } from "@/types/computationTypes";
+import { StudentQA } from "@/types/ComputationTypes";
 import { api } from "./api";
-import { Message } from "@/types/types";
+import { Message } from "@/types/GlobalTypes";
 
 export const updateStudentInfo = async (
     id: string, value: Record<string, any>

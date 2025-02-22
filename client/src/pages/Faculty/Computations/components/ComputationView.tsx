@@ -1,6 +1,6 @@
 import { useParams, useNavigate } from "react-router-dom"
 import { Procedures } from "./Procedures"
-import { SubjectTypes } from "@/types/types"
+import { SubjectTypes } from "@/types/GlobalTypes"
 import { teacherInfo } from "@/hooks/useTeacherQueries"
 import { Suspense, useState } from "react"
 import { ComputationViewTable } from "./ComputationViewTable"

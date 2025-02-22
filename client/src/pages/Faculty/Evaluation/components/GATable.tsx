@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/table"
 import { useStudentsCalculatedQA, useStudentsGA, useStudentsGAMutations } from "@/hooks/useTaskQueries"
 import { StudentGASchema } from "@/schemas/computationSchemas"
-import { StudentGA } from "@/types/computationTypes"
+import { StudentGA } from "@/types/ComputationTypes"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useQueryClient } from "@tanstack/react-query"
 import { useEffect } from "react"

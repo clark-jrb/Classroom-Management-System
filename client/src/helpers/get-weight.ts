@@ -1,4 +1,4 @@
-import { TaskTypes } from "@/types/types";
+import { TaskTypes } from "@/types/GlobalTypes";
 
 export function getWeightWithoutProject(type: TaskTypes) {
     const percentageMap: Record<TaskTypes, number> = {

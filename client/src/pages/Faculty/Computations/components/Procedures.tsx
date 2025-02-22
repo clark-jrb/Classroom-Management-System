@@ -1,5 +1,5 @@
 import { useMyTasks, useStudentsTakingMyTasks } from "@/hooks/useTaskQueries"
-import { TaskTypes, QuarterTypes, SubjectTypes } from "@/types/types"
+import { TaskTypes, QuarterTypes, SubjectTypes } from "@/types/GlobalTypes"
 import { getWeightWithProject, getWeightWithoutProject } from "@/helpers/get-weight"
 import { findProject } from "@/helpers/is-there-a-project"
 import { useEffect } from "react"

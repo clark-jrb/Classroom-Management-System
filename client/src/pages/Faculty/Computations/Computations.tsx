@@ -1,6 +1,6 @@
 import { teacherInfo } from "@/hooks/useTeacherQueries"
 import { Sections } from "../../../components/Sections"
-import { SubjectTypes } from "@/types/types"
+import { SubjectTypes } from "@/types/GlobalTypes"
 
 export const Computations = () => {
     const { section_handled, subjects } = teacherInfo()

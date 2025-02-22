@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom"
 import { useQueryClient } from "@tanstack/react-query"
-import { StudentScore } from "../../../../types/types"
+import { StudentScore } from "../../../../types/GlobalTypes"
 import {
     Table,
     TableBody,

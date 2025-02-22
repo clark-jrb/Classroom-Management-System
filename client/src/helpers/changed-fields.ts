@@ -1,6 +1,6 @@
 import { studentProfileSchema } from "@/schemas/studentSchemas";
 import { studentScoreSchema } from "@/schemas/teacherSchemas";
-import { StudentSG, StudentSGWithProfile } from "@/types/computationTypes";
+import { StudentSG, StudentSGWithProfile } from "@/types/ComputationTypes";
 import { z } from "zod";
 
 

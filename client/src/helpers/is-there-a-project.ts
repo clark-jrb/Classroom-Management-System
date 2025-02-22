@@ -1,4 +1,4 @@
-import { StudentTakingTask, SubjectTypes } from "@/types/types";
+import { StudentTakingTask, SubjectTypes } from "@/types/GlobalTypes";
 
 export function findProject(
     data: StudentTakingTask[],

@@ -1,7 +1,7 @@
 import { StudentInformation } from "@/types/StudentTypes";
 import { api } from "./api";
 import { TeacherInformation } from "@/types/TeacherTypes";
-import { CurrentUser } from "@/types/types";
+import { CurrentUser } from "@/types/GlobalTypes";
 
 export const getCurrentUser = async ():
 Promise<CurrentUser> => {

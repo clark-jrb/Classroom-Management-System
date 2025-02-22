@@ -2,7 +2,7 @@ import { calculateQA } from "@/helpers/calculate-qa"
 import { toCamelCase } from "@/helpers/camel-case"
 import { useStudentQAs } from "@/hooks/useStudentQueries"
 import { useAuthStore } from "@/stores/auth/authSlice"
-import { SubjectTypes } from "@/types/types"
+import { SubjectTypes } from "@/types/GlobalTypes"
 
 export const GradesTable = () => {
     const { user_id } = useAuthStore()

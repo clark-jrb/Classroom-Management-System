@@ -1,5 +1,5 @@
 import { useParams, useNavigate } from "react-router-dom"
-import { SubjectTypes } from "@/types/types"
+import { SubjectTypes } from "@/types/GlobalTypes"
 import { teacherInfo } from "@/hooks/useTeacherQueries"
 import { Suspense } from "react"
 import { Button } from "@/components/ui/button"

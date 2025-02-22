@@ -1,5 +1,5 @@
 import { api } from "./api";
-import { MyStudents } from "@/types/types";
+import { MyStudents } from "@/types/GlobalTypes";
 
 export const getMyStudents = async (
     gradeLevel: string, section: string

@@ -1,6 +1,6 @@
 import { useMyTasks } from "@/hooks/useTaskQueries"
 import { useNavigate } from "react-router-dom"
-import { TaskTypes } from "@/types/types"
+import { TaskTypes } from "@/types/GlobalTypes"
 
 export const TaskList = ({ taskType }: {
     taskType: TaskTypes

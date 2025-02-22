@@ -1,6 +1,6 @@
-import { z } from "zod";
-import { StudentPerformanceSchema, StudentSGSchema, StudentGASchema } from "@/schemas/computationSchemas";
-import { QuarterTypes, SubjectTypes } from "./types";
+import { z } from "zod"
+import { StudentPerformanceSchema, StudentSGSchema, StudentGASchema } from "@/schemas/computationSchemas"
+import { QuarterTypes, SubjectTypes } from "./GlobalTypes"
 
 export type StudentPerformance = z.infer<typeof StudentPerformanceSchema>
 export type StudentSG = z.infer<typeof StudentSGSchema>
@@ -10,11 +10,11 @@ export type StudentSGWithProfile = {
         firstname: string
         lastname: string
     }
-    section: string;
-    subject: string;
-    subj_grade: number;
-    quarter: string;
-}[];
+    section: string
+    subject: string
+    subj_grade: number
+    quarter: string
+}[]
 
 export type StudentSGFilter = {
     section: string
@@ -30,7 +30,7 @@ export type StudentQA = {
         lastname: string
     }
     section: string
-    quarter: QuarterTypes;
+    quarter: QuarterTypes
     gradeLevel: string
     math: number
     science: number

@@ -25,7 +25,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { Input } from "@/components/ui/input"
 import { useTaskMutations, useMyTasks } from "@/hooks/useTaskQueries"
 import { useQueryClient } from "@tanstack/react-query"
-import { TTaskForm, TaskTypes, SubjectTypes, QuarterTypes } from "@/types/types"
+import { TTaskForm, TaskTypes, SubjectTypes, QuarterTypes } from "@/types/GlobalTypes"
 
 export const TaskForm = ({ taskType }: {
     taskType: TaskTypes

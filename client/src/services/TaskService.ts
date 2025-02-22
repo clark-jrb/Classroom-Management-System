@@ -1,7 +1,7 @@
-import { StudentCalculatedQA, StudentGA, StudentQA, StudentSG, StudentSGWithProfile, StudentPerformance } from "@/types/computationTypes";
+import { StudentCalculatedQA, StudentGA, StudentQA, StudentSG, StudentSGWithProfile, StudentPerformance } from "@/types/ComputationTypes";
 import { api } from "./api";
-import { QuarterTypes, StudentScore, SubjectTypes } from "@/types/types";
-import { TTasks, TTaskForm, Message, StudentTask, StudentTaskCreate, StudentTakingTask } from "@/types/types";
+import { QuarterTypes, StudentScore, SubjectTypes } from "@/types/GlobalTypes";
+import { TTasks, TTaskForm, Message, StudentTask, StudentTaskCreate, StudentTakingTask } from "@/types/GlobalTypes";
 
 export const createTask = async (
     tid: string, 

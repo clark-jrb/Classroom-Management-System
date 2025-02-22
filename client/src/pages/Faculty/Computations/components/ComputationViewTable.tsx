@@ -8,7 +8,7 @@ import {
     TableRow,
 } from "@/components/ui/table"
 import { useStudentsPerformance } from "@/hooks/useTaskQueries"
-import { SubjectTypes } from "@/types/types"
+import { SubjectTypes } from "@/types/GlobalTypes"
 import { useQuarterStore } from "@/stores/filterSlice"
 import { useForm } from "react-hook-form"
 import { 
@@ -16,7 +16,7 @@ import {
 } from "@/components/ui/form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { StudentSGSchema } from "@/schemas/computationSchemas"
-import { StudentSG } from "@/types/computationTypes"
+import { StudentSG } from "@/types/ComputationTypes"
 import { Button } from "@/components/ui/button"
 import { useStudentsPerformanceMutations } from "@/hooks/useTaskQueries"
 import { useStudentsSG } from "@/hooks/useTaskQueries"

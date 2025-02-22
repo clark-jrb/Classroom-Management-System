@@ -28,8 +28,8 @@ import {
     QuarterTypes, 
     SubjectTypes, 
     TTasks 
-} from "@/types/types"
-import { StudentGA, StudentSG } from "@/types/computationTypes"
+} from "@/types/GlobalTypes"
+import { StudentGA, StudentSG } from "@/types/ComputationTypes"
 
 /**
  * this hook returns functions for tasks like UPDATE and CREATE 

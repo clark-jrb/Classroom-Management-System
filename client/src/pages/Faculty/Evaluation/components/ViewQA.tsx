@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom"
 import { QATable } from "./QATable"
 import { useState } from "react"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { QuarterTypes } from "@/types/types"
+import { QuarterTypes } from "@/types/GlobalTypes"
 
 export const ViewQA = ({ grade_assigned, section }: {
     grade_assigned: string
