@@ -1,5 +1,5 @@
 import { StudentLayout } from "../StudentLayout"
-import { Container } from "@/components/container"
+import { Container } from "@/components/Container"
 import { Suspense } from "react"
 import { GradesTable } from "./GradesTable"
 

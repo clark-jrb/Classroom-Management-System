@@ -1,5 +1,5 @@
 import { useAuthentication } from '@/hooks/useAuthQueries'
-import { SideNavbar } from '@/components/side-navbar'
+import { SideNavbar } from '@/components/Side-Navbar'
 import { useTeacherStore } from '@/stores/auth/authSlice'
 
 export const FacultyLayout = ({ children }: any) => {

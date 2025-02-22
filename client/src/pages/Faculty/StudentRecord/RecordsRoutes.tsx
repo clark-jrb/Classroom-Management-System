@@ -1,6 +1,6 @@
 import React from 'react'
 import { FacultyLayout } from "../FacultyLayout"
-import { Container } from "@/components/container"
+import { Container } from "@/components/Container"
 import { Route, Routes, Link, useLocation } from "react-router-dom"
 import {
     Breadcrumb,

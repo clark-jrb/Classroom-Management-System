@@ -1,4 +1,4 @@
-import { Container } from "@/components/container"
+import { Container } from "@/components/Container"
 import { FacultyLayout } from "../FacultyLayout"
 import { EvaluationRoutes } from "./EvaluationRoutes"
 import { Suspense } from "react"

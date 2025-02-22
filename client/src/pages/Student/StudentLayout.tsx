@@ -1,5 +1,5 @@
 import { useAuthentication } from '@/hooks/useAuthQueries'
-import { SideNavbar } from '@/components/side-navbar'
+import { SideNavbar } from '@/components/Side-Navbar'
 
 export const StudentLayout = ({ children }: any) => {
     const { handleLogout } = useAuthentication()

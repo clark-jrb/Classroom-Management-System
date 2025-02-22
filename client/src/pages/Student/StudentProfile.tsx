@@ -1,4 +1,4 @@
-import { Container } from "@/components/container"
+import { Container } from "@/components/Container"
 import { StudentLayout } from "./StudentLayout"
 import { ProfileContent } from "./Profile/ProfileContent"
 import { Suspense } from "react"

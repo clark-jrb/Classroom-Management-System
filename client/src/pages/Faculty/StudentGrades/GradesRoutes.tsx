@@ -1,5 +1,5 @@
 import { FacultyLayout } from "../FacultyLayout"
-import { Container } from "@/components/container"
+import { Container } from "@/components/Container"
 import { Navigate, Route, Routes } from "react-router-dom"
 import { Suspense } from "react"
 // import { SectionView } from "../Computations/components/SectionView"
