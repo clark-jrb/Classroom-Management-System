@@ -81,7 +81,7 @@ export class StudentController {
                 { new: true, runValidators: true }
             )
     
-            res.status(200).json({ message: "profile updated successfully!"}).end()
+            res.status(200).json({ message: "Profile updated successfully" }).end()
         } catch (error) {
             console.log(error)
             res.sendStatus(400).json({ message: 'Failed to update student', error })

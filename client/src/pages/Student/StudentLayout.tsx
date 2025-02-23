@@ -27,7 +27,7 @@ export const StudentLayout = ({ children }: any) => {
             <SideNavbar role={'student'} handleLogout={handleLogout} links={studentLinks}/>
             <main className="h-dvh student-content">
                 { children }
-                <Toaster/>
+                <Toaster richColors/>
             </main>
         </>
     )

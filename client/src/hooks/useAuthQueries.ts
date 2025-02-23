@@ -38,11 +38,13 @@ export const useAuthentication = () => {
             console.log(message)
 
             setRole(userRole)
+            useToastStore.getState().setToast(message, 'success')
 
             userRole ? navigate('/') : navigate('/login')
         },
         onError: (error) => {
             console.log(error)
+            useToastStore.getState().setToast(error?.message || 'Registration failed', 'error')
         }
     })
 

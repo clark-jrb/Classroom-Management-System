@@ -291,7 +291,7 @@ export class TaskController {
             
             await SubjectGradeModel.create(data)
 
-            res.status(200).json({ message: 'Success creating students subject grade' })
+            res.status(200).json({ message: 'Students subject grades saved' })
         } catch (error) {
             console.log(error)
             res.status(400).json({ 

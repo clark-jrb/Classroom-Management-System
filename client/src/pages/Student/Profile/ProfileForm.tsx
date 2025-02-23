@@ -51,8 +51,7 @@ export const ProfileForm = () => {
         if (Object.keys(getChanges).length !== 0) {
             updateProfile.mutateAsync(getChanges)
         } else {
-            console.log('there is nothing to update')
-            toast('there is nothing to update')
+            toast.warning('There is nothing to update')
         }
     }
 

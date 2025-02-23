@@ -46,7 +46,7 @@ export const FacultyLayout = ({ children }: any) => {
             />
             <main className="h-dvh student-content">
                 { children }
-                <Toaster/>
+                <Toaster richColors/>
             </main>
         </>
     )

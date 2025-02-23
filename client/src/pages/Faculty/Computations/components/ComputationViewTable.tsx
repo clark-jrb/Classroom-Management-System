@@ -1,7 +1,6 @@
 import {
     Table,
     TableBody,
-    TableCaption,
     TableCell,
     TableHead,
     TableHeader,
@@ -21,6 +20,7 @@ import { Button } from "@/components/ui/button"
 import { useStudentsPerformanceMutations } from "@/hooks/useTaskQueries"
 import { useStudentsSG } from "@/hooks/useTaskQueries"
 import { getChangedSG } from "@/helpers/changed-fields"
+import { toast } from "sonner"
 
 export const ComputationViewTable = ({ section, subject, weight }: {
     section: string
@@ -55,7 +55,7 @@ export const ComputationViewTable = ({ section, subject, weight }: {
             const changedValues = getChangedSG(sg_by_quarter, values.student_sg)
 
             if (Object.keys(changedValues).length === 0) {
-                console.log('there is nothing to update')
+                toast.warning('There is nothing to update')
             } else {
                 updateSG.mutateAsync({
                     value: changedValues,
@@ -76,7 +76,6 @@ export const ComputationViewTable = ({ section, subject, weight }: {
     return (
         <div className="flex-1 border rounded-md">
             <Table>
-                <TableCaption>A list of my students.</TableCaption>
                 <TableHeader>
                     <TableRow>
                         <TableHead className="w-[150px]">Last Name</TableHead>
