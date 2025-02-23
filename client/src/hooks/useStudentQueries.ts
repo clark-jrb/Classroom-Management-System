@@ -25,7 +25,7 @@ export const useProfileMutation = () => {
         },
         onError: (error) => {
             console.log(error)
-            useToastStore.getState().setToast(error?.message, 'success')
+            useToastStore.getState().setToast(error?.message, 'error')
         }
     })
     

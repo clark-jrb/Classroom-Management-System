@@ -52,6 +52,7 @@ export const ProfileForm = () => {
             updateProfile.mutateAsync(getChanges)
         } else {
             console.log('there is nothing to update')
+            toast('there is nothing to update')
         }
     }
 

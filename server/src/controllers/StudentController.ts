@@ -39,8 +39,8 @@ export class StudentController {
 
             const [account, profile, classes] = await Promise.all([
                 StudentAccountModel.findById(id),
-                StudentProfileModel.findOne({ sid: id }),
-                StudentClassModel.findOne({ sid: id }),
+                StudentProfileModel.findOne({ sid: id }).select('-_id -sid -__v'),
+                StudentClassModel.findOne({ sid: id }).select('-_id -sid -__v'),
             ])
     
             if (!account) {
