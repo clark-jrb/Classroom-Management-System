@@ -24,6 +24,7 @@ import { Button } from "@/components/ui/button"
 import { getChangedScores } from "@/helpers/changed-fields"
 import { useTaskMutations, useStudentTasks } from "@/hooks/useTaskQueries"
 import { teacherInfo } from "@/hooks/useTeacherQueries"
+import { toast } from "sonner"
 
 export const TaskView = () => {
     const { taskId } = useParams()
@@ -59,20 +60,21 @@ export const TaskView = () => {
                     const { message } = data
                     console.log(message)
                     queryClient.invalidateQueries({ queryKey: ['students_taking_task', taskId, grade_assigned] })
+                    toast.success(message)
                 },
                 onError: (error) => {
                     console.log(error)
+                    toast.error("Error updating scores")
                 }
             })
-
-            console.log(getChanges)
-            console.log('updated successfully')
         } else {
-            console.log('there is nothing to update')
+            toast.warning('There is no changes')
         }
     }
 
-    function onError(errors: any) { console.log("Form errors:", errors) }
+    function onError(errors: any) { 
+        console.log("Form errors:", errors) 
+    }
 
     return (
         <div>
@@ -123,7 +125,7 @@ export const TaskView = () => {
                         </TableBody>
                     </Table>
                     <Button type="submit" disabled={updateScores.isPending}>
-                        {updateScores.isPending ? "Processing..." : "Save"}
+                        {updateScores.isPending ? "Processing..." : "Submit"}
                     </Button>
                 </form>
             </Form>

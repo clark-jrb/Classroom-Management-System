@@ -6,14 +6,9 @@ export type StudentAccount = {
     role: 'student'
 } & Omit<z.infer<typeof loginSchema>, 'role'>
 
-export type StudentProfile = {
-    // _id: string
-    // sid: string
-} & z.infer<typeof registerInformationSchema>
+export type StudentProfile = z.infer<typeof registerInformationSchema>
 
 export type StudentClasses = {
-    // _id: string
-    // sid: string
     gradeLevel: string
     section: string
 }

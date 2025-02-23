@@ -96,7 +96,7 @@ export const useMyTasks = () => {
     // counts existing tasks (ex. quiz) to determine what task number is next to create
     function countTask(
         taskType: TaskTypes,    //  What TYPE
-        subject: SubjectTypes,  //  What SUBJECT
+        subject: SubjectTypes | '',  //  What SUBJECT
         section: string,        //  What SECTION
         quarter: QuarterTypes   //  What QUARTER
     ): number {

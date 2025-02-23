@@ -26,6 +26,8 @@ import { Input } from "@/components/ui/input"
 import { useTaskMutations, useMyTasks } from "@/hooks/useTaskQueries"
 import { useQueryClient } from "@tanstack/react-query"
 import { TTaskForm, TaskTypes, SubjectTypes, QuarterTypes } from "@/types/GlobalTypes"
+import { DialogClose } from "@radix-ui/react-dialog"
+import { toast } from "sonner"
 
 export const TaskForm = ({ taskType }: {
     taskType: TaskTypes
@@ -34,7 +36,7 @@ export const TaskForm = ({ taskType }: {
     const { countTask } = useMyTasks() 
     const { grade_assigned, section_handled, subjects } = teacherInfo() // data from the hook
     const quarter: QuarterTypes = 'q1'                                                // QUARTER state (subject to change)
-    const [subject, setSubject] = useState<SubjectTypes>('')                          // SUBJECT state
+    const [subject, setSubject] = useState<SubjectTypes | ''>('')                          // SUBJECT state
     const [gradeLevel, setGradeLevel] = useState('')                    // GRADE LEVEL state
     const [section, setSection] = useState('')                          // SECTION state
     const [confirmForm, setConfirmForm] = useState(false)               // CONFIRM VALUES DIALOG
@@ -72,19 +74,27 @@ export const TaskForm = ({ taskType }: {
                 })
 
                 taskForm.reset()
-                setConfirmForm(false)
-                setGradeLevel('')
-                setSection('')
-                setSubject('')
+                resetFormStates()
                 queryClient.invalidateQueries({ queryKey: ['my_tasks'] })
+                toast.success(`Succesfully created a ${taskType}`)
             },
             onError: (error) => {
                 console.log(error)
+                toast.error(`Failed to create a ${taskType}`)
             }
         })
     }
 
-    function onError(errors: any) { console.log("Form errors:", errors) }
+    function onError(errors: any) { 
+        console.log("Form errors:", errors) 
+    }
+
+    function resetFormStates() {
+        setConfirmForm(false)
+        setGradeLevel('')
+        setSection('')
+        setSubject('')
+    }
 
     return (
         <div>
@@ -95,7 +105,7 @@ export const TaskForm = ({ taskType }: {
                     </Button>
                 </DialogTrigger>
 
-                <DialogContent className="sm:max-w-[525px]">
+                <DialogContent className="sm:max-w-[525px]" onInteractOutside={(e) => e.preventDefault()}>
                         <DialogHeader>
                             <DialogTitle>Create {taskType}</DialogTitle>
                             <DialogDescription>
@@ -223,6 +233,17 @@ export const TaskForm = ({ taskType }: {
                                             {generateTask.isPending ? 'Creating...' : 'Create'}
                                         </Button>
                                     }
+                                    <DialogClose asChild>
+                                        <Button 
+                                            type="button" 
+                                            onClick={() => {
+                                                resetFormStates()
+                                                taskForm.reset()
+                                            }}
+                                        >
+                                            Cancel
+                                        </Button>
+                                    </DialogClose>
                                 </DialogFooter>
                             </form>
                         </Form>
