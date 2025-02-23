@@ -30,13 +30,16 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { getChangedFields } from "@/helpers/changed-fields"
 import { useEffect } from "react"
 import { studentProfileSchema } from "@/schemas/studentSchemas"
+import { useToastStore } from "@/stores/toastStore"
+import { toast } from "sonner"
 
 export const ProfileForm = () => {
     const { data: student_data } = useStudentData()
     const { updateProfile } = useProfileMutation() // from custom hook
     const { profile } = student_data // destructure student_data but only get the profile data
     const convertedData = {...profile, birth_date: new Date(profile.birth_date)} // because the birth_date is string from the document
-
+    const { message, type, clearToast } = useToastStore()
+    
     // profile information form
     const profile_form = useForm<z.infer<typeof studentProfileSchema>>({
         resolver: zodResolver(studentProfileSchema)
@@ -60,6 +63,14 @@ export const ProfileForm = () => {
             profile_form.reset(convertedData)
         }
     }, [student_data, profile_form])
+
+    
+    useEffect(() => {
+        if (message) {
+            toast[type || 'info'](message)
+            clearToast()
+        }
+    }, [message, type, clearToast])
 
     return (
         <DialogContent className="sm:max-w-[625px]">

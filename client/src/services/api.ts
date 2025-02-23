@@ -1,5 +1,6 @@
 import axios from "axios";
 import { refreshAccessToken } from "./AuthService";
+import { useToastStore } from "@/stores/toastStore";
 
 /**
  * this api is only for making http requests from users (not for login, register and logout) 
@@ -20,12 +21,14 @@ api.interceptors.response.use(
             try {
                 // Refresh the access token using the refresh token
                 const { message } = await refreshAccessToken()
-                console.log('access token refreshed')
-                console.log(message + 'from server')
+                useToastStore.getState().setToast(message, 'success')
+                // console.log('access token refreshed')
+                // console.log(message + 'from server')
                 // Retry the original request since the token is now refreshed
                 return api(originalRequest)
             } catch (error) {
-                console.error('Failed to refresh token, logging out...', error)
+                // console.error('Failed to refresh token, logging out...', error)
+                useToastStore.getState().setToast('Failed to refresh token', 'error')
                 window.location.href = '/home'
                 return Promise.reject(error)
             }

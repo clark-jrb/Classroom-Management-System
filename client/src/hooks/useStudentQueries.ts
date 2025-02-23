@@ -3,6 +3,8 @@ import { useMutation, useQueryClient, useSuspenseQuery } from "@tanstack/react-q
 import { getStudentInformation } from "@/services/UserService"
 import { getStudentQAs, updateStudentInfo } from "@/services/StudentService"
 import { useStudentDialogStore } from "@/stores/studentSlice"
+import { useToastStore } from "@/stores/toastStore"
+useToastStore
 
 // this is where the student queries 
 export const useProfileMutation = () => {
@@ -17,11 +19,13 @@ export const useProfileMutation = () => {
             const { message } = data
             console.log(message)
             queryClient.invalidateQueries({ queryKey: ['student_data', user_id] }) // refetch data
+            useToastStore.getState().setToast(message, 'success')
 
             openDialog(false) // close dialog
         },
         onError: (error) => {
             console.log(error)
+            useToastStore.getState().setToast(error?.message, 'success')
         }
     })
     
