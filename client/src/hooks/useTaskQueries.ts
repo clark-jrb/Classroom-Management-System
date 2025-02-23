@@ -151,19 +151,9 @@ export const useStudentsPerformance = (section: string, subject: SubjectTypes, q
     })
 }
 
-export const useStudentsPerformanceMutations = (section: string, subject: SubjectTypes) => {
-    const queryClient = useQueryClient()
-
+export const useStudentsPerformanceMutations = () => {
     const generateStudentSG = useMutation({
-        mutationFn: (value: StudentSG['student_sg']) => createStudentsSGs(value),
-        onSuccess: (data) => {
-            const { message } = data
-            console.log(message)
-            queryClient.invalidateQueries({ queryKey: ['students_subject_grade', section, subject] })
-        },
-        onError: (error) => {
-            console.log('there is an error generating students subject grade: ' + error)
-        }
+        mutationFn: (value: StudentSG['student_sg']) => createStudentsSGs(value)
     })
 
     const updateSG = useMutation({
@@ -171,15 +161,7 @@ export const useStudentsPerformanceMutations = (section: string, subject: Subjec
             value: StudentSG['student_sg']
             subject: SubjectTypes 
             quarter: QuarterTypes
-        }) => updateStudentsSGs(subject, quarter, value),
-        onSuccess: (data) => {
-            const { message } = data
-            console.log(message)
-            queryClient.invalidateQueries({ queryKey: ['students_subject_grade', section, subject] })
-        },
-        onError: (error) => {
-            console.log(error)
-        }
+        }) => updateStudentsSGs(subject, quarter, value)
     })
 
     function createSG (value: StudentSG['student_sg']) {
@@ -187,7 +169,7 @@ export const useStudentsPerformanceMutations = (section: string, subject: Subjec
     }
 
     return {
-        createSG, updateSG
+        createSG, updateSG, generateStudentSG
     }
 }
 

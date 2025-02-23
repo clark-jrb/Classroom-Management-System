@@ -13,7 +13,7 @@ export const Evaluation = () => {
                 className="block" 
                 onClick={() => navigate('/evaluation/qa')}
             >
-                Students General Point Average
+                Students Quarterly Average
             </Button>
             <Button 
                 variant={'outline'} 

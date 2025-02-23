@@ -45,7 +45,7 @@ export type StudentCalculatedQA = {
     sid: string
     firstname: string
     lastname: string
-    calculated_qa: {
+    total_qa: {
         math: number
         science: number
         filipino: number

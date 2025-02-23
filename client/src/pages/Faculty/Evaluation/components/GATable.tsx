@@ -26,7 +26,7 @@ export const GATable = ({ section, grade_assigned }: {
     const { data: students_ga } = useStudentsGA(section)    // students_gas collection
     const { generateGeneralAverage } = useStudentsGAMutations()     // generate mutation
 
-    const student_ga_template = students_calculated_qa.map(({ sid, calculated_qa: { math, mapeh, science, english, filipino, hekasi } }) => ({
+    const student_ga_template = students_calculated_qa.map(({ sid, total_qa: { math, mapeh, science, english, filipino, hekasi } }) => ({
         sid,
         section,
         grade_level: grade_assigned,
@@ -106,7 +106,7 @@ export const GATable = ({ section, grade_assigned }: {
                             sid,
                             firstname,
                             lastname,
-                            calculated_qa
+                            total_qa
                         }) => {
                             const general_average = getRemarksAndGA(sid).general_average
                             const remarks = getRemarksAndGA(sid).remarks
@@ -115,12 +115,12 @@ export const GATable = ({ section, grade_assigned }: {
                                 <TableRow key={sid}>
                                     <TableCell className="font-medium text-base">{lastname}</TableCell>
                                     <TableCell>{firstname}</TableCell>
-                                    <TableCell>{calculated_qa.science.toFixed(0)}</TableCell>
-                                    <TableCell>{calculated_qa.math.toFixed(0)}</TableCell>
-                                    <TableCell>{calculated_qa.english.toFixed(0)}</TableCell>
-                                    <TableCell>{calculated_qa.filipino.toFixed(0)}</TableCell>
-                                    <TableCell>{calculated_qa.mapeh.toFixed(0)}</TableCell>
-                                    <TableCell>{calculated_qa.hekasi.toFixed(0)}</TableCell>
+                                    <TableCell>{total_qa.science.toFixed(0)}</TableCell>
+                                    <TableCell>{total_qa.math.toFixed(0)}</TableCell>
+                                    <TableCell>{total_qa.english.toFixed(0)}</TableCell>
+                                    <TableCell>{total_qa.filipino.toFixed(0)}</TableCell>
+                                    <TableCell>{total_qa.mapeh.toFixed(0)}</TableCell>
+                                    <TableCell>{total_qa.hekasi.toFixed(0)}</TableCell>
                                     <TableCell className={`${remarks}`}>{general_average}</TableCell>
                                 </TableRow>
                         )})}

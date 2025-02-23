@@ -21,13 +21,15 @@ import { useStudentsPerformanceMutations } from "@/hooks/useTaskQueries"
 import { useStudentsSG } from "@/hooks/useTaskQueries"
 import { getChangedSG } from "@/helpers/changed-fields"
 import { toast } from "sonner"
+import { useQueryClient } from "@tanstack/react-query"
 
 export const ComputationViewTable = ({ section, subject, weight }: {
     section: string
     subject: SubjectTypes
     weight: number
 }) => {
-    const { createSG, updateSG } = useStudentsPerformanceMutations(section, subject)
+    const queryClient = useQueryClient()
+    const { updateSG, generateStudentSG } = useStudentsPerformanceMutations()
     const { quarter } = useQuarterStore()
     const { data: students_sg } = useStudentsSG(section, subject)
     const { data: students_performance } = useStudentsPerformance(section, subject, quarter)
@@ -57,20 +59,48 @@ export const ComputationViewTable = ({ section, subject, weight }: {
             if (Object.keys(changedValues).length === 0) {
                 toast.warning('There is nothing to update')
             } else {
-                updateSG.mutateAsync({
-                    value: changedValues,
-                    subject,
-                    quarter
-                })
-                console.log(changedValues)
+                updateSG.mutateAsync(
+                    {
+                        value: changedValues,
+                        subject,
+                        quarter
+                    }, 
+                    {
+                        onSuccess: (data) => {
+                            const { message } = data
+                            toast.success(message)
+                            refetchData()
+                        },
+                        onError: (error) => {
+                            console.log(error)
+                            toast.error('There is an error updating students subject grade')
+                        }
+                    }
+                )
+                // console.log(changedValues)
             }
         } else {
-            createSG(values.student_sg)
+            generateStudentSG.mutateAsync(values.student_sg, {
+                onSuccess: (data) => {
+                    const { message } = data
+                    // console.log(message)
+                    toast.success(message)
+                    refetchData()
+                },
+                onError: (error) => {
+                    console.log('Error: ' + error)
+                    toast.error('There is an error generating students subject grade')
+                }
+            })
         }
     }
 
     function onError(errors: any) { 
         console.log("Form errors:", errors) 
+    }
+
+    function refetchData() {
+        queryClient.invalidateQueries({ queryKey: ['students_subject_grade', section, subject] })
     }
 
     return (

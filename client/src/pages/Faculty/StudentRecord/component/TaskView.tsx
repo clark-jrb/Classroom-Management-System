@@ -58,7 +58,7 @@ export const TaskView = () => {
             updateScores.mutateAsync(getChanges, {
                 onSuccess: (data) => {
                     const { message } = data
-                    console.log(message)
+                    // console.log(message)
                     queryClient.invalidateQueries({ queryKey: ['students_taking_task', taskId, grade_assigned] })
                     toast.success(message)
                 },
