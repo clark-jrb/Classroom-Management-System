@@ -43,6 +43,10 @@ export const GradesViewTable = ({ section, subject }: {
             student_sg: formatted_students_sg
         }
     })
+
+    const changedValues = sg_from_qa_by_quarter.length !== 0
+        ? getChangedSG(sg_from_qa_by_quarter, form.getValues("student_sg"))
+        : []
     
     function onSubmit(values: StudentSG) {
         if (students_sg.length === 0) {
@@ -51,11 +55,9 @@ export const GradesViewTable = ({ section, subject }: {
             const isSGZero = students_sg_from_qa.every(item => item.subj_grade === 0)
     
             if (!isSGZero) {
-                const changedValues = getChangedSG(sg_from_qa_by_quarter, values.student_sg)
-    
-                if (Object.keys(changedValues).length === 0) {
+                if (changedValues.length === 0) {
                     // console.log(values)
-                    toast.warning('There is nothing to update')
+                    toast.warning('There is no changes')
                 } else {
                     updateSGfromQA.mutateAsync(values.student_sg)
                     toast.success('Subject grade re-submitted')
@@ -111,7 +113,10 @@ export const GradesViewTable = ({ section, subject }: {
                             type="submit"
                             disabled={students_sg.length === 0}
                         >
-                            Submit
+                            {updateSGfromQA.isPending
+                                ? "Processing..."
+                                : "Save"
+                            }
                         </Button>
                     </form>
                 </Form>

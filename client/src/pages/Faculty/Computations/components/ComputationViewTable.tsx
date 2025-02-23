@@ -22,6 +22,7 @@ import { useStudentsSG } from "@/hooks/useTaskQueries"
 import { getChangedSG } from "@/helpers/changed-fields"
 import { toast } from "sonner"
 import { useQueryClient } from "@tanstack/react-query"
+import { useEffect } from "react"
 
 export const ComputationViewTable = ({ section, subject, weight }: {
     section: string
@@ -50,13 +51,13 @@ export const ComputationViewTable = ({ section, subject, weight }: {
             student_sg: students_calculated_sg
         }
     })
+
+    const changedValues = sg_by_quarter.length !== 0 ? getChangedSG(sg_by_quarter, form.getValues("student_sg")) : []
     
     function onSubmit(values: StudentSG) {
         // A condition where should the values submitted update or create?
         if (sg_by_quarter.length > 0) {
-            const changedValues = getChangedSG(sg_by_quarter, values.student_sg)
-
-            if (Object.keys(changedValues).length === 0) {
+            if (changedValues.length === 0) {
                 toast.warning('There is nothing to update')
             } else {
                 updateSG.mutateAsync(
@@ -102,6 +103,12 @@ export const ComputationViewTable = ({ section, subject, weight }: {
     function refetchData() {
         queryClient.invalidateQueries({ queryKey: ['students_subject_grade', section, subject] })
     }
+
+    useEffect(() => {
+        if (students_performance) {
+            form.reset({ student_sg: students_calculated_sg })
+        }
+    }, [students_performance])
 
     return (
         <div className="flex-1 border rounded-md">
@@ -157,18 +164,14 @@ export const ComputationViewTable = ({ section, subject, weight }: {
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit, onError)}>
                     <Button 
-                        type="submit" 
-                        onClick={() => {
-                            students_calculated_sg.forEach(({ subj_grade }, index) => {
-                                form.setValue(`student_sg.${index}.subj_grade`, subj_grade)
-                                form.setValue(`student_sg.${index}.quarter`, quarter)
-                            })
-                        }}
+                        type="submit"
                         disabled={weight !== 100}
                     >
-                        {sg_by_quarter.length > 0
-                            ? 'Update Subject Grade'
-                            : 'Save Subject Grade'
+                        {updateSG.isPending || generateStudentSG.isPending
+                            ? 'Processing...'
+                            : sg_by_quarter.length > 0
+                                ? 'Update Subject Grade'
+                                : 'Save Subject Grade'
                         }
                     </Button>
                 </form>
