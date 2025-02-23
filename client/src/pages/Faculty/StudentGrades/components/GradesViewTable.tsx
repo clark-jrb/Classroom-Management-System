@@ -16,6 +16,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { StudentSGSchema } from "@/schemas/computationSchemas"
 import { Form } from "@/components/ui/form"
 import { getChangedSG } from "@/helpers/changed-fields"
+import { toast } from "sonner"
 
 export const GradesViewTable = ({ section, subject }: {
     section: string
@@ -45,7 +46,7 @@ export const GradesViewTable = ({ section, subject }: {
     
     function onSubmit(values: StudentSG) {
         if (students_sg.length === 0) {
-            console.log('there is no data')
+            toast.error('There is no data')
         } else {
             const isSGZero = students_sg_from_qa.every(item => item.subj_grade === 0)
     
@@ -54,15 +55,15 @@ export const GradesViewTable = ({ section, subject }: {
     
                 if (Object.keys(changedValues).length === 0) {
                     // console.log(values)
-                    console.log('there is nothing to update')
+                    toast.warning('There is nothing to update')
                 } else {
                     updateSGfromQA.mutateAsync(values.student_sg)
-                    console.log('subject grade re-submitted')
+                    toast.success('Subject grade re-submitted')
                 }
             } else {
                 updateSGfromQA.mutateAsync(values.student_sg)
                 // console.log(values.student_sg)
-                console.log('subject grade submitted')
+                toast.success('Subject grade submitted')
             }
         }
     }
