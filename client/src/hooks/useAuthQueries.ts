@@ -3,6 +3,7 @@ import { useMutation, useSuspenseQuery } from "@tanstack/react-query"
 import { useAuthStore } from "@/stores/auth/authSlice"
 import { login, register, logout } from "@/services/AuthService"
 import { getCurrentUser } from "@/services/UserService"
+import { useToastStore } from "@/stores/toastStore"
 
 export const useAuthentication = () => {
     const { setRole } = useAuthStore()
@@ -17,11 +18,14 @@ export const useAuthentication = () => {
     
             setRole(userRole)
             console.log(message)
+            useToastStore.getState().setToast(message, 'success')
 
             userRole ? navigate('/') : navigate('/login')
         },
         onError: (error) => {
             console.log(error)
+            useToastStore.getState().setToast(error?.message || 'Login failed', 'error')
+            navigate('/login')
         }
     })
 

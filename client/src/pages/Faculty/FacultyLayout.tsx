@@ -2,10 +2,22 @@ import { useAuthentication } from '@/hooks/useAuthQueries'
 import { SideNavbar } from '@/components/Side-Navbar'
 import { useTeacherStore } from '@/stores/auth/authSlice'
 import { Toaster } from '@/components/ui/sonner'
+import { useEffect } from 'react'
+import { toast } from 'sonner'
+import { useToastStore } from '@/stores/toastStore'
 
 export const FacultyLayout = ({ children }: any) => {
     const { handleLogout } = useAuthentication()
     const { teacher_role } = useTeacherStore()
+
+    const { message, type, clearToast } = useToastStore()
+
+    useEffect(() => {
+        if (message) {
+            toast[type || 'info'](message)
+            clearToast()
+        }
+    }, [message, type, clearToast])
 
     const facultyLinks = [
         { name: 'Dashboard', url: '/' },
