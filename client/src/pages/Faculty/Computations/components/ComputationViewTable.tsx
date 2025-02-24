@@ -34,12 +34,12 @@ export const ComputationViewTable = ({ section, subject, weight, quarter }: {
     const { data: students_sg } = useStudentsSG(section, subject)
     const { data: students_performance } = useStudentsPerformance(section, subject, quarter)
 
-    const students_calculated_sg = students_performance
-        .map(({ sid, recitation, activity, quiz, project, summative, exam }) => ({
+    const calculated_sp = students_performance
+        .map(({ sid, average }) => ({
             sid,
             section,
             subject,
-            subj_grade: (recitation + activity + quiz + project + summative + exam) || 0,
+            subj_grade: average,
             quarter: quarter
         }))
 
@@ -49,15 +49,17 @@ export const ComputationViewTable = ({ section, subject, weight, quarter }: {
     const form = useForm<StudentSG>({
         resolver: zodResolver(StudentSGSchema),
         defaultValues: {
-            student_sg: students_calculated_sg
+            student_sg: calculated_sp
         }
     })
 
     const changedValues = sg_by_quarter.length !== 0 
-        ? getChangedSG(sg_by_quarter, form.getValues("student_sg")) 
+        ? getChangedSG(sg_by_quarter, calculated_sp) 
         : []
 
     const isChanged = useMemo(() => changedValues.length > 0, [changedValues])
+
+    console.log(changedValues)
 
     useEffect(() => {
         if (isChanged) {
@@ -117,7 +119,7 @@ export const ComputationViewTable = ({ section, subject, weight, quarter }: {
 
     useEffect(() => {
         if (students_performance) {
-            form.reset({ student_sg: students_calculated_sg })
+            form.reset({ student_sg: calculated_sp })
         }
     }, [students_performance])
 

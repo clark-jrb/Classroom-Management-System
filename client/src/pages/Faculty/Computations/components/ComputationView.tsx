@@ -56,6 +56,7 @@ export const ComputationView = () => {
                     grade_assigned={grade_assigned}
                     weight={weight}
                     setWeight={setWeight}
+                    quarter={quarter}
                 />
                 <Suspense fallback={<div>loading...</div>}>
                     <ComputationViewTable 

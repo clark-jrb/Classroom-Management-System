@@ -3,17 +3,16 @@ import { TaskTypes, QuarterTypes, SubjectTypes } from "@/types/GlobalTypes"
 import { getWeightWithProject, getWeightWithoutProject } from "@/helpers/get-weight"
 import { findProject } from "@/helpers/is-there-a-project"
 import { useEffect } from "react"
-import { useQuarterStore } from "@/stores/filterSlice"
 
-export const Procedures = ({ section_assigned, subject_handled, grade_assigned, setWeight }: {
+export const Procedures = ({ section_assigned, subject_handled, grade_assigned, setWeight, quarter }: {
     section_assigned: string
     subject_handled: SubjectTypes
     grade_assigned: string
     weight: number
     setWeight: (weight: number) => void
+    quarter: QuarterTypes
 }) => {
     const { countTask } = useMyTasks()
-    const { quarter } = useQuarterStore()
     const { data: students_taking_my_tasks } = useStudentsTakingMyTasks()   // gets all teacher's students taking his/her tasks
 
     const isThereAProject = findProject(students_taking_my_tasks, grade_assigned, section_assigned, subject_handled)

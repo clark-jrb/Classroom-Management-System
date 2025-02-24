@@ -265,7 +265,14 @@ export class TaskController {
                     quiz: getSumsOfTask('quiz'),
                     project: getSumsOfTask('project'),
                     summative: getSumsOfTask('summative'),
-                    exam: getSumsOfTask('exam')
+                    exam: getSumsOfTask('exam'),
+                    average: 
+                        getSumsOfTask('recitation') +
+                        getSumsOfTask('activity') +
+                        getSumsOfTask('quiz') +
+                        getSumsOfTask('project') +
+                        getSumsOfTask('summative') +
+                        getSumsOfTask('exam')
                 }
             })
 

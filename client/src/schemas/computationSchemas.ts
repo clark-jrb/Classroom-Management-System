@@ -11,7 +11,8 @@ export const StudentPerformanceSchema = z.object({
             quiz: z.number(),
             project: z.number(),
             summative: z.number(),
-            exam: z.number()
+            exam: z.number(),
+            average: z.number()
         })
     )
 })

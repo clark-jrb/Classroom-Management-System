@@ -26,15 +26,16 @@ export const GradesViewTable = ({ section, subject, quarter }: {
     const { data: students_sg } = useStudentsSG(section, subject)
     const { data: students_sg_from_qa } = useStudentsSGfromQA(section, subject)
     const { updateSGfromQA } = useStudentsQAMutations(section, subject)
-    // const { quarter } = useQuarterStore()
 
-    // for compare (from 'students_qas' collection)
+    // to compare (from 'students_qas' collection)
     const sg_from_qa_by_quarter = students_sg_from_qa
         .filter((items) => items.quarter === quarter)
     
-    // for form state (from 'students_sgs' collection)
+    // form state (from 'students_sgs' collection)
     const sg_by_quarter = students_sg
         .filter((items) => items.quarter === quarter)
+
+    console.log(sg_by_quarter)
 
     const formatted_sg_by_quarter = sg_by_quarter
         .map(({ sid: { sid }, ...data }) => ({
