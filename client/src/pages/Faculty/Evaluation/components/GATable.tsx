@@ -8,6 +8,14 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+  } from "@/components/ui/dialog"
 import { useStudentsCalculatedQA, useStudentsGA, useStudentsGAMutations } from "@/hooks/useTaskQueries"
 import { StudentGASchema } from "@/schemas/computationSchemas"
 import { StudentGA } from "@/types/ComputationTypes"
@@ -16,6 +24,8 @@ import { useQueryClient } from "@tanstack/react-query"
 import { useEffect } from "react"
 import { useForm } from "react-hook-form"
 import "@/styles/computation_styles.scss"
+import { toast } from "sonner"
+import { DialogClose } from "@radix-ui/react-dialog"
 
 export const GATable = ({ section, grade_assigned }: {
     section: string
@@ -54,9 +64,11 @@ export const GATable = ({ section, grade_assigned }: {
                 const { message } = data
                 console.log(message)
                 queryClient.invalidateQueries({ queryKey: ['students_ga', section] })
+                toast.success(message)
             },
             onError: (error) => {
                 console.log(error)
+                toast.error('Failed to submit students general average')
             }
         })
     }
@@ -130,9 +142,29 @@ export const GATable = ({ section, grade_assigned }: {
             <div>
                 <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit, onError)}>
-                        <Button type="submit" disabled={students_ga.length > 0}>
-                            Submit
-                        </Button>
+                        <Dialog>
+                            <DialogTrigger asChild>
+                                <Button type="button">Submit</Button>
+                            </DialogTrigger>
+                            <DialogContent className="w-[20rem]">
+                                <DialogHeader>
+                                    <DialogTitle>
+                                        Are you sure?
+                                    </DialogTitle>
+                                    <DialogDescription className="py-4">
+                                        This action cannot be undone once submitted.
+                                    </DialogDescription>
+                                    <div className="ms-auto space-x-2">
+                                        <DialogClose asChild>
+                                            <Button type="button" variant={'destructive'}>Cancel</Button>
+                                        </DialogClose>
+                                        <Button type="submit" disabled={students_ga.length > 0}>
+                                            Yes, submit
+                                        </Button>
+                                    </div>
+                                </DialogHeader>
+                            </DialogContent>
+                        </Dialog>
                     </form>
                 </Form>
             </div>

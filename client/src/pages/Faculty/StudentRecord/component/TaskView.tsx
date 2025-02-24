@@ -68,7 +68,7 @@ export const TaskView = () => {
                 }
             })
         } else {
-            toast.warning('There is no changes')
+            toast.warning('There are no changes')
         }
     }
 
