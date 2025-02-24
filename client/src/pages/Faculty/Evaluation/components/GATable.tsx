@@ -47,7 +47,7 @@ export const GATable = ({ section, grade_assigned }: {
         hekasi,
         english,
         mapeh,
-        ga: (math + science + filipino + hekasi + english + mapeh) / 6
+        general_ave: (math + science + filipino + hekasi + english + mapeh) / 6
     }))
 
     
@@ -59,7 +59,7 @@ export const GATable = ({ section, grade_assigned }: {
     })
 
     function onSubmit(values: StudentGA) {
-        console.log(values)
+        // console.log(values)
         generateGeneralAverage.mutateAsync(values.student_ga, {
             onSuccess: (data) => {
                 const { message } = data
@@ -86,7 +86,7 @@ export const GATable = ({ section, grade_assigned }: {
     }, [students_calculated_qa])
     
     const getRemarksAndGA = (sid: string) => {
-        const get_ga = students_ga.find(data => data.sid === sid)?.ga // returns number
+        const get_ga = students_ga.find(data => data.sid === sid)?.general_ave // returns number
         const remarks = !get_ga 
             ? '--'
             : get_ga && get_ga >= 75

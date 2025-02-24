@@ -65,7 +65,7 @@ export const GradesTable = () => {
                             </div>
                         ))}
                     <div className="border-b p-3">
-                        {student_ga && student_ga.general_ave || '--'}
+                        {student_ga && student_ga.general_ave.toFixed(0) || '--'}
                     </div>
                 </div>
                 <div className="w-32">

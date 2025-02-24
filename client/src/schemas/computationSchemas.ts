@@ -41,7 +41,7 @@ export const StudentGASchema = z.object({
             hekasi: z.number(),
             english: z.number(),
             mapeh: z.number(),
-            ga: z.number()
+            general_ave: z.number()
         })
     )
 })
