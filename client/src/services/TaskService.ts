@@ -1,4 +1,4 @@
-import { StudentCalculatedQA, StudentGA, StudentQA, StudentSG, StudentSGWithProfile, StudentPerformance } from "@/types/ComputationTypes";
+import { StudentCalculatedQA, StudentGA, StudentQA, StudentSG, StudentSGWithProfile, StudentPerformance, StudentGeneralAverage } from "@/types/ComputationTypes";
 import { api } from "./api";
 import { QuarterTypes, StudentScore, SubjectTypes } from "@/types/GlobalTypes";
 import { TTasks, TTaskForm, Message, StudentTask, StudentTaskCreate, StudentTakingTask } from "@/types/GlobalTypes";
@@ -265,7 +265,7 @@ export const getStudentsGA = async (
 
 export const getStudentGA = async (
     sid: string
-): Promise<StudentGA['student_ga']> => {
+): Promise<StudentGeneralAverage> => {
     try {
         const response = await api.get(`/student/ga/${sid}`, {
             withCredentials: true

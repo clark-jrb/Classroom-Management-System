@@ -4,6 +4,7 @@ import { getStudentInformation } from "@/services/UserService"
 import { getStudentQAs, updateStudentInfo } from "@/services/StudentService"
 import { useStudentDialogStore } from "@/stores/studentSlice"
 import { useToastStore } from "@/stores/toastStore"
+import { getStudentGA } from "@/services/TaskService"
 useToastStore
 
 // this is where the student queries 
@@ -47,3 +48,10 @@ export const useStudentData = () => {
         queryFn: () => getStudentInformation(user_id)
     })
 } 
+
+export const useStudentGA = (sid: string) => {
+    return useSuspenseQuery({
+        queryKey: ['my_general_average', sid],
+        queryFn: () => getStudentGA(sid)
+    })
+}

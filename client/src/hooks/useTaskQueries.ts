@@ -18,7 +18,6 @@ import {
     updateStudentsSGfromQA,
     createStudentsGA,
     getStudentsGA,
-    getStudentGA
 } from "@/services/TaskService"
 import { 
     StudentScore, 
@@ -233,12 +232,5 @@ export const useStudentsGA = (section: string) => {
     return useSuspenseQuery({
         queryKey: ['students_ga', section],
         queryFn: () => getStudentsGA(section)
-    })
-}
-
-export const useStudentGA = (sid: string) => {
-    return useSuspenseQuery({
-        queryKey: ['my_general_average', sid],
-        queryFn: () => getStudentGA(sid)
     })
 }

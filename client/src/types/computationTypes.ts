@@ -56,3 +56,16 @@ export type StudentCalculatedQA = {
 }
 
 export type StudentGA = z.infer<typeof StudentGASchema>
+
+export type StudentGeneralAverage = {
+    sid: string
+    grade_level: string
+    section: string
+    math: number
+    science: number
+    mapeh: number
+    english: number
+    filipino: number
+    hekasi: number
+    general_ave: number
+}
