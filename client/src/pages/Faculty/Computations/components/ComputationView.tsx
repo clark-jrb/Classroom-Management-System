@@ -1,19 +1,19 @@
 import { useParams, useNavigate } from "react-router-dom"
 import { Procedures } from "./Procedures"
-import { SubjectTypes } from "@/types/GlobalTypes"
+import { QuarterTypes, SubjectTypes } from "@/types/GlobalTypes"
 import { teacherInfo } from "@/hooks/useTeacherQueries"
 import { Suspense, useState } from "react"
 import { ComputationViewTable } from "./ComputationViewTable"
 import { Button } from "@/components/ui/button"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { useQuarterStore } from "@/stores/filterSlice"
 
 export const ComputationView = () => {
     const { section, subject } = useParams<{ section: string, subject: SubjectTypes }>()
     const { section_handled, subjects, grade_assigned } = teacherInfo()
     const navigate = useNavigate()
-    const { quarter, setQuarter } = useQuarterStore()
+    // const { quarter, setQuarter } = useQuarterStore()
     const [weight, setWeight] = useState(0)
+    const [quarter, setQuarter] = useState<QuarterTypes>('q1')
 
     // validation of required route parameters
     if (!section || !subject) {
@@ -25,6 +25,10 @@ export const ComputationView = () => {
         return <div>Error: Invalid subject or section parameter</div>
     }
 
+    const handleQuarterChange = (value: string) => {
+        setQuarter(value as QuarterTypes)
+    }
+
     return (
         <div>
             <div className="flex gap-5 mb-5">
@@ -32,7 +36,7 @@ export const ComputationView = () => {
                 <div>Subject: {subject}</div>
                 <div>Grade and Section: {grade_assigned}, {section}</div>
                 <div className="ms-auto">
-                    <Select onValueChange={setQuarter} defaultValue={quarter}>
+                    <Select onValueChange={handleQuarterChange} defaultValue={quarter}>
                         <SelectTrigger className="w-[180px]">
                             <SelectValue placeholder="Select Quarter" />
                         </SelectTrigger>
@@ -58,6 +62,7 @@ export const ComputationView = () => {
                         section={section}
                         subject={subject}
                         weight={weight}
+                        quarter={quarter}
                     />
                 </Suspense>
             </div>

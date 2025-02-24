@@ -7,8 +7,7 @@ import {
     TableRow,
 } from "@/components/ui/table"
 import { useStudentsPerformance } from "@/hooks/useTaskQueries"
-import { SubjectTypes } from "@/types/GlobalTypes"
-import { useQuarterStore } from "@/stores/filterSlice"
+import { QuarterTypes, SubjectTypes } from "@/types/GlobalTypes"
 import { useForm } from "react-hook-form"
 import { 
     Form
@@ -22,28 +21,30 @@ import { useStudentsSG } from "@/hooks/useTaskQueries"
 import { getChangedSG } from "@/helpers/changed-fields"
 import { toast } from "sonner"
 import { useQueryClient } from "@tanstack/react-query"
-import { useEffect } from "react"
+import { useEffect, useMemo } from "react"
 
-export const ComputationViewTable = ({ section, subject, weight }: {
+export const ComputationViewTable = ({ section, subject, weight, quarter }: {
     section: string
     subject: SubjectTypes
     weight: number
+    quarter: QuarterTypes
 }) => {
     const queryClient = useQueryClient()
     const { updateSG, generateStudentSG } = useStudentsPerformanceMutations()
-    const { quarter } = useQuarterStore()
     const { data: students_sg } = useStudentsSG(section, subject)
     const { data: students_performance } = useStudentsPerformance(section, subject, quarter)
 
-    const students_calculated_sg = students_performance.map(({ sid, recitation, activity, quiz, project, summative, exam }) => ({
-        sid,
-        section,
-        subject,
-        subj_grade: (recitation + activity + quiz + project + summative + exam) || 0,
-        quarter: quarter
-    }))
+    const students_calculated_sg = students_performance
+        .map(({ sid, recitation, activity, quiz, project, summative, exam }) => ({
+            sid,
+            section,
+            subject,
+            subj_grade: (recitation + activity + quiz + project + summative + exam) || 0,
+            quarter: quarter
+        }))
 
-    const sg_by_quarter = students_sg.filter((items) => items.quarter === quarter)
+    const sg_by_quarter = students_sg
+        .filter((items) => items.quarter === quarter)
 
     const form = useForm<StudentSG>({
         resolver: zodResolver(StudentSGSchema),
@@ -52,13 +53,23 @@ export const ComputationViewTable = ({ section, subject, weight }: {
         }
     })
 
-    const changedValues = sg_by_quarter.length !== 0 ? getChangedSG(sg_by_quarter, form.getValues("student_sg")) : []
+    const changedValues = sg_by_quarter.length !== 0 
+        ? getChangedSG(sg_by_quarter, form.getValues("student_sg")) 
+        : []
+
+    const isChanged = useMemo(() => changedValues.length > 0, [changedValues])
+
+    useEffect(() => {
+        if (isChanged) {
+            toast.info('There are some changes')
+        }
+    }, [isChanged])
     
     function onSubmit(values: StudentSG) {
         // A condition where should the values submitted update or create?
         if (sg_by_quarter.length > 0) {
             if (changedValues.length === 0) {
-                toast.warning('There is nothing to update')
+                toast.warning('There are no changes')
             } else {
                 updateSG.mutateAsync(
                     {

@@ -16,6 +16,7 @@ import { StudentSGSchema } from "@/schemas/computationSchemas"
 import { Form } from "@/components/ui/form"
 import { getChangedSG } from "@/helpers/changed-fields"
 import { toast } from "sonner"
+import { useEffect, useMemo } from "react"
 
 export const GradesViewTable = ({ section, subject, quarter }: {
     section: string
@@ -52,6 +53,14 @@ export const GradesViewTable = ({ section, subject, quarter }: {
     const changedValues = sg_by_quarter.length !== 0
         ? getChangedSG(sg_from_qa_by_quarter, form.getValues("student_sg"))
         : []
+
+    const isChanged = useMemo(() => changedValues.length > 0, [changedValues])
+    
+    useEffect(() => {
+        if (isChanged) {
+            toast.info('There are some changes')
+        }
+    }, [isChanged])
     
     function onSubmit(values: StudentSG) {
         if (students_sg.length === 0) {
@@ -62,7 +71,7 @@ export const GradesViewTable = ({ section, subject, quarter }: {
             if (!isSGZero) {
                 if (changedValues.length === 0) {
                     // console.log(values)
-                    toast.warning('There is no changes')
+                    toast.warning('There are no changes')
                 } else {
                     updateSGfromQA.mutateAsync(values.student_sg)
                     toast.success('Subject grade re-submitted')
