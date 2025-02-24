@@ -35,8 +35,6 @@ export const GradesViewTable = ({ section, subject, quarter }: {
     const sg_by_quarter = students_sg
         .filter((items) => items.quarter === quarter)
 
-    console.log(sg_by_quarter)
-
     const formatted_sg_by_quarter = sg_by_quarter
         .map(({ sid: { sid }, ...data }) => ({
             sid,

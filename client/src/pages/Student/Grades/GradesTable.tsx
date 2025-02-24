@@ -6,10 +6,10 @@ import { SubjectTypes } from "@/types/GlobalTypes"
 
 export const GradesTable = () => {
     const { user_id } = useAuthStore()
-    const { data } = useStudentQAs(user_id)
+    const { data: students_qa } = useStudentQAs(user_id)
 
     function passOrFail(subject: SubjectTypes) {
-        const subj_average = calculateQA(data, subject) 
+        const subj_average = calculateQA(students_qa, subject) 
 
         if (subj_average !== 0) {
             return subj_average >= 75 ? 'PASSED' : 'FAILED'
@@ -26,9 +26,9 @@ export const GradesTable = () => {
             <div className="flex">
                 <div className="flex-col w-[250px]">
                     <div className="border-b h-[5rem]">Learning Areas</div>
-                    {subjects.map((item, index) => (
-                        <div key={index} className="border-b p-3">{toCamelCase(item)}</div>
-                    ))}
+                        {subjects.map((item, index) => (
+                            <div key={index} className="border-b p-3">{toCamelCase(item)}</div>
+                        ))}
                 </div>
                 <div>
                     <div className="border-b h-[5rem]">
@@ -41,12 +41,12 @@ export const GradesTable = () => {
                         </div>
                     </div>
                     <div className="flex">
-                        {data.map((data) => (
+                        {students_qa.map((data) => (
                             <div className="flex-col w-14" key={data._id}>
                                 {/* <div className="border-b border-l p-3">{data.quarter}</div> */}
                                 {subjects.map((item, index) => (
                                     <div key={index} className="border-b border-l p-3">{
-                                        data[item] === 0 ? '--' : data[item]
+                                        data[item] === 0 ? '--' : data[item].toFixed(0)
                                     }</div>
                                 ))}
                             </div>
@@ -58,18 +58,18 @@ export const GradesTable = () => {
                 </div>
                 <div className="w-20">
                     <div className="border-b border-l p-3 h-[5rem]">Final <br/> Grade</div>
-                    {subjects.map((item, index) => (
-                        <div key={index} className="border-b border-l p-3">{
-                            calculateQA(data, item) === 0 ? '--' : calculateQA(data, item)
-                        }</div>
-                    ))}
+                        {subjects.map((item, index) => (
+                            <div key={index} className="border-b border-l p-3">{
+                                calculateQA(students_qa, item) === 0 ? '--' : calculateQA(students_qa, item)
+                            }</div>
+                        ))}
                     <div className="border-b p-3">--</div>
                 </div>
                 <div className="w-32">
                     <div className="border-b border-l p-3 h-[5rem]">Remarks</div>
-                    {subjects.map((item, index) => (
-                        <div key={index} className="border-b border-l p-3">{passOrFail(item)}</div>
-                    ))}
+                        {subjects.map((item, index) => (
+                            <div key={index} className="border-b border-l p-3">{passOrFail(item)}</div>
+                        ))}
                     <div className="border-b p-3">--</div>
                 </div>
             </div>

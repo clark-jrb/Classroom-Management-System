@@ -59,8 +59,6 @@ export const ComputationViewTable = ({ section, subject, weight, quarter }: {
 
     const isChanged = useMemo(() => changedValues.length > 0, [changedValues])
 
-    console.log(changedValues)
-
     useEffect(() => {
         if (isChanged) {
             toast.info('There are some changes')

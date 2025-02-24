@@ -21,7 +21,7 @@ import { StudentGASchema } from "@/schemas/computationSchemas"
 import { StudentGA } from "@/types/ComputationTypes"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useQueryClient } from "@tanstack/react-query"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import "@/styles/computation_styles.scss"
 import { toast } from "sonner"
@@ -35,6 +35,7 @@ export const GATable = ({ section, grade_assigned }: {
     const { data: students_calculated_qa } = useStudentsCalculatedQA(grade_assigned, section)    // student_qas collection (calculated on server)
     const { data: students_ga } = useStudentsGA(section)    // students_gas collection
     const { generateGeneralAverage } = useStudentsGAMutations()     // generate mutation
+    const [openDialog, setOpenDialog] = useState(false)
 
     const student_ga_template = students_calculated_qa.map(({ sid, total_qa: { math, mapeh, science, english, filipino, hekasi } }) => ({
         sid,
@@ -62,7 +63,8 @@ export const GATable = ({ section, grade_assigned }: {
         generateGeneralAverage.mutateAsync(values.student_ga, {
             onSuccess: (data) => {
                 const { message } = data
-                console.log(message)
+                // console.log(message)
+                setOpenDialog(false)
                 queryClient.invalidateQueries({ queryKey: ['students_ga', section] })
                 toast.success(message)
             },
@@ -140,33 +142,35 @@ export const GATable = ({ section, grade_assigned }: {
                 </Table>
             </div>
             <div>
-                <Form {...form}>
-                    <form onSubmit={form.handleSubmit(onSubmit, onError)}>
-                        <Dialog>
-                            <DialogTrigger asChild>
-                                <Button type="button">Submit</Button>
-                            </DialogTrigger>
-                            <DialogContent className="w-[20rem]">
-                                <DialogHeader>
-                                    <DialogTitle>
-                                        Are you sure?
-                                    </DialogTitle>
-                                    <DialogDescription className="py-4">
-                                        This action cannot be undone once submitted.
-                                    </DialogDescription>
-                                    <div className="ms-auto space-x-2">
-                                        <DialogClose asChild>
-                                            <Button type="button" variant={'destructive'}>Cancel</Button>
-                                        </DialogClose>
-                                        <Button type="submit" disabled={students_ga.length > 0}>
-                                            Yes, submit
-                                        </Button>
-                                    </div>
-                                </DialogHeader>
-                            </DialogContent>
-                        </Dialog>
-                    </form>
-                </Form>
+                <Dialog open={openDialog} onOpenChange={setOpenDialog}>
+                    <DialogTrigger asChild>
+                        <Button type="button" disabled={students_ga.length > 0}>Submit</Button>
+                    </DialogTrigger>
+                    <DialogContent className="w-[20rem]">
+                        <DialogHeader>
+                            <DialogTitle>
+                                Are you sure?
+                            </DialogTitle>
+                            <DialogDescription className="py-4">
+                                This action cannot be undone once submitted.
+                            </DialogDescription>
+                            <div className="ms-auto">
+                                <div className="flex space-x-2">
+                                    <DialogClose asChild>
+                                        <Button type="button" variant={'destructive'}>Cancel</Button>
+                                    </DialogClose>
+                                    <Form {...form}>
+                                        <form onSubmit={form.handleSubmit(onSubmit, onError)}>
+                                            <Button type="submit">
+                                                Yes, submit
+                                            </Button>
+                                        </form>
+                                    </Form>
+                                </div>
+                            </div>
+                        </DialogHeader>
+                    </DialogContent>
+                </Dialog>
             </div>
         </div>
     )
