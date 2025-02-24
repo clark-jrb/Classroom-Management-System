@@ -1,4 +1,4 @@
-import { SubjectTypes } from "@/types/GlobalTypes"
+import { QuarterTypes, SubjectTypes } from "@/types/GlobalTypes"
 import {
     Table,
     TableBody,
@@ -8,7 +8,6 @@ import {
     TableRow,
 } from "@/components/ui/table"
 import { useStudentsQAMutations, useStudentsSG, useStudentsSGfromQA } from "@/hooks/useTaskQueries"
-import { useQuarterStore } from "@/stores/filterSlice"
 import { Button } from "@/components/ui/button"
 import { useForm } from "react-hook-form"
 import { StudentSG } from "@/types/ComputationTypes"
@@ -18,33 +17,39 @@ import { Form } from "@/components/ui/form"
 import { getChangedSG } from "@/helpers/changed-fields"
 import { toast } from "sonner"
 
-export const GradesViewTable = ({ section, subject }: {
+export const GradesViewTable = ({ section, subject, quarter }: {
     section: string
     subject: SubjectTypes
+    quarter: QuarterTypes
 }) => {
     const { data: students_sg } = useStudentsSG(section, subject)
     const { data: students_sg_from_qa } = useStudentsSGfromQA(section, subject)
     const { updateSGfromQA } = useStudentsQAMutations(section, subject)
-    const { quarter } = useQuarterStore()
+    // const { quarter } = useQuarterStore()
 
-    // for compare
-    const sg_from_qa_by_quarter = students_sg_from_qa.filter((items) => items.quarter === quarter)
+    // for compare (from 'students_qas' collection)
+    const sg_from_qa_by_quarter = students_sg_from_qa
+        .filter((items) => items.quarter === quarter)
     
-    // for form state
-    const students_sg_by_quarter = students_sg.filter((items) => items.quarter === quarter)
-    const formatted_students_sg = students_sg_by_quarter.map(({ sid: { sid }, ...data }) => ({
-        sid,
-        ...data
-    }))
+    // for form state (from 'students_sgs' collection)
+    const sg_by_quarter = students_sg
+        .filter((items) => items.quarter === quarter)
+
+    const formatted_sg_by_quarter = sg_by_quarter
+        .map(({ sid: { sid }, ...data }) => ({
+            sid,
+            ...data
+        }))
     
     const form = useForm<StudentSG>({
         resolver: zodResolver(StudentSGSchema),
         defaultValues: {
-            student_sg: formatted_students_sg
+            student_sg: formatted_sg_by_quarter
         }
     })
 
-    const changedValues = sg_from_qa_by_quarter.length !== 0
+    // compare if the subject grade from 'student_qas' is different from 'student_sgs' collection
+    const changedValues = sg_by_quarter.length !== 0
         ? getChangedSG(sg_from_qa_by_quarter, form.getValues("student_sg"))
         : []
     
@@ -87,7 +92,7 @@ export const GradesViewTable = ({ section, subject }: {
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                        {students_sg_by_quarter.map(({
+                        {sg_by_quarter.map(({
                             sid: {
                                 sid,
                                 firstname,
@@ -111,7 +116,7 @@ export const GradesViewTable = ({ section, subject }: {
                     <form onSubmit={form.handleSubmit(onSubmit, onError)}>
                         <Button 
                             type="submit"
-                            disabled={students_sg.length === 0}
+                            disabled={sg_by_quarter.length === 0}
                         >
                             {updateSGfromQA.isPending
                                 ? "Processing..."

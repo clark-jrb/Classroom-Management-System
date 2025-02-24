@@ -1,10 +1,9 @@
 import { useParams, useNavigate } from "react-router-dom"
-import { SubjectTypes } from "@/types/GlobalTypes"
+import { QuarterTypes, SubjectTypes } from "@/types/GlobalTypes"
 import { teacherInfo } from "@/hooks/useTeacherQueries"
-import { Suspense } from "react"
+import { Suspense, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { useQuarterStore } from "@/stores/filterSlice"
 import { GradesViewTable } from "./GradesViewTable"
 import { Label } from "@/components/ui/label"
 import { toCamelCase } from "@/helpers/camel-case"
@@ -13,7 +12,8 @@ export const GradesView = () => {
     const { section, subject } = useParams<{ section: string, subject: SubjectTypes }>()
     const { section_handled, subjects, grade_assigned } = teacherInfo()
     const navigate = useNavigate()
-    const { quarter, setQuarter } = useQuarterStore()
+    // const { quarter, setQuarter } = useQuarterStore()
+    const [quarter, setQuarter] = useState<QuarterTypes>('q1')
 
     // validation of required route parameters
     if (!section || !subject) {
@@ -23,6 +23,10 @@ export const GradesView = () => {
     // url PARAMETER validations
     if (!subjects.includes(subject as SubjectTypes) || !section_handled.includes(section)) {
         return <div>Error: Invalid subject or section parameter</div>
+    }
+
+    const handleQuarterChange = (value: string) => {
+        setQuarter(value as QuarterTypes)
     }
 
     return (
@@ -38,7 +42,7 @@ export const GradesView = () => {
                     {toCamelCase(grade_assigned)}, {toCamelCase(section)}
                 </div>
                 <div className="ms-auto">
-                    <Select onValueChange={setQuarter} defaultValue={quarter}>
+                    <Select onValueChange={handleQuarterChange} defaultValue={quarter}>
                         <SelectTrigger className="w-[180px]">
                             <SelectValue placeholder="Select Quarter" />
                         </SelectTrigger>
@@ -53,7 +57,7 @@ export const GradesView = () => {
             </div>
             <div className="h-full gap-5">
                 <Suspense fallback={<div>loading...</div>}>
-                    <GradesViewTable section={section} subject={subject}/>
+                    <GradesViewTable section={section} subject={subject} quarter={quarter}/>
                 </Suspense>
             </div>
         </div>
