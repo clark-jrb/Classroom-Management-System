@@ -8,8 +8,6 @@ export const teacherInfo = () => {
 
     // destructure data from the api
     const { teacher_role, grade_assigned, section_handled, subjects } = data.classes
-    // const { email } = account || {}
-    // const { firstname, middlename, lastname, sex, contact, birth_date } = profile || {}
 
     return { teacher_role, grade_assigned, section_handled, subjects }
 }

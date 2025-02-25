@@ -1,15 +1,21 @@
 import { useNavigate } from "react-router-dom"
-import { useMutation, useSuspenseQuery } from "@tanstack/react-query"
+import { useMutation } from "@tanstack/react-query"
 import { useAuthStore } from "@/stores/auth/authSlice"
 import { login, register, logout } from "@/services/AuthService"
-import { getCurrentUser } from "@/services/UserService"
 import { useToastStore } from "@/stores/toastStore"
+
+/**
+ * Authentication hook
+ */
 
 export const useAuthentication = () => {
     const { setRole } = useAuthStore()
     const navigate = useNavigate()
 
-    // LOGIN 
+    /**
+     *  LOGIN mutation
+     */
+
     const loginUser = useMutation({
         mutationFn: login,
         onSuccess: (data) => {
@@ -18,7 +24,7 @@ export const useAuthentication = () => {
     
             setRole(userRole)
             console.log(message)
-            useToastStore.getState().setToast(message, 'success')
+            useToastStore.getState().setToast(message, 'success')   // toast from global store to be able to display it on the next component after navigate
 
             userRole ? navigate('/') : navigate('/login')
         },
@@ -29,7 +35,10 @@ export const useAuthentication = () => {
         }
     })
 
-    // REGISTER 
+    /**
+     * REGISTER mutation
+     */
+
     const registerUser = useMutation({
         mutationFn: register,
         onSuccess: (data) => {
@@ -48,7 +57,10 @@ export const useAuthentication = () => {
         }
     })
 
-    // LOGOUT 
+    /**
+     * LOG OUT mutation
+     */ 
+
     const logoutUser = useMutation({
         mutationFn: logout,
         onSuccess: (data) => {
@@ -59,18 +71,10 @@ export const useAuthentication = () => {
         }
     })
     
-    // LOGOUT FUNCTION
     function handleLogout() {
         logoutUser.mutate()
         window.location.href = '/home'
     }
 
     return  { loginUser, registerUser, handleLogout }
-}
-
-export const useCurrentUser = () => {
-    return useSuspenseQuery({
-        queryKey: ['currentUser'],
-        queryFn: getCurrentUser, // get current user on the server
-    })
 }
