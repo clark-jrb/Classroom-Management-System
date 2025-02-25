@@ -1,6 +1,6 @@
 import { useAuthStore } from "@/stores/auth/authSlice"
 import { useMutation, useQueryClient, useSuspenseQuery } from "@tanstack/react-query"
-import { teacherInfo } from "./useTeacherQueries"
+import { teacherClassInfo } from "./useTeacherQueries"
 import { 
     createTask, 
     getTasks, 
@@ -35,7 +35,7 @@ import { StudentGA, StudentSG } from "@/types/ComputationTypes"
  */
 export const useTaskMutations = () => {
     const { user_id } = useAuthStore()          // grabs id of the current user (IT SHOULD BE TEACHER)
-    const { grade_assigned } = teacherInfo()    // get teacher's assigned grade level of the students
+    const { grade_assigned } = teacherClassInfo()    // get teacher's assigned grade level of the students
     
     // generates task (ex. generate recitations)
     const generateTask = useMutation({
@@ -78,7 +78,7 @@ export const useTaskMutations = () => {
  */
 export const useMyTasks = () => {
     const { user_id } = useAuthStore()
-    const { grade_assigned, section_handled, subjects } = teacherInfo()
+    const { grade_assigned, section_handled, subjects } = teacherClassInfo()
 
     const { data, isError, error } = useSuspenseQuery({ // fetch all tasks created by the teacher
         queryKey: ['my_tasks'],
@@ -127,7 +127,7 @@ export const useStudentTasks = (task_id: string, grade_lvl: string) => {
  */
 export const useStudentsTakingMyTasks = () => {
     const { user_id } = useAuthStore()
-    const { grade_assigned } = teacherInfo()
+    const { grade_assigned } = teacherClassInfo()
 
     return useSuspenseQuery({
         queryKey: ['students_taking_my_tasks', user_id, grade_assigned],
@@ -142,7 +142,7 @@ export const useStudentsTakingMyTasks = () => {
  */
 export const useStudentsPerformance = (section: string, subject: SubjectTypes, quarter: QuarterTypes) => {
     const { user_id } = useAuthStore()
-    const { grade_assigned } = teacherInfo()
+    const { grade_assigned } = teacherClassInfo()
 
     return useSuspenseQuery({
         queryKey: ['students_performance', user_id, grade_assigned, section, subject, quarter],

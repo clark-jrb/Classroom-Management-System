@@ -1,7 +1,7 @@
 import { useParams, useNavigate } from "react-router-dom"
 import { Procedures } from "./Procedures"
 import { QuarterTypes, SubjectTypes } from "@/types/GlobalTypes"
-import { teacherInfo } from "@/hooks/useTeacherQueries"
+import { teacherClassInfo } from "@/hooks/useTeacherQueries"
 import { Suspense, useState } from "react"
 import { ComputationViewTable } from "./ComputationViewTable"
 import { Button } from "@/components/ui/button"
@@ -9,7 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 
 export const ComputationView = () => {
     const { section, subject } = useParams<{ section: string, subject: SubjectTypes }>()
-    const { section_handled, subjects, grade_assigned } = teacherInfo()
+    const { section_handled, subjects, grade_assigned } = teacherClassInfo()
     const navigate = useNavigate()
     // const { quarter, setQuarter } = useQuarterStore()
     const [weight, setWeight] = useState(0)

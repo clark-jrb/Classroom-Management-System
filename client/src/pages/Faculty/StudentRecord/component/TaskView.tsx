@@ -23,14 +23,14 @@ import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { getChangedScores } from "@/helpers/changed-fields"
 import { useTaskMutations, useStudentTasks } from "@/hooks/useTaskQueries"
-import { teacherInfo } from "@/hooks/useTeacherQueries"
+import { teacherClassInfo } from "@/hooks/useTeacherQueries"
 import { toast } from "sonner"
 
 export const TaskView = () => {
     const { taskId } = useParams()
     const { updateScores } = useTaskMutations()
     const queryClient = useQueryClient()
-    const { grade_assigned } = teacherInfo()
+    const { grade_assigned } = teacherClassInfo()
     
     const { data, isLoading, isError, error } = useStudentTasks(taskId as string, grade_assigned)
 

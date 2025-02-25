@@ -2,6 +2,10 @@ import { StudentQA } from "@/types/ComputationTypes";
 import { api } from "./api";
 import { Message } from "@/types/GlobalTypes";
 
+/**
+ * Mutation function to update student profile
+ */
+
 export const updateStudentProfile = async (
     id: string, value: Record<string, any>
 ): Promise<Message> => {
@@ -15,6 +19,10 @@ export const updateStudentProfile = async (
         throw new Error('Failed to update student profile')
     }
 }
+
+/**
+ * Mutation function to fetch student's quarterly average (quarter 1 to 4)
+ */
 
 export const getStudentQAs = async (
     sid: string

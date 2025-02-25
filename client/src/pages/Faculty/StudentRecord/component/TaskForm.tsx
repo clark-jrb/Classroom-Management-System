@@ -17,7 +17,7 @@ import {
 } from "@/components/ui/form"
 import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
-import { teacherInfo } from "@/hooks/useTeacherQueries"
+import { teacherClassInfo } from "@/hooks/useTeacherQueries"
 import { useState } from "react"
 import { taskSchema } from "@/schemas/teacherSchemas"
 import { useForm } from "react-hook-form"
@@ -34,7 +34,7 @@ export const TaskForm = ({ taskType }: {
 }) => {
     const { generateTask, createTasks } = useTaskMutations()    // mutation functions
     const { countTask } = useMyTasks() 
-    const { grade_assigned, section_handled, subjects } = teacherInfo() // data from the hook
+    const { grade_assigned, section_handled, subjects } = teacherClassInfo() // data from the hook
     const quarter: QuarterTypes = 'q1'                                                // QUARTER state (subject to change)
     const [subject, setSubject] = useState<SubjectTypes | ''>('')                          // SUBJECT state
     const [gradeLevel, setGradeLevel] = useState('')                    // GRADE LEVEL state

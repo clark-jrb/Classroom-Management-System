@@ -3,14 +3,18 @@ import { useSuspenseQuery } from "@tanstack/react-query"
 import { getTeacherInformation } from "@/services/UserService"
 import { getMyStudents } from "@/services/TeacherService"
 
-export const teacherInfo = () => {
+export const teacherClassInfo = () => {
     const { data } = useTeacherData()
 
-    // destructure data from the api
+    /** Destructure classes from teacher's data */
     const { teacher_role, grade_assigned, section_handled, subjects } = data.classes
 
     return { teacher_role, grade_assigned, section_handled, subjects }
 }
+
+/**
+ * Custom hook to fetch teacher's data
+ */
 
 export const useTeacherData = () => {
     const { user_id } = useAuthStore()
@@ -20,6 +24,10 @@ export const useTeacherData = () => {
         queryFn: () => getTeacherInformation(user_id)
     })
 }
+
+/**
+ * Custom hook to fetch teacher's students
+ */
 
 export const useMyStudentsData = (grade_assigned: string, section: string) => {
     return useSuspenseQuery({
