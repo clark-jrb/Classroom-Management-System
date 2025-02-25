@@ -18,7 +18,7 @@ export const useTeacherData = () => {
     const { user_id } = useAuthStore()
 
     return useSuspenseQuery({
-        queryKey: ['teacher_data', user_id],
+        queryKey: ['faculty_data', user_id],
         queryFn: () => getTeacherInformation(user_id)
     })
 }

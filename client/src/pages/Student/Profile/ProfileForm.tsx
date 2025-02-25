@@ -23,29 +23,32 @@ import {
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { DatePicker } from "@/components/ui/date-picker"
-import { useProfileMutation, useStudentData } from "@/hooks/useStudentQueries"
+import { useProfileMutation } from "@/hooks/useStudentQueries"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { getChangedFields } from "@/helpers/changed-fields"
 import { useEffect } from "react"
-import { studentProfileSchema } from "@/schemas/studentSchemas"
+import { registerInformationSchema } from "@/schemas/authSchemas"
 import { useToastStore } from "@/stores/toastStore"
 import { toast } from "sonner"
+import { StudentInformation } from "@/types/StudentTypes"
+import { TeacherInformation } from "@/types/TeacherTypes"
 
-export const ProfileForm = () => {
-    const { data: student_data } = useStudentData()
+export const ProfileForm = ({ user_data }: {
+    user_data: StudentInformation | TeacherInformation
+}) => {
     const { updateProfile } = useProfileMutation() // from custom hook
-    const { profile } = student_data // destructure student_data but only get the profile data
+    const { profile } = user_data // destructure user_data but only get the profile data
     const convertedData = {...profile, birth_date: new Date(profile.birth_date)} // because the birth_date is string from the document
     const { message, type, clearToast } = useToastStore()
     
     // profile information form
-    const profile_form = useForm<z.infer<typeof studentProfileSchema>>({
-        resolver: zodResolver(studentProfileSchema)
+    const profile_form = useForm<z.infer<typeof registerInformationSchema>>({
+        resolver: zodResolver(registerInformationSchema)
     })
 
-    function onSubmit(values: z.infer<typeof studentProfileSchema>) {
+    function onSubmit(values: z.infer<typeof registerInformationSchema>) {
         const getChanges = getChangedFields(convertedData, values)
 
         if (Object.keys(getChanges).length !== 0) {
@@ -59,10 +62,10 @@ export const ProfileForm = () => {
 
     // fill the dialog form with data
     useEffect(() => {
-        if (student_data) {
+        if (user_data) {
             profile_form.reset(convertedData)
         }
-    }, [student_data, profile_form])
+    }, [user_data, profile_form])
 
     
     useEffect(() => {
