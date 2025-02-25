@@ -5,13 +5,13 @@ import { StudentDashboard } from "./Student/StudentDashboard"
 import { MyGrades } from "./Student/Grades/MyGrades"
 import { StudentProfile } from "./Student/StudentProfile"
 import { FacultyDashboard } from "./Faculty/FacultyDashboard"
-import { MyClasses } from "./Faculty/MyClasses"
 import { RecordsRoutes } from "./Faculty/StudentRecord/RecordsRoutes"
 import { FacultyProfile } from "./Faculty/FacultyProfile"
 import { ComputationsRoutes } from "./Faculty/Computations/ComputationsRoutes"
 import { GradesRoutes } from "./Faculty/StudentGrades/GradesRoutes"
 import { useCurrentUser } from "@/hooks/useUsersQueries"
 import { EvaluationPage } from "./Faculty/Evaluation/EvaluationPage"
+import { MyClassesRoutes } from "./Faculty/MyClasses/MyClassesRoutes"
 
 /**
  * Function to fetch current user authenticated on the server
@@ -61,7 +61,7 @@ export const AuthenticatedRoutes = () => {
     /* Same as the student routes but faculty */
     const facultyRoutes = [
         { path: '/', element: <FacultyDashboard/> },
-        { path: '/classes', element: <MyClasses/> },
+        { path: '/classes/*', element: <MyClassesRoutes/> },
         { path: '/records/*', element: <RecordsRoutes/> },
         { path: '/computations/*', element: <ComputationsRoutes/> },
         { path: '/grades/*', element: <GradesRoutes/> },

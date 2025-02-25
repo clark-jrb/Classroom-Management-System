@@ -18,12 +18,13 @@ export const ProfileContent = ({ user_data }: {
     const { open, openDialog } = useStudentDialogStore()
 
     // destructure student_data
-    const { account, profile, classes } = user_data || {}
-    const { email } = account || {}
-    const { firstname, middlename, lastname, sex, contact, birth_date } = profile || {}
-    const { gradeLevel, section } = classes as StudentInformation['classes'] || {}
-    const { section_handled, teacher_role, grade_assigned, subjects } = classes as TeacherInformation['classes'] || {}
-    const fullName = `${firstname} ${middlename} ${lastname}`
+    const { account, profile, classes } = user_data
+    const { email } = account
+    const { firstname, middlename, lastname, sex, contact, birth_date } = profile
+    const { gradeLevel, section } = classes as StudentInformation['classes']
+    const { section_handled, teacher_role, grade_assigned, subjects } = classes as TeacherInformation['classes']
+
+    const full_name = `${firstname} ${middlename} ${lastname}`
     const grade = gradeLevel
 
     const basicInfo = [
@@ -59,7 +60,7 @@ export const ProfileContent = ({ user_data }: {
                         <div className="w-96">
                             <div className="student-name mb-2">
                                 <p>
-                                    {fullName}
+                                    {full_name}
                                 </p>
                             </div>
                             <div className="flex mb-4">
