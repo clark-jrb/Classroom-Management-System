@@ -1,5 +1,5 @@
 import { api } from "./api";
-import { MyStudents } from "@/types/GlobalTypes";
+import { Message, MyStudents } from "@/types/GlobalTypes";
 
 export const getMyStudents = async (
     gradeLevel: string, section: string
@@ -16,5 +16,19 @@ export const getMyStudents = async (
         return response.data
     } catch (error) {
         throw new Error('Failed to get my students')
+    }
+}
+
+export const updateTeacherProfile = async (
+    id: string, value: Record<string, any>
+): Promise<Message> => {
+    try {
+        const response = await api.patch(`/teacher/${id}`, value, {
+            withCredentials: true
+        })
+
+        return response.data
+    } catch (error) {
+        throw new Error('Failed to update teacher profile')
     }
 }

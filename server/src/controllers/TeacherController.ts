@@ -67,15 +67,18 @@ export class TeacherController {
             const data = req.body
 
             const teacher = await TeacherAccountModel.findById(id)
-            if (!teacher) res.status(404).json({ message: "Teacher doesn't exists" })
+            
+            if (!teacher) {
+                res.status(404).json({ message: "Teacher doesn't exists" })
+            }
 
-            const updateTeacherInfo = await TeacherProfileModel.findOneAndUpdate(
+            await TeacherProfileModel.findOneAndUpdate(
                 { tid: id },
                 { $set: data },
                 { new: true, runValidators: true }
             )
     
-            res.status(200).json({ updateTeacherInfo, message: "profile updated successfully!"}).end()
+            res.status(200).json({ message: "Profile updated successfully!"}).end()
         } catch (error) {
             console.log(error)
             res.sendStatus(400).json({ message: 'Failed to update teacher', error })

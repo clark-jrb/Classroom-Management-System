@@ -2,7 +2,7 @@ import { StudentQA } from "@/types/ComputationTypes";
 import { api } from "./api";
 import { Message } from "@/types/GlobalTypes";
 
-export const updateStudentInfo = async (
+export const updateStudentProfile = async (
     id: string, value: Record<string, any>
 ): Promise<Message> => {
     try {
