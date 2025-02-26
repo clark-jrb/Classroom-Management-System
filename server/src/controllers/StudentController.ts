@@ -103,8 +103,7 @@ export class StudentController {
                 path: 'sid',
                 model: 'students_profiles',
                 localField: 'sid',
-                foreignField: 'sid', 
-                select: 'firstname lastname'
+                foreignField: 'sid'
             })
 
             res.status(200).json(students)
