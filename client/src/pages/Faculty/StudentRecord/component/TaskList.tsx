@@ -22,7 +22,7 @@ export const TaskList = ({ taskType }: {
             }) => (
                 <div 
                     key={_id} 
-                    className="border border-black-500 mb-3 select-none rounded cursor-pointer"
+                    className="w-1/2 p-4 border border-black-500 mb-3 select-none rounded cursor-pointer"
                     onClick={() => navigate(`view/${_id}`)}
                 >
                     <div>{type} {task_no}</div>
