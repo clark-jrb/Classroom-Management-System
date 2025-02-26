@@ -18,7 +18,7 @@ import {
 import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
 import { teacherClassInfo } from "@/hooks/useTeacherQueries"
-import { useState } from "react"
+import { useMemo, useState } from "react"
 import { taskSchema } from "@/schemas/teacherSchemas"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -43,7 +43,21 @@ export const TaskForm = ({ taskType }: {
     const queryClient = useQueryClient()
     const [formStep, setFormStep] = useState(1)
 
-    const taskCount = countTask(taskType, subject, section, quarter) // COUNT existing tasks on database
+    const taskCount = useMemo(() => countTask(taskType, subject, section, quarter), [taskType, subject, section, quarter])  // COUNT existing tasks on database
+    const taskLimit = handleTaskLimit(taskType)
+
+    function handleTaskLimit(task: TaskTypes) {
+        const select = {
+            recitation: 10,
+            activity: 10,
+            quiz: 10,
+            project: 5,
+            summative: 1,
+            exam: 1,
+        }
+        return select[task as keyof typeof select]
+    }
+
 
     const taskForm = useForm<TTaskForm>({
         resolver: zodResolver(taskSchema),
@@ -59,35 +73,36 @@ export const TaskForm = ({ taskType }: {
     })
     
     function onSubmit(values: TTaskForm) {
-        console.log(values)
-        generateTask.mutateAsync(values, {
-            onSuccess: (data) => {
-                const { task, message } = data
-                openDialog(false)
-
-                console.log(task)
-                console.log(message)
-
-                createTasks({ 
-                    task_id: task._id,
-                    grade_lvl: gradeLevel,
-                    section: section
-                })
-
-                taskForm.reset()
-                resetFormStates()
-                queryClient.invalidateQueries({ queryKey: ['my_tasks'] })
-                toast.success(`Succesfully created a ${taskType}`)
-            },
-            onError: (error) => {
-                console.log(error)
-                toast.error(`Failed to create a ${taskType}`)
-            }
-        })
+        // console.log(values)
+        if (taskCount === taskLimit) {
+            toast.warning(`${taskType} limit reached`)
+        } else {
+            generateTask.mutateAsync(values, {
+                onSuccess: (data) => {
+                    const { task } = data
+                    openDialog(false)
+    
+                    createTasks({ 
+                        task_id: task._id,
+                        grade_lvl: gradeLevel,
+                        section: section
+                    })
+    
+                    taskForm.reset()
+                    resetFormStates()
+                    queryClient.invalidateQueries({ queryKey: ['my_tasks'] })
+                    toast.success(`Succesfully created a ${taskType}`)
+                },
+                onError: (error) => {
+                    console.log(error)
+                    toast.error(`Failed to create a ${taskType}`)
+                }
+            })
+        }
     }
 
     function onError(errors: any) { 
-        console.log("Form errors:", errors)
+        // console.log("Form errors:", errors)
         if (errors) {
             setFormStep(4)
         }
@@ -254,6 +269,9 @@ export const TaskForm = ({ taskType }: {
                                                 <Label>Total Items</Label>
                                                 <div>{taskForm.watch("total_items")}</div>
                                             </div>
+                                        </div>
+                                        <div>
+                                            {taskCount}/{taskLimit}
                                         </div>
                                     </>
                                     }
