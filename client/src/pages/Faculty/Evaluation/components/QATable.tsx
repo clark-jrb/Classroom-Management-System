@@ -31,7 +31,7 @@ export const QATable = ({ section, grade_assigned, quarter }: {
                         <TableHead>Filipino</TableHead>
                         <TableHead>MAPEH</TableHead>
                         <TableHead>Hekasi</TableHead>
-                        <TableHead>Quarterly Average</TableHead>
+                        {/* <TableHead>Quarterly Average</TableHead> */}
                     </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -45,7 +45,7 @@ export const QATable = ({ section, grade_assigned, quarter }: {
                             <TableCell>{data.filipino.toFixed(0)}</TableCell>
                             <TableCell>{data.mapeh.toFixed(0)}</TableCell>
                             <TableCell>{data.hekasi.toFixed(0)}</TableCell>
-                            <TableCell>--</TableCell>
+                            {/* <TableCell>--</TableCell> */}
                         </TableRow>
                     ))}
                 </TableBody>

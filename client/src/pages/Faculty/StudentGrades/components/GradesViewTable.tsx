@@ -17,6 +17,7 @@ import { Form } from "@/components/ui/form"
 import { getChangedSG } from "@/helpers/changed-fields"
 import { toast } from "sonner"
 import { useEffect, useMemo } from "react"
+import { teacherClassInfo } from "@/hooks/useTeacherQueries"
 
 export const GradesViewTable = ({ section, subject, quarter }: {
     section: string
@@ -25,6 +26,7 @@ export const GradesViewTable = ({ section, subject, quarter }: {
 }) => {
     const { data: students_sg } = useStudentsSG(section, subject)
     const { data: students_sg_from_qa } = useStudentsSGfromQA(section, subject)
+    const { teacher_role } = teacherClassInfo()
     const { updateSGfromQA } = useStudentsQAMutations(section, subject)
 
     // to compare (from 'students_qas' collection)
@@ -128,7 +130,9 @@ export const GradesViewTable = ({ section, subject, quarter }: {
                         >
                             {updateSGfromQA.isPending
                                 ? "Processing..."
-                                : "Save"
+                                : teacher_role !== 'homeroom'
+                                    ? 'Submit to homeroom'
+                                    : 'Submit'
                             }
                         </Button>
                     </form>

@@ -5,14 +5,18 @@ import { Suspense } from "react"
 import { useStudentData } from "@/hooks/useStudentQueries"
 
 export const StudentProfile = () => {
-    const { data } = useStudentData()
     return (
         <StudentLayout>
             <Container>
                 <Suspense fallback={<div>loading profile data...</div>}>
-                    <ProfileContent user_data={data}/>
+                    <ProfileMain/>
                 </Suspense>
             </Container>
         </StudentLayout>
     )
+}
+
+const ProfileMain = () => {
+    const { data } = useStudentData()
+    return <ProfileContent user_data={data}/>
 }
