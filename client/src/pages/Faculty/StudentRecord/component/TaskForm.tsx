@@ -28,6 +28,7 @@ import { useQueryClient } from "@tanstack/react-query"
 import { TTaskForm, TaskTypes, SubjectTypes, QuarterTypes } from "@/types/GlobalTypes"
 import { DialogClose } from "@radix-ui/react-dialog"
 import { toast } from "sonner"
+import { toCamelCase } from "@/helpers/camel-case"
 
 export const TaskForm = ({ taskType }: {
     taskType: TaskTypes
@@ -35,8 +36,8 @@ export const TaskForm = ({ taskType }: {
     const { generateTask, createTasks } = useTaskMutations()    // mutation functions
     const { countTask } = useMyTasks() 
     const { grade_assigned, section_handled, subjects } = teacherClassInfo() // data from the hook
-    const quarter: QuarterTypes = 'q1'                                                // QUARTER state (subject to change)
-    const [subject, setSubject] = useState<SubjectTypes | ''>('')                          // SUBJECT state
+    const quarter: QuarterTypes = 'q1'                                  // QUARTER state (subject to change)
+    const [subject, setSubject] = useState<SubjectTypes | ''>('')       // SUBJECT state
     const [gradeLevel, setGradeLevel] = useState('')                    // GRADE LEVEL state
     const [section, setSection] = useState('')                          // SECTION state
     const [open, openDialog] = useState(false)                          // DIALOG
@@ -57,8 +58,7 @@ export const TaskForm = ({ taskType }: {
         }
         return select[task as keyof typeof select]
     }
-
-
+    
     const taskForm = useForm<TTaskForm>({
         resolver: zodResolver(taskSchema),
         defaultValues: {
@@ -71,6 +71,10 @@ export const TaskForm = ({ taskType }: {
             quarter
         }
     })
+
+    if (formStep === 4) {
+        taskForm.setValue("task_no", taskCount + 1)
+    }
     
     function onSubmit(values: TTaskForm) {
         // console.log(values)
@@ -197,7 +201,7 @@ export const TaskForm = ({ taskType }: {
                                                 name="task_no"
                                                 render={({ field }) => (
                                                     <FormItem>
-                                                        <FormLabel>Task Number:</FormLabel>
+                                                        <FormLabel>{toCamelCase(taskType)} Number:</FormLabel>
                                                         <FormControl>
                                                             <Input 
                                                                 type="number"
