@@ -10,27 +10,38 @@ import {
 } from "@/components/ui/dialog"
 import { useDeleteTask } from "@/hooks/useTaskQueries"
 import { CircleX } from "lucide-react"
+import { useQueryClient } from "@tanstack/react-query"
+import { useState } from "react"
+import { toast } from "sonner"
 
-export const TaskDelete = ({ task_id }: {
+export const TaskDelete = ({ task_id, setEnableEdit }: {
     task_id: string
+    setEnableEdit: (state: boolean) => void
 }) => {
+    const queryClient = useQueryClient()
     const { deleteSpecificTask } = useDeleteTask()
+    const [openDialog, setOpenDialog] = useState(false)
 
     function handleDeleteTask(id: string) {
         deleteSpecificTask.mutateAsync(id, {
             onSuccess: (data) => {
                 const { message } = data
-                console.log(message)
+                // console.log(message)
+                queryClient.invalidateQueries({ queryKey: ['my_tasks'] })
+                setOpenDialog(false)    /* Close dialog */
+                setEnableEdit(false)    /* Disables edit */
+                toast.success(message)
             },
             onError: (error) => {
                 console.log(error)
+                toast.error('Error occured')
             }
         })
     }
 
     return (
         <div>
-            <Dialog>
+            <Dialog open={openDialog} onOpenChange={setOpenDialog}>
                 <DialogTrigger asChild>
                     <CircleX size={'20px'}/>
                 </DialogTrigger>

@@ -36,8 +36,15 @@ export const TaskList = ({ taskType, enableEdit, setEnableEdit }: {
                     <div>Total items: {total_items}</div>
                     {enableEdit &&
                         <div className="flex gap-2">
-                            <TaskUpdate task_id={_id} task_data={{ subject, total_items, task_no }} setEnableEdit={setEnableEdit}/>
-                            <TaskDelete task_id={_id}/>
+                            <TaskUpdate 
+                                task_id={_id} 
+                                task_data={{ subject, total_items, task_no }} 
+                                setEnableEdit={setEnableEdit}
+                            />
+                            <TaskDelete 
+                                task_id={_id} 
+                                setEnableEdit={setEnableEdit}
+                            />
                         </div>
                     }
                 </div>
