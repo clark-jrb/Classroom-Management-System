@@ -18,12 +18,20 @@ export const createTask = async (
     }
 }
 
-export const getTasks = async (
-    filters: Record<string, string | string[]>
-): Promise<TTasks[]> => {
+export const getTasks = async ({ user_id, grade_assigned, section_handled, subjects }: {
+    user_id: string
+    grade_assigned: string
+    section_handled: string[]
+    subjects: string[]
+}): Promise<TTasks[]> => {
     try {
-        const query = new URLSearchParams(filters as Record<string, string>).toString()
-        const response = await api.get(`/tasks?${query}`, {
+        const response = await api.get('/tasks', {
+            params: {
+                user_id,
+                grade_assigned,
+                section_handled,
+                subjects
+            },
             withCredentials: true
         })
 
@@ -50,7 +58,7 @@ export const createTasksToStudents = async (
 export const getStudentsTakingTask = async (
     task_id: string, 
     grade_lvl: string
-): Promise<StudentTask[]> => {
+): Promise<{ task: TTasks, student_tasks: StudentTask[] }> => {
     try {
         const response = await api.get(`/students/task`, {
             params: {

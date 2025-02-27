@@ -34,7 +34,7 @@ export class TaskController {
     }
 
     /**
-     * GET task
+     * GET ALL tasks created by the teacher
      */
     public getTasks = async (req: Request, res: Response): Promise<void> => {
         try {
@@ -115,7 +115,9 @@ export class TaskController {
             const { task_id, grade_lvl } = req.query
             const Model = selectTaskGradeModel(grade_lvl as GradeLevels)
 
-            const studentTasks = await Model.find({ task_id: task_id })
+            const task = await TaskModel.findById(task_id)
+
+            const student_tasks = await Model.find({ task_id: task_id })
                 .populate({
                     path: 'sid',
                     model: 'students_profiles',
@@ -125,7 +127,7 @@ export class TaskController {
                 })
                 .populate('task_id')
 
-            res.status(200).json(studentTasks)
+            res.status(200).json({ task, student_tasks })
         } catch (error) {
             console.log(error)
             res.status(400).json({ 
