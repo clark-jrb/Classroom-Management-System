@@ -37,7 +37,7 @@ export const TaskList = ({ taskType, enableEdit, setEnableEdit }: {
                     {enableEdit &&
                         <div className="flex gap-2">
                             <TaskUpdate task_id={_id} task_data={{ subject, total_items, task_no }} setEnableEdit={setEnableEdit}/>
-                            <TaskDelete/>
+                            <TaskDelete task_id={_id}/>
                         </div>
                     }
                 </div>

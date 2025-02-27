@@ -8,9 +8,26 @@ import {
     DialogTitle,
     DialogTrigger
 } from "@/components/ui/dialog"
+import { useDeleteTask } from "@/hooks/useTaskQueries"
 import { CircleX } from "lucide-react"
 
-export const TaskDelete = () => {
+export const TaskDelete = ({ task_id }: {
+    task_id: string
+}) => {
+    const { deleteSpecificTask } = useDeleteTask()
+
+    function handleDeleteTask(id: string) {
+        deleteSpecificTask.mutateAsync(id, {
+            onSuccess: (data) => {
+                const { message } = data
+                console.log(message)
+            },
+            onError: (error) => {
+                console.log(error)
+            }
+        })
+    }
+
     return (
         <div>
             <Dialog>
@@ -27,7 +44,7 @@ export const TaskDelete = () => {
                             This action is cannot be undone
                         </DialogDescription>
                         <div className="flex space-x-2 justify-end">
-                            <Button>Yes</Button>
+                            <Button onClick={() => handleDeleteTask(task_id)}>Yes</Button>
                             <DialogClose asChild>
                                 <Button type="button" variant={'destructive'}>Cancel</Button>
                             </DialogClose>

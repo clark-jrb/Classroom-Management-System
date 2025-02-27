@@ -19,6 +19,7 @@ import {
     createStudentsGA,
     getStudentsGA,
     updateTask,
+    deleteTask,
 } from "@/services/TaskService"
 import { 
     StudentScore, 
@@ -80,6 +81,14 @@ export const useUpdateTask = (id: string) => {
     })
 
     return { updateSpecificTask }
+}
+
+export const useDeleteTask = () => {
+    const deleteSpecificTask = useMutation({
+        mutationFn: (id: string) => deleteTask(id)
+    })
+
+    return { deleteSpecificTask }
 }
 
 /**

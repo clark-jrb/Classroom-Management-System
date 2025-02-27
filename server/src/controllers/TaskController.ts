@@ -57,6 +57,30 @@ export class TaskController {
         }
     }
 
+    public deleteTask = async (req: Request, res: Response): Promise<void> => {
+        try {
+            const { id } = req.params
+
+            const task = await TaskModel
+                .findOne({ _id: id })
+                .select('grade')
+            const Model = selectTaskGradeModel(task.grade as GradeLevels)
+
+            const delete_tasks = await Model.deleteMany({ task_id: id })
+            await TaskModel.findByIdAndDelete(id)
+
+            console.log(`Succesfully deleted ${delete_tasks.deletedCount} documents`)
+
+            res.status(201).json({ 
+                message: 'Tasks deleted succesfully' 
+            })
+        } catch (error) {
+            res.status(400).json({ 
+                message: 'Failed to create task', error 
+            })
+        }
+    }
+
     /**
      * GET ALL tasks created by the teacher
      */

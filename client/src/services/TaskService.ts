@@ -33,6 +33,20 @@ export const updateTask = async (
     }
 }
 
+export const deleteTask = async (
+    tid: string
+): Promise<Message> => {
+    try {
+        const response = await api.delete(`/task/${tid}`, {
+            withCredentials: true
+        })
+
+        return response.data
+    } catch (error) {
+        throw new Error('Client: Failed to delete specific task')
+    }
+}
+
 export const getTasks = async ({ user_id, grade_assigned, section_handled, subjects }: {
     user_id: string
     grade_assigned: string
