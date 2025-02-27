@@ -1,12 +1,20 @@
 import { useMyTasks } from "@/hooks/useTaskQueries"
 import { useNavigate } from "react-router-dom"
 import { TaskTypes } from "@/types/GlobalTypes"
+import { CircleX, Pencil } from "lucide-react"
+import { useEffect } from "react"
 
-export const TaskList = ({ taskType }: {
+export const TaskList = ({ taskType, enableEdit }: {
     taskType: TaskTypes
+    enableEdit: boolean
 }) => {
     const { filterTask } = useMyTasks()
     const navigate = useNavigate()
+    
+    useEffect(() => {
+        console.log(enableEdit)
+    }, [enableEdit])
+
 
     const data = filterTask(taskType)
 
@@ -28,6 +36,10 @@ export const TaskList = ({ taskType }: {
                     <div>{section} {grade}</div>
                     <div>{type} No. {task_no}</div>
                     <div>{subject}</div>
+                    <div className="flex gap-2">
+                        <Pencil size={'20px'}/>
+                        <CircleX size={'20px'}/>
+                    </div>
                 </div>
             ))}
         </div>

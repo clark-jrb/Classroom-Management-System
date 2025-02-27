@@ -29,9 +29,12 @@ import { TTaskForm, TaskTypes, SubjectTypes, QuarterTypes } from "@/types/Global
 import { DialogClose } from "@radix-ui/react-dialog"
 import { toast } from "sonner"
 import { toCamelCase } from "@/helpers/camel-case"
+import { Switch } from "@/components/ui/switch"
 
-export const TaskForm = ({ taskType }: {
+export const TaskForm = ({ taskType, enableEdit, setEnableEdit }: {
     taskType: TaskTypes
+    enableEdit: boolean
+    setEnableEdit: (state: boolean) => void
 }) => {
     const { generateTask, createTasks } = useTaskMutations()    // mutation functions
     const { countTask } = useMyTasks() 
@@ -120,7 +123,7 @@ export const TaskForm = ({ taskType }: {
     }
 
     return (
-        <div>
+        <div className="flex space-x-4">
             <Dialog open={open} onOpenChange={openDialog}>
                 <DialogTrigger asChild>
                     <Button>
@@ -324,6 +327,10 @@ export const TaskForm = ({ taskType }: {
                 </DialogContent>
 
             </Dialog>
+            <div className="flex space-x-2 items-center">
+                <Label htmlFor="actions">Actions</Label>
+                <Switch id="actions" checked={enableEdit} onCheckedChange={setEnableEdit}/>
+            </div>
         </div>
     )
 }

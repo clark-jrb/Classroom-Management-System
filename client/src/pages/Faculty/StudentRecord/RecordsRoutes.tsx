@@ -9,28 +9,24 @@ import {
     BreadcrumbSeparator,
     BreadcrumbPage
 } from "@/components/ui/breadcrumb"
-import { Quizzes } from "./pages/Quizzes"
-import { Activities } from "./pages/Activities"
 import { Records } from './Records'
-import { Exams } from "./pages/Exams"
-import { Summatives } from "./pages/Summatives"
-import { Projects } from "./pages/Projects"
-import { Recitations } from "./pages/Recitations"
 import { TaskView } from './component/TaskView'
 import { Suspense } from 'react'
+import { TaskPage } from './pages/TaskPage'
+import { TaskTypes } from '@/types/GlobalTypes'
 
 export const RecordsRoutes = () => {
     const location = useLocation()
     const currentPath = location.pathname
 
     const recordsLinks = [
-        { name: 'Records', path_name: '', element: <Records/> },
-        { name: 'Quizzes', path_name: 'quiz', element: <Quizzes/> },
-        { name: 'Activities', path_name: 'activity', element: <Activities/> },
-        { name: 'Exams', path_name: 'exam', element: <Exams/> },
-        { name: 'Summatives', path_name: 'summative', element: <Summatives/> },
-        { name: 'Projects', path_name: 'project', element: <Projects/> },
-        { name: 'Recitations', path_name: 'recitation', element: <Recitations/> }
+        { name: 'Records', path_name: '' },
+        { name: 'Quizzes', path_name: 'quiz' },
+        { name: 'Activities', path_name: 'activity' },
+        { name: 'Exams', path_name: 'exam' },
+        { name: 'Summatives', path_name: 'summative' },
+        { name: 'Projects', path_name: 'project' },
+        { name: 'Recitations', path_name: 'recitation' }
     ]
 
     return (
@@ -67,10 +63,10 @@ export const RecordsRoutes = () => {
                 </Breadcrumb>
 
                 <Routes>
-                    {recordsLinks.map(({ path_name, element }, index) => (
+                    {recordsLinks.map(({ path_name }, index) => (
                         <Route key={index} path={path_name} element={
                             <Suspense fallback={<div>loading...</div>}>
-                                {element}
+                                {path_name === '' ? <Records/> : <TaskPage task_type={path_name as TaskTypes}/>}
                             </Suspense>
                         }/>
                     ))}
