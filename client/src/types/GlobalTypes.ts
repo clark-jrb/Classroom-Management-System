@@ -33,6 +33,11 @@ export type StudentTaskCreate = {
 
 export type StudentScore = z.infer<typeof studentScoreSchema>
 export type TTaskForm = z.infer<typeof taskSchema>
+export type TUpdateTask = {
+    total_items: number
+    subject: string
+    task_no: number
+}
 
 export type TTasks = TTaskForm & {
     _id: string

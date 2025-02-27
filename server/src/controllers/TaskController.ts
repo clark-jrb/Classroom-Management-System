@@ -1,7 +1,7 @@
 import { Request, Response } from "express"
 import { TaskModel } from "../models/task"
 import { StudentClassModel } from "../models/student"
-import { StudentsSubjectGrade, StudentTaskScore, Task, TaskTypes } from "../types/TaskTypes"
+import { StudentsSubjectGrade, StudentTaskScore, Task, TaskTypes, TUpdateTask } from "../types/TaskTypes"
 import { GradeLevels } from "../types/types"
 import { selectTaskGradeModel } from "../helpers/select-models"
 import { getWeightWithoutProject, getWeightWithProject } from "../helpers/get-weight"
@@ -25,6 +25,30 @@ export class TaskController {
             res.status(201).json({ 
                 task: newTask, 
                 message: 'New task succesfully created' 
+            })
+        } catch (error) {
+            res.status(400).json({ 
+                message: 'Failed to create task', error 
+            })
+        }
+    }
+
+    /**
+     * CREATE Task (for teacher)
+     */
+    public updateTask = async (req: Request, res: Response): Promise<void> => {
+        try {
+            const { id } = req.params
+            const data: TUpdateTask = req.body
+
+            await TaskModel.findByIdAndUpdate(
+                id, 
+                data,
+                { new: true, runValidators: true }
+            )
+
+            res.status(201).json({ 
+                message: 'Task updated succesfully' 
             })
         } catch (error) {
             res.status(400).json({ 

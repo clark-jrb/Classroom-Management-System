@@ -1,6 +1,6 @@
 import { StudentCalculatedQA, StudentGA, StudentQA, StudentSG, StudentSGWithProfile, StudentPerformance, StudentGeneralAverage } from "@/types/ComputationTypes";
 import { api } from "./api";
-import { QuarterTypes, StudentScore, SubjectTypes } from "@/types/GlobalTypes";
+import { QuarterTypes, StudentScore, SubjectTypes, TUpdateTask } from "@/types/GlobalTypes";
 import { TTasks, TTaskForm, Message, StudentTask, StudentTaskCreate, StudentTakingTask } from "@/types/GlobalTypes";
 
 export const createTask = async (
@@ -15,6 +15,21 @@ export const createTask = async (
         return response.data
     } catch (error) {
         throw new Error('Client: Failed to create task')
+    }
+}
+
+export const updateTask = async (
+    tid: string, 
+    value: TUpdateTask
+): Promise<Message> => {
+    try {
+        const response = await api.patch(`/task/${tid}`, value, {
+            withCredentials: true
+        })
+
+        return response.data
+    } catch (error) {
+        throw new Error('Client: Failed to update specific task')
     }
 }
 

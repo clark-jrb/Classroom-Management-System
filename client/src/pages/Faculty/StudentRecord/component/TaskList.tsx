@@ -1,8 +1,8 @@
 import { useMyTasks } from "@/hooks/useTaskQueries"
 import { useNavigate } from "react-router-dom"
 import { TaskTypes } from "@/types/GlobalTypes"
-import { CircleX, Pencil } from "lucide-react"
-import { useEffect } from "react"
+import { CircleX } from "lucide-react"
+import { TaskUpdate } from "./TaskUpdate"
 
 export const TaskList = ({ taskType, enableEdit }: {
     taskType: TaskTypes
@@ -10,11 +10,6 @@ export const TaskList = ({ taskType, enableEdit }: {
 }) => {
     const { filterTask } = useMyTasks()
     const navigate = useNavigate()
-    
-    useEffect(() => {
-        console.log(enableEdit)
-    }, [enableEdit])
-
 
     const data = filterTask(taskType)
 
@@ -26,20 +21,24 @@ export const TaskList = ({ taskType, enableEdit }: {
                 task_no,
                 grade,
                 section,
-                subject
+                subject,
+                total_items
             }) => (
                 <div 
                     key={_id} 
-                    className="flex gap-4 w-fit p-4 border border-black-500 mb-3 select-none rounded cursor-pointer"
-                    onClick={() => navigate(`view/${_id}`)}
+                    className="flex gap-4 w-fit p-4 border-2 border-black-500 mb-3 select-none rounded cursor-pointer"
+                    onClick={enableEdit ? undefined : () => navigate(`view/${_id}`)}
                 >
                     <div>{section} {grade}</div>
                     <div>{type} No. {task_no}</div>
                     <div>{subject}</div>
-                    <div className="flex gap-2">
-                        <Pencil size={'20px'}/>
-                        <CircleX size={'20px'}/>
-                    </div>
+                    <div>Total items: {total_items}</div>
+                    {enableEdit &&
+                        <div className="flex gap-2">
+                            <TaskUpdate task_id={_id} task_data={{ subject, total_items, task_no }}/>
+                            <CircleX size={'20px'}/>
+                        </div>
+                    }
                 </div>
             ))}
         </div>

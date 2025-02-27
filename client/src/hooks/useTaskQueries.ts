@@ -18,6 +18,7 @@ import {
     updateStudentsSGfromQA,
     createStudentsGA,
     getStudentsGA,
+    updateTask,
 } from "@/services/TaskService"
 import { 
     StudentScore, 
@@ -26,7 +27,8 @@ import {
     TaskTypes, 
     QuarterTypes, 
     SubjectTypes, 
-    TTasks 
+    TTasks, 
+    TUpdateTask
 } from "@/types/GlobalTypes"
 import { StudentGA, StudentSG } from "@/types/ComputationTypes"
 
@@ -70,6 +72,14 @@ export const useTaskMutations = () => {
         updateScores,
         createTasks
     }
+}
+
+export const useUpdateTask = (id: string) => {
+    const updateSpecificTask = useMutation({
+        mutationFn: (values: TUpdateTask) => updateTask(id, values)
+    })
+
+    return { updateSpecificTask }
 }
 
 /**

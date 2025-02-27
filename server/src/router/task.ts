@@ -5,6 +5,7 @@ import { isAuthenticated } from '../middlewares'
 const Task = new TaskController()
 const { 
     createTask, 
+    updateTask,
     getTasks, 
     createTasksToStudents, 
     getStudentsTakingTask, 
@@ -25,6 +26,7 @@ const {
 
 export default (router: express.Router) => {
     router.get('/tasks', isAuthenticated, getTasks)
+    router.patch('/task/:id', isAuthenticated, updateTask)
     router.post('/task/:tid', isAuthenticated, createTask) // gets teacher id params for ownership of the task
     router.post('/tasks/students', isAuthenticated, createTasksToStudents)
 

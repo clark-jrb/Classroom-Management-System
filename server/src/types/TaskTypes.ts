@@ -38,3 +38,9 @@ export type StudentsSubjectGrade = {
     subj_grade: number
     quarter: string
 }
+
+export type TUpdateTask = {
+    total_items: number
+    subject: string
+    task_no: number
+}
