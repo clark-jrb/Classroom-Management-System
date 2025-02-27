@@ -61,8 +61,8 @@ export const TaskUpdate = ({ task_id, task_data, setEnableEdit } : {
                     const { message } = data
                     console.log(message)
                     queryClient.invalidateQueries({ queryKey: ['my_tasks'] })
-                    setOpenDialog(false)
-                    setEnableEdit(false)
+                    setOpenDialog(false)    /* Close dialog */
+                    setEnableEdit(false)    /* Disables edit */
                     toast.success(message)
                 },
                 onError: (error) => {

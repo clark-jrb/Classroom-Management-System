@@ -1,8 +1,8 @@
 import { useMyTasks } from "@/hooks/useTaskQueries"
 import { useNavigate } from "react-router-dom"
 import { TaskTypes } from "@/types/GlobalTypes"
-import { CircleX } from "lucide-react"
 import { TaskUpdate } from "./TaskUpdate"
+import { TaskDelete } from "./TaskDelete"
 
 export const TaskList = ({ taskType, enableEdit, setEnableEdit }: {
     taskType: TaskTypes
@@ -37,7 +37,7 @@ export const TaskList = ({ taskType, enableEdit, setEnableEdit }: {
                     {enableEdit &&
                         <div className="flex gap-2">
                             <TaskUpdate task_id={_id} task_data={{ subject, total_items, task_no }} setEnableEdit={setEnableEdit}/>
-                            <CircleX size={'20px'}/>
+                            <TaskDelete/>
                         </div>
                     }
                 </div>
