@@ -34,6 +34,8 @@ import { useForm } from "react-hook-form"
 import { useState } from "react"
 import { useUpdateTask } from "@/hooks/useTaskQueries"
 import { useQueryClient } from "@tanstack/react-query"
+import { getTaskChanges } from "@/helpers/changed-fields"
+import { toast } from "sonner"
 
 export const TaskUpdate = ({ task_id, task_data } : {
     task_id: string
@@ -50,22 +52,30 @@ export const TaskUpdate = ({ task_id, task_data } : {
     })
 
     function onSubmit(values: TUpdateTask) {
-        console.log(values)
-        updateSpecificTask.mutateAsync(values, {
-            onSuccess: (data) => {
-                const { message } = data
-                console.log(message)
-                queryClient.invalidateQueries({ queryKey: ['my_tasks'] })
-                setOpenDialog(false)
-            },
-            onError: (error) => {
-                console.log(error)
-            }
-        })
+        // console.log(values)
+        const changed = getTaskChanges(task_data, values)
+        if (!changed) {
+            updateSpecificTask.mutateAsync(values, {
+                onSuccess: (data) => {
+                    const { message } = data
+                    console.log(message)
+                    queryClient.invalidateQueries({ queryKey: ['my_tasks'] })
+                    setOpenDialog(false)
+                    toast.success(message)
+                },
+                onError: (error) => {
+                    console.log(error)
+                    toast.error('Error occured')
+                }
+            })
+        } else {
+            toast.warning('Nothing changes')
+        }
     }
 
     function onError(errors: any) {
         console.log(errors)
+        toast.error('Error occured')
     }
 
     return (

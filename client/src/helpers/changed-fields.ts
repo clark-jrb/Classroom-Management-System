@@ -1,6 +1,7 @@
 import { studentProfileSchema } from "@/schemas/studentSchemas";
 import { studentScoreSchema } from "@/schemas/teacherSchemas";
 import { StudentSG, StudentSGWithProfile } from "@/types/ComputationTypes";
+import { TUpdateTask } from "@/types/GlobalTypes";
 import { z } from "zod";
 
 
@@ -63,7 +64,17 @@ export function getChangedSG(
     return changedScores.map((data) => (data));
 }
 
+export function getTaskChanges(
+    originalTask: TUpdateTask,
+    newTask: TUpdateTask
+) {
 
+    const hasChanged = Object
+        .keys(originalTask)
+        .every(key => originalTask[key as keyof typeof originalTask] === newTask[key as keyof typeof newTask])
+
+    return hasChanged
+}
 
 
 
