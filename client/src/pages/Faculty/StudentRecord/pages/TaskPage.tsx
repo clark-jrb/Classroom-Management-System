@@ -13,7 +13,7 @@ export const TaskPage = ({ task_type }: {
             <div className="mb-3">
                 <TaskForm taskType={`${task_type}`} enableEdit={enableEdit} setEnableEdit={setEnableEdit}/>
             </div>
-            <TaskList taskType={`${task_type}`} enableEdit={enableEdit}/>
+            <TaskList taskType={`${task_type}`} enableEdit={enableEdit} setEnableEdit={setEnableEdit}/>
         </div>
     )
 }

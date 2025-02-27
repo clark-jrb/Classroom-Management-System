@@ -37,9 +37,10 @@ import { useQueryClient } from "@tanstack/react-query"
 import { getTaskChanges } from "@/helpers/changed-fields"
 import { toast } from "sonner"
 
-export const TaskUpdate = ({ task_id, task_data } : {
+export const TaskUpdate = ({ task_id, task_data, setEnableEdit } : {
     task_id: string
     task_data: TUpdateTask
+    setEnableEdit: (state: boolean) => void
 }) => {
     const queryClient = useQueryClient()
     const { subjects } = teacherClassInfo()
@@ -61,6 +62,7 @@ export const TaskUpdate = ({ task_id, task_data } : {
                     console.log(message)
                     queryClient.invalidateQueries({ queryKey: ['my_tasks'] })
                     setOpenDialog(false)
+                    setEnableEdit(false)
                     toast.success(message)
                 },
                 onError: (error) => {
