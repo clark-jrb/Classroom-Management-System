@@ -25,11 +25,13 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { Input } from "@/components/ui/input"
 import { useTaskMutations, useMyTasks } from "@/hooks/useTaskQueries"
 import { useQueryClient } from "@tanstack/react-query"
-import { TTaskForm, TaskTypes, SubjectTypes, QuarterTypes } from "@/types/GlobalTypes"
+import { TaskTypes, SubjectTypes, QuarterTypes } from "@/types/GlobalTypes"
 import { DialogClose } from "@radix-ui/react-dialog"
 import { toast } from "sonner"
 import { toCamelCase } from "@/helpers/camel-case"
 import { Switch } from "@/components/ui/switch"
+import { TTaskForm } from "@/types/TasksTypes"
+
 
 export const TaskForm = ({ taskType, enableEdit, setEnableEdit }: {
     taskType: TaskTypes

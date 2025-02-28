@@ -4,7 +4,7 @@ import { SubjectTypes } from "./GlobalTypes"
 
 export type TeacherAccount = {
     _id: string
-    // role: 'faculty'
+    role: 'faculty'
 } & Omit<z.infer<typeof loginSchema>, 'role'>
 
 export type TeacherProfile = {
@@ -29,5 +29,19 @@ export type TeacherInformation = {
 
 export type TeacherAuthenticated = {
     details: TeacherClasses
-    role: 'faculty'
 } & TeacherAccount
+
+export type MyStudents = {
+    _id: string
+    sid: {
+        sid: string
+        firstname: string
+        middlename: string
+        lastname: string
+        sex: string
+        birth_date: Date
+        contact: string
+    },
+    gradeLevel: string
+    section: string
+}

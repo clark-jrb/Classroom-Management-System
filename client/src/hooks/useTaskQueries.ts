@@ -22,16 +22,12 @@ import {
     deleteTask,
 } from "@/services/TaskService"
 import { 
-    StudentScore, 
-    TTaskForm, 
-    StudentTaskCreate, 
     TaskTypes, 
     QuarterTypes, 
-    SubjectTypes, 
-    TTasks, 
-    TUpdateTask
+    SubjectTypes
 } from "@/types/GlobalTypes"
 import { StudentGA, StudentSG } from "@/types/ComputationTypes"
+import { StudentTaskCreate, TTaskForm, TTasks, TUpdateTask, StudentScore } from "@/types/TasksTypes"
 
 /**
  * this hook returns functions for tasks like UPDATE and CREATE 

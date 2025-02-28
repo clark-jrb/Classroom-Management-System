@@ -1,6 +1,5 @@
 import { useParams } from "react-router-dom"
 import { useQueryClient } from "@tanstack/react-query"
-import { StudentScore } from "../../../../types/GlobalTypes"
 import {
     Table,
     TableBody,
@@ -25,6 +24,7 @@ import { getChangedScores } from "@/helpers/changed-fields"
 import { useTaskMutations, useStudentTasks } from "@/hooks/useTaskQueries"
 import { teacherClassInfo } from "@/hooks/useTeacherQueries"
 import { toast } from "sonner"
+import { StudentScore } from "@/types/TasksTypes"
 
 export const TaskView = () => {
     const { taskId } = useParams()
