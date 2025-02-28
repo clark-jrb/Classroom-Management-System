@@ -3,6 +3,9 @@ import { useSuspenseQuery } from "@tanstack/react-query"
 import { getTeacherInformation } from "@/services/UserService"
 import { getMyStudents } from "@/services/TeacherService"
 
+/**
+ * Custom hook that returns teacher class information
+ */
 export const teacherClassInfo = () => {
     const { data } = useTeacherData()
 
@@ -15,7 +18,6 @@ export const teacherClassInfo = () => {
 /**
  * Custom hook to fetch teacher's data
  */
-
 export const useTeacherData = () => {
     const { user_id } = useAuthStore()
 
@@ -26,9 +28,8 @@ export const useTeacherData = () => {
 }
 
 /**
- * Custom hook to fetch teacher's students
+ * Custom hook to fetch teacher's students with information
  */
-
 export const useMyStudentsData = (grade_assigned: string, section: string) => {
     return useSuspenseQuery({
         queryKey: ['my_students', grade_assigned, section],

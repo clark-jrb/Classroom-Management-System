@@ -2,7 +2,7 @@ import { Container } from "@/components/Container"
 import { StudentLayout } from "./StudentLayout"
 import { ProfileContent } from "./Profile/ProfileContent"
 import { Suspense } from "react"
-import { useStudentData } from "@/hooks/useStudentQueries"
+import { useStudentData } from "@/hooks/useStudentQuery"
 
 export const StudentProfile = () => {
     return (

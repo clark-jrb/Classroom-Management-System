@@ -1,6 +1,6 @@
 import { useParams, useNavigate } from "react-router-dom"
 import { QuarterTypes, SubjectTypes } from "@/types/global.types"
-import { teacherClassInfo } from "@/hooks/useTeacherQueries"
+import { teacherClassInfo } from "@/hooks/useTeacherQuery"
 import { Suspense, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"

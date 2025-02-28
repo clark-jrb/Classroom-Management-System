@@ -21,8 +21,8 @@ import {
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { getChangedScores } from "@/helpers/changed-fields"
-import { useTaskMutations, useStudentTasks } from "@/hooks/useTaskQueries"
-import { teacherClassInfo } from "@/hooks/useTeacherQueries"
+import { useTaskMutations, useStudentTasks } from "@/hooks/useTaskQuery"
+import { teacherClassInfo } from "@/hooks/useTeacherQuery"
 import { toast } from "sonner"
 import { StudentScore } from "@/types/task.types"
 

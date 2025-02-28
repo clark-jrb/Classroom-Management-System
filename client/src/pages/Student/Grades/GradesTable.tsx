@@ -1,5 +1,5 @@
 import { toCamelCase } from "@/helpers/camel-case"
-import { useStudentQAs, useStudentGA } from "@/hooks/useStudentQueries"
+import { useStudentQAs, useStudentGA } from "@/hooks/useStudentQuery"
 import { useAuthStore } from "@/stores/auth/authSlice"
 import { SubjectTypes } from "@/types/global.types"
 

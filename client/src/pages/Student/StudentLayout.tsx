@@ -1,4 +1,4 @@
-import { useAuthentication } from '@/hooks/useAuthQueries'
+import { useAuthQuery } from '@/hooks/useAuthQuery'
 import { SideNavbar } from '@/components/Side-Navbar'
 import { Toaster } from '@/components/ui/sonner'
 import { useToastStore } from '@/stores/toastStore'
@@ -6,7 +6,7 @@ import { toast } from 'sonner'
 import { useEffect } from 'react'
 
 export const StudentLayout = ({ children }: any) => {
-    const { handleLogout } = useAuthentication()
+    const { handleLogout } = useAuthQuery()
     const { message, type, clearToast } = useToastStore()
 
     useEffect(() => {

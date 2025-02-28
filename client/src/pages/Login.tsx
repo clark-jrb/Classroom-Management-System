@@ -11,14 +11,14 @@ import { Input } from "@/components/ui/input"
 import { useForm } from "react-hook-form"
 import { Button } from "@/components/ui/button"
 import { z } from "zod"
-import { useAuthentication } from "@/hooks/useAuthQueries"
+import { useAuthQuery } from "@/hooks/useAuthQuery"
 import { useAuthStore } from "@/stores/auth/authSlice"
 import { useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import { userAccountSchema } from "@/schemas/user.schema"
 
 export const Login = () => {
-    const { loginUser } = useAuthentication()
+    const { loginUser } = useAuthQuery()
     const { role } = useAuthStore()
     const navigate = useNavigate()
 

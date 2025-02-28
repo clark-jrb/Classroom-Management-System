@@ -2,7 +2,7 @@ import { FacultyLayout } from "./FacultyLayout"
 import { Container } from "@/components/Container"
 import { Suspense } from "react"
 import { ProfileContent } from "../Student/Profile/ProfileContent"
-import { useTeacherData } from "@/hooks/useTeacherQueries"
+import { useTeacherData } from "@/hooks/useTeacherQuery"
 
 export const FacultyProfile = () => {
     return (

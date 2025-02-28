@@ -6,7 +6,7 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
-import { useStudentsPerformance } from "@/hooks/useTaskQueries"
+import { useStudentsPerformance } from "@/hooks/useTaskQuery"
 import { QuarterTypes, SubjectTypes } from "@/types/global.types"
 import { useForm } from "react-hook-form"
 import { 
@@ -16,8 +16,8 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { StudentSGSchema } from "@/schemas/computation.schema"
 import { StudentSG } from "@/types/computation.types"
 import { Button } from "@/components/ui/button"
-import { useStudentsPerformanceMutations } from "@/hooks/useTaskQueries"
-import { useStudentsSG } from "@/hooks/useTaskQueries"
+import { useStudentsPerformanceMutations } from "@/hooks/useTaskQuery"
+import { useStudentsSG } from "@/hooks/useTaskQuery"
 import { getChangedSG } from "@/helpers/changed-fields"
 import { toast } from "sonner"
 import { useQueryClient } from "@tanstack/react-query"

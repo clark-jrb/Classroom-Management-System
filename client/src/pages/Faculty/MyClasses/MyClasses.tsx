@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button"
-import { teacherClassInfo } from "@/hooks/useTeacherQueries"
+import { teacherClassInfo } from "@/hooks/useTeacherQuery"
 import { Suspense, useState } from "react"
 import { MyStudentsTable } from "./components/MyStudentsTable"
 

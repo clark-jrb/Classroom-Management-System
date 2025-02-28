@@ -3,7 +3,7 @@ import { Suspense } from "react"
 import { Evaluation } from "./Evaluation"
 import { ViewQA } from "./components/ViewQA"
 import { ViewGA } from "./components/ViewGA"
-import { useTeacherData } from "@/hooks/useTeacherQueries"
+import { useTeacherData } from "@/hooks/useTeacherQuery"
 
 export const EvaluationRoutes = () => {
     const { data: teacher_data } = useTeacherData()

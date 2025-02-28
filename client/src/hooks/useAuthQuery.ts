@@ -5,17 +5,15 @@ import { login, register, logout } from "@/services/AuthService"
 import { useToastStore } from "@/stores/toastStore"
 
 /**
- * Authentication hook
+ * Custom hook for authentication functions
  */
-
-export const useAuthentication = () => {
+export const useAuthQuery = () => {
     const { setRole } = useAuthStore()
     const navigate = useNavigate()
 
     /**
      *  LOGIN mutation
      */
-
     const loginUser = useMutation({
         mutationFn: login,
         onSuccess: (data) => {
@@ -38,7 +36,6 @@ export const useAuthentication = () => {
     /**
      * REGISTER mutation
      */
-
     const registerUser = useMutation({
         mutationFn: register,
         onSuccess: (data) => {
@@ -60,7 +57,6 @@ export const useAuthentication = () => {
     /**
      * LOG OUT mutation
      */ 
-
     const logoutUser = useMutation({
         mutationFn: logout,
         onSuccess: (data) => {

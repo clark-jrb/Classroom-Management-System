@@ -16,7 +16,7 @@ import {
     DialogTitle,
     DialogTrigger,
   } from "@/components/ui/dialog"
-import { useStudentsCalculatedQA, useStudentsGA, useStudentsGAMutations } from "@/hooks/useTaskQueries"
+import { useStudentsCalculatedQA, useStudentsGA, useStudentsGAMutations } from "@/hooks/useTaskQuery"
 import { StudentGASchema } from "@/schemas/computation.schema"
 import { StudentGA } from "@/types/computation.types"
 import { zodResolver } from "@hookform/resolvers/zod"

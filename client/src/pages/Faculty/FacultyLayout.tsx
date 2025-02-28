@@ -1,4 +1,4 @@
-import { useAuthentication } from '@/hooks/useAuthQueries'
+import { useAuthQuery } from '@/hooks/useAuthQuery'
 import { SideNavbar } from '@/components/Side-Navbar'
 import { useTeacherStore } from "@/stores/auth/authSlice"
 import { Toaster } from '@/components/ui/sonner'
@@ -7,7 +7,7 @@ import { toast } from 'sonner'
 import { useToastStore } from '@/stores/toastStore'
 
 export const FacultyLayout = ({ children }: any) => {
-    const { handleLogout } = useAuthentication()
+    const { handleLogout } = useAuthQuery()
     const { teacher_role } = useTeacherStore()
 
     const { message, type, clearToast } = useToastStore()

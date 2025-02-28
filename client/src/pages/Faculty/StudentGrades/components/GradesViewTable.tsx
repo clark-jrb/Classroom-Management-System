@@ -7,7 +7,7 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
-import { useStudentsQAMutations, useStudentsSG, useStudentsSGfromQA } from "@/hooks/useTaskQueries"
+import { useStudentsQAMutations, useStudentsSG, useStudentsSGfromQA } from "@/hooks/useTaskQuery"
 import { Button } from "@/components/ui/button"
 import { useForm } from "react-hook-form"
 import { StudentSG } from "@/types/computation.types"
@@ -17,7 +17,7 @@ import { Form } from "@/components/ui/form"
 import { getChangedSG } from "@/helpers/changed-fields"
 import { toast } from "sonner"
 import { useEffect, useMemo } from "react"
-import { teacherClassInfo } from "@/hooks/useTeacherQueries"
+import { teacherClassInfo } from "@/hooks/useTeacherQuery"
 
 export const GradesViewTable = ({ section, subject, quarter }: {
     section: string

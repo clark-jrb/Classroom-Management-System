@@ -24,7 +24,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { Input } from "@/components/ui/input"
 import { useForm } from "react-hook-form"
 import { Button } from "@/components/ui/button"
-import { useAuthentication } from "@/hooks/useAuthQueries"
+import { useAuthQuery } from "@/hooks/useAuthQuery"
 import { useAuthStore } from "@/stores/auth/authSlice"
 import { useNavigate } from "react-router-dom"
 import { DatePicker } from "@/components/ui/date-picker"
@@ -35,7 +35,7 @@ import { unregisterFields } from "@/helpers/unregister-fields"
 export const Register = () => {
     const navigate = useNavigate()
     const { role } = useAuthStore()
-    const { registerUser }  = useAuthentication()
+    const { registerUser }  = useAuthQuery()
     const [formStep, setFormStep] = useState(1)
     const [form1Values, setform1Values] = useState({})
     const [form2Values, setform2Values] = useState({})

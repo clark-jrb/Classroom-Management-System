@@ -9,7 +9,7 @@ import { RecordsRoutes } from "./Faculty/StudentRecord/RecordsRoutes"
 import { FacultyProfile } from "./Faculty/FacultyProfile"
 import { ComputationsRoutes } from "./Faculty/Computations/ComputationsRoutes"
 import { GradesRoutes } from "./Faculty/StudentGrades/GradesRoutes"
-import { useCurrentUser } from "@/hooks/useUsersQueries"
+import { useCurrentUser } from "@/hooks/useUsersQuery"
 import { EvaluationPage } from "./Faculty/Evaluation/EvaluationPage"
 import { MyClassesRoutes } from "./Faculty/MyClasses/MyClassesRoutes"
 

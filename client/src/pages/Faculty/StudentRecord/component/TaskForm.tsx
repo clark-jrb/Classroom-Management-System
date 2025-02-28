@@ -17,13 +17,13 @@ import {
 } from "@/components/ui/form"
 import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
-import { teacherClassInfo } from "@/hooks/useTeacherQueries"
+import { teacherClassInfo } from "@/hooks/useTeacherQuery"
 import { useMemo, useState } from "react"
 import { taskSchema } from "@/schemas/task.schema"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Input } from "@/components/ui/input"
-import { useTaskMutations, useMyTasks } from "@/hooks/useTaskQueries"
+import { useTaskMutations, useMyTasks } from "@/hooks/useTaskQuery"
 import { useQueryClient } from "@tanstack/react-query"
 import { TaskTypes, SubjectTypes, QuarterTypes } from "@/types/global.types"
 import { DialogClose } from "@radix-ui/react-dialog"
@@ -38,7 +38,7 @@ export const TaskForm = ({ taskType, enableEdit, setEnableEdit }: {
     enableEdit: boolean
     setEnableEdit: (state: boolean) => void
 }) => {
-    const { generateTask, createTasks } = useTaskMutations()    // mutation functions
+    const { generateTask, generateTasksToStudents } = useTaskMutations()    // mutation functions
     const { countTask } = useMyTasks() 
     const { grade_assigned, section_handled, subjects } = teacherClassInfo() // data from the hook
     const quarter: QuarterTypes = 'q1'                                  // QUARTER state (subject to change)
@@ -91,7 +91,7 @@ export const TaskForm = ({ taskType, enableEdit, setEnableEdit }: {
                     const { task } = data
                     openDialog(false)
     
-                    createTasks({ 
+                    generateTasksToStudents.mutateAsync({ 
                         task_id: task._id,
                         grade_lvl: gradeLevel,
                         section: section

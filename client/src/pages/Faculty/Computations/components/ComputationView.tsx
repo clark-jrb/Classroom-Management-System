@@ -1,7 +1,7 @@
 import { useParams, useNavigate } from "react-router-dom"
 import { Procedures } from "./Procedures"
 import { QuarterTypes, SubjectTypes } from "@/types/global.types"
-import { teacherClassInfo } from "@/hooks/useTeacherQueries"
+import { teacherClassInfo } from "@/hooks/useTeacherQuery"
 import { Suspense, useState } from "react"
 import { ComputationViewTable } from "./ComputationViewTable"
 import { Button } from "@/components/ui/button"

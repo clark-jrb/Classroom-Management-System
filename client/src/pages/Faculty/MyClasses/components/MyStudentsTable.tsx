@@ -1,4 +1,4 @@
-import { useMyStudentsData } from "@/hooks/useTeacherQueries"
+import { useMyStudentsData } from "@/hooks/useTeacherQuery"
 import {
     Table,
     TableBody,

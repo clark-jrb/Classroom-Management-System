@@ -1,6 +1,6 @@
 import { useAuthStore } from "@/stores/auth/authSlice"
 import { useMutation, useQueryClient, useSuspenseQuery } from "@tanstack/react-query"
-import { teacherClassInfo } from "./useTeacherQueries"
+import { teacherClassInfo } from "./useTeacherQuery"
 import { 
     createTask, 
     getTasks, 
@@ -30,18 +30,18 @@ import { StudentGA, StudentSG } from "@/types/computation.types"
 import { TCreateStudentTask, TTaskForm, TTask, TUpdateTask, StudentScore } from "@/types/task.types"
 
 /**
- * this hook returns functions for tasks like UPDATE and CREATE 
+ * Custom hook that returns mutation functions for tasks like UPDATE and CREATE 
  */
 export const useTaskMutations = () => {
-    const { user_id } = useAuthStore()          // grabs id of the current user (IT SHOULD BE TEACHER)
-    const { grade_assigned } = teacherClassInfo()    // get teacher's assigned grade level of the students
+    const { user_id } = useAuthStore() // grabs id of the current user (IT SHOULD BE TEACHER)
+    const { grade_assigned } = teacherClassInfo() // get teacher's assigned grade level of the students
     
-    // generates task (ex. generate recitations)
+    // Generates task (ex. generate recitations)
     const generateTask = useMutation({
         mutationFn: (value: TTaskForm) => createTask(user_id, value)
     })
     
-    // generates task to each student
+    // Generates task to each student
     const generateTasksToStudents = useMutation({
         mutationFn: (value: TCreateStudentTask) => createTasksToStudents(value),
         onSuccess: (data) => {
@@ -53,24 +53,21 @@ export const useTaskMutations = () => {
         }
     })
 
-    // updates students scores
+    // Updates students scores
     const updateScores = useMutation({
         mutationFn: (value: StudentScore["student_scores"]) => updateStudentsScores(value, grade_assigned)
     })
 
-    // function to mutate generate tasks to students
-    function createTasks({ task_id, grade_lvl, section }: TCreateStudentTask) {
-        generateTasksToStudents.mutateAsync({ task_id, grade_lvl, section })
-    }
-
     return { 
         generateTask, 
         generateTasksToStudents,
-        updateScores,
-        createTasks
+        updateScores
     }
 }
 
+/**
+ * Custom hook that updated a specific task
+ */
 export const useUpdateTask = (id: string) => {
     const updateSpecificTask = useMutation({
         mutationFn: (values: TUpdateTask) => updateTask(id, values)
@@ -79,6 +76,9 @@ export const useUpdateTask = (id: string) => {
     return { updateSpecificTask }
 }
 
+/**
+ * Custom hook that deletes a specific task
+ */
 export const useDeleteTask = () => {
     const deleteSpecificTask = useMutation({
         mutationFn: (id: string) => deleteTask(id)
@@ -88,7 +88,8 @@ export const useDeleteTask = () => {
 }
 
 /**
- * this hook queries to get all teacher's tasks and then returns the functions that filters the tasks
+ * Custom hook that returns all teacher's tasks and 
+ * then returns the functions that filters the tasks
  * (functions as of now: FILTER and COUNT)
  */
 export const useMyTasks = () => {
@@ -107,12 +108,12 @@ export const useMyTasks = () => {
         return data.filter((item) => item.type === taskType)
     }
 
-    // counts existing tasks (ex. quiz) to determine what task number is next to create
+    // counts existing tasks (ex. "Quizzes" in "English" for section "Whales" during "First" Quarter)
     function countTask(
-        taskType: TaskTypes,    //  What TYPE
-        subject: SubjectTypes | '',  //  What SUBJECT
-        section: string,        //  What SECTION
-        quarter: QuarterTypes   //  What QUARTER
+        taskType: TaskTypes,
+        subject: SubjectTypes | '',
+        section: string,
+        quarter: QuarterTypes
     ): number {
         return data.filter((item) => 
             item.type === taskType && 
@@ -126,8 +127,8 @@ export const useMyTasks = () => {
 }
 
 /**
- * this query will return all students taking a SPECIFIC task 
- * (ex. students taking quiz no.2)
+ * Custom hook that return all students taking a SPECIFIC task 
+ * (ex. "students" taking "quiz no. 2")
  */
 export const useStudentTasks = (task_id: string, grade_lvl: string) => {
     return useSuspenseQuery({
@@ -137,8 +138,8 @@ export const useStudentTasks = (task_id: string, grade_lvl: string) => {
 }
 
 /**
- * this query will return all students taking all of the teacher's tasks
- * (ex. students taking teacher's given recitation, quiz, exam, etc.)
+ * Custom hook that return all students taking all of the teacher's tasks
+ * (ex. "students" taking "teacher's" given "recitation, quiz, exam, etc.")
  */
 export const useStudentsTakingMyTasks = () => {
     const { user_id } = useAuthStore()
@@ -151,9 +152,9 @@ export const useStudentsTakingMyTasks = () => {
 }
 
 /**
- * this query will return all students calculated performances
- * (ex. student 1's total scores on quizzes, activity, project, etc.)
- * (ex. total scores on quiz 1, quiz 2, and quiz 3)
+ * Custom hook that return all students calculated performances
+ * (ex. student 1's total "scores" on "quizzes, activity, project, etc.")
+ * (ex. total "scores" on quiz 1, quiz 2, and quiz 3)
  */
 export const useStudentsPerformance = (section: string, subject: SubjectTypes, quarter: QuarterTypes) => {
     const { user_id } = useAuthStore()
@@ -165,6 +166,10 @@ export const useStudentsPerformance = (section: string, subject: SubjectTypes, q
     })
 }
 
+/**
+ * Custom hook that returns mutations for 
+ * CREATING and UPDATING subject grades
+ */
 export const useStudentsPerformanceMutations = () => {
     const generateStudentSG = useMutation({
         mutationFn: (value: StudentSG['student_sg']) => createStudentsSGs(value)
@@ -187,6 +192,9 @@ export const useStudentsPerformanceMutations = () => {
     }
 }
 
+/**
+ * Custom hook that returns students subject grades
+ */
 export const useStudentsSG = (section: string, subject: SubjectTypes) => {
     return useSuspenseQuery({
         queryKey: ['students_subject_grade', section, subject],
@@ -194,6 +202,10 @@ export const useStudentsSG = (section: string, subject: SubjectTypes) => {
     })
 }
 
+/**
+ * Custom hook that returns students quarterly average
+ * (subject grades by quarter 1, 2, 3 or 4)
+ */
 export const useStudentsQA = (grade_lvl: string, section: string) => {
     return useSuspenseQuery({
         queryKey: ['students_qa', grade_lvl, section],
@@ -201,6 +213,10 @@ export const useStudentsQA = (grade_lvl: string, section: string) => {
     })
 }
 
+/**
+ * Custom hook that returns overall quarterly average
+ * (average of subject grades by quarter(1,2,3, and 4))
+ */
 export const useStudentsCalculatedQA = (grade_lvl: string, section: string) => {
     return useSuspenseQuery({
         queryKey: ['students_calculated_qa', grade_lvl, section],
@@ -208,6 +224,10 @@ export const useStudentsCalculatedQA = (grade_lvl: string, section: string) => {
     })
 }
 
+/**
+ * Custom hook that returns students subject grade from quarterly average
+ * (ex. "Math" grade of students from section "Whales" on quarter 1)
+ */
 export const useStudentsSGfromQA = (section: string, subject: SubjectTypes) => {
     return useSuspenseQuery({
         queryKey: ['students_sg_from_qa', section, subject],
@@ -215,6 +235,10 @@ export const useStudentsSGfromQA = (section: string, subject: SubjectTypes) => {
     })
 }
 
+/**
+ * Custom hook that returns mutations for
+ * UPDATING subject grade from 'students_qas' collection
+ */
 export const useStudentsQAMutations = (section: string, subject: SubjectTypes) => {
     const queryClient = useQueryClient()
 
@@ -233,6 +257,10 @@ export const useStudentsQAMutations = (section: string, subject: SubjectTypes) =
     return { updateSGfromQA }
 }
 
+/**
+ * Custom hook that returns mutations for
+ * CREATING general average for students
+ */
 export const useStudentsGAMutations = () => {
     const generateGeneralAverage = useMutation({
         mutationFn: (value: StudentGA['student_ga']) => createStudentsGA(value)
@@ -243,6 +271,9 @@ export const useStudentsGAMutations = () => {
     }
 }
 
+/**
+ * Custom hook that returns all students general average
+ */
 export const useStudentsGA = (section: string) => {
     return useSuspenseQuery({
         queryKey: ['students_ga', section],
