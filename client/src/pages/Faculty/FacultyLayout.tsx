@@ -1,6 +1,6 @@
 import { useAuthentication } from '@/hooks/useAuthQueries'
 import { SideNavbar } from '@/components/Side-Navbar'
-import { useTeacherStore } from '@/stores/auth/authSlice'
+import { useTeacherStore } from "@/stores/auth/authSlice"
 import { Toaster } from '@/components/ui/sonner'
 import { useEffect } from 'react'
 import { toast } from 'sonner'

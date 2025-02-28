@@ -1,9 +1,9 @@
-import { Message } from "@/types/global.types"
+import { Message, Roles } from "@/types/global.types"
 import { api } from "./api"
 
 export const login = async (
     value: any
-): Promise<{ userRole: string } & Message> => {
+): Promise<{ userRole: Roles } & Message> => {
     try {
         const response = await api.post(`/auth/login`, value, {
             withCredentials: true
@@ -17,7 +17,7 @@ export const login = async (
 
 export const register = async (
     value: any
-): Promise<{ userRole: string } & Message> => {
+): Promise<{ userRole: Roles } & Message> => {
     try {
         const response = await api.post(`/auth/register`, value, {
             withCredentials: true
