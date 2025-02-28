@@ -13,9 +13,9 @@ import { Button } from "@/components/ui/button"
 import { z } from "zod"
 import { useAuthentication } from "@/hooks/useAuthQueries"
 import { useAuthStore } from "@/stores/auth/authSlice"
-import { loginSchema } from "@/schemas/authSchemas"
 import { useEffect } from "react"
 import { useNavigate } from "react-router-dom"
+import { userAccountSchema } from "@/schemas/user.schema"
 
 export const Login = () => {
     const { loginUser } = useAuthentication()
@@ -29,8 +29,8 @@ export const Login = () => {
         }
     }, [role]);
 
-    const form = useForm<z.infer<typeof loginSchema>>({
-        resolver: zodResolver(loginSchema),
+    const form = useForm<z.infer<typeof userAccountSchema>>({
+        resolver: zodResolver(userAccountSchema),
         defaultValues: {
             email: "",
             password: "",
@@ -38,7 +38,7 @@ export const Login = () => {
         },
     })
 
-    function onSubmit(values: z.infer<typeof loginSchema>) {
+    function onSubmit(values: z.infer<typeof userAccountSchema>) {
         loginUser.mutateAsync(values)
     }
 

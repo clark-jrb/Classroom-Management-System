@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/table"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
-import { studentScoreSchema } from "@/schemas/teacherSchemas"
+import { studentScoreSchema } from "@/schemas/teacher.schema"
 import { 
     Form,
     FormControl,

@@ -29,11 +29,11 @@ import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { getChangedFields } from "@/helpers/changed-fields"
 import { useEffect } from "react"
-import { registerInformationSchema } from "@/schemas/authSchemas"
 import { useToastStore } from "@/stores/toastStore"
 import { toast } from "sonner"
 import { StudentInformation } from "@/types/student.types"
 import { TeacherInformation } from "@/types/teacher.types"
+import { userProfileSchema } from "@/schemas/user.schema"
 
 export const ProfileForm = ({ user_data }: {
     user_data: StudentInformation | TeacherInformation
@@ -44,11 +44,11 @@ export const ProfileForm = ({ user_data }: {
     const { message, type, clearToast } = useToastStore()
     
     // profile information form
-    const profile_form = useForm<z.infer<typeof registerInformationSchema>>({
-        resolver: zodResolver(registerInformationSchema)
+    const profile_form = useForm<z.infer<typeof userProfileSchema>>({
+        resolver: zodResolver(userProfileSchema)
     })
 
-    function onSubmit(values: z.infer<typeof registerInformationSchema>) {
+    function onSubmit(values: z.infer<typeof userProfileSchema>) {
         const getChanges = getChangedFields(convertedData, values)
 
         if (Object.keys(getChanges).length !== 0) {

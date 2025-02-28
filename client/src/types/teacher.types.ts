@@ -1,16 +1,16 @@
-import { loginSchema, registerInformationSchema } from "@/schemas/authSchemas"
 import { z } from "zod"
 import { SubjectTypes } from "./global.types"
+import { userAccountSchema, userProfileSchema } from "@/schemas/user.schema"
 
 export type TeacherAccount = {
     _id: string
     role: 'faculty'
-} & Omit<z.infer<typeof loginSchema>, 'role'>
+} & Omit<z.infer<typeof userAccountSchema>, 'role'>
 
 export type TeacherProfile = {
     _id: string
     tid: string
-} & z.infer<typeof registerInformationSchema>
+} & z.infer<typeof userProfileSchema>
 
 export type TeacherClasses = {
     _id: string

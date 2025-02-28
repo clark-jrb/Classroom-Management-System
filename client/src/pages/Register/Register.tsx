@@ -6,17 +6,6 @@ import {
     FormLabel,
     FormMessage
 } from "@/components/ui/form"
-import { z } from "zod"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { Input } from "@/components/ui/input"
-import { useForm } from "react-hook-form"
-import { Button } from "@/components/ui/button"
-import { useEffect, useState } from "react"
-import { useAuthentication } from "@/hooks/useAuthQueries"
-import { registerAccountSchema, registerInformationSchema, registerClassesSchema } from "@/schemas/authSchemas"
-import { useAuthStore } from "@/stores/auth/authSlice"
-import { useNavigate } from "react-router-dom"
-import { DatePicker } from "@/components/ui/date-picker"
 import {
     Select,
     SelectContent,
@@ -24,15 +13,30 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select"
+import { 
+    userAccountSchema, 
+    userClassesSchema, 
+    userProfileSchema 
+} from "@/schemas/user.schema"
+import { z } from "zod"
+import { useEffect, useState } from "react"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { Input } from "@/components/ui/input"
+import { useForm } from "react-hook-form"
+import { Button } from "@/components/ui/button"
+import { useAuthentication } from "@/hooks/useAuthQueries"
+import { useAuthStore } from "@/stores/auth/authSlice"
+import { useNavigate } from "react-router-dom"
+import { DatePicker } from "@/components/ui/date-picker"
 import { RegisterStudent } from "./student"
 import { RegisterTeacher } from "./teacher"
 import { unregisterFields } from "@/helpers/unregister-fields"
 
 export const Register = () => {
-    const { registerUser }  = useAuthentication()
     const navigate = useNavigate()
     const { role } = useAuthStore()
-    const [nextForm, setNextForm] = useState(1)
+    const { registerUser }  = useAuthentication()
+    const [formStep, setFormStep] = useState(1)
     const [form1Values, setform1Values] = useState({})
     const [form2Values, setform2Values] = useState({})
 
@@ -44,8 +48,8 @@ export const Register = () => {
         unregisterFields({form: form3, role})
     }, [role]);
 
-    const form1 = useForm<z.infer<typeof registerAccountSchema>>({
-        resolver: zodResolver(registerAccountSchema),
+    const form1 = useForm<z.infer<typeof userAccountSchema>>({
+        resolver: zodResolver(userAccountSchema),
         defaultValues: {
             email: "",
             password: "",
@@ -54,8 +58,8 @@ export const Register = () => {
         mode: "onBlur"
     })
 
-    const form2 = useForm<z.infer<typeof registerInformationSchema>>({
-        resolver: zodResolver(registerInformationSchema),
+    const form2 = useForm<z.infer<typeof userProfileSchema>>({
+        resolver: zodResolver(userProfileSchema),
         defaultValues: {
             firstname: "",
             middlename: "",
@@ -66,8 +70,8 @@ export const Register = () => {
         mode: "onBlur"
     })
 
-    const form3 = useForm<z.infer<typeof registerClassesSchema>>({
-        resolver: zodResolver(registerClassesSchema),
+    const form3 = useForm<z.infer<typeof userClassesSchema>>({
+        resolver: zodResolver(userClassesSchema),
         defaultValues: {
             // for student
             gradeLevel: "",
@@ -81,17 +85,17 @@ export const Register = () => {
         mode: "onBlur"
     })
 
-    function onSubmitForm1(values: z.infer<typeof registerAccountSchema>) {
+    function onSubmitForm1(values: z.infer<typeof userAccountSchema>) {
         setform1Values(values)
-        setNextForm(2)
+        setFormStep(2)
     }
 
-    function onSubmitForm2(values: z.infer<typeof registerInformationSchema>) {
+    function onSubmitForm2(values: z.infer<typeof userProfileSchema>) {
         setform2Values(values)
-        setNextForm(3)
+        setFormStep(3)
     }
 
-    function onSubmitForm3(values: z.infer<typeof registerClassesSchema>) {
+    function onSubmitForm3(values: z.infer<typeof userClassesSchema>) {
         const registerData = {
             account: form1Values,
             profile: form2Values,
@@ -106,7 +110,7 @@ export const Register = () => {
     return (
         <div className="register-page">
             <div className="border rounded-md p-6">
-                {nextForm === 1 && (
+                {formStep === 1 && (
                     <Form {...form1}>
                         <form onSubmit={form1.handleSubmit(onSubmitForm1, onErrorForm)} className="space-y-6">
                             <FormField
@@ -143,7 +147,7 @@ export const Register = () => {
                     </Form>
                 )}
 
-                {nextForm === 2 && (
+                {formStep === 2 && (
                     <Form {...form2}>
                         <form onSubmit={form2.handleSubmit(onSubmitForm2, onErrorForm)} className="space-y-6">
                             <div className="flex gap-5">
@@ -260,18 +264,18 @@ export const Register = () => {
                     </Form>
                 )}
 
-                {nextForm === 3 && (
+                {formStep === 3 && (
                     <Form {...form3}>
                         <form onSubmit={form3.handleSubmit(onSubmitForm3, onErrorForm)} className="space-y-6">
-                        {/* For Students */}
+                            {/* Form for Students */}
                             {role === 'student' && (
                                 <RegisterStudent form={form3}/>
                             )}
-                        {/* For Faculty */}
+                            {/* Form for Faculty */}
                             {role === 'faculty' && (
                                 <RegisterTeacher form={form3}/>
                             )}
-                        {/* SUBMIT */}
+                            {/* Submit */}
                             <div className="float-end">
                                 <Button type="submit">
                                     Register

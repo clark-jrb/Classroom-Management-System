@@ -13,7 +13,7 @@ import {
     Form
 } from "@/components/ui/form"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { StudentSGSchema } from "@/schemas/computationSchemas"
+import { StudentSGSchema } from "@/schemas/computation.schema"
 import { StudentSG } from "@/types/computation.types"
 import { Button } from "@/components/ui/button"
 import { useStudentsPerformanceMutations } from "@/hooks/useTaskQueries"

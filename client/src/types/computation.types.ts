@@ -1,5 +1,5 @@
 import { z } from "zod"
-import { StudentPerformanceSchema, StudentSGSchema, StudentGASchema } from "@/schemas/computationSchemas"
+import { StudentPerformanceSchema, StudentSGSchema, StudentGASchema } from "@/schemas/computation.schema"
 import { QuarterTypes, SubjectTypes } from "./global.types"
 
 export type StudentPerformance = z.infer<typeof StudentPerformanceSchema>

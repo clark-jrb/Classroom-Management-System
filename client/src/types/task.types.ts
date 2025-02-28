@@ -1,4 +1,4 @@
-import { studentScoreSchema, taskSchema } from "@/schemas/teacherSchemas"
+import { studentScoreSchema, taskSchema } from "@/schemas/teacher.schema"
 import { z } from "zod"
 
 export type StudentTask = {
