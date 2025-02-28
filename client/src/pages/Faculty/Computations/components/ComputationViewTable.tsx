@@ -7,14 +7,14 @@ import {
     TableRow,
 } from "@/components/ui/table"
 import { useStudentsPerformance } from "@/hooks/useTaskQueries"
-import { QuarterTypes, SubjectTypes } from "@/types/GlobalTypes"
+import { QuarterTypes, SubjectTypes } from "@/types/global.types"
 import { useForm } from "react-hook-form"
 import { 
     Form
 } from "@/components/ui/form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { StudentSGSchema } from "@/schemas/computationSchemas"
-import { StudentSG } from "@/types/ComputationTypes"
+import { StudentSG } from "@/types/computation.types"
 import { Button } from "@/components/ui/button"
 import { useStudentsPerformanceMutations } from "@/hooks/useTaskQueries"
 import { useStudentsSG } from "@/hooks/useTaskQueries"

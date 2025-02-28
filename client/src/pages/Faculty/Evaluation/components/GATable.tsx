@@ -18,7 +18,7 @@ import {
   } from "@/components/ui/dialog"
 import { useStudentsCalculatedQA, useStudentsGA, useStudentsGAMutations } from "@/hooks/useTaskQueries"
 import { StudentGASchema } from "@/schemas/computationSchemas"
-import { StudentGA } from "@/types/ComputationTypes"
+import { StudentGA } from "@/types/computation.types"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useQueryClient } from "@tanstack/react-query"
 import { useEffect, useState } from "react"

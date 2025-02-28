@@ -25,9 +25,9 @@ import {
     TaskTypes, 
     QuarterTypes, 
     SubjectTypes
-} from "@/types/GlobalTypes"
-import { StudentGA, StudentSG } from "@/types/ComputationTypes"
-import { StudentTaskCreate, TTaskForm, TTasks, TUpdateTask, StudentScore } from "@/types/TasksTypes"
+} from "@/types/global.types"
+import { StudentGA, StudentSG } from "@/types/computation.types"
+import { TCreateStudentTask, TTaskForm, TTask, TUpdateTask, StudentScore } from "@/types/task.types"
 
 /**
  * this hook returns functions for tasks like UPDATE and CREATE 
@@ -43,7 +43,7 @@ export const useTaskMutations = () => {
     
     // generates task to each student
     const generateTasksToStudents = useMutation({
-        mutationFn: (value: StudentTaskCreate) => createTasksToStudents(value),
+        mutationFn: (value: TCreateStudentTask) => createTasksToStudents(value),
         onSuccess: (data) => {
             const { message } = data
             console.log(message)
@@ -59,7 +59,7 @@ export const useTaskMutations = () => {
     })
 
     // function to mutate generate tasks to students
-    function createTasks({ task_id, grade_lvl, section }: StudentTaskCreate) {
+    function createTasks({ task_id, grade_lvl, section }: TCreateStudentTask) {
         generateTasksToStudents.mutateAsync({ task_id, grade_lvl, section })
     }
 
@@ -103,7 +103,7 @@ export const useMyTasks = () => {
     if (isError) console.log('there is an error getting your tasks', error)
     
     // filters tasks by task type (ex. 'quiz')
-    function filterTask(taskType: TaskTypes): TTasks[] {
+    function filterTask(taskType: TaskTypes): TTask[] {
         return data.filter((item) => item.type === taskType)
     }
 

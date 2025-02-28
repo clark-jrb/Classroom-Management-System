@@ -7,7 +7,7 @@ import {
     TableRow,
 } from "@/components/ui/table"
 import { useStudentsQA } from "@/hooks/useTaskQueries"
-import { QuarterTypes } from "@/types/GlobalTypes"
+import { QuarterTypes } from "@/types/global.types"
 
 export const QATable = ({ section, grade_assigned, quarter }: {
     section: string

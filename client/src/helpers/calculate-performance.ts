@@ -1,7 +1,7 @@
-import { QuarterTypes, SubjectTypes, TaskTypes } from "@/types/GlobalTypes"
+import { QuarterTypes, SubjectTypes, TaskTypes } from "@/types/global.types"
 import { getWeightWithoutProject, getWeightWithProject } from "./get-weight"
 import { findProject } from "./is-there-a-project"
-import { StudentTakingTask } from "@/types/TasksTypes"
+import { StudentTakingTask } from "@/types/task.types"
 
 
 export function calculatePerformance(

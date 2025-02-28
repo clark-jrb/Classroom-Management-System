@@ -1,6 +1,6 @@
 import { loginSchema, registerInformationSchema } from "@/schemas/authSchemas"
 import { z } from "zod"
-import { SubjectTypes } from "./GlobalTypes"
+import { SubjectTypes } from "./global.types"
 
 export type TeacherAccount = {
     _id: string

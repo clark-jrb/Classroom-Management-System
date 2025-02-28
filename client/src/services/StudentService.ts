@@ -1,6 +1,6 @@
-import { StudentQA } from "@/types/ComputationTypes";
+import { StudentQA } from "@/types/computation.types";
 import { api } from "./api";
-import { Message } from "@/types/GlobalTypes";
+import { Message } from "@/types/global.types";
 
 /**
  * Mutation function to update student profile

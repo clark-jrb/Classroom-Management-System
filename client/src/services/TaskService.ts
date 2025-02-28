@@ -6,24 +6,24 @@ import {
     StudentCalculatedQA, 
     StudentGA, 
     StudentGeneralAverage 
-} from "@/types/ComputationTypes"
+} from "@/types/computation.types"
 import { api } from "./api"
-import { QuarterTypes, SubjectTypes } from "@/types/GlobalTypes"
-import { Message } from "@/types/GlobalTypes"
+import { QuarterTypes, SubjectTypes } from "@/types/global.types"
+import { Message } from "@/types/global.types"
 import { 
     StudentTask,
     StudentTakingTask,
-    StudentTaskCreate,
+    TCreateStudentTask,
     TTaskForm,
-    TTasks, 
+    TTask, 
     TUpdateTask,
     StudentScore
- } from "@/types/TasksTypes"
+ } from "@/types/task.types"
 
 export const createTask = async (
     tid: string, 
     value: TTaskForm
-): Promise<{task: TTasks} & Message> => {
+): Promise<{task: TTask} & Message> => {
     try {
         const response = await api.post(`/task/${tid}`, value, {
             withCredentials: true
@@ -69,7 +69,7 @@ export const getTasks = async ({ user_id, grade_assigned, section_handled, subje
     grade_assigned: string
     section_handled: string[]
     subjects: string[]
-}): Promise<TTasks[]> => {
+}): Promise<TTask[]> => {
     try {
         const response = await api.get('/tasks', {
             params: {
@@ -88,7 +88,7 @@ export const getTasks = async ({ user_id, grade_assigned, section_handled, subje
 }
 
 export const createTasksToStudents = async (
-    value: StudentTaskCreate
+    value: TCreateStudentTask
 ): Promise<Message> => {
     try {
         const response = await api.post(`/tasks/students`, value, {
@@ -104,7 +104,7 @@ export const createTasksToStudents = async (
 export const getStudentsTakingTask = async (
     task_id: string, 
     grade_lvl: string
-): Promise<{ task: TTasks, student_tasks: StudentTask[] }> => {
+): Promise<{ task: TTask, student_tasks: StudentTask[] }> => {
     try {
         const response = await api.get(`/students/task`, {
             params: {

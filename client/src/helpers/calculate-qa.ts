@@ -1,5 +1,5 @@
-import { StudentQA } from "@/types/ComputationTypes";
-import { SubjectTypes } from "@/types/GlobalTypes";
+import { StudentQA } from "@/types/computation.types";
+import { SubjectTypes } from "@/types/global.types";
 
 
 export function calculateQA(data: StudentQA[], subject: SubjectTypes) {

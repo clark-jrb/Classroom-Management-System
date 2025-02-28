@@ -1,5 +1,5 @@
 import { create } from "zustand"
-import { Roles } from "@/types/GlobalTypes"
+import { Roles } from "@/types/global.types"
 
 type AuthStore = {
     role: Roles | ""

@@ -1,6 +1,6 @@
 import { z } from "zod"
 import { StudentPerformanceSchema, StudentSGSchema, StudentGASchema } from "@/schemas/computationSchemas"
-import { QuarterTypes, SubjectTypes } from "./GlobalTypes"
+import { QuarterTypes, SubjectTypes } from "./global.types"
 
 export type StudentPerformance = z.infer<typeof StudentPerformanceSchema>
 export type StudentSG = z.infer<typeof StudentSGSchema>

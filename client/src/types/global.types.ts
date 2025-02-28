@@ -1,5 +1,5 @@
-import { TeacherAuthenticated } from "./TeacherTypes"
-import { StudentAccount } from "./StudentTypes"
+import { TeacherAuthenticated } from "./teacher.types"
+import { StudentAccount } from "./student.types"
 
 export type Roles = "student" | "faculty" | "admin"
 

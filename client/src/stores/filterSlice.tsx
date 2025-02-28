@@ -1,5 +1,5 @@
 import { create } from "zustand"
-import { QuarterTypes } from "@/types/GlobalTypes"
+import { QuarterTypes } from "@/types/global.types"
 
 type QuarterStore = {
     quarter: QuarterTypes

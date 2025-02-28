@@ -32,8 +32,8 @@ import { useEffect } from "react"
 import { registerInformationSchema } from "@/schemas/authSchemas"
 import { useToastStore } from "@/stores/toastStore"
 import { toast } from "sonner"
-import { StudentInformation } from "@/types/StudentTypes"
-import { TeacherInformation } from "@/types/TeacherTypes"
+import { StudentInformation } from "@/types/student.types"
+import { TeacherInformation } from "@/types/teacher.types"
 
 export const ProfileForm = ({ user_data }: {
     user_data: StudentInformation | TeacherInformation

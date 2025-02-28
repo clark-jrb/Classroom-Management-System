@@ -4,7 +4,7 @@ import { getCurrentUser } from "@/services/UserService"
 import { useAuthStore } from "@/stores/auth/authSlice"
 import { useStudentDialogStore } from "@/stores/studentSlice"
 import { useToastStore } from "@/stores/toastStore"
-import { Message } from "@/types/GlobalTypes"
+import { Message } from "@/types/global.types"
 import { useMutation, useQueryClient, useSuspenseQuery } from "@tanstack/react-query"
 
 /**

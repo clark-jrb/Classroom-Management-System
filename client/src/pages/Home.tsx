@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom"
 import { Button } from "@/components/ui/button"
 import { useState } from "react"
 import { useAuthStore } from "@/stores/auth/authSlice"
-import { Roles } from "@/types/GlobalTypes"
+import { Roles } from "@/types/global.types"
 
 export const Home = () => {
     const { setRole } = useAuthStore()

@@ -1,4 +1,4 @@
-import { QuarterTypes, SubjectTypes } from "@/types/GlobalTypes"
+import { QuarterTypes, SubjectTypes } from "@/types/global.types"
 import {
     Table,
     TableBody,
@@ -10,7 +10,7 @@ import {
 import { useStudentsQAMutations, useStudentsSG, useStudentsSGfromQA } from "@/hooks/useTaskQueries"
 import { Button } from "@/components/ui/button"
 import { useForm } from "react-hook-form"
-import { StudentSG } from "@/types/ComputationTypes"
+import { StudentSG } from "@/types/computation.types"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { StudentSGSchema } from "@/schemas/computationSchemas"
 import { Form } from "@/components/ui/form"

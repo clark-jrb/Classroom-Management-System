@@ -16,10 +16,10 @@ export type StudentTakingTask = {
     _id: string
     score: number,
     sid: string
-    task_id: TTasks
+    task_id: TTask
 }
 
-export type StudentTaskCreate = {
+export type TCreateStudentTask = {
     task_id: string
     grade_lvl: string
     section: string
@@ -27,7 +27,7 @@ export type StudentTaskCreate = {
 
 export type TTaskForm = z.infer<typeof taskSchema>
 
-export type TTasks = TTaskForm & {
+export type TTask = TTaskForm & {
     _id: string
     tid: string
 }

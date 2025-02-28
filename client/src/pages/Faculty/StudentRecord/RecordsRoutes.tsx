@@ -13,7 +13,7 @@ import { Records } from './Records'
 import { TaskView } from './component/TaskView'
 import { Suspense } from 'react'
 import { TaskPage } from './pages/TaskPage'
-import { TaskTypes } from '@/types/GlobalTypes'
+import { TaskTypes } from '@/types/global.types'
 
 export const RecordsRoutes = () => {
     const location = useLocation()

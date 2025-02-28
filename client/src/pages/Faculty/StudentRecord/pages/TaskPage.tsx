@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { TaskForm } from "../component/TaskForm"
 import { TaskList } from "../component/TaskList"
-import { TaskTypes } from "@/types/GlobalTypes"
+import { TaskTypes } from "@/types/global.types"
 
 export const TaskPage = ({ task_type }: {
     task_type: TaskTypes

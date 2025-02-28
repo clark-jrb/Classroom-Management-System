@@ -1,6 +1,6 @@
 import { useMyTasks } from "@/hooks/useTaskQueries"
 import { useNavigate } from "react-router-dom"
-import { TaskTypes } from "@/types/GlobalTypes"
+import { TaskTypes } from "@/types/global.types"
 import { TaskUpdate } from "./TaskUpdate"
 import { TaskDelete } from "./TaskDelete"
 

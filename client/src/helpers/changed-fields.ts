@@ -1,7 +1,7 @@
 import { studentProfileSchema } from "@/schemas/studentSchemas";
 import { studentScoreSchema } from "@/schemas/teacherSchemas";
-import { StudentSG, StudentSGWithProfile } from "@/types/ComputationTypes";
-import { TUpdateTask } from "@/types/TasksTypes"
+import { StudentSG, StudentSGWithProfile } from "@/types/computation.types";
+import { TUpdateTask } from "@/types/task.types"
 import { z } from "zod";
 
 

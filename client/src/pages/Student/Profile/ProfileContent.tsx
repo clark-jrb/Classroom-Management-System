@@ -8,8 +8,8 @@ import {
 import { ProfileForm } from "./ProfileForm"
 import moment from "moment"
 import { useAuthStore } from "@/stores/auth/authSlice"
-import { StudentInformation } from "@/types/StudentTypes"
-import { TeacherInformation } from "@/types/TeacherTypes"
+import { StudentInformation } from "@/types/student.types"
+import { TeacherInformation } from "@/types/teacher.types"
 
 export const ProfileContent = ({ user_data }: {
     user_data: StudentInformation | TeacherInformation

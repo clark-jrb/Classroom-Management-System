@@ -1,4 +1,4 @@
-import { Message } from "@/types/GlobalTypes"
+import { Message } from "@/types/global.types"
 import { api } from "./api"
 
 export const login = async (

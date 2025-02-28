@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom"
-import { SubjectTypes } from "@/types/GlobalTypes"
+import { SubjectTypes } from "@/types/global.types"
 
 export const Sections = ({ section_assigned, subject_handled, route }: {
     section_assigned: string

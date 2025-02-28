@@ -24,7 +24,7 @@ import { getChangedScores } from "@/helpers/changed-fields"
 import { useTaskMutations, useStudentTasks } from "@/hooks/useTaskQueries"
 import { teacherClassInfo } from "@/hooks/useTeacherQueries"
 import { toast } from "sonner"
-import { StudentScore } from "@/types/TasksTypes"
+import { StudentScore } from "@/types/task.types"
 
 export const TaskView = () => {
     const { taskId } = useParams()

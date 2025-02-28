@@ -1,6 +1,6 @@
 import { api } from "./api";
-import { Message } from "@/types/GlobalTypes"
-import { MyStudents } from "@/types/TeacherTypes";
+import { Message } from "@/types/global.types"
+import { MyStudents } from "@/types/teacher.types";
 
 export const getMyStudents = async (
     gradeLevel: string, section: string
