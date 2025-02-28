@@ -1,7 +1,7 @@
 // toastStore.ts
 import { create } from 'zustand'
 
-type ToastTypes = 'success' | 'error' | 'loading'
+type ToastTypes = 'success' | 'error' | 'loading' | 'warning'
 
 type ToastState = {
     message: string | null

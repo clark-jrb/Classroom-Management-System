@@ -3,6 +3,8 @@ import { z } from "zod"
 import { TeacherAuthenticated } from "./TeacherTypes"
 import { StudentAccount } from "./StudentTypes"
 
+export type Roles = "student" | "faculty" | "admin"
+
 export type AllString = {
     [key: string]: string
 }

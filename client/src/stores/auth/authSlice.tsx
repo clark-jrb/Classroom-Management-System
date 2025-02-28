@@ -1,25 +1,26 @@
 import { create } from "zustand"
+import { Roles } from "@/types/GlobalTypes"
 
 type AuthStore = {
-    role: string,
-    user_id: string,
-    setRole: (newRole: string) => void,
-    setUserId: (newUserId: string) => void,
+    role: Roles | ""
+    user_id: string
+    setRole: (newRole: Roles | "") => void
+    setUserId: (newUserId: string) => void
 }
 
 export const useAuthStore = create<AuthStore>((set) => ({
     role: "",
     user_id: "",
-    setRole: (newRole) => set({ role: newRole }),
-    setUserId: (newUserId) => set({ user_id: newUserId })
+    setRole: (value) => set({ role: value }),
+    setUserId: (value) => set({ user_id: value })
 }))
 
 type TeacherStore = {
     teacher_role: string
-    setTeacherRole: (newTeacherRole: string) => void,
+    setTeacherRole: (value: string) => void,
 }
 
 export const useTeacherStore = create<TeacherStore>((set) => ({
     teacher_role: "",
-    setTeacherRole: (newTeacherRole) => set({ teacher_role: newTeacherRole })
+    setTeacherRole: (value) => set({ teacher_role: value })
 }))

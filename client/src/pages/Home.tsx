@@ -2,13 +2,14 @@ import { useNavigate } from "react-router-dom"
 import { Button } from "@/components/ui/button"
 import { useState } from "react"
 import { useAuthStore } from "@/stores/auth/authSlice"
+import { Roles } from "@/types/GlobalTypes"
 
 export const Home = () => {
     const { setRole } = useAuthStore()
     const navigate = useNavigate()
-    const [roleState, setRoleState] = useState('');
+    const [roleState, setRoleState] = useState<string>()
 
-    function handleSetRole(e: string) {
+    function handleSetRole(e: Roles) {
         setRoleState(e) 
         setRole(e)
     }
@@ -16,13 +17,16 @@ export const Home = () => {
     return (
         <div className="home-page">
             <div className="border rounded-md p-6 flex gap-3">
-                {roleState === '' ? 
+                {!roleState ? 
                     <>
                         <Button onClick={() => handleSetRole('student')}>
                             Student
                         </Button>
                         <Button onClick={() => handleSetRole('faculty')}>
                             Faculty
+                        </Button>
+                        <Button onClick={() => handleSetRole('admin')}>
+                            Admin
                         </Button>
                     </>
                     :
