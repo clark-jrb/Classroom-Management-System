@@ -1,4 +1,4 @@
-import { studentScoreSchema } from "@/schemas/teacher.schema"
+import { studentScoreSchema } from "@/schemas/task.schema"
 import { userProfileSchema } from "@/schemas/user.schema"
 import { StudentSG, StudentSGWithProfile } from "@/types/computation.types"
 import { TUpdateTask } from "@/types/task.types"

@@ -1,9 +1,9 @@
 import { z } from "zod"
 
 export const userAccountSchema = z.object({
-    email: z.string().min(1, { message: 'please fill the empty field' }),
-    password: z.string().min(8, { message: 'password should be 8 characters' }),
-    role: z.string().min(1, { message: 'role is required' })
+    email: z.string().min(1, { message: 'Please fill the empty field' }),
+    password: z.string().min(8, { message: 'Password should be 8 characters' }),
+    role: z.string().min(1, { message: 'Role is required' })
 })
 
 export const userProfileSchema = z.object({

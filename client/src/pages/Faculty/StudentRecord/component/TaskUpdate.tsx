@@ -26,7 +26,7 @@ import {
 } from "@/components/ui/select"
 import { Input } from "@/components/ui/input"
 import { teacherClassInfo } from "@/hooks/useTeacherQueries"
-import { updateTaskSchema } from "@/schemas/teacher.schema"
+import { updateTaskSchema } from "@/schemas/task.schema"
 import { TUpdateTask } from "@/types/global.types"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Pencil } from "lucide-react"
