@@ -1,7 +1,7 @@
 import { TaskTypes } from "@/types/global.types";
 
-export function getWeightWithoutProject(type: TaskTypes) {
-    const percentageMap: Record<TaskTypes, number> = {
+export function getWeightWithoutProject(type: TaskTypes | "") {
+    const select_percentage: Record<TaskTypes | "", number> = {
         recitation: 5,
         activity: 8,
         quiz: 12,
@@ -11,11 +11,11 @@ export function getWeightWithoutProject(type: TaskTypes) {
         '': 0
     };
 
-    return percentageMap[type]
+    return select_percentage[type]
 }
 
-export function getWeightWithProject(type: TaskTypes) {
-    const percentageMap: Record<TaskTypes, number> = {
+export function getWeightWithProject(type: TaskTypes | "") {
+    const select_percentage: Record<TaskTypes | "", number> = {
         recitation: 3,
         activity: 5,
         quiz: 7,
@@ -25,5 +25,5 @@ export function getWeightWithProject(type: TaskTypes) {
         '': 0
     };
 
-    return percentageMap[type]
+    return select_percentage[type]
 }
