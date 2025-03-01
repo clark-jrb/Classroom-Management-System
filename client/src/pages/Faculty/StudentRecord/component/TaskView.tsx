@@ -35,7 +35,13 @@ export const TaskView = () => {
     const { data, isError, error } = useStudentTasks(taskId as string, grade_assigned)
     const { task, student_tasks } = data
 
-    const studentScoresData = student_tasks.map(({ _id, score, sid }) => ({
+    if (isError) {
+        console.log(error)
+
+        return <div>There is an error</div>
+    }
+
+    const studentScoresData = student_tasks?.map(({ _id, score, sid }) => ({
         _id,
         sid: sid.sid,
         score
@@ -71,12 +77,6 @@ export const TaskView = () => {
 
     function onError(errors: any) { 
         console.log("Form errors:", errors) 
-    }
-
-    if (isError) {
-        console.log(error)
-
-        return <div>There is an error</div>
     }
 
     return (

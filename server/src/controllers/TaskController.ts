@@ -160,6 +160,7 @@ export class TaskController {
      */
     public getStudentsTakingTask = async (req: Request, res: Response): Promise<void> =>  {
         try {
+            const { id } = req.params
             const { task_id, grade_lvl } = req.query
             const Model = selectTaskGradeModel(grade_lvl as GradeLevels)
 
@@ -173,9 +174,17 @@ export class TaskController {
                     foreignField: 'sid', 
                     select: 'firstname lastname'
                 })
-                .populate('task_id')
+                .populate<{ task_id: Task }>('task_id')
 
-            res.status(200).json({ task, student_tasks })
+            const task_owner = student_tasks[0].task_id.tid
+            
+            if (id !== task_owner.toString()) {
+                console.log("You are not the owner of this task")
+                res.status(400).json({ message: "You are not the owner of this task" })
+            } else {
+                res.status(200).json({ task, student_tasks })
+            }
+
         } catch (error) {
             console.log(error)
             res.status(400).json({ 

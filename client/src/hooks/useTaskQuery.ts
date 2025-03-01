@@ -131,9 +131,10 @@ export const useMyTasks = () => {
  * (ex. "students" taking "quiz no. 2")
  */
 export const useStudentTasks = (task_id: string, grade_lvl: string) => {
+    const { user_id } = useAuthStore()
     return useSuspenseQuery({
-        queryKey: ['students_taking_task', task_id, grade_lvl],
-        queryFn: () => getStudentsTakingTask(task_id, grade_lvl)
+        queryKey: ['students_taking_task', user_id, task_id, grade_lvl],
+        queryFn: () => getStudentsTakingTask(user_id, task_id, grade_lvl)
     })
 }
 

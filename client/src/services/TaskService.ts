@@ -102,11 +102,12 @@ export const createTasksToStudents = async (
 }
 
 export const getStudentsTakingTask = async (
+    tid: string,
     task_id: string, 
     grade_lvl: string
 ): Promise<{ task: TTask, student_tasks: StudentTask[] }> => {
     try {
-        const response = await api.get(`/students/task`, {
+        const response = await api.get(`/students/task/${tid}`, {
             params: {
                 task_id,
                 grade_lvl

@@ -1,6 +1,7 @@
 import express from 'express'
 import { TaskController } from '../controllers/TaskController'
 import { isAuthenticated } from '../middlewares'
+import { isOwner } from '../middlewares'
 
 const Task = new TaskController()
 const { 
@@ -32,7 +33,7 @@ export default (router: express.Router) => {
     router.post('/task/:tid', isAuthenticated, createTask) // gets teacher id params for ownership of the task
     router.post('/tasks/students', isAuthenticated, createTasksToStudents)
 
-    router.get('/students/task', isAuthenticated, getStudentsTakingTask)
+    router.get('/students/task/:id', isAuthenticated, isOwner, getStudentsTakingTask)
     router.get('/students/my_tasks', isAuthenticated, getStudentsTakingMyTasks)
     router.patch('/students/scores', isAuthenticated, updateStudentsScores) // find students according to grade level and updates scores
 
