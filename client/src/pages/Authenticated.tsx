@@ -1,6 +1,6 @@
 import { useAuthStore, useTeacherStore } from "@/stores/auth/authSlice"
 import { useEffect } from "react"
-import { Routes, Route } from "react-router-dom"
+import { Routes, Route, Navigate } from "react-router-dom"
 import { StudentDashboard } from "./Student/StudentDashboard"
 import { MyGrades } from "./Student/Grades/MyGrades"
 import { StudentProfile } from "./Student/StudentProfile"
@@ -90,7 +90,7 @@ export const AuthenticatedRoutes = () => {
              * Fallback when a user accessed a different route 
              * (ex. You are student but you CANNOT access faculty routes!)
              */}
-            <Route path="*" element={<div>Forbidden</div>} /> 
+             <Route path="*" element={<Navigate to="/" replace/>} />
         </Routes>
     )
 }
