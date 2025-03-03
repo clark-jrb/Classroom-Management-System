@@ -74,7 +74,7 @@ export const AuthenticatedRoutes = () => {
             {/* If role is student, then it will load all its routes */}
             {role === 'student' && ( 
                 /* Map student routes array with paths and elements */
-                studentRoutes.map(({ path, element }, index) => ( 
+                studentRoutes.map(({ path, element }, index) => (
                     <Route key={index} path={path} element={element}/>
                 ))
             )}
@@ -90,7 +90,7 @@ export const AuthenticatedRoutes = () => {
              * Fallback when a user accessed a different route 
              * (ex. You are student but you CANNOT access faculty routes!)
              */}
-             <Route path="*" element={<Navigate to="/" replace/>} />
+            {role && <Route path="*" element={<Navigate to="/" replace/>} />}
         </Routes>
     )
 }

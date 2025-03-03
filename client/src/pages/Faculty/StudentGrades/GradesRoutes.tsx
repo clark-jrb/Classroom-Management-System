@@ -1,6 +1,6 @@
 import { FacultyLayout } from "../FacultyLayout"
 import { Container } from "@/components/Container"
-import { Navigate, Route, Routes } from "react-router-dom"
+import { Route, Routes } from "react-router-dom"
 import { Suspense } from "react"
 // import { SectionView } from "../Computations/components/SectionView"
 import { Grades } from "./Grades"
@@ -21,7 +21,6 @@ export const GradesRoutes = () => {
                             <GradesView/>
                         </Suspense>
                     }/>
-                    <Route path="*" element={<Navigate to="/" replace />} />
                 </Routes>
             </Container>
         </FacultyLayout>
