@@ -117,12 +117,15 @@ export const getStudentsTakingTask = async (
 
         return response.data
     } catch (error: any) {
-        throw new Error('Client: Failed to get students taking a specific tasks')
+        if (error.response && error.response.data) {
+            throw new Error(error.response.data.message)
+        }
+        throw new Error('Client: Failed to get students taking a specific task')
     }
 }
 
 export const updateStudentsScores = async (
-    value: StudentScore["student_scores"], 
+    value: StudentScore['student_scores'], 
     grade_lvl: string
 ): Promise<Message> => {
     try {

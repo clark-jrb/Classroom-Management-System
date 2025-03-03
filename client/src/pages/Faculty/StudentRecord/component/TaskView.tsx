@@ -3,7 +3,6 @@ import { useQueryClient } from "@tanstack/react-query"
 import {
     Table,
     TableBody,
-    TableCaption,
     TableCell,
     TableHead,
     TableHeader,
@@ -24,28 +23,46 @@ import { getChangedScores } from "@/helpers/changed-fields"
 import { useTaskMutations, useStudentTasks } from "@/hooks/useTaskQuery"
 import { teacherClassInfo } from "@/hooks/useTeacherQuery"
 import { toast } from "sonner"
-import { StudentScore } from "@/types/task.types"
+import { StudentScore, StudentTask, TTask } from "@/types/task.types"
 
 export const TaskView = () => {
     const { taskId } = useParams()
-    const { updateScores } = useTaskMutations()
-    const queryClient = useQueryClient()
     const { grade_assigned } = teacherClassInfo()
     
     const { data, isLoading, isError, error } = useStudentTasks(taskId as string, grade_assigned)
-    const { task, student_tasks } = data || {}
 
     if (isLoading) {
         console.log('loading data...')
+        return <div>Loading...</div>
     }
 
     if (isError) {
         console.log(error)
+        return <div>{error?.message}</div>
     }
 
-    const studentScoresData = student_tasks?.map(({ _id, score, sid }) => ({
+    if (data && taskId) return (
+        <div>
+            <TaskTable data={data} taskId={taskId} grade_assigned={grade_assigned} />
+        </div>
+    )
+}
+
+const TaskTable = ({ data, taskId, grade_assigned }: {
+    data: { 
+        task: TTask,
+        student_tasks: StudentTask[]
+    },
+    taskId: string
+    grade_assigned: string
+}) => {
+    const { updateScores } = useTaskMutations()
+    const queryClient = useQueryClient()
+
+    const { task, student_tasks } = data
+
+    const studentScoresData = student_tasks.map(({ _id, score }) => ({
         _id,
-        sid: sid.sid,
         score
     }))
 
@@ -82,14 +99,13 @@ export const TaskView = () => {
     }
 
     return (
-        <div>
+        <>
             <div>
                 {task?.type}{task?.task_no}{task?.subject}{task?.grade}{task?.section}
             </div>
             <Form {...studentScoreForm}>
                 <form onSubmit={studentScoreForm.handleSubmit(onSubmit, onError)}>
                     <Table>
-                        <TableCaption>A list of students scores.</TableCaption>
                         <TableHeader>
                             <TableRow>
                                 <TableHead className="w-[200px]">Last Name</TableHead>
@@ -99,7 +115,7 @@ export const TaskView = () => {
                             </TableRow>
                         </TableHeader>
                         <TableBody>
-                            {student_tasks?.map(({
+                            {student_tasks && student_tasks.map(({
                                 sid: { firstname, lastname },
                                 task_id: { total_items }
                             }, index: number) => (
@@ -117,8 +133,8 @@ export const TaskView = () => {
                                                             type="number"
                                                             className="w-[150px]"
                                                             placeholder="score"
-                                                            {...field}
-                                                            onChange={(e) => field.onChange(Number(e.target.value))}
+                                                            value={field.value ?? ""}
+                                                            onChange={(e) => field.onChange(Number(e.target.value) || 0)}
                                                             min={0}
                                                             max={total_items}
                                                         />
@@ -137,6 +153,6 @@ export const TaskView = () => {
                     </Button>
                 </form>
             </Form>
-        </div>
+        </>
     )
 }

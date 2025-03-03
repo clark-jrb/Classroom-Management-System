@@ -1,7 +1,6 @@
-import { studentScoreSchema } from "@/schemas/task.schema"
 import { userProfileSchema } from "@/schemas/user.schema"
 import { StudentSG, StudentSGWithProfile } from "@/types/computation.types"
-import { TUpdateTask } from "@/types/task.types"
+import { StudentScore, TUpdateTask } from "@/types/task.types"
 import { z } from "zod"
 
 
@@ -28,11 +27,10 @@ export function getChangedFields(
     return changes
 }
 
-type StudentScore = z.infer<typeof studentScoreSchema>["student_scores"]
 
 export function getChangedScores(
-    originalScores: StudentScore | undefined,
-    newScores: StudentScore
+    originalScores: StudentScore['student_scores'],
+    newScores: StudentScore['student_scores']
 ) {
     if (!originalScores || originalScores.length !== newScores.length) {
         throw new Error("Both arrays must have the same length")
@@ -43,7 +41,7 @@ export function getChangedScores(
         return newItem.score !== originalItem.score
     })
 
-    return changedScores.map(({ _id, sid, score }) => ({ _id, sid, score }))
+    return changedScores.map(({ _id, score }) => ({ _id, score }))
 }
 
 

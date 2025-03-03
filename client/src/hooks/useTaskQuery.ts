@@ -55,7 +55,7 @@ export const useTaskMutations = () => {
 
     // Updates students scores
     const updateScores = useMutation({
-        mutationFn: (value: StudentScore["student_scores"]) => updateStudentsScores(value, grade_assigned)
+        mutationFn: (value: StudentScore['student_scores']) => updateStudentsScores(value, grade_assigned)
     })
 
     return { 
@@ -133,8 +133,10 @@ export const useMyTasks = () => {
 export const useStudentTasks = (task_id: string, grade_lvl: string) => {
     const { user_id } = useAuthStore()
     return useQuery({
-        queryKey: ['students_taking_task', user_id, task_id, grade_lvl],
-        queryFn: () => getStudentsTakingTask(user_id, task_id, grade_lvl)
+        queryKey: ['students_taking_task', task_id, grade_lvl],
+        queryFn: () => getStudentsTakingTask(user_id, task_id, grade_lvl),
+        retry: 1
+        // enabled: !!user_id && !!task_id && !!grade_lvl
     })
 }
 
