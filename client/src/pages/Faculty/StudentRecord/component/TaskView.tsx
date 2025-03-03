@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom"
+import { Navigate, useParams } from "react-router-dom"
 import { useQueryClient } from "@tanstack/react-query"
 import {
     Table,
@@ -36,7 +36,8 @@ export const TaskView = () => {
     }
 
     if (isError) {
-        return <div>{error.message}</div>
+        toast.error(error.message)
+        return <Navigate to="/records" replace/>
     }
 
     if (data && taskId) return (
