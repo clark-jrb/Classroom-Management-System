@@ -32,13 +32,11 @@ export const TaskView = () => {
     const { data, isLoading, isError, error } = useStudentTasks(taskId as string, grade_assigned)
 
     if (isLoading) {
-        console.log('loading data...')
         return <div>Loading...</div>
     }
 
     if (isError) {
-        console.log(error)
-        return <div>{error?.message}</div>
+        return <div>{error.message}</div>
     }
 
     if (data && taskId) return (

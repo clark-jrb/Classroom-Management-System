@@ -21,7 +21,7 @@ export const GradesRoutes = () => {
                             <GradesView/>
                         </Suspense>
                     }/>
-                    <Route path="/view" element={<Navigate to={'/'} replace />}/>
+                    <Route path="*" element={<Navigate to="/" replace />} />
                 </Routes>
             </Container>
         </FacultyLayout>
