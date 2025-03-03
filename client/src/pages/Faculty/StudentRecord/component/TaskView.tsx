@@ -32,13 +32,15 @@ export const TaskView = () => {
     const queryClient = useQueryClient()
     const { grade_assigned } = teacherClassInfo()
     
-    const { data, isError, error } = useStudentTasks(taskId as string, grade_assigned)
-    const { task, student_tasks } = data
+    const { data, isLoading, isError, error } = useStudentTasks(taskId as string, grade_assigned)
+    const { task, student_tasks } = data || {}
+
+    if (isLoading) {
+        console.log('loading data...')
+    }
 
     if (isError) {
         console.log(error)
-
-        return <div>There is an error</div>
     }
 
     const studentScoresData = student_tasks?.map(({ _id, score, sid }) => ({
@@ -82,7 +84,7 @@ export const TaskView = () => {
     return (
         <div>
             <div>
-                {task.type}{task.task_no}{task.subject}{task.grade}{task.section}
+                {task?.type}{task?.task_no}{task?.subject}{task?.grade}{task?.section}
             </div>
             <Form {...studentScoreForm}>
                 <form onSubmit={studentScoreForm.handleSubmit(onSubmit, onError)}>
@@ -97,7 +99,7 @@ export const TaskView = () => {
                             </TableRow>
                         </TableHeader>
                         <TableBody>
-                            {student_tasks.map(({
+                            {student_tasks?.map(({
                                 sid: { firstname, lastname },
                                 task_id: { total_items }
                             }, index: number) => (

@@ -1,5 +1,5 @@
 import { useAuthStore } from "@/stores/auth/authSlice"
-import { useMutation, useQueryClient, useSuspenseQuery } from "@tanstack/react-query"
+import { useMutation, useQuery, useQueryClient, useSuspenseQuery } from "@tanstack/react-query"
 import { teacherClassInfo } from "./useTeacherQuery"
 import { 
     createTask, 
@@ -132,7 +132,7 @@ export const useMyTasks = () => {
  */
 export const useStudentTasks = (task_id: string, grade_lvl: string) => {
     const { user_id } = useAuthStore()
-    return useSuspenseQuery({
+    return useQuery({
         queryKey: ['students_taking_task', user_id, task_id, grade_lvl],
         queryFn: () => getStudentsTakingTask(user_id, task_id, grade_lvl)
     })

@@ -31,7 +31,7 @@ export function getChangedFields(
 type StudentScore = z.infer<typeof studentScoreSchema>["student_scores"]
 
 export function getChangedScores(
-    originalScores: StudentScore,
+    originalScores: StudentScore | undefined,
     newScores: StudentScore
 ) {
     if (!originalScores || originalScores.length !== newScores.length) {

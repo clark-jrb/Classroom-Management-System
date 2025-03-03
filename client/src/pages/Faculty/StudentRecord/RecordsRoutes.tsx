@@ -70,11 +70,7 @@ export const RecordsRoutes = () => {
                             </Suspense>
                         }/>
                     ))}
-                    <Route path=':id/view/:taskId' element={
-                        <Suspense fallback={<div>loading...</div>}>
-                            <TaskView/>
-                        </Suspense>
-                    }/>
+                    <Route path=':id/view/:taskId' element={<TaskView/>}/>
                 </Routes>
 
             </Container>

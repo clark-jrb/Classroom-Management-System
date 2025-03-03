@@ -116,7 +116,7 @@ export const getStudentsTakingTask = async (
         })
 
         return response.data
-    } catch (error) {
+    } catch (error: any) {
         throw new Error('Client: Failed to get students taking a specific tasks')
     }
 }

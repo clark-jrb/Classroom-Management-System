@@ -176,7 +176,11 @@ export class TaskController {
                 })
                 .populate<{ task_id: Task }>('task_id')
 
-            const task_owner = student_tasks[0].task_id.tid
+            if (!student_tasks.length) {
+                res.status(404).json({ message: "No students found for this task" })
+            }
+
+            const task_owner = student_tasks[0]?.task_id?.tid
             
             if (id !== task_owner.toString()) {
                 console.log("You are not the owner of this task")
