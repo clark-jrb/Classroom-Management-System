@@ -1,7 +1,7 @@
 import React from 'react'
 import { FacultyLayout } from "../FacultyLayout"
 import { Container } from "@/components/Container"
-import { Route, Routes, Link, useLocation } from "react-router-dom"
+import { Route, Routes, Link, useLocation, Navigate } from "react-router-dom"
 import {
     Breadcrumb,
     BreadcrumbItem,
@@ -71,6 +71,7 @@ export const RecordsRoutes = () => {
                         }/>
                     ))}
                     <Route path=':id/view/:taskId' element={<TaskView/>}/>
+                    <Route path="*" element={<Navigate to="/records" replace/>} />
                 </Routes>
 
             </Container>

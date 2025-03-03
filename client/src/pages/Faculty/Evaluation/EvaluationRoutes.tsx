@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom"
+import { Navigate, Route, Routes } from "react-router-dom"
 import { Suspense } from "react"
 import { Evaluation } from "./Evaluation"
 import { ViewQA } from "./components/ViewQA"
@@ -9,8 +9,8 @@ export const EvaluationRoutes = () => {
     const { data: teacher_data } = useTeacherData()
     const { teacher_role, grade_assigned, section_handled } = teacher_data.classes
     
-    if (teacher_role !== 'homeroom' || section_handled.length > 1) {
-        return <div>You are not homeroom</div>
+    if (teacher_role !== 'homeroom') {
+        return <Navigate to="/" replace/>
     }
 
     const section = section_handled.join('')
