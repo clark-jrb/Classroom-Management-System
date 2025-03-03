@@ -7,6 +7,8 @@ export type TeacherAccount = {
     role: 'faculty'
 } & Omit<z.infer<typeof userAccountSchema>, 'role'>
 
+export type TeacherRole = "homeroom" | "subject"
+
 export type TeacherProfile = {
     _id: string
     tid: string
@@ -15,7 +17,7 @@ export type TeacherProfile = {
 export type TeacherClasses = {
     _id: string
     tid: string
-    teacher_role: string
+    teacher_role: TeacherRole
     grade_assigned: string
     section_handled: string[]
     subjects: SubjectTypes[]

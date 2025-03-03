@@ -1,5 +1,6 @@
 import { create } from "zustand"
 import { Roles } from "@/types/global.types"
+import { TeacherRole } from "@/types/teacher.types"
 
 type AuthStore = {
     role: Roles | ""
@@ -16,8 +17,8 @@ export const useAuthStore = create<AuthStore>((set) => ({
 }))
 
 type TeacherStore = {
-    teacher_role: string
-    setTeacherRole: (value: string) => void,
+    teacher_role: "" | TeacherRole
+    setTeacherRole: (value: "" | TeacherRole) => void,
 }
 
 export const useTeacherStore = create<TeacherStore>((set) => ({

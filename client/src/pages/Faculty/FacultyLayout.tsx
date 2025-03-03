@@ -39,9 +39,9 @@ export const FacultyLayout = ({ children }: any) => {
                 role={'faculty'} 
                 handleLogout={handleLogout} 
                 links={
-                    teacher_role !== 'homeroom'
-                    ? removeEvaluation()
-                    : facultyLinks
+                    teacher_role && teacher_role !== 'homeroom'
+                        ? removeEvaluation()
+                        : facultyLinks
                 }
             />
             <main className="h-dvh student-content">
