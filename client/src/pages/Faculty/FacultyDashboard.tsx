@@ -14,8 +14,9 @@ export const FacultyDashboard = () => {
                     <div className="h-[10rem] w-[10rem] border rounded">
                         <p className="text-lg">Current:</p>
                         <p className="text-2xl">
-                            {current_quarter && 
-                                getQuarterName(current_quarter)
+                            {current_quarter 
+                                ? getQuarterName(current_quarter)
+                                : 'Loading...'
                             }
                         </p>
                     </div>
