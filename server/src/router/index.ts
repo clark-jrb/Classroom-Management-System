@@ -4,10 +4,12 @@ import user from './user'
 import student from './student'
 import teacher from './teacher'
 import task from './task'
+import admin from './admin'
 
 const router = express.Router()
 
 export default (): express.Router => {
+    admin(router)
     authentication(router)
     user(router)
     student(router)
