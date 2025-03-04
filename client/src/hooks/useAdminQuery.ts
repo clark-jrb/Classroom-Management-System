@@ -9,9 +9,13 @@ export const useCurrentQuarter = () => {
     })
 }
 
-export const quarterMutation = useMutation({
-    mutationFn: ({ id, values }: {
-        id: string, 
-        values: CurrentQuarter
-    }) => updateCurrentQuarter(id, values)
-})
+export const useAdminMutations = () => {
+    const quarterMutation = useMutation({
+        mutationFn: ({ id, values }: {
+            id: string, 
+            values: CurrentQuarter
+        }) => updateCurrentQuarter(id, values)
+    })
+
+    return { quarterMutation }
+}
