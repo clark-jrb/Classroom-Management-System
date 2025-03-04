@@ -1,6 +1,6 @@
 @import 'App';
 
-.student-content {
+.main-content {
     background-color: $dirty-white;
     margin-left: 13rem;
     padding: 2rem;
@@ -78,14 +78,14 @@
     height: 2.75rem;
 }
 
-.student-nav-link {
+.side-nav-link {
     text-align: left;
     padding-inline: 3rem;
     padding-block: .75rem;
 }
 
 
-.student-links {
+.side-bar-links {
     position: relative;
     flex: 1;
 }
@@ -95,6 +95,6 @@
     bottom: 2rem;
 }
 
-#logout-btn-in-links:hover, .student-nav-link:hover {
+#logout-btn-in-links:hover, .side-nav-link:hover {
     cursor: pointer;
 }

@@ -20,9 +20,9 @@ export class UserController {
     // create user (student and teachers) 
     public async createUser(
         accountData: UserAccount, 
+        role: ValidRoles,
         profileData?: UserProfile, 
         classData?: StudentClass | TeacherClass, 
-        role?: ValidRoles
     ) {
         const AccountModel = selectAccountModel(role) // Select on StudentAccountModel, TeacherAccountModel
         const ProfileModel = selectProfileModel(role) // Select on StudentProfileModel, TeacherProfileModel
@@ -54,10 +54,6 @@ export class UserController {
                 ProfileModel.create({ tid: user._id, ...profileData }),
                 ClassModel.create({ tid: user._id, ...teacher_class })
             ])
-        }
-
-        if (role === 'admin') {
-            return await AccountModel.create(accountData)
         }
     }
 

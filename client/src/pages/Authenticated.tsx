@@ -12,6 +12,7 @@ import { GradesRoutes } from "./Faculty/StudentGrades/GradesRoutes"
 import { useCurrentUser } from "@/hooks/useUsersQuery"
 import { EvaluationPage } from "./Faculty/Evaluation/EvaluationPage"
 import { MyClassesRoutes } from "./Faculty/MyClasses/MyClassesRoutes"
+import { AdminDashboard } from "./Admin/AdminDashboard"
 
 /**
  * Function to fetch current user authenticated on the server
@@ -69,6 +70,10 @@ export const AuthenticatedRoutes = () => {
         { path: '/profile', element: <FacultyProfile/> }
     ] 
 
+    const adminRoutes = [
+        { path: '/', element: <AdminDashboard/> },
+    ]
+
     return (
         <Routes>
             {/* If role is student, then it will load all its routes */}
@@ -82,6 +87,12 @@ export const AuthenticatedRoutes = () => {
             {role === 'faculty' && (
                 /* Map faculty routes array with paths and elements */
                 facultyRoutes.map(({ path, element }, index) => ( 
+                    <Route key={index} path={path} element={element}/>
+                ))
+            )}
+
+            {role === 'admin' && (
+                adminRoutes.map(({ path, element }, index) => (
                     <Route key={index} path={path} element={element}/>
                 ))
             )}

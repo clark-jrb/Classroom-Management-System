@@ -13,14 +13,13 @@ const User = new UserController()
 export const login = async (req: Request, res: Response): Promise<any> => {
     const { email, password, role } = req.body
 
-    const userExists = await User.getByEmail(email, role)
-    
     try {
         // checks fields if empty
         if (!email || !password) {
             return res.json({ message: 'Incomplete credentials'})
         }
-
+        
+        const userExists = await User.getByEmail(email, role)
         // checks if user exists
         if (!userExists) {
             return res.json({ message: "User don't exist"})
@@ -58,16 +57,14 @@ export const register = async (req: Request, res: Response): Promise<any> => {
         classes: StudentClass | TeacherClass
     } = req.body
     const { email, password, role } = account
-
-    const userExist = await User.getByEmail(email, role)
-
+    
     try {
         // check if all fields filled 
         if (!email || !password) {
             return res.json({ message: "Incomplete credentials" })
         }
-
-        // const userExist = await getUserByEmail(email)
+        
+        const userExist = await User.getByEmail(email, role)
         if (userExist) {
             return res.json({ message: "User already exists" })
         }
@@ -83,9 +80,9 @@ export const register = async (req: Request, res: Response): Promise<any> => {
         }
 
         if (role === 'admin') {
-            await User.createUser(credentials)      
+            await User.createUser(credentials, role)      
         } else {
-            await User.createUser(credentials, profile, classes, role) 
+            await User.createUser(credentials, role, profile, classes) 
         }
         
         const userNowExist = await User.getByEmail(email, role)

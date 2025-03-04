@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom"
 import OOK_logo from '@/assets/ook_logo.png'
 import { toCamelCase } from "@/helpers/camel-case";
+import { Roles } from "@/types/global.types";
 
 interface Link {
     name: string;
@@ -8,7 +9,7 @@ interface Link {
 }
 
 interface ISideNavbar {
-    role: string
+    role: Roles
     handleLogout: () => void
     links: Link[]
 }
@@ -23,15 +24,15 @@ export const SideNavbar = ({ role, handleLogout, links }: ISideNavbar) => {
                     {toCamelCase(role)}
                 </div>
             </div>
-            <div className="student-links">
+            <div className="side-bar-links">
                 {links.map(({ name, url }, index) => (
                     <Link to={url} key={index}>
-                        <div className="student-nav-link w-full">
+                        <div className="side-nav-link w-full">
                             {name}
                         </div>
                     </Link>
                 ))}
-                <div className="student-nav-link w-full" id="logout-btn-in-links" onClick={handleLogout}>
+                <div className="side-nav-link w-full" id="logout-btn-in-links" onClick={handleLogout}>
                     Log Out
                 </div>
             </div>

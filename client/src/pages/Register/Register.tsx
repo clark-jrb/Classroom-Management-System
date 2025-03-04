@@ -44,8 +44,9 @@ export const Register = () => {
         if (!role) {
             console.log('role is empty')
             navigate('/home')
+        } else {
+            unregisterFields({ form: form3, role })
         }
-        unregisterFields({form: form3, role})
     }, [role]);
 
     const form1 = useForm<z.infer<typeof userAccountSchema>>({
@@ -86,8 +87,16 @@ export const Register = () => {
     })
 
     function onSubmitForm1(values: z.infer<typeof userAccountSchema>) {
-        setform1Values(values)
-        setFormStep(2)
+        if (role !== 'admin') {
+            setform1Values(values)
+            setFormStep(2)
+        } else {
+            const adminData = {
+                account: values
+            }
+            registerUser.mutate(adminData)
+            console.log(values)
+        }
     }
 
     function onSubmitForm2(values: z.infer<typeof userProfileSchema>) {
@@ -140,7 +149,7 @@ export const Register = () => {
                                 )}
                             />
                             <Button type="submit">
-                                Next
+                                {role !== 'admin' ? 'Next' : 'Register'}
                             </Button>
                         </form>
                         <Button onClick={() => navigate('/home')}>Back</Button>

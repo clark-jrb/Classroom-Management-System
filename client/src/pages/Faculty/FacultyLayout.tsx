@@ -44,7 +44,7 @@ export const FacultyLayout = ({ children }: any) => {
                         : facultyLinks
                 }
             />
-            <main className="h-dvh student-content">
+            <main className="h-dvh main-content">
                 { children }
                 <Toaster richColors/>
             </main>
