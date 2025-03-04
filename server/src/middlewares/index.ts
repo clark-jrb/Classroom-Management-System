@@ -70,7 +70,6 @@ export const isAuthenticated = async (
     const token = req.cookies?.accessToken
 
     if (!token) {
-        console.log('no access token')
         res.status(401).json({ message: 'No access token, authorization denied' })
         return
     }

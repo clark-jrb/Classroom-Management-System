@@ -1,16 +1,19 @@
 import mongoose from "mongoose"
+import * as dotenv from "dotenv"
 
+dotenv.config()
 mongoose.Promise = global.Promise
 
 export const dbConnect = async () =>  {
     try {
-        await mongoose.connect(process.env.MONGODB_URL)
-        console.log("MongoDB Connected")
+        await mongoose.connect(process.env.MONGODB_URL as string)
+        console.log("✅ MongoDB Connected")
     } catch (error) {
-        console.error("Error connecting to MongoDB:", error)
+        console.error("❌ Error connecting to MongoDB:", error)
     }
 }
 
-mongoose.connection.on("error", (error) => {
-    console.error("MongoDB connection error:", error);
-});
+export const dbDisconnect = async () => {
+    await mongoose.connection.close()
+    console.log('✅ MongoDB connection closed')
+}
