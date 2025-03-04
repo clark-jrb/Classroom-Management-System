@@ -13,6 +13,8 @@ import { useCurrentUser } from "@/hooks/useUsersQuery"
 import { EvaluationPage } from "./Faculty/Evaluation/EvaluationPage"
 import { MyClassesRoutes } from "./Faculty/MyClasses/MyClassesRoutes"
 import { AdminDashboard } from "./Admin/AdminDashboard"
+import { useCurrentQuarter } from "@/hooks/useAdminQuery"
+import { useCurrentQuarterStore } from "@/stores/globalSlice"
 
 /**
  * Function to fetch current user authenticated on the server
@@ -40,6 +42,17 @@ const currentAuthenticated = () => {
     }, [data, setRole, setUserId])
 }
 
+const setTheCurrentQuarter = () => {
+    const { setCurrentQuarter } = useCurrentQuarterStore()
+    const { data } = useCurrentQuarter()
+
+    useEffect(() => {
+        if (data) {
+            setCurrentQuarter(data.current_quarter)
+        }
+    }, [data])
+}
+
 
 /**
  * Authenticated Routes
@@ -47,6 +60,7 @@ const currentAuthenticated = () => {
 
 export const AuthenticatedRoutes = () => {
     currentAuthenticated()  /* Function to set role on auth store */
+    setTheCurrentQuarter()
     const { role } = useAuthStore()
 
     /**

@@ -15,22 +15,21 @@ import { isQuarterChanged } from "@/helpers/changed-fields"
 
 export const AdminDashboard = () => {
     const { data, isLoading, isError, error } = useCurrentQuarter()
-    
-    if (isLoading) {
-        console.log('loading...')
-    }
-
-    if (isError) {
-        console.log(error.message)
-    }
 
     return (
         <AdminLayout>
             <Container>
                 This is admin dashboard
                 <div>
-                    {isLoading && <div>Loading...</div>}
-                    {data && <CurrentQuarterDisplay data={data}/>}
+                    {isLoading && 
+                        <div>Loading...</div>
+                    }
+                    {isError && 
+                        <div>There is an error: {error.message}</div>
+                    }
+                    {data && 
+                        <CurrentQuarterDisplay data={data}/>
+                    }
                 </div>
             </Container>
         </AdminLayout>
