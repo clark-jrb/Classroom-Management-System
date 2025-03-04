@@ -23,7 +23,8 @@ export const TaskList = ({ taskType, enableEdit, setEnableEdit }: {
                 grade,
                 section,
                 subject,
-                total_items
+                total_items,
+                quarter
             }) => (
                 <div 
                     key={_id} 
@@ -34,6 +35,7 @@ export const TaskList = ({ taskType, enableEdit, setEnableEdit }: {
                     <div>{type} No. {task_no}</div>
                     <div>{subject}</div>
                     <div>Total items: {total_items}</div>
+                    <div>{quarter}</div>
                     {enableEdit &&
                         <div className="flex gap-2">
                             <TaskUpdate 

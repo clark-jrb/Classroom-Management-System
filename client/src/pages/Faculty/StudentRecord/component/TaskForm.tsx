@@ -31,6 +31,7 @@ import { toast } from "sonner"
 import { toCamelCase } from "@/helpers/camel-case"
 import { Switch } from "@/components/ui/switch"
 import { TTaskForm } from "@/types/task.types"
+import { useCurrentQuarterStore } from "@/stores/globalSlice"
 
 
 export const TaskForm = ({ taskType, enableEdit, setEnableEdit }: {
@@ -38,14 +39,15 @@ export const TaskForm = ({ taskType, enableEdit, setEnableEdit }: {
     enableEdit: boolean
     setEnableEdit: (state: boolean) => void
 }) => {
+    const { current_quarter } = useCurrentQuarterStore()
+    const quarter = current_quarter     // QUARTER state (subject to change)
     const { generateTask, generateTasksToStudents } = useTaskMutations()    // mutation functions
+    const { grade_assigned, section_handled, subjects } = teacherClassInfo()    // data from the hook
     const { countTask } = useMyTasks() 
-    const { grade_assigned, section_handled, subjects } = teacherClassInfo() // data from the hook
-    const quarter: QuarterTypes = 'q1'                                  // QUARTER state (subject to change)
-    const [subject, setSubject] = useState<SubjectTypes | ''>('')       // SUBJECT state
-    const [gradeLevel, setGradeLevel] = useState('')                    // GRADE LEVEL state
-    const [section, setSection] = useState('')                          // SECTION state
-    const [open, openDialog] = useState(false)                          // DIALOG
+    const [subject, setSubject] = useState<SubjectTypes | ''>('')   // SUBJECT state
+    const [gradeLevel, setGradeLevel] = useState('')    // GRADE LEVEL state
+    const [section, setSection] = useState('')  // SECTION state
+    const [open, openDialog] = useState(false)  // DIALOG
     const queryClient = useQueryClient()
     const [formStep, setFormStep] = useState(1)
 

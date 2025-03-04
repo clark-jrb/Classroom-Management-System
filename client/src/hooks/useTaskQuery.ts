@@ -113,7 +113,7 @@ export const useMyTasks = () => {
         taskType: TaskTypes,
         subject: SubjectTypes | '',
         section: string,
-        quarter: QuarterTypes
+        quarter: QuarterTypes | ''
     ): number {
         return data.filter((item) => 
             item.type === taskType && 

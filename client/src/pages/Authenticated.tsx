@@ -19,7 +19,6 @@ import { useCurrentQuarterStore } from "@/stores/globalSlice"
 /**
  * Function to fetch current user authenticated on the server
  */
-
 const currentAuthenticated = () => {
     const { setRole, setUserId } = useAuthStore() /* Prepare the zustand global store (state) */
     const { setTeacherRole } = useTeacherStore()
@@ -42,6 +41,9 @@ const currentAuthenticated = () => {
     }, [data, setRole, setUserId])
 }
 
+/**
+ * Function to set the current quarter as global so it can be used anywhere
+ */
 const setTheCurrentQuarter = () => {
     const { setCurrentQuarter } = useCurrentQuarterStore()
     const { data } = useCurrentQuarter()
@@ -57,10 +59,9 @@ const setTheCurrentQuarter = () => {
 /**
  * Authenticated Routes
  */
-
 export const AuthenticatedRoutes = () => {
     currentAuthenticated()  /* Function to set role on auth store */
-    setTheCurrentQuarter()
+    setTheCurrentQuarter()  /* Function to set quarter on current quarter store */
     const { role } = useAuthStore()
 
     /**

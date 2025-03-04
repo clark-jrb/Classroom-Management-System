@@ -26,12 +26,14 @@ import { useForm } from "react-hook-form"
 import "@/styles/computation_styles.scss"
 import { toast } from "sonner"
 import { DialogClose } from "@radix-ui/react-dialog"
+import { useCurrentQuarterStore } from "@/stores/globalSlice"
 
 export const GATable = ({ section, grade_assigned }: {
     section: string
     grade_assigned: string
 }) => {
     const queryClient = useQueryClient()
+    const { current_quarter } = useCurrentQuarterStore()
     const { data: students_calculated_qa } = useStudentsCalculatedQA(grade_assigned, section)    // student_qas collection (calculated on server)
     const { data: students_ga } = useStudentsGA(section)    // students_gas collection
     const { generateGeneralAverage } = useStudentsGAMutations()     // generate mutation
@@ -49,7 +51,6 @@ export const GATable = ({ section, grade_assigned }: {
         mapeh,
         general_ave: (math + science + filipino + hekasi + english + mapeh) / 6
     }))
-
     
     const form = useForm<StudentGA>({
         resolver: zodResolver(StudentGASchema),
@@ -144,7 +145,11 @@ export const GATable = ({ section, grade_assigned }: {
             <div>
                 <Dialog open={openDialog} onOpenChange={setOpenDialog}>
                     <DialogTrigger asChild>
-                        <Button type="button" disabled={students_ga.length > 0}>Submit</Button>
+                        {current_quarter === 'q4' && 
+                            <Button type="button" disabled={students_ga.length > 0}>
+                                Submit
+                            </Button>
+                        }
                     </DialogTrigger>
                     <DialogContent className="w-[20rem]">
                         <DialogHeader>
