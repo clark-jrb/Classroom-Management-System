@@ -82,7 +82,11 @@ export const register = async (req: Request, res: Response): Promise<any> => {
             role
         }
 
-        await User.createUser(credentials, profile, classes, role) 
+        if (role === 'admin') {
+            await User.createUser(credentials)      
+        } else {
+            await User.createUser(credentials, profile, classes, role) 
+        }
         
         const userNowExist = await User.getByEmail(email, role)
 

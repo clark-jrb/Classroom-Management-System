@@ -5,7 +5,6 @@ import { StudentClass } from "../types/StudentTypes"
 import { UserAccount, UserProfile } from "../types/UserTypes"
 import { TeacherClass } from "../types/TeacherTypes"
 import { QuarterlyAverageModel } from "../models/computations"
-import path from "path"
 
 export class UserController {
     // get user by email 
@@ -21,9 +20,9 @@ export class UserController {
     // create user (student and teachers) 
     public async createUser(
         accountData: UserAccount, 
-        profileData: UserProfile, 
-        classData: StudentClass | TeacherClass, 
-        role: ValidRoles
+        profileData?: UserProfile, 
+        classData?: StudentClass | TeacherClass, 
+        role?: ValidRoles
     ) {
         const AccountModel = selectAccountModel(role) // Select on StudentAccountModel, TeacherAccountModel
         const ProfileModel = selectProfileModel(role) // Select on StudentProfileModel, TeacherProfileModel
@@ -41,7 +40,7 @@ export class UserController {
                 ...student_class
             }))
 
-            await Promise.all([
+            return await Promise.all([
                 ProfileModel.create({ sid: user._id, ...profileData }),
                 ClassModel.create({ sid: user._id, ...student_class }),
                 QuarterlyAverageModel.insertMany(for_students_qa)
@@ -51,14 +50,14 @@ export class UserController {
         if (role === 'faculty') {
             const teacher_class = classData as TeacherClass
 
-            await Promise.all([
+            return await Promise.all([
                 ProfileModel.create({ tid: user._id, ...profileData }),
                 ClassModel.create({ tid: user._id, ...teacher_class })
             ])
         }
 
-        return {
-            message: "User created successfully on database"
+        if (role === 'admin') {
+            return await AccountModel.create(accountData)
         }
     }
 

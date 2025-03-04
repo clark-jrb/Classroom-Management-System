@@ -41,7 +41,7 @@ export const isAdmin = async (
     next: NextFunction
 ): Promise<void> => {
     try {
-        const currentUser = req.user as JwtPayload
+        const currentUser = req.user
 
         if (!currentUser) {
             res.status(401).json({ message: "You are not authenticated" })
