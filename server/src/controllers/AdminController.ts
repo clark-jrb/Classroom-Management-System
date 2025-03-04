@@ -26,11 +26,11 @@ export class AdminController {
     public updateCurrentQuarter = async (req: Request, res: Response): Promise<void> => {
         try {
             const { id } = req.params
-            const { quarter } = req.body
+            const { current_quarter } = req.body
 
             await AdminPolicyModel.findByIdAndUpdate(
                 id, 
-                { current_quarter: quarter },
+                { current_quarter: current_quarter },
                 { new: true }
             )
 

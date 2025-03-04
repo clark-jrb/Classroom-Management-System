@@ -15,12 +15,12 @@ export const getCurrentQuarter = async (): Promise<CurrentQuarter> => {
 
 export const updateCurrentQuarter = async (
     id: string,
-    values: CurrentQuarter
+    value: CurrentQuarter
 ): Promise<Message> => {
     try {
         const response = await api.patch(
             `/current_quarter/${id}`, 
-            values, 
+            value, 
             { withCredentials: true }
         )
 

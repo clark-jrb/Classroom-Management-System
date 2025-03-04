@@ -1,5 +1,6 @@
 import { userProfileSchema } from "@/schemas/user.schema"
 import { StudentSG, StudentSGWithProfile } from "@/types/computation.types"
+import { QuarterTypes } from "@/types/global.types"
 import { StudentScore, TUpdateTask } from "@/types/task.types"
 import { z } from "zod"
 
@@ -75,4 +76,8 @@ export function getTaskChanges(
 }
 
 
+export function isQuarterChanged(oldQuarter: QuarterTypes, newQuarter: QuarterTypes) {
+    const isChanged = oldQuarter !== newQuarter
 
+    return isChanged
+}

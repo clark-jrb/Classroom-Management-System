@@ -10,6 +10,7 @@ export type TaskTypes = 'recitation' | 'quiz' | 'activity' | 'project' | 'summat
 export type SubjectTypes = 'math'| 'science' | 'english' | 'hekasi' | 'filipino' | 'mapeh'
 
 export type CurrentQuarter = {
+    _id: string
     current_quarter: QuarterTypes
 }
 
