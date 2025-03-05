@@ -1,3 +1,4 @@
+import { StudentData } from "@/types/student.types"
 import { api } from "./api"
 import { CurrentQuarter, Message } from "@/types/global.types"
 
@@ -9,7 +10,7 @@ export const getCurrentQuarter = async (): Promise<CurrentQuarter> => {
 
         return response.data
     } catch (error) {
-        throw new Error('Error logging in')
+        throw new Error('Error fetching current quarter')
     }
 }
 
@@ -26,11 +27,11 @@ export const updateCurrentQuarter = async (
 
         return response.data
     } catch (error) {
-        throw new Error('Error logging in')
+        throw new Error('Error updating current quarter')
     }
 }
 
-export const getStudents = async (): Promise<CurrentQuarter> => {
+export const getStudents = async (): Promise<StudentData[]> => {
     try {
         const response = await api.get('/students', {
             withCredentials: true
@@ -38,6 +39,6 @@ export const getStudents = async (): Promise<CurrentQuarter> => {
 
         return response.data
     } catch (error) {
-        throw new Error('Error logging in')
+        throw new Error('Error fetching students with data')
     }
 }

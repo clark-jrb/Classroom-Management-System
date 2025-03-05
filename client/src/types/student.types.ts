@@ -18,3 +18,5 @@ export type StudentInformation = {
     profile: StudentProfile
     classes: StudentClasses
 }
+
+export type StudentData = StudentAccount & StudentProfile & StudentClasses

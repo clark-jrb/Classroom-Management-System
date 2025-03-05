@@ -1,4 +1,4 @@
-import { getCurrentQuarter, updateCurrentQuarter } from "@/services/AdminService"
+import { getCurrentQuarter, getStudents, updateCurrentQuarter } from "@/services/AdminService"
 import { CurrentQuarter } from "@/types/global.types"
 import { useMutation, useQuery } from "@tanstack/react-query"
 
@@ -18,4 +18,11 @@ export const useAdminMutations = () => {
     })
 
     return { quarterMutation }
+}
+
+export const useStudentsData = () => {
+    return useQuery({
+        queryKey: ['students'],
+        queryFn: () => getStudents()
+    })
 }
