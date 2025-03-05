@@ -11,8 +11,12 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
-import { Form } from 'react-router-dom'
 import { useState } from 'react'
+import { z } from 'zod'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { Form } from '@/components/ui/form'
+import { DeleteForm } from './DeleteForm'
 
 export const columns: ColumnDef<StudentData>[] = [
     {
@@ -67,6 +71,8 @@ export const columns: ColumnDef<StudentData>[] = [
         id: "actions",
         cell: ({ row }) => {
             const [openDialog, setOpenDialog] = useState(false)
+
+            const student_id = row.original._id
             
             return (
                 <>
@@ -94,20 +100,19 @@ export const columns: ColumnDef<StudentData>[] = [
                                     Are you sure?
                                 </DialogTitle>
                                 <DialogDescription className="py-4">
-                                    This action cannot be undone once submitted.
+                                    This action cannot be undone. Are you sure you want to permanently delete this account?
                                 </DialogDescription>
                                 <div className="ms-auto">
                                     <div className="flex space-x-2">
                                         <DialogClose asChild>
-                                            <Button type="button" variant={'destructive'}>Cancel</Button>
+                                            <Button 
+                                                type="button" 
+                                                variant={'destructive'}
+                                            >
+                                                Cancel
+                                            </Button>
                                         </DialogClose>
-                                        {/* <Form {...form}>
-                                            <form onSubmit={form.handleSubmit(onSubmit, onError)}> */}
-                                                <Button type="submit">
-                                                    Yes, submit
-                                                </Button>
-                                            {/* </form>
-                                        </Form> */}
+                                        <DeleteForm sid={student_id}/>
                                     </div>
                                 </div>
                             </DialogHeader>
