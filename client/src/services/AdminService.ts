@@ -29,3 +29,15 @@ export const updateCurrentQuarter = async (
         throw new Error('Error logging in')
     }
 }
+
+export const getStudents = async (): Promise<CurrentQuarter> => {
+    try {
+        const response = await api.get('/students', {
+            withCredentials: true
+        })
+
+        return response.data
+    } catch (error) {
+        throw new Error('Error logging in')
+    }
+}
