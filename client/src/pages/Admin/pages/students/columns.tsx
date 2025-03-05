@@ -7,15 +7,10 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
 import { useState } from 'react'
-import { z } from 'zod'
-import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { Form } from '@/components/ui/form'
 import { DeleteForm } from './DeleteForm'
 
 export const columns: ColumnDef<StudentData>[] = [
@@ -28,6 +23,20 @@ export const columns: ColumnDef<StudentData>[] = [
                     onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
                 >
                     Last Name
+                    <ArrowUpDown className="ml-2 h-4 w-4" />
+                </Button>
+            )
+        },
+    },
+    {
+        accessorKey: "middlename",
+        header: ({ column }) => {
+            return (
+                <Button
+                    variant="ghost"
+                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                >
+                    Middle Name
                     <ArrowUpDown className="ml-2 h-4 w-4" />
                 </Button>
             )
@@ -85,12 +94,11 @@ export const columns: ColumnDef<StudentData>[] = [
                                 </Button>
                             </DropdownMenuTrigger>
                             <DropdownMenuContent align="end">
-                                <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                                    <DialogTrigger asChild>
-                                        <DropdownMenuItem>
-                                            Delete Account
-                                        </DropdownMenuItem>
-                                    </DialogTrigger>
+                                <DialogTrigger asChild>
+                                    <DropdownMenuItem>
+                                        Delete Account
+                                    </DropdownMenuItem>
+                                </DialogTrigger>
                             </DropdownMenuContent>
                         </DropdownMenu>
 
@@ -112,7 +120,7 @@ export const columns: ColumnDef<StudentData>[] = [
                                                 Cancel
                                             </Button>
                                         </DialogClose>
-                                        <DeleteForm sid={student_id}/>
+                                        <DeleteForm sid={student_id} setOpenDialog={setOpenDialog}/>
                                     </div>
                                 </div>
                             </DialogHeader>

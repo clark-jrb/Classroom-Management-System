@@ -42,3 +42,15 @@ export const getStudents = async (): Promise<StudentData[]> => {
         throw new Error('Error fetching students with data')
     }
 }
+
+export const deleteStudent = async (id: string): Promise<Message> => {
+    try {
+        const response = await api.delete(`/student/${id}`, {
+            withCredentials: true
+        })
+
+        return response.data
+    } catch (error) {
+        throw new Error('Error fetching students with data')
+    }
+}

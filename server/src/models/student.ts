@@ -1,4 +1,5 @@
 import { Schema, model } from "mongoose";
+import { StudentClass } from "../types/StudentTypes";
 
 const StudentAccountSchema = new Schema({
     email: { type: String, required: true , unique: true },
@@ -16,7 +17,7 @@ const StudentProfileSchema = new Schema({
     contact: { type: String, required: true },
 })
 
-const StudentClassSchema = new Schema({
+const StudentClassSchema = new Schema<StudentClass>({
     sid: { type: Schema.Types.ObjectId, ref: "students_accounts", required: true },
     gradeLevel: { type: String, required: true },
     section: { type: String, required: true },
@@ -28,4 +29,4 @@ StudentClassSchema.index({ sid: 1 })
 
 export const StudentAccountModel = model('students_accounts', StudentAccountSchema)
 export const StudentProfileModel = model('students_profiles', StudentProfileSchema)
-export const StudentClassModel = model('students_class', StudentClassSchema)
+export const StudentClassModel = model<StudentClass>('students_class', StudentClassSchema)
