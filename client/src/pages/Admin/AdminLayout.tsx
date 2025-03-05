@@ -17,6 +17,8 @@ export const AdminLayout = ({ children }: any) => {
 
     const adminLinks = [
         { name: 'Dashboard', url: '/' },
+        { name: 'Manage Students', url: '/students' },
+        { name: 'Manage Teachers', url: '/teachers' },
     ]
 
     return (

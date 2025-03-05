@@ -15,6 +15,8 @@ import { MyClassesRoutes } from "./Faculty/MyClasses/MyClassesRoutes"
 import { AdminDashboard } from "./Admin/AdminDashboard"
 import { useCurrentQuarter } from "@/hooks/useAdminQuery"
 import { useCurrentQuarterStore } from "@/stores/globalSlice"
+import { Students } from "./Admin/pages/Students"
+import { Teachers } from "./Admin/pages/Teachers"
 
 /**
  * Function to fetch current user authenticated on the server
@@ -87,6 +89,8 @@ export const AuthenticatedRoutes = () => {
 
     const adminRoutes = [
         { path: '/', element: <AdminDashboard/> },
+        { path: '/students', element: <Students/> },
+        { path: '/teachers', element: <Teachers/> },
     ]
 
     return (
