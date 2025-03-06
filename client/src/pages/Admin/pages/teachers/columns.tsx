@@ -1,5 +1,4 @@
 import { ColumnDef } from '@tanstack/react-table'
-import { StudentData } from '@/types/student.types'
 import { ArrowUpDown } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { MoreHorizontal } from "lucide-react"
@@ -12,8 +11,9 @@ import {
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
 import { useState } from 'react'
 import { DeleteForm } from '../../components/DeleteForm'
+import { TeacherData } from '@/types/teacher.types'
 
-export const columns: ColumnDef<StudentData>[] = [
+export const columns: ColumnDef<TeacherData>[] = [
     {
         accessorKey: "lastname",
         header: ({ column }) => {
@@ -69,19 +69,11 @@ export const columns: ColumnDef<StudentData>[] = [
         header: "Contact",
     },
     {
-        accessorKey: "gradeLevel",
-        header: "Grade Level",
-    },
-    {
-        accessorKey: "section",
-        header: "Section",
-    },
-    {
         id: "actions",
         cell: ({ row }) => {
             const [openDialog, setOpenDialog] = useState(false)
 
-            const student_id = row.original._id
+            const teacher_id = row.original._id
             const role = row.original.role
             
             return (
@@ -122,7 +114,7 @@ export const columns: ColumnDef<StudentData>[] = [
                                             </Button>
                                         </DialogClose>
                                         <DeleteForm 
-                                            sid={student_id} 
+                                            sid={teacher_id} 
                                             setOpenDialog={setOpenDialog}
                                             role={role}
                                         />

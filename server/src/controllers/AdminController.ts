@@ -3,6 +3,9 @@ import { AdminPolicyModel } from "../models/admin"
 import { StudentAccountModel, StudentClassModel, StudentProfileModel } from "../models/student"
 import { GeneralAverageModel, QuarterlyAverageModel, SubjectGradeModel } from "../models/computations"
 import { selectTaskGradeModel } from "../helpers/select-models"
+import { TeacherAccountModel, TeacherClassModel, TeacherProfileModel } from "models/teacher"
+import { TaskModel } from "models/task"
+import { RefreshTokenModel } from "models/refresh_token"
 
 export class AdminController {
 
@@ -46,25 +49,41 @@ export class AdminController {
     /**
      * name
      */
-    public deleteStudent = async (req: Request, res: Response): Promise<void> => {
+    public deleteUser = async (req: Request, res: Response): Promise<void> => {
         try {
-            const { id } = req.params
+            const { id, role } = req.params
 
-            const student = await StudentClassModel.findOne({ sid: id })
-            const TaskGradeModel = selectTaskGradeModel(student.gradeLevel)
+            if (role === 'student'){
+                const student = await StudentClassModel.findOne({ sid: id })
+                const TaskGradeModel = selectTaskGradeModel(student.gradeLevel)
 
-            await Promise.all([
-                StudentAccountModel.findByIdAndDelete(id),
-                StudentProfileModel.findOneAndDelete({ sid: id }),
-                StudentClassModel.findOneAndDelete({ sid: id }),
-                QuarterlyAverageModel.deleteMany({ sid: id }),
-                SubjectGradeModel.deleteMany({ sid: id }),
-                GeneralAverageModel.findOneAndDelete({ sid: id }),
-                TaskGradeModel.deleteMany({ sid: id })
-            ])
-            res.status(200).json({ message: 'Succesfully deleted student' })
+                await Promise.all([
+                    StudentAccountModel.findByIdAndDelete(id),
+                    StudentProfileModel.findOneAndDelete({ sid: id }),
+                    StudentClassModel.findOneAndDelete({ sid: id }),
+                    QuarterlyAverageModel.deleteMany({ sid: id }),
+                    SubjectGradeModel.deleteMany({ sid: id }),
+                    GeneralAverageModel.findOneAndDelete({ sid: id }),
+                    TaskGradeModel.deleteMany({ sid: id }),
+                    RefreshTokenModel.deleteMany({ user: id })
+                ])
+
+                res.status(200).json({ message: 'Successfully deleted student' })
+            }
+
+            if (role === 'faculty') {
+                await Promise.all([
+                    TeacherAccountModel.findByIdAndDelete(id),
+                    TeacherProfileModel.findOneAndDelete({ sid: id }),
+                    TeacherClassModel.findOneAndDelete({ sid: id }),
+                    TaskModel.deleteMany({ sid: id }),
+                    RefreshTokenModel.deleteMany({ user: id })
+                ])
+
+                res.status(200).json({ message: 'Successfully deleted teacher' })
+            }
         } catch (error) {
-            res.status(400).json({ message: 'Failed to delete student' })
+            res.status(400).json({ message: 'Failed to delete user' })
         }
     }
 }

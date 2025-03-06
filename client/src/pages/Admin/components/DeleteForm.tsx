@@ -6,33 +6,44 @@ import { useForm } from "react-hook-form"
 import { useAdminMutations } from "@/hooks/useAdminQuery"
 import { toast } from "sonner"
 import { useQueryClient } from "@tanstack/react-query"
+import { Roles } from "@/types/global.types"
 
 
-export const DeleteForm = ({ sid, setOpenDialog }: {
+export const DeleteForm = ({ sid, setOpenDialog, role }: {
+    role: Roles
     sid: string
     setOpenDialog: (state: boolean) => void
 }) => {
     const queryClient = useQueryClient()
-    const { deleteStudentMutation } = useAdminMutations()
+    const { deleteUserMutation } = useAdminMutations()
 
     const formSchema = z.object({
-        sid: z.string()
+        id: z.string()
     })
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            sid: sid
+            id: sid
         }
     })
+
+    function getQueryKey(role: Roles){
+        const selected = {
+            student: 'students',
+            faculty: 'teachers'
+        }
+
+        return selected[role as keyof typeof selected]
+    }
     
     function onSubmit() {
-        const sid = form.getValues('sid')
+        const id = form.getValues('id')
 
-        deleteStudentMutation.mutateAsync(sid, {
+        deleteUserMutation.mutateAsync({ id, role }, {
             onSuccess: (data) => {
                 const { message } = data
-                queryClient.invalidateQueries({ queryKey: ['students'] })
+                queryClient.invalidateQueries({ queryKey: [`${getQueryKey(role)}`] })
                 toast.success(message)
                 setOpenDialog(false)
             },

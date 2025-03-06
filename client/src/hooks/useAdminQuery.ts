@@ -1,5 +1,5 @@
-import { deleteStudent, getCurrentQuarter, getStudents, updateCurrentQuarter } from "@/services/AdminService"
-import { CurrentQuarter } from "@/types/global.types"
+import { deleteUser, getCurrentQuarter, getStudents, updateCurrentQuarter } from "@/services/AdminService"
+import { CurrentQuarter, Roles } from "@/types/global.types"
 import { useMutation, useQuery } from "@tanstack/react-query"
 
 export const useCurrentQuarter = () => {
@@ -17,11 +17,14 @@ export const useAdminMutations = () => {
         }) => updateCurrentQuarter(id, value)
     })
     
-    const deleteStudentMutation = useMutation({
-        mutationFn: (id: string) => deleteStudent(id)
+    const deleteUserMutation = useMutation({
+        mutationFn: ({ id, role }: {
+            id: string
+            role: Roles
+        }) => deleteUser(id, role)
     })
 
-    return { quarterMutation, deleteStudentMutation }
+    return { quarterMutation, deleteUserMutation }
 }
 
 export const useStudentsData = () => {

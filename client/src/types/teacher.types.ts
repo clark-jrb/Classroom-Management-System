@@ -29,6 +29,8 @@ export type TeacherInformation = {
     classes: TeacherClasses
 }
 
+export type TeacherData = TeacherAccount & TeacherProfile & TeacherClasses
+
 export type TeacherAuthenticated = {
     details: TeacherClasses
 } & TeacherAccount

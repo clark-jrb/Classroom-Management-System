@@ -1,6 +1,6 @@
 import { StudentData } from "@/types/student.types"
 import { api } from "./api"
-import { CurrentQuarter, Message } from "@/types/global.types"
+import { CurrentQuarter, Message, Roles } from "@/types/global.types"
 
 export const getCurrentQuarter = async (): Promise<CurrentQuarter> => {
     try {
@@ -43,9 +43,9 @@ export const getStudents = async (): Promise<StudentData[]> => {
     }
 }
 
-export const deleteStudent = async (id: string): Promise<Message> => {
+export const deleteUser = async (id: string, role: Roles): Promise<Message> => {
     try {
-        const response = await api.delete(`/student/${id}`, {
+        const response = await api.delete(`/user/${role}/${id}`, {
             withCredentials: true
         })
 
