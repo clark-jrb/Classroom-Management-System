@@ -3,9 +3,9 @@ import { AdminPolicyModel } from "../models/admin"
 import { StudentAccountModel, StudentClassModel, StudentProfileModel } from "../models/student"
 import { GeneralAverageModel, QuarterlyAverageModel, SubjectGradeModel } from "../models/computations"
 import { selectTaskGradeModel } from "../helpers/select-models"
-import { TeacherAccountModel, TeacherClassModel, TeacherProfileModel } from "models/teacher"
-import { TaskModel } from "models/task"
-import { RefreshTokenModel } from "models/refresh_token"
+import { TeacherAccountModel, TeacherClassModel, TeacherProfileModel } from "../models/teacher"
+import { TaskModel } from "../models/task"
+import { RefreshTokenModel } from "../models/refresh_token"
 
 export class AdminController {
 

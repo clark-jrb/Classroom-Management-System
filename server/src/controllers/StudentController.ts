@@ -24,7 +24,7 @@ export class StudentController {
             const students = await StudentAccountModel.find()
             // const getStudentId = students.map(student => student._id)
 
-            const student_info = await Promise.all(
+            const students_data = await Promise.all(
                 students.map(async ({ _id }) => {
                     const [account, profile, classes] = await Promise.all([
                         StudentAccountModel.findById(_id).select('-password -role -__v').lean(),
@@ -40,7 +40,7 @@ export class StudentController {
                 })
             )
 
-            res.status(200).json(student_info)
+            res.status(200).json(students_data)
         } catch (error) {
             res.status(400).json({ message: 'Failed to get students', error })
         }

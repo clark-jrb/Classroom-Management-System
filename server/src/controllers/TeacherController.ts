@@ -7,11 +7,40 @@ export class TeacherController {
     /**
      * GET TEACHERS
      */
-    public getTeachers = async (req: Request, res: Response): Promise<void> =>{
+    public getTeachers = async (_req: Request, res: Response): Promise<void> =>{
         try {
             const teachers = await TeacherAccountModel.find()
 
-            res.status(200).json({ teachers: teachers })
+            const teachers_data = await Promise.all(
+                teachers.map(async ({ _id }) => {
+                    const [account, profile, classes] = await Promise.all([
+                        TeacherAccountModel
+                            .findById(_id)
+                            .select('-password -role -__v')
+                            .lean(),
+                            TeacherProfileModel.findOne({ tid: _id })
+                            .select('-_id -tid -__v')
+                            .lean(),
+                        TeacherClassModel
+                            .findOne({ tid: _id })
+                            .select('-_id -tid -__v')
+                            .lean()
+                            .then((data) => ({
+                                ...data,
+                                section_handled: data.section_handled.join(", "),
+                                subjects: data.subjects.join(", ")
+                            })),
+                    ])
+
+                    return { 
+                        ...account, 
+                        ...profile, 
+                        ...classes 
+                    }
+                })
+            )
+
+            res.status(200).json(teachers_data)
         } catch (error) {
             res.status(400).json({ message: 'Failed to get teachers', error })
         }
