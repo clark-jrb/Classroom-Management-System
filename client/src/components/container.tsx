@@ -2,7 +2,7 @@
 // subject to be customizable
 export const Container = ({ children }: any) => {
     return (
-        <div className="student-container rounded-md h-full shadow">
+        <div className="student-container rounded-md h-full border">
             { children }
         </div>
     )

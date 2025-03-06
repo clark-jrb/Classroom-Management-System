@@ -11,9 +11,13 @@ export const Students = () => {
     return (
         <AdminLayout>
             <Container>
-                Manage students page
                 {data &&
-                    <StudentsTable data={data}/>
+                    <div className='h-full w-full flex flex-col'>
+                        <div className='flex-[1]'>
+                            <h2 className='text-xl'> Manage Students</h2>
+                        </div>
+                        <StudentsTable data={data}/>
+                    </div>
                 }
                 {isLoading &&
                     <div>Loading...</div>
@@ -30,7 +34,7 @@ const StudentsTable = ({ data }: {
     data: StudentData[]
 }) => {
     return (
-        <div>
+        <div className='flex-[14]'>
             <DataTable columns={columns} data={data}/>
         </div>
     )
