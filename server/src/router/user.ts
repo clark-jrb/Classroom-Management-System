@@ -3,8 +3,8 @@ import { UserController } from '../controllers/UserController'
 import { isAuthenticated } from '../middlewares'
 
 const User = new UserController()
-const { authenticated } = User
+const { authenticatedUser } = User
 
 export default (router: express.Router) => {
-    router.get('/authenticated', isAuthenticated, authenticated)
+    router.get('/authenticated', isAuthenticated, authenticatedUser)
 }
