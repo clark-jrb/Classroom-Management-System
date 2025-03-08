@@ -29,7 +29,10 @@ export type TeacherInformation = {
     classes: TeacherClasses
 }
 
-export type TeacherData = TeacherAccount & TeacherProfile & TeacherClasses
+export type TeacherData = TeacherAccount & TeacherProfile & {
+    section_handled: string
+    subjects: string
+} & Omit<TeacherClasses, 'section_handled' | 'subjects'>
 
 export type TeacherAuthenticated = {
     details: TeacherClasses

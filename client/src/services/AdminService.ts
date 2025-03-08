@@ -1,6 +1,7 @@
 import { StudentData } from "@/types/student.types"
 import { api } from "./api"
 import { CurrentQuarter, Message, Roles } from "@/types/global.types"
+import { TeacherData } from "@/types/teacher.types"
 
 export const getCurrentQuarter = async (): Promise<CurrentQuarter> => {
     try {
@@ -40,6 +41,18 @@ export const getStudents = async (): Promise<StudentData[]> => {
         return response.data
     } catch (error) {
         throw new Error('Error fetching students with data')
+    }
+}
+
+export const getTeachers = async (): Promise<TeacherData[]> => {
+    try {
+        const response = await api.get('/teachers', {
+            withCredentials: true
+        })
+
+        return response.data
+    } catch (error) {
+        throw new Error('Error fetching teachers with data')
     }
 }
 
