@@ -1,7 +1,7 @@
 import { StudentClassModel, StudentProfileModel, StudentAccountModel } from "../models/student"
 import { TeacherClassModel, TeacherProfileModel, TeacherAccountModel } from "../models/teacher"
 import { TaskGrade1Model, TaskGrade2Model, TaskGrade3Model, TaskGrade4Model, TaskGrade5Model, TaskGrade6Model } from "../models/task"
-import { ValidRoles, GradeLevels } from "../types/types"
+import { ValidRoles, GradeLevels } from "../types/GlobalTypes"
 import { AdminAccountModel } from "../models/admin"
 
 export const selectTaskGradeModel = (grade: GradeLevels) => {

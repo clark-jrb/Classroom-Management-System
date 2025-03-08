@@ -1,6 +1,17 @@
 import mongoose from "mongoose"
 
-export type TaskTypes = "recitation" | 'quiz' | 'activity' | 'project' | 'summative' | 'exam'
+export type TaskTypes = 'recitation' | 'quiz' | 'activity' | 'project' | 'summative' | 'exam'
+
+export type Task = {
+    tid: string
+    subject: string
+    grade: string
+    section: string
+    type: string
+    task_no: number
+    total_items: number
+    quarter: string
+}
 
 export type StudentTask = {
     sid: mongoose.Types.ObjectId
@@ -14,24 +25,7 @@ export type StudentTaskScore = {
     score: number
 }
 
-export type Task = {
-    tid: mongoose.Types.ObjectId
-    subject: string
-    grade: string
-    section: string
-    type: string
-    task_no: number
-    total_items: number
-    quarter: string
-}
-
-export type PopulatedST = {
-    sid: mongoose.Types.ObjectId
-    task_id: Task
-    score: number
-}
-
-export type StudentsSubjectGrade = {
+export type StudentSubjectGrade = {
     sid: string
     section: string
     subject: string

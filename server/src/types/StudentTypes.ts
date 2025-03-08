@@ -1,5 +1,5 @@
 import { Schema } from "mongoose"
-import { GradeLevels } from "./types"
+import { GradeLevels } from "./GlobalTypes"
 
 export type StudentClass = {
     sid: Schema.Types.ObjectId

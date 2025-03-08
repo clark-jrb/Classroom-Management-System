@@ -1,5 +1,5 @@
-import { model, Schema } from "mongoose";
-import { Quarters } from "types/types";
+import { model, Schema } from "mongoose"
+import { Quarters } from "types/GlobalTypes"
 
 type AdminPolicy = {
     current_quarter: Quarters

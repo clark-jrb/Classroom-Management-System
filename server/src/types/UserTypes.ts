@@ -1,5 +1,5 @@
 import mongoose from 'mongoose'
-import { ValidRoles } from '../types/types'
+import { ValidRoles } from './GlobalTypes'
 
 export type UserAccount = {
     email: string

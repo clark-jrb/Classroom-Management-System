@@ -1,8 +1,8 @@
 import { Request, Response } from "express"
 import { TaskModel } from "../models/task"
 import { StudentClassModel } from "../models/student"
-import { StudentsSubjectGrade, StudentTaskScore, Task, TaskTypes, TUpdateTask } from "../types/TaskTypes"
-import { GradeLevels } from "../types/types"
+import { StudentSubjectGrade, StudentTaskScore, Task, TaskTypes, TUpdateTask } from "../types/TaskTypes"
+import { GradeLevels } from "../types/GlobalTypes"
 import { selectTaskGradeModel } from "../helpers/select-models"
 import { getWeightWithoutProject, getWeightWithProject } from "../helpers/get-weight"
 import { UserProfile } from "../types/UserTypes"
@@ -244,7 +244,7 @@ export class TaskController {
 
             const findTasks = await Model.find().populate<{ task_id: Task }>('task_id')
 
-            const studentTasks = findTasks.filter((task) => task.task_id.tid.toString() === tid)
+            const studentTasks = findTasks.filter((task) => task.task_id.tid === tid)
 
             res.status(200).json(studentTasks)
         } catch (error) {
@@ -281,13 +281,13 @@ export class TaskController {
                 .then((tasks) => 
                     tasks
                         .filter((task) => 
-                            task.task_id.tid.toString() === tid &&  //  filter by teacher ID
+                            task.task_id.tid === tid &&  //  filter by teacher ID
                             task.task_id.subject === subject &&     //  filter by subject
                             task.task_id.quarter === quarter &&     //  filter by subject
                             task.task_id.section === section        //  filter by section
                         )
                         .map((task) => ({     //  map by:
-                            sid: task.sid.toString(),               //  sid,
+                            sid: task.sid,               //  sid,
                             score: task.score,                      //  score
                             type: task.task_id.type,                //  type,
                             task_no: task.task_id.task_no,          //  task_no,
@@ -301,7 +301,7 @@ export class TaskController {
             const studentsTasks = my_students.map(({ sid: { sid, firstname, lastname } }) => {
                 const getSumsOfTask = (type: TaskTypes) => {
                     const result = studentsTakingMyTasks
-                        .filter((item) => item.sid === sid.toString() && item.type === type)
+                        .filter((item) => item.sid === sid && item.type === type)
                         .reduce(
                             (accu: { score: number; totalItems: number }, curr) => {
                                 return {
@@ -398,7 +398,7 @@ export class TaskController {
     public updateStudentsSGs = async (req: Request, res: Response): Promise<void> => {
         try {
             const { subject, quarter } = req.query
-            const StudentsScores: StudentsSubjectGrade[] = req.body
+            const StudentsScores: StudentSubjectGrade[] = req.body
 
             await Promise.all(
                 StudentsScores.map(async (student) => {
@@ -538,7 +538,7 @@ export class TaskController {
 
     public updateStudentsSGfromQA = async (req: Request, res: Response): Promise<void> => {
         try {
-            const StudentsScores: StudentsSubjectGrade[] = req.body
+            const StudentsScores: StudentSubjectGrade[] = req.body
 
             await Promise.all(
                 StudentsScores.map(async (student) => {

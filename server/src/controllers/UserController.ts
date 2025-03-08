@@ -1,6 +1,6 @@
 import { Request, Response } from "express"
 import { selectAccountModel, selectProfileModel, selectClassModel } from "../helpers/select-models"
-import { ValidRoles } from "../types/types"
+import { ValidRoles } from "../types/GlobalTypes"
 import { StudentClass } from "../types/StudentTypes"
 import { UserAccount, UserProfile } from "../types/UserTypes"
 import { TeacherClass } from "../types/TeacherTypes"
