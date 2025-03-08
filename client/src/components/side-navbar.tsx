@@ -16,8 +16,8 @@ interface ISideNavbar {
 
 export const SideNavbar = ({ role, handleLogout, links }: ISideNavbar) => {
     return (
-        <nav className="nav-sidebar h-dvh border-r">
-            <div className="logo-cont shadow-md">
+        <nav className="nav-sidebar h-dvh border-r shadow-sm">
+            <div className="logo-cont shadow-sm">
                 <img src={OOK_logo} alt="ook_logo"/>
                 <div className="leading-3 h-full">
                     <span className="text-xl font-medium">OOK</span> <br />
