@@ -28,6 +28,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select"
+import { grade_levels_options, sections_options } from "@/constants/options"
 
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[]
@@ -59,37 +60,11 @@ export function DataTable<TData, TValue>({
         },
         initialState: {
             pagination: {
-                pageSize: 10
+                pageSize: 8
             }
         }
         
     })
-
-    const student_classes = [
-        { name: 'All', value: 'all'},
-        { name: 'Grade 1', value: 'grade_1'},
-        { name: 'Grade 2', value: 'grade_2'},
-        { name: 'Grade 3', value: 'grade_3'},
-        { name: 'Grade 4', value: 'grade_4'},
-        { name: 'Grade 5', value: 'grade_5'},
-        { name: 'Grade 6', value: 'grade_6'},
-    ]
-
-    const sections = [
-        { name: 'All', value: 'all'},
-        { name: 'Crabs', value: 'crabs' },
-        { name: 'Corals', value: 'corals' },
-        { name: 'Pearls', value: 'pearls' },
-        { name: 'Shrimps', value: 'shrimps' },
-        { name: 'Squids', value: 'squids' },
-        { name: 'Octopus', value: 'octopus' },
-        { name: 'Lobsters', value: 'lobsters' },
-        { name: 'Eels', value: 'eels' },
-        { name: 'Turtles', value: 'turtles' },
-        { name: 'Dolphins', value: 'dolphines' },
-        { name: 'Whales', value: 'whales' },
-        { name: 'Sharks', value: 'sharks' },
-    ]
 
     return (
         <div>
@@ -112,6 +87,46 @@ export function DataTable<TData, TValue>({
                     }
                     className="max-w-sm"
                 />
+                {/* Filter by grade level  */}
+                <Select 
+                    onValueChange={
+                        (value) => {
+                            value !== 'all' 
+                                ? table.getColumn("gradeLevel")?.setFilterValue(value)
+                                : table.getColumn("gradeLevel")?.setFilterValue("")
+                        }
+                    }
+                    defaultValue={(table.getColumn("gradeLevel")?.getFilterValue() as string) ?? ""}
+                >
+                    <SelectTrigger className="w-[30rem]">
+                        <SelectValue placeholder="Filter grade level" />
+                    </SelectTrigger>
+                    <SelectContent>
+                        {grade_levels_options.map(({ name, value }, index) => (
+                            <SelectItem key={index} value={value}>{name}</SelectItem>
+                        ))}
+                    </SelectContent>
+                </Select>
+                {/* Filter by sections  */}
+                <Select 
+                    onValueChange={
+                        (value) => {
+                            value !== 'all' 
+                                ? table.getColumn("section")?.setFilterValue(value)
+                                : table.getColumn("section")?.setFilterValue("")
+                        }
+                    }
+                    defaultValue={(table.getColumn("section")?.getFilterValue() as string) ?? ""}
+                >
+                    <SelectTrigger className="w-[30rem]">
+                        <SelectValue placeholder="Filter sections" />
+                    </SelectTrigger>
+                    <SelectContent>
+                        {sections_options.map(({ name, value }, index) => (
+                            <SelectItem key={index} value={value}>{name}</SelectItem>
+                        ))}
+                    </SelectContent>
+                </Select>
                 {/* Show/Remove Columns */}
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
@@ -142,46 +157,6 @@ export function DataTable<TData, TValue>({
                         }
                     </DropdownMenuContent>
                 </DropdownMenu>
-                {/* Filter by grade level  */}
-                <Select 
-                    onValueChange={
-                        (value) => {
-                            value !== 'all' 
-                                ? table.getColumn("gradeLevel")?.setFilterValue(value)
-                                : table.getColumn("gradeLevel")?.setFilterValue("")
-                        }
-                    }
-                    defaultValue={(table.getColumn("gradeLevel")?.getFilterValue() as string) ?? ""}
-                >
-                    <SelectTrigger className="w-[30rem]">
-                        <SelectValue placeholder="Filter grade level" />
-                    </SelectTrigger>
-                    <SelectContent>
-                        {student_classes.map(({ name, value }, index) => (
-                            <SelectItem key={index} value={value}>{name}</SelectItem>
-                        ))}
-                    </SelectContent>
-                </Select>
-                {/* Filter by sections  */}
-                <Select 
-                    onValueChange={
-                        (value) => {
-                            value !== 'all' 
-                                ? table.getColumn("section")?.setFilterValue(value)
-                                : table.getColumn("section")?.setFilterValue("")
-                        }
-                    }
-                    defaultValue={(table.getColumn("section")?.getFilterValue() as string) ?? ""}
-                >
-                    <SelectTrigger className="w-[30rem]">
-                        <SelectValue placeholder="Filter sections" />
-                    </SelectTrigger>
-                    <SelectContent>
-                        {sections.map(({ name, value }, index) => (
-                            <SelectItem key={index} value={value}>{name}</SelectItem>
-                        ))}
-                    </SelectContent>
-                </Select>
             </div>
             {/* Table */}
             <div className="rounded-md border">

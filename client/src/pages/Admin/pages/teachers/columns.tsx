@@ -29,20 +29,6 @@ export const columns: ColumnDef<TeacherData>[] = [
         },
     },
     {
-        accessorKey: "middlename",
-        header: ({ column }) => {
-            return (
-                <Button
-                    variant="ghost"
-                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-                >
-                    Middle Name
-                    <ArrowUpDown className="ml-2 h-4 w-4" />
-                </Button>
-            )
-        },
-    },
-    {
         accessorKey: "firstname",
         header: ({ column }) => {
             return (
@@ -57,8 +43,34 @@ export const columns: ColumnDef<TeacherData>[] = [
         },
     },
     {
+        accessorKey: "middlename",
+        header: ({ column }) => {
+            return (
+                <Button
+                    variant="ghost"
+                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                >
+                    Middle Name
+                    <ArrowUpDown className="ml-2 h-4 w-4" />
+                </Button>
+            )
+        },
+    },
+    {
         accessorKey: "sex",
         header: "Sex",
+    },
+    {
+        accessorKey: "grade_assigned",
+        header: "Grade Assigned",
+    },
+    {
+        accessorKey: "section_handled",
+        header: "Section Handled",
+    },
+    {
+        accessorKey: "subjects",
+        header: "Subjects",
     },
     {
         accessorKey: "email",
