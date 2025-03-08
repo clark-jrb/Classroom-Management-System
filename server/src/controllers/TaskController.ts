@@ -12,7 +12,7 @@ export class TaskController {
     /**
      * CREATE Task (for teacher)
      */
-    public createTask = async (req: Request, res: Response): Promise<void> => {
+    public createTask = async (req: Request, res: Response) => {
         try {
             const { tid } = req.params
             const data = req.body
@@ -36,7 +36,7 @@ export class TaskController {
     /**
      * CREATE Task (for teacher)
      */
-    public updateTask = async (req: Request, res: Response): Promise<void> => {
+    public updateTask = async (req: Request, res: Response) => {
         try {
             const { id } = req.params
             const data: TUpdateTask = req.body
@@ -57,7 +57,7 @@ export class TaskController {
         }
     }
 
-    public deleteTask = async (req: Request, res: Response): Promise<void> => {
+    public deleteTask = async (req: Request, res: Response) => {
         try {
             const { id } = req.params
 
@@ -84,7 +84,7 @@ export class TaskController {
     /**
      * GET ALL tasks created by the teacher
      */
-    public getTasks = async (req: Request, res: Response): Promise<void> => {
+    public getTasks = async (req: Request, res: Response) => {
         try {
             const { user_id, grade_assigned, section_handled, subjects } = req.query
 
@@ -115,7 +115,7 @@ export class TaskController {
     /**
      * CREATE student tasks
      */
-    public createTasksToStudents = async (req: Request, res: Response): Promise<void> => {
+    public createTasksToStudents = async (req: Request, res: Response) => {
         try {
             const { task_id, grade_lvl, section } = req.body
             const Model = selectTaskGradeModel(grade_lvl)
@@ -158,7 +158,7 @@ export class TaskController {
      * this will return all the students taking the specific task
      * ex. task_id is quiz no. 2 (this will return ALL students taking the quiz no.2)
      */
-    public getStudentsTakingTask = async (req: Request, res: Response): Promise<void> =>  {
+    public getStudentsTakingTask = async (req: Request, res: Response) =>  {
         try {
             const { id } = req.params
             const { task_id, grade_lvl } = req.query
@@ -200,7 +200,7 @@ export class TaskController {
     /**
      * UPDATE students scores
      */
-    public updateStudentsScores = async (req: Request, res: Response): Promise<void> => {
+    public updateStudentsScores = async (req: Request, res: Response) => {
         try {
             const { grade_lvl } = req.query
             const StudentsScores: StudentTaskScore[] = req.body
@@ -236,7 +236,7 @@ export class TaskController {
      * this will return all of the students of a specific grade level taking the teacher's tasks
      * (tasks can be recitation, quiz, activity, etc.)
      */
-    public getStudentsTakingMyTasks = async (req: Request, res: Response): Promise<void> => {
+    public getStudentsTakingMyTasks = async (req: Request, res: Response) => {
         try {
             const { tid, grade_lvl } = req.query
 
@@ -258,7 +258,7 @@ export class TaskController {
     /**
      * name
      */
-    public getMyStudentsPerformance = async (req: Request, res: Response): Promise<void> => {
+    public getMyStudentsPerformance = async (req: Request, res: Response) => {
         try {
             const { tid, grade_lvl, section, subject, quarter } = req.query
 
@@ -355,7 +355,7 @@ export class TaskController {
     /**
      * create
      */
-    public createStudentsSGs = async (req: Request, res: Response): Promise<void> => {
+    public createStudentsSGs = async (req: Request, res: Response) => {
         try {
             const data = req.body
             
@@ -373,7 +373,7 @@ export class TaskController {
     /**
      * name
      */
-    public getStudentsSGs = async (req: Request, res: Response): Promise<void> => {
+    public getStudentsSGs = async (req: Request, res: Response) => {
         try {
             const { section, subject } = req.query
             
@@ -395,7 +395,7 @@ export class TaskController {
         }
     }
 
-    public updateStudentsSGs = async (req: Request, res: Response): Promise<void> => {
+    public updateStudentsSGs = async (req: Request, res: Response) => {
         try {
             const { subject, quarter } = req.query
             const StudentsScores: StudentSubjectGrade[] = req.body
@@ -426,7 +426,7 @@ export class TaskController {
         }
     }
 
-    public getStudentsQAs = async (req: Request, res: Response): Promise<void> => {
+    public getStudentsQAs = async (req: Request, res: Response) => {
         try {
             const { grade_lvl, section } = req.query
             
@@ -448,7 +448,7 @@ export class TaskController {
         }
     }
 
-    public getStudentsCalculatedQA = async (req: Request, res: Response): Promise<void> => {
+    public getStudentsCalculatedQA = async (req: Request, res: Response) => {
         try {
             const { grade_lvl, section } = req.query
 
@@ -503,7 +503,7 @@ export class TaskController {
         }
     }
     
-    public getStudentsSGfromQA = async (req: Request, res: Response): Promise<void> => {
+    public getStudentsSGfromQA = async (req: Request, res: Response) => {
         try {
             const { section, subject } = req.query
             
@@ -536,7 +536,7 @@ export class TaskController {
         }
     }
 
-    public updateStudentsSGfromQA = async (req: Request, res: Response): Promise<void> => {
+    public updateStudentsSGfromQA = async (req: Request, res: Response) => {
         try {
             const StudentsScores: StudentSubjectGrade[] = req.body
 
@@ -570,7 +570,7 @@ export class TaskController {
         }
     }
 
-    public createStudentsGA = async (req: Request, res: Response): Promise<void> => {
+    public createStudentsGA = async (req: Request, res: Response) => {
         try {
             const data = req.body
 
@@ -586,7 +586,7 @@ export class TaskController {
         }
     }
 
-    public getStudentsGA = async (req: Request, res: Response): Promise<void> => {
+    public getStudentsGA = async (req: Request, res: Response) => {
         try {
             const { section } = req.query
             
@@ -601,7 +601,7 @@ export class TaskController {
         }
     }
 
-    public getStudentGA = async (req: Request, res: Response): Promise<void> => {
+    public getStudentGA = async (req: Request, res: Response) => {
         try {
             const { sid } = req.params
             

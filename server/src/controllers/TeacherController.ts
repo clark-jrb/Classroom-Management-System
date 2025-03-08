@@ -7,7 +7,7 @@ export class TeacherController {
     /**
      * GET TEACHERS
      */
-    public getTeachers = async (_req: Request, res: Response): Promise<void> =>{
+    public getTeachers = async (_req: Request, res: Response) =>{
         try {
             const teachers = await TeacherAccountModel.find()
 
@@ -18,7 +18,7 @@ export class TeacherController {
                             .findById(_id)
                             .select('-password -__v')
                             .lean(),
-                            TeacherProfileModel.findOne({ tid: _id })
+                        TeacherProfileModel.findOne({ tid: _id })
                             .select('-_id -tid -__v')
                             .lean(),
                         TeacherClassModel
@@ -49,7 +49,7 @@ export class TeacherController {
     /**
      * GET TEACHER BY ID
      */
-    public getTeacherById = async (req: Request, res: Response): Promise<void> =>  {
+    public getTeacherById = async (req: Request, res: Response) =>  {
         try {
             const { id } = req.params
 
@@ -76,7 +76,7 @@ export class TeacherController {
     /**
      * DELETE TEACHER BY ID
      */
-    public deleteTeacherById = async (req: Request, res: Response): Promise<void> => {
+    public deleteTeacherById = async (req: Request, res: Response) => {
         try {
             const { id } = req.params
             await TeacherAccountModel.findOneAndDelete({ _id: id })
@@ -90,7 +90,7 @@ export class TeacherController {
     /**
      * UPDATE TEACHER BY ID
      */
-    public updateTeacherById = async (req: Request, res: Response): Promise<void> => {
+    public updateTeacherById = async (req: Request, res: Response) => {
         try {
             const { id } = req.params
             const data = req.body

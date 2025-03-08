@@ -65,25 +65,12 @@ export class UserController {
 
             const { role, id } = user
             const Model = selectAccountModel(role)
-            if (role === 'faculty') {
-                const faculty = await Model
-                    .findById(id)
-                    .populate({
-                        path: "details"
-                    })
+            const user_data = await Model.findById(id)
 
-                res.json({ 
-                    currentUser: faculty, 
-                    accessToken: accessToken
-                })
-            } else {
-                const student = await Model.findById(id)
-
-                res.json({ 
-                    currentUser: student, 
-                    accessToken: accessToken
-                })
-            }
+            res.json({ 
+                currentUser: user_data, 
+                accessToken: accessToken
+            })
             
         } catch (error) {
             res.status(401).json({ message: 'Token expired' })
@@ -91,51 +78,3 @@ export class UserController {
         
     }
 }
-
-// export const getUserById = (id: string) => UserModel.findById(id)
-// export const deleteUserById = (id: string) => UserModel.findOneAndDelete({ _id: id })
-// export const updateUserById = (id: string, values: Record<string, any>) => UserModel.findByIdAndUpdate(id, values)
-
-
-// export const getAllUsers = async (req: Request, res: Response): Promise<any> => {
-//     try {
-//         const users = await getUsers()
-
-//         return res.status(200).json(users)
-//     } catch (error) {
-//         console.log(error)
-//         return res.sendStatus(400)
-//     }
-// }
-
-// export const deleteUser = async (req: Request, res: Response): Promise<any> => {
-//     try {
-//         const { id } = req.params
-
-//         const deleteUser = await deleteUserById(id)
-
-//         return res.json(deleteUser).sendStatus(200)
-//     } catch (error) {
-//         console.log(error)
-//         return res.sendStatus(400)
-//     }
-// }
-
-// export const updateUser = async (req: Request, res: Response): Promise<any> => {
-//     try {
-//         const { id } = req.params
-//         const { firstname } = req.body
-
-//         if (!firstname) return res.sendStatus(400)
-
-//         const user = await getUserById(id)
-
-//         user.firstname = firstname
-//         await user.save()
-
-//         return res.status(200).json(user).end()
-//     } catch (error) {
-//         console.log(error)
-//         return res.sendStatus(400)
-//     }
-// }

@@ -12,7 +12,7 @@ export class AdminController {
     /**
      * name
      */
-    public getCurrentQuarter = async (_req: Request, res: Response): Promise<void> => {
+    public getCurrentQuarter = async (_req: Request, res: Response) => {
         try {
             const current_quarter = await AdminPolicyModel.find()
             
@@ -29,7 +29,7 @@ export class AdminController {
     /**
      * name
      */
-    public updateCurrentQuarter = async (req: Request, res: Response): Promise<void> => {
+    public updateCurrentQuarter = async (req: Request, res: Response) => {
         try {
             const { id } = req.params
             const { current_quarter } = req.body
@@ -49,7 +49,7 @@ export class AdminController {
     /**
      * name
      */
-    public deleteUser = async (req: Request, res: Response): Promise<void> => {
+    public deleteUser = async (req: Request, res: Response) => {
         try {
             const { id, role } = req.params
 

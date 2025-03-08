@@ -10,19 +10,19 @@ import { TeacherClass } from 'types/TeacherTypes'
 
 const User = new UserController()
 
-export const login = async (req: Request, res: Response): Promise<any> => {
+export const login = async (req: Request, res: Response) => {
     const { email, password, role } = req.body
 
     try {
         // checks fields if empty
         if (!email || !password) {
-            return res.json({ message: 'Incomplete credentials'})
+            res.json({ message: 'Incomplete credentials'})
         }
         
         const userExists = await User.getByEmail(email, role)
         // checks if user exists
         if (!userExists) {
-            return res.json({ message: "User don't exist"})
+            res.json({ message: "User don't exist"})
         }
 
         // generates access and refresh tokens 
@@ -32,25 +32,25 @@ export const login = async (req: Request, res: Response): Promise<any> => {
         const matchPass = await comparePassword(password, userExists.password)
 
         if (!matchPass) {
-            return res.json({ message: 'Wrong password' })
+            res.json({ message: 'Wrong password' })
         }
 
         // creates refresh tokens on database 
         createRefreshTokenOnDB(userExists.id, refreshToken).save()
 
-        return res
+        res
             .cookie("accessToken", accessToken, accessTokenOpt)
             .cookie("refreshToken", refreshToken, refreshTokenOpt)
             .json({ userRole: userExists.role, message: "User logged in successfully!" })
             .end()
     } catch (error) {
         console.log(error)
-        return res.sendStatus(400)
+        res.sendStatus(400)
     }
 }
 
 
-export const register = async (req: Request, res: Response): Promise<any> => {
+export const register = async (req: Request, res: Response) => {
     const { account, profile, classes }: {
         account: UserAccount,
         profile: UserProfile,
@@ -61,12 +61,12 @@ export const register = async (req: Request, res: Response): Promise<any> => {
     try {
         // check if all fields filled 
         if (!email || !password) {
-            return res.json({ message: "Incomplete credentials" })
+            res.json({ message: "Incomplete credentials" })
         }
         
         const userExist = await User.getByEmail(email, role)
         if (userExist) {
-            return res.json({ message: "User already exists" })
+            res.json({ message: "User already exists" })
         }
 
         // hash password 
@@ -95,7 +95,7 @@ export const register = async (req: Request, res: Response): Promise<any> => {
             createRefreshTokenOnDB(userNowExist.id, refreshToken).save()
 
             // responds with access and refresh token on headers
-            return res
+            res
                 .cookie("accessToken", accessToken, accessTokenOpt)
                 .cookie("refreshToken", refreshToken, refreshTokenOpt)
                 .status(201).json({ userRole: role, message: "User registered successfully!" })
@@ -103,7 +103,7 @@ export const register = async (req: Request, res: Response): Promise<any> => {
         }
     } catch (error) {
         console.log(error)
-        return res.sendStatus(400)
+        res.sendStatus(400)
     }
 }
 
