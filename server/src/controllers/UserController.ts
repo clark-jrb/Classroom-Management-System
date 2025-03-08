@@ -65,12 +65,25 @@ export class UserController {
 
             const { role, id } = user
             const Model = selectAccountModel(role)
-            const user_data = await Model.findById(id)
+            if (role === 'faculty') {
+                const faculty = await Model
+                    .findById(id)
+                    .populate({
+                        path: "details"
+                    })
 
-            res.json({ 
-                currentUser: user_data, 
-                accessToken: accessToken
-            })
+                res.json({ 
+                    currentUser: faculty, 
+                    accessToken: accessToken
+                })
+            } else {
+                const student = await Model.findById(id)
+
+                res.json({ 
+                    currentUser: student, 
+                    accessToken: accessToken
+                })
+            }
             
         } catch (error) {
             res.status(401).json({ message: 'Token expired' })

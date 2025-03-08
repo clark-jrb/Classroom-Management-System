@@ -1,4 +1,4 @@
-import { RequestHandler, NextFunction, Request, Response } from 'express'
+import { NextFunction, Request, Response } from 'express'
 import jwt from 'jsonwebtoken'
 
 
@@ -7,7 +7,7 @@ export interface JwtPayload {
     role: string
 }
 
-export const isOwner = async (
+export const isOwner = (
     req: { user: JwtPayload } & Request, 
     res: Response, 
     next: NextFunction
@@ -32,7 +32,7 @@ export const isOwner = async (
     }
 }
 
-export const isAdmin = async (
+export const isAdmin = (
     req: { user: JwtPayload } & Request, 
     res: Response, 
     next: NextFunction
@@ -56,7 +56,7 @@ export const isAdmin = async (
     }
 }
 
-export const isAuthenticated = async (
+export const isAuthenticated = (
     req: { user: JwtPayload } & Request, 
     res: Response, 
     next: NextFunction
