@@ -122,7 +122,7 @@ export const columns: ColumnDef<StudentData>[] = [
                                             </Button>
                                         </DialogClose>
                                         <DeleteForm 
-                                            sid={student_id} 
+                                            id={student_id} 
                                             setOpenDialog={setOpenDialog}
                                             role={role}
                                         />

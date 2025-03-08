@@ -27,9 +27,18 @@ export class StudentController {
             const students_data = await Promise.all(
                 students.map(async ({ _id }) => {
                     const [account, profile, classes] = await Promise.all([
-                        StudentAccountModel.findById(_id).select('-password -role -__v').lean(),
-                        StudentProfileModel.findOne({ sid: _id }).select('-_id -sid -__v').lean(),
-                        StudentClassModel.findOne({ sid: _id }).select('-_id -sid -__v').lean(),
+                        StudentAccountModel
+                            .findById(_id)
+                            .select('-password -__v')
+                            .lean(),
+                        StudentProfileModel
+                            .findOne({ sid: _id })
+                            .select('-_id -sid -__v')
+                            .lean(),
+                        StudentClassModel
+                            .findOne({ sid: _id })
+                            .select('-_id -sid -__v')
+                            .lean(),
                     ])
 
                     return { 

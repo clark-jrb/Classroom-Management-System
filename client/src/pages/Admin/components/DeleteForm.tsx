@@ -9,9 +9,9 @@ import { useQueryClient } from "@tanstack/react-query"
 import { Roles } from "@/types/global.types"
 
 
-export const DeleteForm = ({ sid, setOpenDialog, role }: {
+export const DeleteForm = ({ id, setOpenDialog, role }: {
     role: Roles
-    sid: string
+    id: string
     setOpenDialog: (state: boolean) => void
 }) => {
     const queryClient = useQueryClient()
@@ -24,7 +24,7 @@ export const DeleteForm = ({ sid, setOpenDialog, role }: {
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            id: sid
+            id: id
         }
     })
 
@@ -38,9 +38,9 @@ export const DeleteForm = ({ sid, setOpenDialog, role }: {
     }
     
     function onSubmit() {
-        const id = form.getValues('id')
+        const user_id = form.getValues('id')
 
-        deleteUserMutation.mutateAsync({ id, role }, {
+        deleteUserMutation.mutateAsync({ id: user_id, role }, {
             onSuccess: (data) => {
                 const { message } = data
                 queryClient.invalidateQueries({ queryKey: [`${getQueryKey(role)}`] })

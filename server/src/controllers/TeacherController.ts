@@ -16,7 +16,7 @@ export class TeacherController {
                     const [account, profile, classes] = await Promise.all([
                         TeacherAccountModel
                             .findById(_id)
-                            .select('-password -role -__v')
+                            .select('-password -__v')
                             .lean(),
                             TeacherProfileModel.findOne({ tid: _id })
                             .select('-_id -tid -__v')

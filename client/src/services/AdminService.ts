@@ -64,6 +64,6 @@ export const deleteUser = async (id: string, role: Roles): Promise<Message> => {
 
         return response.data
     } catch (error) {
-        throw new Error('Error fetching students with data')
+        throw new Error('Error deleting user')
     }
 }
