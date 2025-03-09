@@ -11,7 +11,7 @@ $gray-navy-blue: #495464;
     height: 100dvh;
 }
 
-.home-page {
+.home-page, .login-page {
     background-color: $light-navy-blue;
 }
 
@@ -44,22 +44,8 @@ $gray-navy-blue: #495464;
     background-color: $navy-blue;
 }
 
-.button-l-navy {
-    background-color: $light-navy-blue;
-}
-
-.button-navy {
-    background-color: $navy-blue;
-}
-
-.button-gray-navy {
-    background-color: $gray-navy-blue;
-}
-
-.button-l-navy:hover {
-    background-color: $navy-blue;
-}
-
-.button-navy:hover {
-    background-color: $light-navy-blue;
+.input-navy:focus-visible {
+    box-shadow: $light-navy-blue;
+    // outline: $light-navy-blue solid 2px;
+    // outline-offset: 1px;
 }

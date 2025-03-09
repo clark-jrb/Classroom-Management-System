@@ -31,6 +31,7 @@ import { DatePicker } from "@/components/ui/date-picker"
 import { RegisterStudent } from "./student"
 import { RegisterTeacher } from "./teacher"
 import { unregisterFields } from "@/helpers/unregister-fields"
+import { AuthContainer } from "@/components/AuthContainer"
 
 export const Register = () => {
     const navigate = useNavigate()
@@ -118,7 +119,7 @@ export const Register = () => {
 
     return (
         <div className="register-page">
-            <div className="border rounded-md p-6">
+            <AuthContainer>
                 {formStep === 1 && (
                     <Form {...form1}>
                         <form onSubmit={form1.handleSubmit(onSubmitForm1, onErrorForm)} className="space-y-6">
@@ -293,7 +294,7 @@ export const Register = () => {
                         </form>
                     </Form>
                 )}
-            </div>
+            </AuthContainer>
         </div>
     )
 }

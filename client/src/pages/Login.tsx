@@ -16,6 +16,8 @@ import { useAuthStore } from "@/stores/auth/authSlice"
 import { useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import { userAccountSchema } from "@/schemas/user.schema"
+import { MoveLeft } from "lucide-react"
+import { AuthContainer } from "@/components/AuthContainer"
 
 export const Login = () => {
     const { loginUser } = useAuthQuery()
@@ -44,7 +46,8 @@ export const Login = () => {
 
     return (
         <div className="login-page">
-            <div className="border rounded-md p-6">
+            <AuthContainer>
+                <div className="text-2xl">Login to your account</div>
                 <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
                         <FormField
@@ -54,12 +57,18 @@ export const Login = () => {
                                 <FormItem>
                                     <FormLabel>Email:</FormLabel>
                                     <FormControl>
-                                        <Input type="email" placeholder="your email" {...field} disabled={loginUser.isPending}/>
+                                        <Input 
+                                            className="py-6"
+                                            type="email" 
+                                            placeholder="your email" 
+                                            {...field} 
+                                            disabled={loginUser.isPending}
+                                            />
                                     </FormControl>
                                     <FormMessage/>
                                 </FormItem>
                             )}
-                        />
+                            />
                         <FormField
                             control={form.control}
                             name="password"
@@ -67,22 +76,39 @@ export const Login = () => {
                                 <FormItem>
                                     <FormLabel>Password:</FormLabel>
                                     <FormControl>
-                                        <Input type="password" placeholder="your password" {...field} disabled={loginUser.isPending}/>
+                                        <Input 
+                                            className="py-6"
+                                            type="password" 
+                                            placeholder="your password" 
+                                            {...field} 
+                                            disabled={loginUser.isPending}
+                                            />
                                     </FormControl>
                                     <FormMessage/>
                                 </FormItem>
                             )}
-                        />
+                            />
                         
-                        <Button type="submit" disabled={loginUser.isPending}>
+                        <Button 
+                            className="w-full py-6 text-md"
+                            type="submit" 
+                            variant={"navy"}
+                            disabled={loginUser.isPending}
+                            >
                             {loginUser.isPending ? 'Loading...' : 'Login'}
                         </Button>
                     </form>
-                    <Button onClick={() => navigate('/home')}>
-                        Back
-                    </Button>
+                    <div className="border-b"></div>
+                    <div>
+                        <Button 
+                            variant={'outline'}
+                            onClick={() => navigate('/home')}
+                            >
+                            <MoveLeft/>Go Back
+                        </Button>
+                    </div>
                 </Form>
-            </div>
+            </AuthContainer>
         </div>
     )
 }

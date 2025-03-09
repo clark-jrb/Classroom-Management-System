@@ -27,6 +27,18 @@ export default {
   				DEFAULT: 'hsl(var(--primary))',
   				foreground: 'hsl(var(--primary-foreground))'
   			},
+			navy: {
+				DEFAULT: '#213555',	// navy blue
+  				foreground: 'hsl(var(--primary-foreground))'
+			},
+			dark_navy: {
+				DEFAULT: '#0F172A',	// dark navy blue
+				foreground: 'hsl(var(--primary-foreground))'
+			},
+			light_navy: {
+				DEFAULT: '#4F709C',	// light navy blue
+				foreground: 'hsl(var(--primary-foreground))'
+			},
   			secondary: {
   				DEFAULT: 'hsl(var(--secondary))',
   				foreground: 'hsl(var(--secondary-foreground))'
@@ -45,7 +57,7 @@ export default {
   			},
   			border: 'hsl(var(--border))',
   			input: 'hsl(var(--input))',
-  			ring: 'hsl(var(--ring))',
+  			ring: 'hsl(214, 33%, 46%)',
   			chart: {
   				'1': 'hsl(var(--chart-1))',
   				'2': 'hsl(var(--chart-2))',

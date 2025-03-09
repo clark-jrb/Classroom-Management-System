@@ -22,7 +22,7 @@ export const Home = () => {
                     <>
                         <div className="flex justify-center">
                             <Button 
-                                className="w-[15rem] py-6 button-role text-md" 
+                                className="w-full py-6 button-role text-md" 
                                 onClick={() => handleSetRole('student')}
                             >
                                 Student
@@ -31,7 +31,7 @@ export const Home = () => {
                         <div className="flex justify-center">or</div>
                         <div className="flex justify-center">
                             <Button 
-                                className="w-[15rem] py-6 button-role text-md" 
+                                className="w-full py-6 button-role text-md" 
                                 onClick={() => handleSetRole('faculty')}
                             >
                                 Faculty
@@ -40,7 +40,7 @@ export const Home = () => {
                         <div className="border-b"></div>
                         <div className="flex justify-center">
                             <Button 
-                                className="w-[15rem] py-6 button-role-admin text-md" 
+                                className="w-full py-6 button-role-admin text-md" 
                                 onClick={() => handleSetRole('admin')}
                             >
                                 Admin
@@ -51,7 +51,7 @@ export const Home = () => {
                     <>
                         <div className="flex justify-center">
                             <Button 
-                                className="w-[15rem] py-6 button-role text-md" 
+                                className="w-full py-6 button-role text-md" 
                                 onClick={() => navigate('/login')}
                             >
                                 Login
@@ -62,7 +62,7 @@ export const Home = () => {
                             <div className="flex justify-center">or</div>
                             <div className="flex justify-center">
                                 <Button 
-                                    className="w-[15rem] py-6 button-role text-md" 
+                                    className="w-full py-6 button-role text-md" 
                                     onClick={() => navigate('/register')}
                                 >
                                     Register
@@ -71,9 +71,9 @@ export const Home = () => {
                             </>
                         }
                         <div className="border-b"></div>
-                        <div className="flex justify-center">
+                        <div>
                             <Button 
-                                className="w-[15rem] py-6 text-md" 
+                                className="text-md" 
                                 variant={'outline'}
                                 onClick={() => setRoleState('')}
                             >
