@@ -23,7 +23,7 @@ export const userClassesSchema = z.object({
     section: z.string().min(1, { message: 'Select your section you are enrolled' }).optional(),
     // for teachers
     teacher_role: z.string().min(1, { message: 'Select you role' }).optional(),
-    grade_assigned: z.string().min(1, { message: 'Choose section handled' }).optional(),
-    section_handled: z.array(z.string()).min(1, { message: 'Subjects should not be empty' }).optional(),
-    subjects: z.array(z.string()).min(1, { message: 'Subjects should not be empty' }).optional(),
+    grade_assigned: z.string().min(1, { message: 'Choose grade level assigned' }).optional(),
+    section_handled: z.array(z.string()).min(1, { message: 'Choose section(s) handled' }).optional(),
+    subjects: z.array(z.string()).min(1, { message: 'Choose subject(s) assigned' }).optional(),
 })

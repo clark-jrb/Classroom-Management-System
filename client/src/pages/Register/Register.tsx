@@ -32,6 +32,7 @@ import { RegisterStudent } from "./student"
 import { RegisterTeacher } from "./teacher"
 import { unregisterFields } from "@/helpers/unregister-fields"
 import { AuthContainer } from "@/components/AuthContainer"
+import { ArrowLeft, ArrowRight } from "lucide-react"
 
 export const Register = () => {
     const navigate = useNavigate()
@@ -120,6 +121,7 @@ export const Register = () => {
     return (
         <div className="register-page">
             <AuthContainer>
+                <div className="text-2xl">Register an account</div>
                 {formStep === 1 && (
                     <Form {...form1}>
                         <form onSubmit={form1.handleSubmit(onSubmitForm1, onErrorForm)} className="space-y-6">
@@ -130,7 +132,12 @@ export const Register = () => {
                                     <FormItem>
                                         <FormLabel>Email:</FormLabel>
                                         <FormControl>
-                                            <Input type="email" placeholder="your email" {...field}/>
+                                            <Input 
+                                                className="py-6"
+                                                type="email" 
+                                                placeholder="your email" 
+                                                {...field}
+                                            />
                                         </FormControl>
                                         <FormMessage/>
                                     </FormItem>
@@ -143,25 +150,42 @@ export const Register = () => {
                                     <FormItem>
                                         <FormLabel>Password:</FormLabel>
                                         <FormControl>
-                                            <Input type="password" placeholder="your password" {...field}/>
+                                            <Input 
+                                                className="py-6"
+                                                type="password" 
+                                                placeholder="your password" 
+                                                {...field}
+                                            />
                                         </FormControl>
                                         <FormMessage/>
                                     </FormItem>
                                 )}
                             />
-                            <Button type="submit">
-                                {role !== 'admin' ? 'Next' : 'Register'}
+                            <Button 
+                                className="w-full py-6"
+                                variant={'outline'}
+                                type="submit"
+                            >
+                                {role !== 'admin' ? <>Next<ArrowRight/></> : 'Register'}
                             </Button>
                         </form>
-                        <Button onClick={() => navigate('/home')}>Back</Button>
+                        <div className="border-b"></div>
+                        <div>
+                            <Button 
+                                variant={'outline'}
+                                onClick={() => navigate('/home')}
+                            >
+                                <ArrowLeft/>Go Back
+                            </Button>
+                        </div>
                     </Form>
                 )}
 
                 {formStep === 2 && (
                     <Form {...form2}>
                         <form onSubmit={form2.handleSubmit(onSubmitForm2, onErrorForm)} className="space-y-6">
-                            <div className="flex gap-5">
-                                <div className="w-1/2">
+                            <div className="w-[40rem] flex gap-6">
+                                <div className="w-1/2 space-y-6">
                                 {/* First Name  */}
                                     <FormField
                                         control={form2.control}
@@ -170,7 +194,12 @@ export const Register = () => {
                                             <FormItem>
                                                 <FormLabel>First Name:</FormLabel>
                                                 <FormControl>
-                                                    <Input placeholder="your first name" {...field} disabled={registerUser.isPending}/>
+                                                    <Input 
+                                                        className="py-6"
+                                                        placeholder="your first name" 
+                                                        {...field} 
+                                                        disabled={registerUser.isPending}
+                                                    />
                                                 </FormControl>
                                                 <FormMessage/>
                                             </FormItem>
@@ -184,7 +213,12 @@ export const Register = () => {
                                             <FormItem>
                                                 <FormLabel>Middle Name:</FormLabel>
                                                 <FormControl>
-                                                    <Input placeholder="your middle name" {...field} disabled={registerUser.isPending}/>
+                                                    <Input 
+                                                        className="py-6"
+                                                        placeholder="your middle name" 
+                                                        {...field} 
+                                                        disabled={registerUser.isPending}
+                                                    />
                                                 </FormControl>
                                                 <FormMessage/>
                                             </FormItem>
@@ -198,7 +232,12 @@ export const Register = () => {
                                             <FormItem>
                                                 <FormLabel>Last Name:</FormLabel>
                                                 <FormControl>
-                                                    <Input placeholder="your last name" {...field} disabled={registerUser.isPending}/>
+                                                    <Input 
+                                                        className="py-6"
+                                                        placeholder="your last name" 
+                                                        {...field} 
+                                                        disabled={registerUser.isPending}
+                                                    />
                                                 </FormControl>
                                                 <FormMessage/>
                                             </FormItem>
@@ -206,7 +245,7 @@ export const Register = () => {
                                     />
                                 </div>
                             
-                                <div className="w-1/2">
+                                <div className="w-1/2 space-y-6">
                                 {/* Birth Date */}
                                     <FormField
                                         name="birth_date"
@@ -233,9 +272,12 @@ export const Register = () => {
                                         render={({ field }) => (
                                             <FormItem>
                                                 <FormLabel>Sex:</FormLabel>
-                                                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                                    <Select 
+                                                        onValueChange={field.onChange} 
+                                                        defaultValue={field.value}
+                                                    >
                                                         <FormControl>
-                                                            <SelectTrigger>
+                                                            <SelectTrigger className="py-6">
                                                                 <SelectValue placeholder="your sex" />
                                                             </SelectTrigger>
                                                         </FormControl>
@@ -256,7 +298,12 @@ export const Register = () => {
                                             <FormItem>
                                                 <FormLabel>Contact Number:</FormLabel>
                                                 <FormControl>
-                                                    <Input placeholder="your contact number" {...field} disabled={registerUser.isPending}/>
+                                                    <Input 
+                                                        className="py-6"
+                                                        placeholder="your contact number" 
+                                                        {...field} 
+                                                        disabled={registerUser.isPending}
+                                                    />
                                                 </FormControl>
                                                 <FormMessage/>
                                             </FormItem>
@@ -266,8 +313,23 @@ export const Register = () => {
                             </div>
                             {/* BUTTONS */}
                             <div className="float-end">
-                                <Button type="submit">
-                                    Next
+                                <Button 
+                                    variant={'outline'}
+                                    type="submit"
+                                >
+                                    Next<ArrowRight/>
+                                </Button>    
+                            </div>
+                            <div className="float-start">
+                                <Button 
+                                    type="button"
+                                    variant={'outline'}
+                                    onClick={() => {
+                                        setFormStep(1)
+                                        // form1.reset()
+                                    }}
+                                >
+                                    <ArrowLeft/>Back
                                 </Button>    
                             </div>
                         </form>
@@ -285,6 +347,18 @@ export const Register = () => {
                             {role === 'faculty' && (
                                 <RegisterTeacher form={form3}/>
                             )}
+                            <div className="float-start">
+                                <Button 
+                                    type="button"
+                                    variant={'outline'}
+                                    onClick={() => {
+                                        setFormStep(2)
+                                        // form1.reset()
+                                    }}
+                                >
+                                    <ArrowLeft/>Back
+                                </Button>    
+                            </div>
                             {/* Submit */}
                             <div className="float-end">
                                 <Button type="submit">

@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button"
 import { useState } from "react"
 import { useAuthStore } from "@/stores/auth/authSlice"
 import { Roles } from "@/types/global.types"
-import { MoveLeft } from "lucide-react"
+import { ArrowLeft } from "lucide-react"
 
 export const Home = () => {
     const { setRole } = useAuthStore()
@@ -77,7 +77,7 @@ export const Home = () => {
                                 variant={'outline'}
                                 onClick={() => setRoleState('')}
                             >
-                                <MoveLeft/>Go back
+                                <ArrowLeft/>Go back
                             </Button>
                         </div>
                     </>

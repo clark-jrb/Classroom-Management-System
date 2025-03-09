@@ -16,7 +16,7 @@ import { useAuthStore } from "@/stores/auth/authSlice"
 import { useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import { userAccountSchema } from "@/schemas/user.schema"
-import { MoveLeft } from "lucide-react"
+import { ArrowLeft } from "lucide-react"
 import { AuthContainer } from "@/components/AuthContainer"
 
 export const Login = () => {
@@ -104,7 +104,7 @@ export const Login = () => {
                             variant={'outline'}
                             onClick={() => navigate('/home')}
                             >
-                            <MoveLeft/>Go Back
+                            <ArrowLeft/>Go Back
                         </Button>
                     </div>
                 </Form>

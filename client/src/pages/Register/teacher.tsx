@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/select"
 import { Checkbox } from "@/components/ui/checkbox"
 import { toCamelCase } from "@/helpers/camel-case"
+import { Label } from "@/components/ui/label"
 
 interface IRegisterTeacher {
     form: any
@@ -113,121 +114,142 @@ export const RegisterTeacher = ({ form }: IRegisterTeacher) => {
     
     return (
         <div>
-            <div>
-                <FormField
-                    control={form.control}
-                    name="teacher_role"
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormLabel>Teaching Role:</FormLabel>
-                                <Select 
-                                    // onValueChange={field.onChange} 
-                                    onValueChange={(value) => {
-                                        field.onChange(value)
-                                        form.resetField("section_handled")
-                                        form.resetField("subjects")
-                                    }} 
-                                    defaultValue={field.value}
-                                >
-                                    <FormControl>
-                                        <SelectTrigger>
-                                            <SelectValue placeholder="Select role" />
-                                        </SelectTrigger>
-                                    </FormControl>
-                                    <SelectContent>
-                                        <SelectItem value="homeroom">homeroom</SelectItem>
-                                        <SelectItem value="subject">subject</SelectItem>
-                                    </SelectContent>
-                                </Select>
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                />
-                <FormField
-                    control={form.control}
-                    name="grade_assigned"
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormLabel>Class Assigned:</FormLabel>
-                                <Select 
-                                    onValueChange={(value) => {
-                                        field.onChange(value)
-                                        form.resetField("section_handled")
-                                    }} 
-                                    defaultValue={field.value}
-                                >
-                                    <FormControl>
-                                        <SelectTrigger>
-                                            <SelectValue placeholder="select grade level" />
-                                        </SelectTrigger>
-                                    </FormControl>
-                                    <SelectContent>
-                                        {student_classes.map(({ name, value }, index) => (
-                                            <SelectItem key={index} value={value}>{name}</SelectItem>
-                                        ))}
-                                    </SelectContent>
-                                </Select>
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                />
+            <div className="flex gap-6">
+                <div className="w-[25rem] space-y-6">
+                    <FormField
+                        control={form.control}
+                        name="teacher_role"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Teaching Role:</FormLabel>
+                                    <Select 
+                                        // onValueChange={field.onChange} 
+                                        onValueChange={(value) => {
+                                            field.onChange(value)
+                                            form.resetField("section_handled")
+                                            form.resetField("subjects")
+                                        }} 
+                                        defaultValue={field.value}
+                                    >
+                                        <FormControl>
+                                            <SelectTrigger className="py-6">
+                                                <SelectValue placeholder="Select role" />
+                                            </SelectTrigger>
+                                        </FormControl>
+                                        <SelectContent>
+                                            <SelectItem value="homeroom">homeroom</SelectItem>
+                                            <SelectItem value="subject">subject</SelectItem>
+                                        </SelectContent>
+                                    </Select>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                    <FormField
+                        control={form.control}
+                        name="grade_assigned"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Class Assigned:</FormLabel>
+                                    <Select 
+                                        onValueChange={(value) => {
+                                            field.onChange(value)
+                                            form.resetField("section_handled")
+                                        }} 
+                                        defaultValue={field.value}
+                                    >
+                                        <FormControl>
+                                            <SelectTrigger className="py-6">
+                                                <SelectValue placeholder="select grade level" />
+                                            </SelectTrigger>
+                                        </FormControl>
+                                        <SelectContent>
+                                            {student_classes.map(({ name, value }, index) => (
+                                                <SelectItem key={index} value={value}>{name}</SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                </div>
                 {/* show the checkbox when there is selected grade level */}
-                {selectedGradeLevel &&
-                    <div>
-                        {filteredSections.map((data, index) => (
-                            <FormField
-                                key={index}
-                                control={form.control}
-                                name={'section_handled'}
-                                render={() => (
-                                    <FormItem>
-                                        <FormLabel>{toCamelCase(data)}</FormLabel>
-                                        <FormControl>
-                                            <Checkbox
-                                                checked={form.watch('section_handled')?.includes(data)}
-                                                onCheckedChange={(checked) => handleSectionHandledChange(data, checked as boolean)}
-                                            />
-                                        </FormControl>
-                                    </FormItem>
+                {(selectedGradeLevel || selectedTeacherRole) && 
+                    <div className="w-[25rem] space-y-6">
+                        {selectedTeacherRole &&
+                            <div className="space-y-2">
+                                <Label>Select subject(s):</Label>
+                                <div className="inline-grid grid-cols-3 gap-4">
+                                    {subjects.map(({ name }, index) => (
+                                        <FormField
+                                            key={index}
+                                            control={form.control}
+                                            name={'subjects'}
+                                            render={() => (
+                                                <FormItem>
+                                                    <FormLabel className="font-normal">
+                                                        <div className="p-4 shadow-sm rounded-md flex gap-2 items-center border">
+                                                            <FormControl>
+                                                                <Checkbox
+                                                                    checked={form.watch('subjects')?.includes(name)}
+                                                                    onCheckedChange={(checked) =>
+                                                                        handleSubjectsChange(name, checked as boolean)
+                                                                    }
+                                                                    // disabled={
+                                                                        //     !selectedSubjects.includes(name) && selectedSubjects.length >= maxSubject
+                                                                        // }
+                                                                />
+                                                            </FormControl>
+                                                            {toCamelCase(name)}
+                                                        </div>
+                                                    </FormLabel>
+                                                </FormItem>
+                                            )}
+                                        />
+                                    ))} 
+                                </div>
+                                {form.formState.errors.subjects && (
+                                    <p className="text-red-600">
+                                        {form.formState.errors.subjects.message}
+                                    </p>
                                 )}
-                            />
-                        ))} 
-                        {form.formState.errors.section_handled && (
-                            <p className="text-red-600">
-                                {form.formState.errors.section_handled.message}
-                            </p>
-                        )}
-                    </div> 
-                }
-                {selectedTeacherRole &&
-                    <div className="py-6">
-                        {subjects.map(({ name }, index) => (
-                            <FormField
-                                key={index}
-                                control={form.control}
-                                name={'subjects'}
-                                render={() => (
-                                    <FormItem>
-                                        <FormLabel>{toCamelCase(name)}</FormLabel>
-                                        <FormControl>
-                                            <Checkbox
-                                                checked={form.watch('subjects')?.includes(name)}
-                                                onCheckedChange={(checked) =>
-                                                    handleSubjectsChange(name, checked as boolean)}
-                                                // disabled={
-                                                //     !selectedSubjects.includes(name) && selectedSubjects.length >= maxSubject
-                                                // }
-                                            />
-                                        </FormControl>
-                                    </FormItem>
+                            </div>
+                        }
+                        {selectedGradeLevel &&
+                            <div className="space-y-2">
+                                <Label>Select section(s):</Label>
+                                <div className="flex gap-4">
+                                    {filteredSections.map((data, index) => (
+                                        <FormField
+                                            key={index}
+                                            control={form.control}
+                                            name={'section_handled'}
+                                            render={() => (
+                                                <FormItem>
+                                                    <FormLabel className="w-fit block font-normal">
+                                                        <div className="p-4 shadow-sm rounded-md flex gap-2 items-center border">
+                                                            <FormControl>
+                                                                <Checkbox
+                                                                    checked={form.watch('section_handled')?.includes(data)}
+                                                                    onCheckedChange={(checked) => handleSectionHandledChange(data, checked as boolean)}
+                                                                    />
+                                                            </FormControl>
+                                                            {toCamelCase(data)}
+                                                        </div>
+                                                    </FormLabel>
+                                                </FormItem>
+                                            )}
+                                        />
+                                    ))} 
+                                </div>
+                                {form.formState.errors.section_handled && (
+                                    <p className="text-red-600">
+                                        {form.formState.errors.section_handled.message}
+                                    </p>
                                 )}
-                            />
-                        ))} 
-                        {form.formState.errors.subjects && (
-                            <p className="text-red-600">
-                                {form.formState.errors.subjects.message}
-                            </p>
-                        )}
+                            </div> 
+                        }
                     </div>
                 }
             </div>
