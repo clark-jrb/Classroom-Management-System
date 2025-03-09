@@ -11,6 +11,10 @@ $gray-navy-blue: #495464;
     height: 100dvh;
 }
 
+.home-page {
+    background-color: $light-navy-blue;
+}
+
 .nav-sidebar {
     background-color: white;
     position: absolute;
@@ -19,4 +23,43 @@ $gray-navy-blue: #495464;
     display: flex;
     flex-direction: column;
     gap: 2rem;
+}
+
+.button-role {
+    color: $dark-navy-blue;
+    background-color: white;
+    outline: $navy-blue solid 1px;
+}
+
+.button-role:hover {
+    color: white;
+    background-color: $light-navy-blue;
+}
+
+.button-role-admin {
+    background-color: $gray-navy-blue;
+}
+
+.button-role-admin:hover {
+    background-color: $navy-blue;
+}
+
+.button-l-navy {
+    background-color: $light-navy-blue;
+}
+
+.button-navy {
+    background-color: $navy-blue;
+}
+
+.button-gray-navy {
+    background-color: $gray-navy-blue;
+}
+
+.button-l-navy:hover {
+    background-color: $navy-blue;
+}
+
+.button-navy:hover {
+    background-color: $light-navy-blue;
 }

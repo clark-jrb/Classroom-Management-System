@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button"
 import { useState } from "react"
 import { useAuthStore } from "@/stores/auth/authSlice"
 import { Roles } from "@/types/global.types"
+import { MoveLeft } from "lucide-react"
 
 export const Home = () => {
     const { setRole } = useAuthStore()
@@ -16,30 +17,69 @@ export const Home = () => {
 
     return (
         <div className="home-page">
-            <div className="border rounded-md p-6 flex gap-3">
+            <div className="w-[20rem] h-[20rem] flex flex-col justify-center gap-4 border rounded-md p-6 bg-white shadow-sm">
                 {!roleState ? 
                     <>
-                        <Button onClick={() => handleSetRole('student')}>
-                            Student
-                        </Button>
-                        <Button onClick={() => handleSetRole('faculty')}>
-                            Faculty
-                        </Button>
-                        <Button onClick={() => handleSetRole('admin')}>
-                            Admin
-                        </Button>
+                        <div className="flex justify-center">
+                            <Button 
+                                className="w-[15rem] py-6 button-role text-md" 
+                                onClick={() => handleSetRole('student')}
+                            >
+                                Student
+                            </Button>
+                        </div>
+                        <div className="flex justify-center">or</div>
+                        <div className="flex justify-center">
+                            <Button 
+                                className="w-[15rem] py-6 button-role text-md" 
+                                onClick={() => handleSetRole('faculty')}
+                            >
+                                Faculty
+                            </Button>
+                        </div>
+                        <div className="border-b"></div>
+                        <div className="flex justify-center">
+                            <Button 
+                                className="w-[15rem] py-6 button-role-admin text-md" 
+                                onClick={() => handleSetRole('admin')}
+                            >
+                                Admin
+                            </Button>
+                        </div>
                     </>
                     :
                     <>
-                        <Button onClick={() => navigate('/login')}>
-                            Login
-                        </Button>
-                        <Button onClick={() => navigate('/register')}>
-                            Register
-                        </Button>
-                        <Button onClick={() => setRoleState('')} variant={"outline"}>
-                            Go back
-                        </Button>
+                        <div className="flex justify-center">
+                            <Button 
+                                className="w-[15rem] py-6 button-role text-md" 
+                                onClick={() => navigate('/login')}
+                            >
+                                Login
+                            </Button>
+                        </div>
+                        {roleState !== 'admin' && 
+                            <>
+                            <div className="flex justify-center">or</div>
+                            <div className="flex justify-center">
+                                <Button 
+                                    className="w-[15rem] py-6 button-role text-md" 
+                                    onClick={() => navigate('/register')}
+                                >
+                                    Register
+                                </Button>
+                            </div>
+                            </>
+                        }
+                        <div className="border-b"></div>
+                        <div className="flex justify-center">
+                            <Button 
+                                className="w-[15rem] py-6 text-md" 
+                                variant={'outline'}
+                                onClick={() => setRoleState('')}
+                            >
+                                <MoveLeft/>Go back
+                            </Button>
+                        </div>
                     </>
                 }
                 
