@@ -71,7 +71,7 @@ export function DataTable<TData, TValue>({
             <div className="flex gap-4 items-center py-4">
                 {/* Filter by last name */}
                 <Input
-                    placeholder="Filter last name..."
+                    placeholder="Filter by LAST NAME"
                     value={(table.getColumn("lastname")?.getFilterValue() as string) ?? ""}
                     onChange={(event) =>
                         table.getColumn("lastname")?.setFilterValue(event.target.value)
@@ -80,7 +80,7 @@ export function DataTable<TData, TValue>({
                 />
                 {/* Filter by first name */}
                 <Input
-                    placeholder="Filter first name..."
+                    placeholder="Filter by FIRST NAME"
                     value={(table.getColumn("firstname")?.getFilterValue() as string) ?? ""}
                     onChange={(event) =>
                         table.getColumn("firstname")?.setFilterValue(event.target.value)
