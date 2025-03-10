@@ -281,13 +281,13 @@ export class TaskController {
                 .then((tasks) => 
                     tasks
                         .filter((task) => 
-                            task.task_id.tid === tid &&  //  filter by teacher ID
+                            task.task_id.tid.toString() === tid &&  //  filter by teacher ID
                             task.task_id.subject === subject &&     //  filter by subject
                             task.task_id.quarter === quarter &&     //  filter by subject
                             task.task_id.section === section        //  filter by section
                         )
                         .map((task) => ({     //  map by:
-                            sid: task.sid,               //  sid,
+                            sid: task.sid.toString(),               //  sid,
                             score: task.score,                      //  score
                             type: task.task_id.type,                //  type,
                             task_no: task.task_id.task_no,          //  task_no,
@@ -301,7 +301,7 @@ export class TaskController {
             const studentsTasks = my_students.map(({ sid: { sid, firstname, lastname } }) => {
                 const getSumsOfTask = (type: TaskTypes) => {
                     const result = studentsTakingMyTasks
-                        .filter((item) => item.sid === sid && item.type === type)
+                        .filter((item) => item.sid === sid.toString() && item.type === type)
                         .reduce(
                             (accu: { score: number; totalItems: number }, curr) => {
                                 return {
