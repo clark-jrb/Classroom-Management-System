@@ -42,7 +42,7 @@ export const RegisterStudent = ({ form }: IRegisterStudent) => {
                             defaultValue={field.value}
                         >
                             <FormControl>
-                                <SelectTrigger>
+                                <SelectTrigger className="py-6">
                                     <SelectValue placeholder="Select your grade level" />
                                 </SelectTrigger>
                             </FormControl>
@@ -67,12 +67,12 @@ export const RegisterStudent = ({ form }: IRegisterStudent) => {
                         <FormLabel>Section:</FormLabel>
                             <Select onValueChange={field.onChange} defaultValue={field.value}>
                                 <FormControl>
-                                    <SelectTrigger>
+                                    <SelectTrigger className="py-6">
                                         <SelectValue placeholder="your section" />
                                     </SelectTrigger>
                                 </FormControl>
                                 <SelectContent>
-                                    {filteredSections.map((section: string, index: number) => (
+                                    {filteredSections.map((section, index) => (
                                         <SelectItem value={section} key={index}>{section}</SelectItem>
                                     ))}
                                 </SelectContent>

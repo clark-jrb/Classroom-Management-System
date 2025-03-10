@@ -255,8 +255,8 @@ export const Register = () => {
                                                 <FormLabel>Birth Date:</FormLabel>
                                                 <FormControl>
                                                     <DatePicker
-                                                        startYear={1950}
-                                                        endYear={2024}
+                                                        startYear={1970}
+                                                        endYear={2017}
                                                         value={field.value}
                                                         onChange={(date) => field.onChange(date)}
                                                     />

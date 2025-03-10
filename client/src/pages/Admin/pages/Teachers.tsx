@@ -15,7 +15,7 @@ export const Teachers = () => {
                 {data &&
                     <div className='h-full w-full flex flex-col'>
                         <div className='flex-[1]'>
-                            <h2 className='text-xl'> Manage Students</h2>
+                            <h2 className='text-xl'> Manage Teachers</h2>
                         </div>
                         <TeachersTable data={data}/>
                     </div>
