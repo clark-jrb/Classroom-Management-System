@@ -18,10 +18,12 @@ export const isOwner = (
 
         if (!currentUser) {
             res.status(401).json({ message: "You are not authenticated" })
+            return 
         }
             
         if (currentUser.id !== id) {
             res.status(403).json({ message: 'You are not the owner to perform this action' })
+            return 
         } else {
             next()
         }
@@ -29,6 +31,7 @@ export const isOwner = (
     } catch (error) {
         console.log(error)
         res.status(400).json({ message: "There is an error" })
+        return 
     }
 }
 
@@ -42,10 +45,12 @@ export const isAdmin = (
 
         if (!currentUser) {
             res.status(401).json({ message: "You are not authenticated" })
+            return
         }
             
         if (currentUser.role !== 'admin') {
             res.status(403).json({ message: 'You are not an admin to perform this action' })
+            return
         } else {
             next()
         }
@@ -53,6 +58,7 @@ export const isAdmin = (
     } catch (error) {
         console.log(error)
         res.status(400).json({ message: "There is an error" })
+        return
     }
 }
 
@@ -65,6 +71,7 @@ export const isAuthenticated = (
 
     if (!token) {
         res.status(401).json({ message: 'No access token, authorization denied' })
+        return
     }
 
     try {
@@ -74,5 +81,6 @@ export const isAuthenticated = (
         next()
     } catch (err) {
         res.status(401).json({ message: 'Token is not valid or has expired' })
+        return
     }
 }

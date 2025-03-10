@@ -74,9 +74,9 @@ export class AdminController {
             if (role === 'faculty') {
                 await Promise.all([
                     TeacherAccountModel.findByIdAndDelete(id),
-                    TeacherProfileModel.findOneAndDelete({ sid: id }),
-                    TeacherClassModel.findOneAndDelete({ sid: id }),
-                    TaskModel.deleteMany({ sid: id }),
+                    TeacherProfileModel.findOneAndDelete({ tid: id }),
+                    TeacherClassModel.findOneAndDelete({ tid: id }),
+                    TaskModel.deleteMany({ tid: id }),
                     RefreshTokenModel.deleteMany({ user: id })
                 ])
 

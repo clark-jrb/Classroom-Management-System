@@ -50,7 +50,7 @@ export const login = async (req: Request, res: Response) => {
 }
 
 
-export const register = async (req: Request, res: Response) => {
+export const register = async (req: Request, res: Response): Promise<void> => {
     const { account, profile, classes }: {
         account: UserAccount,
         profile: UserProfile,
@@ -62,11 +62,14 @@ export const register = async (req: Request, res: Response) => {
         // check if all fields filled 
         if (!email || !password) {
             res.json({ message: "Incomplete credentials" })
+            return
         }
         
         const userExist = await User.getByEmail(email, role)
+
         if (userExist) {
             res.json({ message: "User already exists" })
+            return
         }
 
         // hash password 
@@ -100,10 +103,12 @@ export const register = async (req: Request, res: Response) => {
                 .cookie("refreshToken", refreshToken, refreshTokenOpt)
                 .status(201).json({ userRole: role, message: "User registered successfully!" })
                 .end()
+            return
         }
     } catch (error) {
         console.log(error)
         res.sendStatus(400)
+        return
     }
 }
 
