@@ -35,12 +35,11 @@ export const sections_options = [
 ]
 
 export const subjects = [
-    { name: 'All', value: 'all' },
     { name: 'Math', value: 'math' },
     { name: 'Science', value: 'science' },
     { name: 'English', value: 'english' },
     { name: 'Mapeh', value: 'mapeh' },
-    { name: 'hekasi', value: 'hekasi' },
+    { name: 'Hekasi', value: 'hekasi' },
     { name: 'Filipino', value: 'filipino' }
 ]
 
@@ -48,3 +47,16 @@ export const subjects_options = [
     { name: 'All', value: 'all'},
     ...subjects
 ]
+
+export const grade_sections = [
+    { grade: 'grade_1', sections: ['crabs', 'corals'] },
+    { grade: 'grade_2', sections: ['pearls', 'shrimps'] },
+    { grade: 'grade_3', sections: ['squids', 'octopus'] },
+    { grade: 'grade_4', sections: ['lobsters', 'eels'] },
+    { grade: 'grade_5', sections: ['turtles', 'dolphins'] },
+    { grade: 'grade_6', sections: ['whales', 'sharks'] }
+]
+
+export const subjects_names = subjects.map(({ value }) => ({
+    name: value
+}))
