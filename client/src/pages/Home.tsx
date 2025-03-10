@@ -1,19 +1,30 @@
 import { useNavigate } from "react-router-dom"
 import { Button } from "@/components/ui/button"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useAuthStore } from "@/stores/auth/authSlice"
 import { Roles } from "@/types/global.types"
 import { ArrowLeft } from "lucide-react"
+import { Toaster } from "@/components/ui/sonner"
+import { useToastStore } from "@/stores/toastStore"
+import { toast } from "sonner"
 
 export const Home = () => {
     const { setRole } = useAuthStore()
     const navigate = useNavigate()
     const [roleState, setRoleState] = useState<string>()
+    const { message, type, clearToast } = useToastStore()
 
     function handleSetRole(e: Roles) {
         setRoleState(e) 
         setRole(e)
     }
+
+    useEffect(() => {
+        if (message) {
+            toast[type || 'info'](message)
+            clearToast()
+        }
+    }, [message, type, clearToast])
 
     return (
         <div className="home-page">
@@ -84,6 +95,7 @@ export const Home = () => {
                 }
                 
             </div>
+            <Toaster richColors/>
         </div>
     )
 }

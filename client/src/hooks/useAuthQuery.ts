@@ -18,17 +18,19 @@ export const useAuthQuery = () => {
         mutationFn: login,
         onSuccess: (data) => {
             // console.log(data)
-            const { userRole, message } = data
+            const { userRole, success, message } = data
     
             setRole(userRole)
             console.log(message)
-            useToastStore.getState().setToast(message, 'success')   // toast from global store to be able to display it on the next component after navigate
+            useToastStore.getState().setToast(message, success ? 'success' : 'warning')   // toast from global store to be able to display it on the next component after navigate
 
-            userRole ? navigate('/') : navigate('/login')
+            if (success) {
+                navigate('/')
+            }
         },
         onError: (error) => {
             console.log(error)
-            useToastStore.getState().setToast(error?.message || 'Login failed', 'error')
+            useToastStore.getState().setToast(error.message, 'error')
             navigate('/login')
         }
     })
@@ -40,17 +42,19 @@ export const useAuthQuery = () => {
         mutationFn: register,
         onSuccess: (data) => {
             // console.log(data)
-            const { userRole, message } = data
+            const { userRole, success, message } = data
             console.log(message)
 
             setRole(userRole)
-            useToastStore.getState().setToast(message, 'success')
+            useToastStore.getState().setToast(message, success ? 'success' : 'warning')
 
-            userRole ? navigate('/') : navigate('/login')
+            if (success) {
+                navigate('/')
+            }
         },
         onError: (error) => {
             console.log(error)
-            useToastStore.getState().setToast(error?.message || 'Registration failed', 'error')
+            useToastStore.getState().setToast(error.message, 'error')
         }
     })
 

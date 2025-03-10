@@ -3,7 +3,7 @@ import { api } from "./api"
 
 export const login = async (
     value: any
-): Promise<{ userRole: Roles } & Message> => {
+): Promise<{ userRole: Roles, success: boolean } & Message> => {
     try {
         const response = await api.post(`/auth/login`, value, {
             withCredentials: true
@@ -17,7 +17,7 @@ export const login = async (
 
 export const register = async (
     value: any
-): Promise<{ userRole: Roles } & Message> => {
+): Promise<{ userRole: Roles, success: boolean } & Message> => {
     try {
         const response = await api.post(`/auth/register`, value, {
             withCredentials: true

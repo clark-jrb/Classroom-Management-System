@@ -10,19 +10,25 @@ import { TeacherClass } from 'types/TeacherTypes'
 
 const User = new UserController()
 
-export const login = async (req: Request, res: Response) => {
+export const login = async (req: Request, res: Response): Promise<any> => {
     const { email, password, role } = req.body
 
     try {
         // checks fields if empty
         if (!email || !password) {
-            res.json({ message: 'Incomplete credentials'})
+            return res.json({
+                success: false,
+                message: 'Incomplete credentials'
+            })
         }
         
         const userExists = await User.getByEmail(email, role)
         // checks if user exists
         if (!userExists) {
-            res.json({ message: "User don't exist"})
+            return res.json({ 
+                success: false,
+                message: "User don't exist"
+            })
         }
 
         // generates access and refresh tokens 
@@ -32,25 +38,32 @@ export const login = async (req: Request, res: Response) => {
         const matchPass = await comparePassword(password, userExists.password)
 
         if (!matchPass) {
-            res.json({ message: 'Wrong password' })
+            return res.json({ 
+                success: false,
+                message: 'Wrong password' 
+            })
         }
 
         // creates refresh tokens on database 
         createRefreshTokenOnDB(userExists.id, refreshToken).save()
 
-        res
+        return res
             .cookie("accessToken", accessToken, accessTokenOpt)
             .cookie("refreshToken", refreshToken, refreshTokenOpt)
-            .json({ userRole: userExists.role, message: "User logged in successfully!" })
+            .json({ 
+                userRole: userExists.role, 
+                success: true,
+                message: "User logged in successfully!" 
+            })
             .end()
     } catch (error) {
         console.log(error)
-        res.sendStatus(400)
+        return res.sendStatus(400)
     }
 }
 
 
-export const register = async (req: Request, res: Response): Promise<void> => {
+export const register = async (req: Request, res: Response): Promise<any> => {
     const { account, profile, classes }: {
         account: UserAccount,
         profile: UserProfile,
@@ -61,15 +74,19 @@ export const register = async (req: Request, res: Response): Promise<void> => {
     try {
         // check if all fields filled 
         if (!email || !password) {
-            res.json({ message: "Incomplete credentials" })
-            return
+            return res.json({ 
+                success: false,
+                message: "Incomplete credentials" 
+            })
         }
         
         const userExist = await User.getByEmail(email, role)
 
         if (userExist) {
-            res.json({ message: "User already exists" })
-            return
+            return res.json({ 
+                success: false,
+                message: "User already exists" 
+            })
         }
 
         // hash password 
@@ -98,21 +115,22 @@ export const register = async (req: Request, res: Response): Promise<void> => {
             createRefreshTokenOnDB(userNowExist.id, refreshToken).save()
 
             // responds with access and refresh token on headers
-            res
+            return res
                 .cookie("accessToken", accessToken, accessTokenOpt)
                 .cookie("refreshToken", refreshToken, refreshTokenOpt)
-                .status(201).json({ userRole: role, message: "User registered successfully!" })
+                .status(201).json({ 
+                    userRole: role, 
+                    success: true,
+                    message: "User registered successfully!" })
                 .end()
-            return
         }
     } catch (error) {
         console.log(error)
-        res.sendStatus(400)
-        return
+        return res.sendStatus(400)
     }
 }
 
-export const logout = (req: Request, res: Response) => {
+export const logout = (_req: Request, res: Response) => {
     res
         .clearCookie('accessToken')
         .clearCookie('refreshToken')

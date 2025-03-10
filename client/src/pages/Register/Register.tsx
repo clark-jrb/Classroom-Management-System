@@ -32,7 +32,7 @@ import { RegisterStudent } from "./student"
 import { RegisterTeacher } from "./teacher"
 import { unregisterFields } from "@/helpers/unregister-fields"
 import { AuthContainer } from "@/components/AuthContainer"
-import { ArrowLeft, ArrowRight } from "lucide-react"
+import { ArrowLeft, ArrowRight, LoaderCircle } from "lucide-react"
 
 export const Register = () => {
     const navigate = useNavigate()
@@ -361,8 +361,15 @@ export const Register = () => {
                             </div>
                             {/* Submit */}
                             <div className="float-end">
-                                <Button type="submit">
-                                    Register
+                                <Button 
+                                    variant={'navy'}
+                                    type="submit"
+                                    disabled={registerUser.isPending}
+                                >
+                                    {registerUser.isPending 
+                                        ? <><LoaderCircle className="animate-spin"/>Processing</>
+                                        : 'Register account'
+                                    }
                                 </Button>    
                             </div>
                         </form>

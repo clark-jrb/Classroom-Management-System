@@ -16,7 +16,7 @@ import { useAuthStore } from "@/stores/auth/authSlice"
 import { useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import { userAccountSchema } from "@/schemas/user.schema"
-import { ArrowLeft } from "lucide-react"
+import { ArrowLeft, LoaderCircle } from "lucide-react"
 import { AuthContainer } from "@/components/AuthContainer"
 
 export const Login = () => {
@@ -94,8 +94,11 @@ export const Login = () => {
                             type="submit" 
                             variant={"navy"}
                             disabled={loginUser.isPending}
-                            >
-                            {loginUser.isPending ? 'Loading...' : 'Login'}
+                        >
+                            {loginUser.isPending 
+                                ? <><LoaderCircle className="animate-spin"/>Processing</>
+                                : 'Login'
+                            }
                         </Button>
                     </form>
                     <div className="border-b"></div>
