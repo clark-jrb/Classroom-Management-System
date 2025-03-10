@@ -163,7 +163,7 @@ export const Register = () => {
                             />
                             <Button 
                                 className="w-full py-6"
-                                variant={'outline'}
+                                variant={'ghost'}
                                 type="submit"
                             >
                                 {role !== 'admin' ? <>Next<ArrowRight/></> : 'Register'}
@@ -172,7 +172,7 @@ export const Register = () => {
                         <div className="border-b"></div>
                         <div>
                             <Button 
-                                variant={'outline'}
+                                variant={'ghost'}
                                 onClick={() => navigate('/home')}
                             >
                                 <ArrowLeft/>Go Back
@@ -314,7 +314,7 @@ export const Register = () => {
                             {/* BUTTONS */}
                             <div className="float-end">
                                 <Button 
-                                    variant={'outline'}
+                                    variant={'ghost'}
                                     type="submit"
                                 >
                                     Next<ArrowRight/>
@@ -323,7 +323,7 @@ export const Register = () => {
                             <div className="float-start">
                                 <Button 
                                     type="button"
-                                    variant={'outline'}
+                                    variant={'ghost'}
                                     onClick={() => {
                                         setFormStep(1)
                                         // form1.reset()
@@ -350,7 +350,7 @@ export const Register = () => {
                             <div className="float-start">
                                 <Button 
                                     type="button"
-                                    variant={'outline'}
+                                    variant={'ghost'}
                                     onClick={() => {
                                         setFormStep(2)
                                         // form1.reset()

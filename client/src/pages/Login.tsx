@@ -104,7 +104,7 @@ export const Login = () => {
                     <div className="border-b"></div>
                     <div>
                         <Button 
-                            variant={'outline'}
+                            variant={'ghost'}
                             onClick={() => navigate('/home')}
                             >
                             <ArrowLeft/>Go Back

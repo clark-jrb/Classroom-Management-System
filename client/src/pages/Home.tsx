@@ -85,7 +85,7 @@ export const Home = () => {
                         <div>
                             <Button 
                                 className="text-md" 
-                                variant={'outline'}
+                                variant={'ghost'}
                                 onClick={() => setRoleState('')}
                             >
                                 <ArrowLeft/>Go back
