@@ -1,6 +1,7 @@
 import { SideNavbar } from "@/components/Side-Navbar"
 import { useAuthQuery } from "@/hooks/useAuthQuery"
 import { useToastStore } from "@/stores/toastStore"
+import { LayoutDashboard, Users } from "lucide-react"
 import { useEffect } from "react"
 import { toast, Toaster } from "sonner"
 
@@ -16,9 +17,21 @@ export const AdminLayout = ({ children }: any) => {
     }, [message, type, clearToast])
 
     const adminLinks = [
-        { name: 'Dashboard', url: '/' },
-        { name: 'Manage Students', url: '/students' },
-        { name: 'Manage Teachers', url: '/teachers' },
+        { name: (
+            <span className="flex gap-2 text-navy">
+                <LayoutDashboard strokeWidth={1} />Dashboard
+            </span>
+        ), url: '/' },
+        { name: (
+            <span className="flex gap-2 text-navy">
+                <Users strokeWidth={1} />Students
+            </span>
+        ), url: '/students' },
+        { name: (
+            <span className="flex gap-2 text-navy">
+                <Users strokeWidth={1} />Teachers
+            </span>
+        ), url: '/teachers' },
     ]
 
     return (

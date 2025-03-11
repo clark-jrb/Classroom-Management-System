@@ -66,7 +66,6 @@
 .logo-cont {
     border-bottom: $light-navy-blue 2px solid;
     height: 4rem;
-    padding-inline: 1rem;
     padding-block: .5rem;
     gap: .5rem;
     display: flex;
@@ -80,10 +79,18 @@
 
 .side-nav-link {
     text-align: left;
-    padding-inline: 3rem;
-    padding-block: .75rem;
+    padding: .75rem;
+    color: $dark-navy-blue;
 }
 
+.side-nav-link:hover{
+    transition: all .3s;
+    background-color: rgba($light-navy-blue, .25);
+}
+
+.side-nav-link.active {
+    background-color: rgba($light-navy-blue, .25);
+}
 
 .side-bar-links {
     position: relative;
@@ -91,10 +98,12 @@
 }
 
 #logout-btn-in-links {
-    position: absolute;
-    bottom: 2rem;
+    color: $navy-blue;
 }
 
-#logout-btn-in-links:hover, .side-nav-link:hover {
+#logout-btn-in-links:hover {
+    background-color: transparent;
+    box-shadow: 0 1px 3px 0 rgba(lightpink, .5), 0 1px 2px -1px rgba(lightpink, .5);
+    color: indianred;
     cursor: pointer;
 }
