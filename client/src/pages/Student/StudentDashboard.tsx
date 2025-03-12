@@ -9,7 +9,7 @@ export const StudentDashboard = () => {
     return (
         <StudentLayout>
             <Container>
-                <div className="space-y-4">
+                <div className="space-y-6">
                     <div className="text-xl text-navy pb-4 border-b border-light_navy leading-none">
                         Dashboard
                     </div>

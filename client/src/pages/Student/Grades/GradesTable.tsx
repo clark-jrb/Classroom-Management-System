@@ -45,7 +45,7 @@ export const GradesTable = () => {
                             {subjects.map((item, index) => (
                                 <div key={index} className="border-b border-l p-3">
                                     {data[item] === 0 
-                                        ? '--' 
+                                        ? <>&nbsp;</> 
                                         : data[item].toFixed(0)
                                     }
                                 </div>
@@ -63,23 +63,23 @@ export const GradesTable = () => {
                         <div key={index} className="border-b border-l p-3">
                             {student_ga && student_ga[item] > 0 
                                 ? student_ga[item].toFixed(0) 
-                                : '--'
+                                : <>&nbsp;</> 
                             }
                         </div>
                     ))}
                 <div className="border-b border-l p-3">
-                    {student_ga && student_ga.general_ave.toFixed(0) || '--'}
+                    {student_ga && student_ga.general_ave.toFixed(0) || <>&nbsp;</> }
                 </div>
             </div>
             <div className="w-32">
                 <div className="text-gray-500 border rounded-tr-md p-3 h-[5rem] flex justify-center items-center">Remarks</div>
                     {subjects.map((item, index) => (
                         <div key={index} className="border-b border-x p-3">
-                            {student_ga && passOrFail(student_ga[item]) || '--'}
+                            {student_ga && passOrFail(student_ga[item]) || <>&nbsp;</> }
                         </div>
                     ))}
                 <div className="border-b border-r rounded-br-md p-3">
-                    {student_ga && passOrFail(student_ga.general_ave) || '--'}
+                    {student_ga && passOrFail(student_ga.general_ave) || <>&nbsp;</> }
                 </div>
             </div>
         </div>

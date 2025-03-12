@@ -4,6 +4,7 @@ import { Toaster } from '@/components/ui/sonner'
 import { useToastStore } from '@/stores/toastStore'
 import { toast } from 'sonner'
 import { useEffect } from 'react'
+import { LayoutDashboard, TableProperties, UserRoundPen } from 'lucide-react'
 
 export const StudentLayout = ({ children }: any) => {
     const { handleLogout } = useAuthQuery()
@@ -17,9 +18,21 @@ export const StudentLayout = ({ children }: any) => {
     }, [message, type, clearToast])
 
     const studentLinks = [
-        { name: 'Dashboard', url: '/' },
-        { name: 'My Grades', url: '/grades' },
-        { name: 'My Profile', url: '/profile' },
+        { name: (
+            <span className="flex gap-2 text-navy">
+                <LayoutDashboard strokeWidth={1} />Dashboard
+            </span>
+        ), url: '/' },
+        { name: (
+            <span className="flex gap-2 text-navy">
+                <TableProperties strokeWidth={1} />Grades
+            </span>
+        ), url: '/grades' },
+        { name: (
+            <span className="flex gap-2 text-navy">
+                <UserRoundPen strokeWidth={1} />Profile
+            </span>
+        ), url: '/profile' },
     ]
 
     return (

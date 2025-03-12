@@ -71,7 +71,7 @@ export function DataTable<TData, TValue>({
             <div className="flex gap-4 items-center py-4">
                 {/* Filter by last name */}
                 <Input
-                    placeholder="Filter by LAST NAME"
+                    placeholder="LAST NAME"
                     value={(table.getColumn("lastname")?.getFilterValue() as string) ?? ""}
                     onChange={(event) =>
                         table.getColumn("lastname")?.setFilterValue(event.target.value)
@@ -80,7 +80,7 @@ export function DataTable<TData, TValue>({
                 />
                 {/* Filter by first name */}
                 <Input
-                    placeholder="Filter by FIRST NAME"
+                    placeholder="FIRST NAME"
                     value={(table.getColumn("firstname")?.getFilterValue() as string) ?? ""}
                     onChange={(event) =>
                         table.getColumn("firstname")?.setFilterValue(event.target.value)
@@ -99,7 +99,7 @@ export function DataTable<TData, TValue>({
                     defaultValue={(table.getColumn("gradeLevel")?.getFilterValue() as string) ?? ""}
                 >
                     <SelectTrigger className="w-[30rem]">
-                        <SelectValue placeholder="Filter grade level" />
+                        <SelectValue placeholder="Grade level" />
                     </SelectTrigger>
                     <SelectContent>
                         {grade_levels_options.map(({ name, value }, index) => (
@@ -119,7 +119,7 @@ export function DataTable<TData, TValue>({
                     defaultValue={(table.getColumn("section")?.getFilterValue() as string) ?? ""}
                 >
                     <SelectTrigger className="w-[30rem]">
-                        <SelectValue placeholder="Filter sections" />
+                        <SelectValue placeholder="Section" />
                     </SelectTrigger>
                     <SelectContent>
                         {sections_options.map(({ name, value }, index) => (

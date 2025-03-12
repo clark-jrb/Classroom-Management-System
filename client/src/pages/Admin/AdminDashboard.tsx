@@ -106,7 +106,7 @@ const CurrentQuarterDisplay = ({ data }: {
                         <CalendarRange strokeWidth={1} className="me-auto"/>
                         {quarterChanged && 
                             <Button type="submit" disabled={quarterMutation.isPending} variant={'secondary'}>
-                                {quarterMutation.isPending ? <LoaderCircle className="animate-spin"/> : <Check  />}
+                                {quarterMutation.isPending ? <LoaderCircle className="animate-spin"/> : 'Change'}
                             </Button>
                         }
                         <FormField
