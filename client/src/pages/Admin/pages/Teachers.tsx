@@ -4,6 +4,7 @@ import { TeacherData } from "@/types/teacher.types"
 import { DataTable } from "./teachers/data-table"
 import { columns } from "./teachers/columns"
 import { useTeachersData } from "@/hooks/useAdminQuery"
+import { LoaderCircle } from "lucide-react"
 
 
 export const Teachers = () => {
@@ -12,20 +13,28 @@ export const Teachers = () => {
     return (
         <AdminLayout>
             <Container>
-                {data &&
                     <div className='h-full w-full flex flex-col'>
                         <div className='flex-[1]'>
-                            <h2 className='text-xl'> Manage Teachers</h2>
+                            <div className="text-xl text-navy pb-4 border-b border-light_navy leading-none">
+                                Manage Teachers
+                            </div>
                         </div>
-                        <TeachersTable data={data}/>
+                        {data &&
+                                <TeachersTable data={data}/>
+                        }
+                        {isLoading &&
+                            <div className='flex-[14] flex justify-center items-center'>
+                            <LoaderCircle 
+                                className="animate-spin text-red" 
+                                color="gray"
+                                size={'3rem'}
+                            />
+                        </div>
+                        }
+                        {isError &&
+                            <div>{error.message}</div>
+                        }
                     </div>
-                }
-                {isLoading &&
-                    <div>Loading...</div>
-                }
-                {isError &&
-                    <div>{error.message}</div>
-                }
             </Container>
         </AdminLayout>
     )

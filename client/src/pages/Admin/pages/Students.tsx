@@ -4,6 +4,7 @@ import { useStudentsData } from '@/hooks/useAdminQuery'
 import { StudentData } from '@/types/student.types'
 import { DataTable } from './students/data-table'
 import { columns } from './students/columns'
+import { LoaderCircle } from 'lucide-react'
 
 export const Students = () => {
     const { data, isLoading, isError, error } = useStudentsData()
@@ -11,20 +12,28 @@ export const Students = () => {
     return (
         <AdminLayout>
             <Container>
-                {data &&
-                    <div className='h-full w-full flex flex-col'>
-                        <div className='flex-[1]'>
-                            <h2 className='text-xl'> Manage Students</h2>
+                <div className='h-full w-full flex flex-col'>
+                    <div className='flex-[1]'>
+                        <div className="text-xl text-navy pb-4 border-b border-light_navy leading-none">
+                            Manage Students
                         </div>
-                        <StudentsTable data={data}/>
                     </div>
-                }
-                {isLoading &&
-                    <div>Loading...</div>
-                }
-                {isError &&
-                    <div>{error.message}</div>
-                }
+                        {data &&
+                                <StudentsTable data={data}/>
+                            }
+                        {isLoading &&
+                            <div className='flex-[14] flex justify-center items-center'>
+                                <LoaderCircle 
+                                    className="animate-spin text-red" 
+                                    color="gray"
+                                    size={'3rem'}
+                                />
+                            </div>
+                        }
+                        {isError &&
+                            <div>{error.message}</div>
+                        }
+                </div>
             </Container>
         </AdminLayout>
     )

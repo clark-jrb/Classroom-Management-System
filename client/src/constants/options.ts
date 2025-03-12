@@ -24,7 +24,7 @@ export const sections = [
     { name: 'Lobsters', value: 'lobsters' },
     { name: 'Eels', value: 'eels' },
     { name: 'Turtles', value: 'turtles' },
-    { name: 'Dolphins', value: 'dolphines' },
+    { name: 'Dolphins', value: 'dolphins' },
     { name: 'Whales', value: 'whales' },
     { name: 'Sharks', value: 'sharks' },
 ]
