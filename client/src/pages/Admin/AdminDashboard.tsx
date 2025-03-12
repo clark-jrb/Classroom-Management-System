@@ -27,7 +27,7 @@ export const AdminDashboard = () => {
                 <div className="py-4 flex gap-4">
                     {isLoading && 
                         <div className="w-[17rem] h-[9rem] border flex justify-center items-center">
-                            <LoaderCircle className="animate-spin text-red" color="gray"/>
+                            <LoaderCircle className="animate-spin" color="gray"/>
                         </div>
                     }
                     {isError && 
