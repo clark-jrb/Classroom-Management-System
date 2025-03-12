@@ -1,5 +1,6 @@
 import { userAccountSchema, userProfileSchema } from "@/schemas/user.schema"
 import { z } from "zod"
+import { GradeLevels } from "./global.types"
 
 export type StudentAccount = {
     _id: string
@@ -9,7 +10,7 @@ export type StudentAccount = {
 export type StudentProfile = z.infer<typeof userProfileSchema>
 
 export type StudentClasses = {
-    gradeLevel: string
+    gradeLevel: GradeLevels
     section: string
 }
 

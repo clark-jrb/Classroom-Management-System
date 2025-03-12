@@ -12,7 +12,7 @@ import { getQuarterName } from "@/helpers/get-quarter"
 import { toast } from "sonner"
 import { useQueryClient } from "@tanstack/react-query"
 import { isQuarterChanged } from "@/helpers/changed-fields"
-import { CalendarRange, Check, LoaderCircle, Users } from "lucide-react"
+import { CalendarRange, LoaderCircle, Users } from "lucide-react"
 import { DataCountCard } from "./components/DataCountCard"
 
 export const AdminDashboard = () => {
@@ -23,7 +23,9 @@ export const AdminDashboard = () => {
     return (
         <AdminLayout>
             <Container>
-                <div className="text-xl text-navy pb-4 border-b border-light_navy leading-none">Welcome, Admin!</div>
+                <div className="text-xl text-navy pb-4 border-b border-light_navy leading-none">
+                    Welcome, Admin!
+                </div>
                 <div className="py-4 flex gap-4">
                     {isLoading && 
                         <div className="w-[17rem] h-[9rem] border flex justify-center items-center">
