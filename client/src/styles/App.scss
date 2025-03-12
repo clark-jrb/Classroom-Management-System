@@ -9,7 +9,7 @@ $gray-navy-blue: #495464;
     justify-content: center;
     align-items: center;
     height: 100dvh;
-    background-color: $light-navy-blue;
+    background-image: radial-gradient(circle at center left, rgba(79,112,156, 0.1),rgba(79,112,156, 0.5));
 }
 
 .nav-sidebar {

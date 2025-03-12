@@ -26,7 +26,7 @@ export const AdminDashboard = () => {
                 <div className="text-xl text-navy pb-4 border-b border-light_navy leading-none">Welcome, Admin!</div>
                 <div className="py-4 flex gap-4">
                     {isLoading && 
-                        <div className="w-[17rem] h-[8rem] border flex justify-center items-center">
+                        <div className="w-[17rem] h-[9rem] border flex justify-center items-center">
                             <LoaderCircle className="animate-spin text-red" color="gray"/>
                         </div>
                     }
@@ -40,11 +40,13 @@ export const AdminDashboard = () => {
                         dataQuery={teachers}
                         label="Registered Teachers:"
                         icon={<Users strokeWidth={1} className="ms-auto"/>}
+                        route="teachers"
                     />
                     <DataCountCard
                         dataQuery={students}
                         label="Registered Students:"
                         icon={<Users strokeWidth={1} className="ms-auto"/>}
+                        route="students"
                     />
                 </div>
             </Container>
@@ -97,7 +99,7 @@ const CurrentQuarterDisplay = ({ data }: {
     const quarterChanged = isQuarterChanged(data.current_quarter, form.watch('current_quarter'))
 
     return (
-        <div className="w-[17rem] h-[9rem] rounded-xl border p-4 h-full flex flex-col justify-between">
+        <div className="w-[17rem] h-[9rem] rounded-xl border p-4 flex flex-col justify-between">
             <div className="w-inherit">
                 <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit, onError)} className="flex justify-end gap-2">
@@ -139,7 +141,7 @@ const CurrentQuarterDisplay = ({ data }: {
                 <div className="text-gray-500 text-sm">
                     Current quarter:&nbsp;
                 </div>
-                <div className="text-2xl text-navy">
+                <div className="text-3xl text-navy">
                     {getQuarterName(data.current_quarter)}
                 </div>
             </div>
