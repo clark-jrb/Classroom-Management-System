@@ -97,7 +97,7 @@ const CurrentQuarterDisplay = ({ data }: {
     const quarterChanged = isQuarterChanged(data.current_quarter, form.watch('current_quarter'))
 
     return (
-        <div className="w-[17rem] h-[9rem] rounded-xl border-2 p-4 h-full flex flex-col justify-between">
+        <div className="w-[17rem] h-[9rem] rounded-xl border p-4 h-full flex flex-col justify-between">
             <div className="w-inherit">
                 <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit, onError)} className="flex justify-end gap-2">

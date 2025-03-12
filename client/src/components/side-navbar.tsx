@@ -22,7 +22,7 @@ export const SideNavbar = ({ role, handleLogout, links }: ISideNavbar) => {
         return isMatched
     }
     return (
-        <nav className="nav-sidebar h-dvh border-r shadow-sm">
+        <nav className="nav-sidebar h-dvh shadow-sm">
             <div className="logo-cont shadow-sm px-4">
                 <img src={OOK_logo} alt="ook_logo"/>
                 <div className="leading-3 h-full">

@@ -12,7 +12,7 @@ export const DataCountCard = <T,>({ dataQuery, label, icon }: {
     const { data, isLoading } = dataQuery
 
     return (
-        <div className="w-[17rem] h-[9rem] rounded-xl border-2 p-4">
+        <div className="card-data-count w-[17rem] h-[9rem] rounded-xl p-4">
             {isLoading && 
                 <div className='w-full h-full flex justify-center items-center'>
                     <LoaderCircle className="animate-spin text-red" color="gray"/>
