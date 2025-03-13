@@ -2,6 +2,9 @@ import { Request, Response } from "express"
 import { StudentAccountModel, StudentProfileModel, StudentClassModel } from "../models/student"
 import mongoose from "mongoose"
 import { QuarterlyAverageModel } from "../models/computations"
+import { UserProfile } from "../types/UserTypes"
+import student from "router/student"
+import { rest } from "lodash"
 
 export class StudentController {
 
@@ -108,17 +111,25 @@ export class StudentController {
         try {
             const { gradeLevel, section } = req.query
 
-            const students = await StudentClassModel.find({
-                gradeLevel: gradeLevel,
-                section: section
-            }).populate({
-                path: 'sid',
-                model: 'students_profiles',
-                localField: 'sid',
-                foreignField: 'sid'
-            })
+            const students = await StudentClassModel
+                .find({
+                    gradeLevel: gradeLevel,
+                    section: section
+                })
+                .populate<{ sid: UserProfile }>({
+                    path: 'sid',
+                    model: 'students_profiles',
+                    localField: 'sid',
+                    foreignField: 'sid'
+                })
+                .lean()
 
-            res.status(200).json(students)
+            const data = students.map(({ sid, ...rest }) => ({
+                ...rest,
+                ...sid
+            }))
+
+            res.status(200).json(data)
         } catch (error) {
             console.log(error)
             res.status(400).json({ message: 'Failed to find students', error })

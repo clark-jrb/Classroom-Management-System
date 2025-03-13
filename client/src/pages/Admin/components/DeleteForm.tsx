@@ -61,7 +61,10 @@ export const DeleteForm = ({ id, setOpenDialog, role }: {
     return (
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit, onError)}>
-                <Button type="submit">
+                <Button 
+                    variant={'navy'}
+                    type="submit"
+                >
                     Yes, delete
                 </Button>
             </form>

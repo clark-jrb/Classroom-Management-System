@@ -28,7 +28,7 @@ export const FacultyLayout = ({ children }: any) => {
         ), url: '/' },
         { name: (
             <span className="flex gap-2 text-navy">
-                <School strokeWidth={1} />Classes
+                <School strokeWidth={1} />Class
             </span>
         ), url: '/classes' },
         { name: (

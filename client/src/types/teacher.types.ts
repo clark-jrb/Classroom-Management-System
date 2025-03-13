@@ -40,15 +40,13 @@ export type TeacherAuthenticated = {
 
 export type MyStudents = {
     _id: string
-    sid: {
-        sid: string
-        firstname: string
-        middlename: string
-        lastname: string
-        sex: string
-        birth_date: Date
-        contact: string
-    },
+    sid: string
+    firstname: string
+    middlename: string
+    lastname: string
+    sex: string
+    birth_date: Date
+    contact: string
     gradeLevel: string
     section: string
 }

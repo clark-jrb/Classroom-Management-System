@@ -86,11 +86,11 @@
 
 .side-nav-link:hover{
     transition: all .3s;
-    background-color: rgba($light-navy-blue, .1);
+    background-color: $active-light-navy;
 }
 
 .side-nav-link.active {
-    background-color: rgba($light-navy-blue, .25);
+    background-color: $hover-light-navy;
 }
 
 .side-bar-links {

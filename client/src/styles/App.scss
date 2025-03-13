@@ -3,6 +3,8 @@ $dark-navy-blue: #0F172A;
 $light-navy-blue: #4F709C;
 $dirty-white: #fafafa;
 $gray-navy-blue: #495464;
+$active-light-navy: rgba($light-navy-blue, .1);
+$hover-light-navy: rgba($light-navy-blue, .25);
 
 .login-page, .register-page, .home-page {
     display: flex;
