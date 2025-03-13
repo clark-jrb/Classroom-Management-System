@@ -14,12 +14,9 @@ export const FacultyDashboard = () => {
                     <div className="text-xl text-navy pb-4 border-b border-light_navy leading-none">
                         Dashboard
                     </div>
-                    <div className="w-[17rem] h-[7rem] rounded-xl border p-4 flex flex-col justify-between">
+                    <div className="w-[17rem] h-[5.5rem] rounded-xl border p-4 flex">
                         {current_quarter 
                             ?   <>
-                                <div className="flex justify-end">
-                                    <CalendarRange strokeWidth={1} />
-                                </div>
                                 <div className="w-full">
                                     <div className="text-gray-500 text-sm">
                                         Current quarter:&nbsp;
@@ -27,6 +24,9 @@ export const FacultyDashboard = () => {
                                     <div className="text-3xl text-navy">
                                         {getQuarterName(current_quarter)}
                                     </div>
+                                </div>
+                                <div className="flex justify-end">
+                                    <CalendarRange strokeWidth={1} />
                                 </div>
                                 </>
                             :   <div className="w-full h-full flex justify-center items-center">
