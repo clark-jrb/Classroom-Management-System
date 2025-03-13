@@ -1,5 +1,5 @@
 import { z } from "zod"
-import { SubjectTypes } from "./global.types"
+import { GradeLevels, SubjectTypes } from "./global.types"
 import { userAccountSchema, userProfileSchema } from "@/schemas/user.schema"
 
 export type TeacherAccount = {
@@ -18,7 +18,7 @@ export type TeacherClasses = {
     _id: string
     tid: string
     teacher_role: TeacherRole
-    grade_assigned: string
+    grade_assigned: GradeLevels
     section_handled: string[]
     subjects: SubjectTypes[]
 }

@@ -9,7 +9,7 @@ export const StudentProfile = () => {
     return (
         <StudentLayout>
             <Container>
-                <div className=" flex flex-col gap-6">
+                <div className="h-full flex flex-col gap-6">
                     <div className="text-xl text-navy pb-4 border-b border-light_navy leading-none">
                         Profile
                     </div>

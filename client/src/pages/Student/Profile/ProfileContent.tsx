@@ -13,6 +13,7 @@ import { Button } from "@/components/ui/button"
 import { CircleUserRound, Pencil } from "lucide-react"
 import { getGradeName } from "@/helpers/get-quarter"
 import { toCamelCase } from "@/helpers/camel-case"
+import { Roles } from "@/types/global.types"
 
 export const ProfileContent = ({ user_data }: {
     user_data: StudentInformation | TeacherInformation
@@ -24,8 +25,6 @@ export const ProfileContent = ({ user_data }: {
     const { account, profile, classes } = user_data
     const { email } = account
     const { firstname, middlename, lastname, sex, contact, birth_date } = profile
-    const { gradeLevel, section } = classes as StudentInformation['classes']
-    const { section_handled, teacher_role, grade_assigned, subjects } = classes as TeacherInformation['classes']
 
     const full_name = `${firstname} ${middlename} ${lastname}`
 
@@ -34,23 +33,47 @@ export const ProfileContent = ({ user_data }: {
         { label: 'Middle Name', value: middlename },
         { label: 'Last Name', value: lastname },
         { label: 'Birth Date', value: moment(birth_date).format('LL') },
-        { label: 'Sex', value: sex },
+        { label: 'Sex', value: toCamelCase(sex) },
         { label: 'Email', value: email },
         { label: 'Contact', value: contact },
     ]
 
-    const studentProfile = [
-        ...basicInfo,
-        { label: 'Grade & Section', value: `${getGradeName(gradeLevel)} - ${toCamelCase(section)}` },
-    ]
+    function selectProfile(role: Roles) {
+        if (role === 'student') {
+            const { gradeLevel, section } = classes as StudentInformation['classes']
 
-    const teacherProfile = [
-        ...basicInfo,
-        { label: 'Role', value: `${teacher_role}` },
-        { label: 'Grade Assigned', value: `${grade_assigned}` },
-        { label: 'Section Handled', value: `${section_handled?.join(', ')}` },
-        { label: 'Subjects', value: `${subjects?.join(', ')}` },
-    ]
+            return [
+                ...basicInfo,
+                { label: 'Grade & Section', value: `${getGradeName(gradeLevel)} - ${toCamelCase(section)}` },
+            ]
+        }
+
+        if (role === 'faculty') {
+            const { section_handled, teacher_role, grade_assigned, subjects } = classes as TeacherInformation['classes']
+
+            return [
+                ...basicInfo,
+                { label: 'Role', value: `${toCamelCase(teacher_role)}` },
+                { label: 'Grade Assigned', value: `${getGradeName(grade_assigned)}` },
+                { label: 'Section Handled', value: `${section_handled?.map(section => toCamelCase(section)).join(', ')}` },
+                { label: 'Subjects', value: `${subjects?.map(sub => toCamelCase(sub)).join(', ')}` },
+            ]
+        }
+
+        return basicInfo
+    }
+
+    function studentClass() {
+        const { gradeLevel, section } = classes as StudentInformation['classes']
+
+        return { gradeLevel, section }
+    }
+
+    function teacherClass() {
+        const { section_handled, teacher_role, grade_assigned, subjects } = classes as TeacherInformation['classes']
+
+        return { section_handled, teacher_role, grade_assigned, subjects }
+    }
 
     return (
         <>
@@ -68,8 +91,16 @@ export const ProfileContent = ({ user_data }: {
                             </div>
                             {role === 'student' && 
                                 <div className="flex gap-2">
-                                    <Badge variant="navy">{getGradeName(gradeLevel)}</Badge>
-                                    <Badge variant="secondary">{toCamelCase(section)}</Badge>
+                                    <Badge variant="navy">{getGradeName(studentClass().gradeLevel)}</Badge>
+                                    <Badge variant="secondary">{toCamelCase(studentClass().section)}</Badge>
+                                </div>
+                            }
+                            {role === 'faculty' && 
+                                <div className="flex gap-2">
+                                    <Badge variant="navy">{toCamelCase(teacherClass().teacher_role)}</Badge>
+                                    {teacherClass().subjects.map((subj, index) => (
+                                        <Badge key={index} variant="secondary">{toCamelCase(subj)}</Badge>
+                                    ))}
                                 </div>
                             }
                         </div>
@@ -92,15 +123,8 @@ export const ProfileContent = ({ user_data }: {
                                 </DialogTrigger>
                             </div>
                         </div>
-                        <div className="w-full grid grid-cols-3 grid-rows-2 gap-6">
-                            {role === 'student' && studentProfile.map(({ label, value }, index) => (
-                                <div key={index} className="w-fit space-y-2" id={label}>
-                                    <div className="text-gray-500 text-sm">{label}</div>
-                                    <div className="text-lg text-navy">{value}</div>
-                                </div>
-                            ))}
-
-                            {role === 'faculty' && teacherProfile.map(({ label, value }, index) => (
+                        <div className="w-full grid grid-cols-3 gap-4">
+                            {role && selectProfile(role).map(({ label, value }, index) => (
                                 <div key={index} className="w-fit space-y-2" id={label}>
                                     <div className="text-gray-500 text-sm">{label}</div>
                                     <div className="text-lg text-navy">{value}</div>
