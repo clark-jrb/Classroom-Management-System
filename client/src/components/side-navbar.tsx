@@ -1,4 +1,4 @@
-import { Link, useMatch } from "react-router-dom"
+import { Link, useLocation } from "react-router-dom"
 import OOK_logo from '@/assets/ook_logo.png'
 import { toCamelCase } from "@/helpers/camel-case";
 import { Roles } from "@/types/global.types";
@@ -16,11 +16,9 @@ interface ISideNavbar {
     links: Link[]
 }
 
-export const SideNavbar = ({ role, handleLogout, links }: ISideNavbar) => {
-    function handleMatched(url: string) {
-        const isMatched = useMatch(url)
-        return isMatched
-    }
+export const SideNavbar = ({ role, handleLogout, links = [] }: ISideNavbar) => {
+    const location = useLocation()
+
     return (
         <nav className="nav-sidebar h-dvh shadow-sm">
             <div className="logo-cont shadow-sm px-4">
@@ -31,13 +29,17 @@ export const SideNavbar = ({ role, handleLogout, links }: ISideNavbar) => {
                 </div>
             </div>
             <div className="side-bar-links px-4 flex flex-col gap-2 pb-4">
-                {links.map(({ name, url }, index) => (
-                    <Link to={url} key={index}>
-                        <div className={`side-nav-link ${handleMatched(url) ? 'active': ''} rounded-md hover:shadow-sm`}>
-                            {name}
-                        </div>
-                    </Link>
-                ))}
+                {links.map(({ name, url }, index) => {
+                    const match = location.pathname === url
+
+                    return (
+                        <Link to={url} key={index}>
+                            <div className={`side-nav-link ${match ? 'active': ''} rounded-md hover:shadow-sm`}>
+                                {name}
+                            </div>
+                        </Link>
+                    )
+                })}
                 <div className="flex gap-2 mt-auto side-nav-link rounded-md hover:shadow-sm" id="logout-btn-in-links" onClick={handleLogout}>
                     <LogOut strokeWidth={1} />Log Out
                 </div>

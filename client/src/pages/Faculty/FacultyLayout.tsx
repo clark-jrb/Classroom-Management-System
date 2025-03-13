@@ -5,6 +5,7 @@ import { Toaster } from '@/components/ui/sonner'
 import { useEffect } from 'react'
 import { toast } from 'sonner'
 import { useToastStore } from '@/stores/toastStore'
+import { Archive, BookOpenCheck, LayoutDashboard, NotebookPen, NotebookText, School, UserRoundPen } from 'lucide-react'
 
 export const FacultyLayout = ({ children }: any) => {
     const { handleLogout } = useAuthQuery()
@@ -20,17 +21,46 @@ export const FacultyLayout = ({ children }: any) => {
     }, [message, type, clearToast])
 
     const facultyLinks = [
-        { name: 'Dashboard', url: '/' },
-        { name: 'My Classes', url: '/classes' },
-        { name: 'Records', url: '/records' },
-        { name: 'Computations', url: '/computations' },
-        { name: 'Grades', url: '/grades' },
-        { name: 'Evaluation', url: '/evaluation' },
-        { name: 'My Profile', url: '/profile' },
+        { name: (
+            <span className="flex gap-2 text-navy">
+                <LayoutDashboard strokeWidth={1} />Dashboard
+            </span>
+        ), url: '/' },
+        { name: (
+            <span className="flex gap-2 text-navy">
+                <School strokeWidth={1} />Classes
+            </span>
+        ), url: '/classes' },
+        { name: (
+            <span className="flex gap-2 text-navy">
+                <Archive strokeWidth={1} />Records
+            </span>
+        ), url: '/records' },
+        { name: (
+            <span className="flex gap-2 text-navy">
+                <NotebookPen strokeWidth={1} />Computations
+                
+            </span>
+        ), url: '/computations' },
+        { name: (
+            <span className="flex gap-2 text-navy">
+                <NotebookText strokeWidth={1} />Grades
+            </span>
+        ), url: '/grades' },
+        { name: (
+            <span className="flex gap-2 text-navy">
+                <BookOpenCheck strokeWidth={1} />Evaluation
+            </span>
+        ), url: '/evaluation' },
+        { name: (
+            <span className="flex gap-2 text-navy">
+                <UserRoundPen strokeWidth={1} />Profile
+            </span>
+        ), url: '/profile' },
     ]
 
     function removeEvaluation() {
-        return facultyLinks.filter(links => links.name !== 'Evaluation')
+        return facultyLinks.filter(links => links.url !== '/evaluation')
     }
 
     return (
