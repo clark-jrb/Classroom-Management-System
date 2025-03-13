@@ -34,6 +34,7 @@ import { toast } from "sonner"
 import { StudentInformation } from "@/types/student.types"
 import { TeacherInformation } from "@/types/teacher.types"
 import { userProfileSchema } from "@/schemas/user.schema"
+import { LoaderCircle } from "lucide-react"
 
 export const ProfileForm = ({ user_data }: {
     user_data: StudentInformation | TeacherInformation
@@ -78,16 +79,20 @@ export const ProfileForm = ({ user_data }: {
     return (
         <DialogContent className="sm:max-w-[625px]">
             <Form {...profile_form}>
-                <form onSubmit={profile_form.handleSubmit(onSubmit, onError)} className="space-y-6">
+                <form onSubmit={profile_form.handleSubmit(onSubmit, onError)} className="space-y-4">
                     {/* header  */}
-                    <DialogHeader>
-                        <DialogTitle>Edit profile</DialogTitle>
+                    <DialogHeader className="space-y-3">
+                        <DialogTitle className="font-medium">
+                            <div className="text-xl text-navy pb-4 border-b border-light_navy leading-none">
+                                Edit Profile
+                            </div>
+                        </DialogTitle>
                         <DialogDescription>
-                            Make changes to your profile here. Click save when you're done.
+                            Make changes to your profile. Click "Save changes" when you're done.
                         </DialogDescription>
                     </DialogHeader>
                         {/* body  */}
-                        <div className="flex gap-4">
+                        <div className="flex gap-6">
                             <div className="grid gap-4 py-4 w-1/2">
                                 {/* First Name */}
                                 <FormField
@@ -95,9 +100,13 @@ export const ProfileForm = ({ user_data }: {
                                     name="firstname"
                                     render={({ field }) => (
                                         <FormItem>
-                                            <FormLabel>First Name:</FormLabel>
+                                            <FormLabel className="text-gray-500">First Name:</FormLabel>
                                             <FormControl>
-                                                <Input placeholder="Your first name" {...field} />
+                                                <Input 
+                                                    className="py-6"
+                                                    placeholder="Your first name" 
+                                                    {...field} 
+                                                />
                                             </FormControl>
                                             <FormMessage />
                                         </FormItem>
@@ -109,9 +118,13 @@ export const ProfileForm = ({ user_data }: {
                                     name="middlename"
                                     render={({ field }) => (
                                         <FormItem>
-                                            <FormLabel>Middle Name:</FormLabel>
+                                            <FormLabel className="text-gray-500">Middle Name:</FormLabel>
                                             <FormControl>
-                                                <Input placeholder="Your middle name" {...field} />
+                                                <Input 
+                                                    className="py-6"
+                                                    placeholder="Your middle name" 
+                                                    {...field} 
+                                                />
                                             </FormControl>
                                             <FormMessage />
                                         </FormItem>
@@ -123,9 +136,13 @@ export const ProfileForm = ({ user_data }: {
                                     name="lastname"
                                     render={({ field }) => (
                                         <FormItem>
-                                            <FormLabel>Last Name:</FormLabel>
+                                            <FormLabel className="text-gray-500">Last Name:</FormLabel>
                                             <FormControl>
-                                                <Input placeholder="Your last name" {...field} />
+                                                <Input 
+                                                    className="py-6"
+                                                    placeholder="Your last name" 
+                                                    {...field} 
+                                                />
                                             </FormControl>
                                             <FormMessage />
                                         </FormItem>
@@ -139,9 +156,13 @@ export const ProfileForm = ({ user_data }: {
                                     name="contact"
                                     render={({ field }) => (
                                         <FormItem>
-                                            <FormLabel>Contact:</FormLabel>
+                                            <FormLabel className="text-gray-500">Contact:</FormLabel>
                                             <FormControl>
-                                                <Input placeholder="your contact number" {...field} />
+                                                <Input 
+                                                    className="py-6"
+                                                    placeholder="your contact number" 
+                                                    {...field} 
+                                                />
                                             </FormControl>
                                             <FormMessage />
                                         </FormItem>
@@ -153,10 +174,10 @@ export const ProfileForm = ({ user_data }: {
                                     name="sex"
                                     render={({ field }) => (
                                         <FormItem>
-                                            <FormLabel>Sex:</FormLabel>
+                                            <FormLabel className="text-gray-500">Sex:</FormLabel>
                                                 <Select onValueChange={field.onChange} defaultValue={field.value}>
                                                     <FormControl>
-                                                        <SelectTrigger>
+                                                        <SelectTrigger className="py-6">
                                                             <SelectValue placeholder="your sex" />
                                                         </SelectTrigger>
                                                     </FormControl>
@@ -175,7 +196,7 @@ export const ProfileForm = ({ user_data }: {
                                     control={profile_form.control}
                                     render={({ field }) => (
                                         <FormItem>
-                                            <FormLabel>Birth Date:</FormLabel>
+                                            <FormLabel className="text-gray-500">Birth Date:</FormLabel>
                                             <FormControl>
                                                 <DatePicker
                                                     startYear={1950}
@@ -192,8 +213,15 @@ export const ProfileForm = ({ user_data }: {
                         </div>
                         {/* footer  */}
                     <DialogFooter>
-                        <Button type="submit" disabled={updateProfile.isPending}>
-                            {updateProfile.isPending ? "Loading..." : "Save changes"}
+                        <Button 
+                            variant={"navy"}
+                            type="submit" 
+                            disabled={updateProfile.isPending}
+                        >
+                            {updateProfile.isPending 
+                                ? <LoaderCircle className="animate-spin" color="white"/> 
+                                : "Save changes"
+                            }
                         </Button>
                     </DialogFooter>
                 </form>

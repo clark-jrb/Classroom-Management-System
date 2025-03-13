@@ -41,7 +41,7 @@ export const ProfileContent = ({ user_data }: {
 
     const studentProfile = [
         ...basicInfo,
-        { label: 'Grade & Section', value: `${getGradeName(gradeLevel)}, ${section}` },
+        { label: 'Grade & Section', value: `${getGradeName(gradeLevel)} - ${toCamelCase(section)}` },
     ]
 
     const teacherProfile = [
@@ -96,14 +96,14 @@ export const ProfileContent = ({ user_data }: {
                             {role === 'student' && studentProfile.map(({ label, value }, index) => (
                                 <div key={index} className="w-fit space-y-2" id={label}>
                                     <div className="text-gray-500 text-sm">{label}</div>
-                                    <div className="text-lg">{value}</div>
+                                    <div className="text-lg text-navy">{value}</div>
                                 </div>
                             ))}
 
                             {role === 'faculty' && teacherProfile.map(({ label, value }, index) => (
                                 <div key={index} className="w-fit space-y-2" id={label}>
                                     <div className="text-gray-500 text-sm">{label}</div>
-                                    <div className="text-lg">{value}</div>
+                                    <div className="text-lg text-navy">{value}</div>
                                 </div>
                             ))}
 

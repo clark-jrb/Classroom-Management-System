@@ -15,7 +15,7 @@ export const StudentProfile = () => {
                     </div>
                     <Suspense fallback={
                         <div className="flex-1 flex justify-center items-center">
-                            <LoaderCircle className="animate-spin text-red" color="gray" size={'3rem'}/>
+                            <LoaderCircle className="animate-spin" color="gray" size={'3rem'}/>
                         </div>
                     }>
                         <ProfileMain/>

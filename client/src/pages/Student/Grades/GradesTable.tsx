@@ -25,7 +25,7 @@ export const GradesTable = () => {
                     Learning Areas
                 </div>
                 {subjects.map((item, index) => (
-                    <div key={index} className="border-b border-l p-3 flex justify-center items-center">{toCamelCase(item)}</div>
+                    <div key={index} className="border-b border-l p-3 flex justify-center items-center text-navy">{toCamelCase(item)}</div>
                 ))}
                 <div className="border-b border-l rounded-bl-md p-3 flex justify-center items-center">&nbsp;</div>
             </div>
@@ -43,7 +43,7 @@ export const GradesTable = () => {
                         <div className="flex-col w-14" key={data._id}>
                             {/* <div className="border-b border-l p-3">{data.quarter}</div> */}
                             {subjects.map((item, index) => (
-                                <div key={index} className="border-b border-l p-3">
+                                <div key={index} className="border-b border-l p-3 text-navy">
                                     {data[item] === 0 
                                         ? <>&nbsp;</> 
                                         : data[item].toFixed(0)
@@ -60,25 +60,25 @@ export const GradesTable = () => {
             <div className="w-20">
                 <div className="text-gray-500 border-y border-l p-3 h-[5rem] flex justify-center items-center">Final <br/> Grade</div>
                     {subjects.map((item, index) => (
-                        <div key={index} className="border-b border-l p-3">
+                        <div key={index} className="border-b border-l p-3 text-navy">
                             {student_ga && student_ga[item] > 0 
                                 ? student_ga[item].toFixed(0) 
                                 : <>&nbsp;</> 
                             }
                         </div>
                     ))}
-                <div className="border-b border-l p-3">
+                <div className="border-b border-l p-3 text-navy">
                     {student_ga && student_ga.general_ave.toFixed(0) || <>&nbsp;</> }
                 </div>
             </div>
             <div className="w-32">
                 <div className="text-gray-500 border rounded-tr-md p-3 h-[5rem] flex justify-center items-center">Remarks</div>
                     {subjects.map((item, index) => (
-                        <div key={index} className="border-b border-x p-3">
+                        <div key={index} className="border-b border-x p-3 text-navy">
                             {student_ga && passOrFail(student_ga[item]) || <>&nbsp;</> }
                         </div>
                     ))}
-                <div className="border-b border-r rounded-br-md p-3">
+                <div className="border-b border-r rounded-br-md p-3 text-navy">
                     {student_ga && passOrFail(student_ga.general_ave) || <>&nbsp;</> }
                 </div>
             </div>
