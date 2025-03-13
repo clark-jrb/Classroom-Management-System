@@ -31,7 +31,7 @@ export const MyClasses = () => {
                             </span>
                             <UsersRound strokeWidth={1} className="ms-auto"/>
                         </div>
-                        <div className="text-navy text-2xl font-semibold">
+                        <div className="text-light_navy text-2xl ">
                             {toCamelCase(section)}
                         </div>
                     </div>
