@@ -30,11 +30,13 @@ export const SideNavbar = ({ role, handleLogout, links = [] }: ISideNavbar) => {
             </div>
             <div className="side-bar-links px-4 flex flex-col gap-2 pb-4">
                 {links.map(({ name, url }, index) => {
-                    const match = location.pathname === url
+                    const isMatch = url === "/"
+                        ? location.pathname === "/"
+                        : location.pathname.startsWith(url)
 
                     return (
                         <Link to={url} key={index}>
-                            <div className={`side-nav-link ${match ? 'active': ''} rounded-md hover:shadow-sm`}>
+                            <div className={`side-nav-link ${isMatch ? 'active': ''} rounded-md hover:shadow-sm`}>
                                 {name}
                             </div>
                         </Link>
