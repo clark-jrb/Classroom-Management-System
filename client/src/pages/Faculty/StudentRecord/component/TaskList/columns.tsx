@@ -1,13 +1,11 @@
 import { TTask, TUpdateTask } from "@/types/task.types"
 import { ColumnDef } from "@tanstack/react-table"
-import { MoreHorizontal } from "lucide-react"
+import { MoreHorizontal, Pen, Trash2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { useState } from "react"
@@ -78,27 +76,31 @@ export const columns: ColumnDef<TTask>[] = [
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" onClick={(e) => e.stopPropagation()}>
-              <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                  <DropdownMenuItem onSelect={(e) => {
-                    e.stopPropagation()
-                    handleDeleteDialog(row.original._id)
-                  }}>
-                    Delete
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onSelect={(e) => {
-                    e.stopPropagation()
-                    handleUpdateDialog(
-                      row.original._id, 
-                      {
-                        subject: row.original.subject,
-                        total_items: row.original.total_items,
-                        task_no: row.original.task_no
-                      }
-                    )
-                  }}>
-                    Update
-                  </DropdownMenuItem>
+              <DropdownMenuItem 
+                onSelect={(e) => {
+                  e.stopPropagation()
+                  handleUpdateDialog(
+                    row.original._id, 
+                    {
+                      subject: row.original.subject,
+                      total_items: row.original.total_items,
+                      task_no: row.original.task_no
+                    }
+                  )
+                }}
+                className="text-base"
+              >
+                Edit <Pen strokeWidth={1} className="ms-auto"/>
+              </DropdownMenuItem>
+              <DropdownMenuItem 
+                onSelect={(e) => {
+                  e.stopPropagation()
+                  handleDeleteDialog(row.original._id)
+                }}
+                className="text-base text-red-500 hover:text-red-500"
+              >
+                Delete <Trash2 strokeWidth={1} className="ms-auto"/>
+              </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
 

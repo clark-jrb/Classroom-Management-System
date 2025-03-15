@@ -33,6 +33,8 @@ import { useUpdateTask } from "@/hooks/useTaskQuery"
 import { useQueryClient } from "@tanstack/react-query"
 import { getTaskChanges } from "@/helpers/changed-fields"
 import { toast } from "sonner"
+import { toCamelCase } from "@/helpers/camel-case"
+import { LoaderCircle } from "lucide-react"
 
 export const TaskUpdate = ({ task_id, task_data, openDialog, setOpenDialog } : {
     task_id: string
@@ -79,21 +81,28 @@ export const TaskUpdate = ({ task_id, task_data, openDialog, setOpenDialog } : {
     return (
         <div>
             <Dialog open={openDialog} onOpenChange={setOpenDialog}>
-                <DialogContent onInteractOutside={(e) => e.preventDefault()}>
-                    <DialogHeader>
-                        <DialogTitle>Update task</DialogTitle>
-                        <DialogDescription>update the task</DialogDescription>
+                <DialogContent className="w-[20rem]" onInteractOutside={(e) => e.preventDefault()}>
+                    <DialogHeader className="space-y-4">
+                        <DialogTitle className="font-medium">
+                            <div className="text-xl text-navy pb-4 border-b border-light_navy leading-none">
+                                Edit task
+                            </div>
+                        </DialogTitle>
+                        <DialogDescription>
+                            Make changes to the task.
+                        </DialogDescription>
                         
                     </DialogHeader>
                     {/* FORM STARTS HERE */}
                     <Form {...updateForm}>
                         <form onSubmit={updateForm.handleSubmit(onSubmit, onError)} className="space-y-4">
+                            {/* Subject  */}
                             <FormField
                                 control={updateForm.control}
                                 name="subject"
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel>Subject:</FormLabel>
+                                        <FormLabel className="text-gray-500">Subject:</FormLabel>
                                         <FormControl>
                                             <Select 
                                                 onValueChange={(value) => {
@@ -102,13 +111,13 @@ export const TaskUpdate = ({ task_id, task_data, openDialog, setOpenDialog } : {
                                                 defaultValue={field.value}
                                             >
                                                 <FormControl>
-                                                    <SelectTrigger>
+                                                    <SelectTrigger className="p-6">
                                                         <SelectValue placeholder="Select your subject" />
                                                     </SelectTrigger>
                                                 </FormControl>
                                                 <SelectContent>
                                                     {subjects.map((data, index) => (
-                                                        <SelectItem key={index} value={data}>{data}</SelectItem>
+                                                        <SelectItem key={index} value={data}>{toCamelCase(data)}</SelectItem>
                                                     ))}
                                                 </SelectContent>
                                             </Select>
@@ -117,35 +126,17 @@ export const TaskUpdate = ({ task_id, task_data, openDialog, setOpenDialog } : {
                                     </FormItem>
                                 )}
                             />
-                            <FormField
-                                control={updateForm.control}
-                                name="total_items"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel>Total items:</FormLabel>
-                                        <FormControl>
-                                            <Input 
-                                                type="number"
-                                                placeholder="total items of the task"
-                                                onChange={(e) => field.onChange(Number(e.target.value))}
-                                                value={field.value}
-                                                min={5}
-                                                max={100}
-                                            />
-                                        </FormControl>
-                                        <FormMessage/>
-                                    </FormItem>
-                                )}
-                            />
+                            {/* Task Number  */}
                             <FormField
                                 control={updateForm.control}
                                 name="task_no"
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel>Task Number:</FormLabel>
+                                        <FormLabel className="text-gray-500">Task Number:</FormLabel>
                                         <FormControl>
                                             <Input 
                                                 type="number"
+                                                className="p-6"
                                                 placeholder="Task number"
                                                 onChange={(e) => field.onChange(Number(e.target.value))}
                                                 value={field.value}
@@ -157,17 +148,43 @@ export const TaskUpdate = ({ task_id, task_data, openDialog, setOpenDialog } : {
                                     </FormItem>
                                 )}
                             />
+                            {/* Total Items  */}
+                            <FormField
+                                control={updateForm.control}
+                                name="total_items"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel className="text-gray-500">Total items:</FormLabel>
+                                        <FormControl>
+                                            <Input 
+                                                type="number"
+                                                className="p-6"
+                                                placeholder="total items of the task"
+                                                onChange={(e) => field.onChange(Number(e.target.value))}
+                                                value={field.value}
+                                                min={5}
+                                                max={100}
+                                            />
+                                        </FormControl>
+                                        <FormMessage/>
+                                    </FormItem>
+                                )}
+                            />
                             <DialogFooter className="pt-4">
                                 <Button 
+                                    variant={'navy'}
                                     type="submit"
                                     disabled={updateSpecificTask.isPending}
                                 >
-                                    Update
+                                    {updateSpecificTask.isPending 
+                                        ? <LoaderCircle className="animate-spin" color="white"/> 
+                                        : "Save changes"
+                                    }
                                 </Button>
                                 <DialogClose asChild>
                                     <Button 
                                         type="button" 
-                                        variant={'destructive'}
+                                        variant={'ghost'}
                                         onClick={() => {
                                             updateForm.reset()
                                         }}

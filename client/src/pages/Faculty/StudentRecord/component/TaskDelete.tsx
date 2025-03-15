@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/dialog"
 import { useDeleteTask } from "@/hooks/useTaskQuery"
 import { useQueryClient } from "@tanstack/react-query"
+import { LoaderCircle } from "lucide-react"
 import { toast } from "sonner"
 
 export const TaskDelete = ({ task_id, openDialog, setOpenDialog }: {
@@ -39,23 +40,34 @@ export const TaskDelete = ({ task_id, openDialog, setOpenDialog }: {
         <div>
             <Dialog open={openDialog} onOpenChange={setOpenDialog}>
 
-                <DialogContent className="w-fit">
-                    <DialogHeader>
+                <DialogContent className="w-fit" onInteractOutside={(e) => e.preventDefault()}>
+                    <DialogHeader className="space-y-4">
                         <DialogTitle>
-                            Are you sure you want to delete this?
+                            <div className="text-xl text-navy pb-4 border-b border-light_navy leading-none">
+                                Are you sure you want to delete this?
+                            </div>
                         </DialogTitle>
-                        <DialogDescription className="py-4">
+                        <DialogDescription>
                             This action is cannot be undone
                         </DialogDescription>
                         <div className="flex space-x-2 justify-end">
-                            {task_id && 
-                                <Button onClick={() => handleDeleteTask(task_id)}>Yes</Button>
-                            }
+                            <Button 
+                                variant={'destructive'}
+                                onClick={() => handleDeleteTask(task_id)}
+                                disabled={deleteSpecificTask.isPending}
+                            >
+                                {deleteSpecificTask.isPending 
+                                    ? <LoaderCircle className="animate-spin" color="white"/> 
+                                    : "Yes"
+                                }
+                            </Button>
                             <DialogClose asChild>
                                 <Button 
                                     type="button" 
-                                    variant={'destructive'}
-                                >Cancel</Button>
+                                    variant={'ghost'}
+                                >
+                                    Cancel
+                                </Button>
                             </DialogClose>
                         </div>
                     </DialogHeader>
