@@ -69,7 +69,7 @@ export const TaskUpdate = ({ task_id, task_data, openDialog, setOpenDialog } : {
                 }
             })
         } else {
-            toast.warning('Nothing changes')
+            toast.warning('Nothing changed')
         }
     }
 
@@ -81,7 +81,7 @@ export const TaskUpdate = ({ task_id, task_data, openDialog, setOpenDialog } : {
     return (
         <div>
             <Dialog open={openDialog} onOpenChange={setOpenDialog}>
-                <DialogContent className="w-[20rem]" onInteractOutside={(e) => e.preventDefault()}>
+                <DialogContent className="w-[20rem]">
                     <DialogHeader className="space-y-4">
                         <DialogTitle className="font-medium">
                             <div className="text-xl text-navy pb-4 border-b border-light_navy leading-none">

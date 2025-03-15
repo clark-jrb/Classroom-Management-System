@@ -40,7 +40,7 @@ export const TaskDelete = ({ task_id, openDialog, setOpenDialog }: {
         <div>
             <Dialog open={openDialog} onOpenChange={setOpenDialog}>
 
-                <DialogContent className="w-fit" onInteractOutside={(e) => e.preventDefault()}>
+                <DialogContent className="w-fit">
                     <DialogHeader className="space-y-4">
                         <DialogTitle>
                             <div className="text-xl text-navy pb-4 border-b border-light_navy leading-none">

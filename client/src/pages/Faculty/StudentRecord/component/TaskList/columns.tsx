@@ -2,11 +2,11 @@ import { TTask } from "@/types/task.types"
 import { ColumnDef } from "@tanstack/react-table"
 import { Pen, Trash2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { useState } from "react"
-import { TaskDelete } from "../TaskDelete"
-import { TaskUpdate } from "../TaskUpdate"
 
-export const columns: ColumnDef<TTask>[] = [
+export const columns = (
+  openEditDialog: (task: TTask) => void,
+  openDeleteDialog: (task: TTask) => void
+): ColumnDef<TTask>[] => [
   {
     accessorKey: "task_no",
     header: "No.",
@@ -38,22 +38,13 @@ export const columns: ColumnDef<TTask>[] = [
   {
     header: "Actions",
     cell: ({ row }) => {
-      const [openDelete, setOpenDelete] = useState(false)
-      const [openUpdate, setOpenUpdate] = useState(false)
-
-      const updateData = {
-        subject: row.original.subject,
-        total_items: row.original.total_items,
-        task_no: row.original.task_no,
-      }
-
       return (
         <div>
           <Button 
             variant={'ghost'}
             onClick={(e) => {
               e.stopPropagation()
-              setOpenUpdate(true)
+              openEditDialog(row.original)
             }}
             className="hover:bg-gray-200 hover:text-gray-500"
           >
@@ -63,24 +54,12 @@ export const columns: ColumnDef<TTask>[] = [
             variant={'ghost'}
             onClick={(e) => {
               e.stopPropagation()
-              setOpenDelete(true)
+              openDeleteDialog(row.original)
             }}
             className="hover:bg-red-200 hover:text-red-500"
           >
             <Trash2 className="ms-auto"/>
           </Button>
-
-          <TaskDelete
-            task_id={row.original._id}
-            openDialog={openDelete}
-            setOpenDialog={setOpenDelete}
-          />
-          <TaskUpdate
-            task_id={row.original._id}
-            task_data={updateData}
-            openDialog={openUpdate}
-            setOpenDialog={setOpenUpdate}
-          />
         </div>
       )
     }

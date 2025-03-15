@@ -18,12 +18,14 @@ interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[]
     data: TData[]
     onRowClick?: (row: TData) => void
+    dialogOpen: boolean
 }
 
 export function DataTable<TData, TValue>({
     columns,
     data,
     onRowClick,
+    dialogOpen
 }: DataTableProps<TData, TValue>) {
     const table = useReactTable({
         data,
@@ -61,10 +63,7 @@ export function DataTable<TData, TValue>({
                             className="cursor-pointer"
                             onClick={(e) =>
                                 {
-                                    // Prevent click when a dialog is open
-                                    const dialog = document.querySelector('[data-state="open"]')
-
-                                    !dialog 
+                                    !dialogOpen 
                                         ? onRowClick?.(row.original) 
                                         : e.stopPropagation()
                                 }
