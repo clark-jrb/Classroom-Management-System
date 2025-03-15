@@ -1,4 +1,3 @@
-import { useState } from "react"
 import { TaskForm } from "../component/TaskForm"
 import { TaskList } from "../component/TaskList"
 import { TaskTypes } from "@/types/global.types"
@@ -9,7 +8,6 @@ import { useNavigate } from "react-router-dom"
 export const TaskPage = ({ task_type }: {
     task_type: TaskTypes
 }) => {
-    const [enableEdit, setEnableEdit] = useState(false)
     const navigate = useNavigate()
     
     return (
@@ -21,10 +19,10 @@ export const TaskPage = ({ task_type }: {
                     </Button>
                 </div>
                 <div className="mb-3">
-                    <TaskForm taskType={`${task_type}`} enableEdit={enableEdit} setEnableEdit={setEnableEdit}/>
+                    <TaskForm taskType={`${task_type}`}/>
                 </div>
             </div>
-            <TaskList taskType={`${task_type}`} enableEdit={enableEdit} setEnableEdit={setEnableEdit}/>
+            <TaskList taskType={`${task_type}`}/>
         </div>
     )
 }

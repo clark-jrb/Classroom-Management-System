@@ -6,8 +6,7 @@ import {
     DialogDescription,
     DialogFooter,
     DialogHeader,
-    DialogTitle,
-    DialogTrigger
+    DialogTitle
 } from "@/components/ui/dialog"
 import { 
     Form,
@@ -29,22 +28,20 @@ import { teacherClassInfo } from "@/hooks/useTeacherQuery"
 import { updateTaskSchema } from "@/schemas/task.schema"
 import { TUpdateTask } from "@/types/task.types"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { Pencil } from "lucide-react"
 import { useForm } from "react-hook-form"
-import { useState } from "react"
 import { useUpdateTask } from "@/hooks/useTaskQuery"
 import { useQueryClient } from "@tanstack/react-query"
 import { getTaskChanges } from "@/helpers/changed-fields"
 import { toast } from "sonner"
 
-export const TaskUpdate = ({ task_id, task_data, setEnableEdit } : {
+export const TaskUpdate = ({ task_id, task_data, openDialog, setOpenDialog } : {
     task_id: string
     task_data: TUpdateTask
-    setEnableEdit: (state: boolean) => void
+    openDialog: boolean
+    setOpenDialog: (state: boolean) => void
 }) => {
     const queryClient = useQueryClient()
     const { subjects } = teacherClassInfo()
-    const [openDialog, setOpenDialog] = useState(false)
     const { updateSpecificTask } = useUpdateTask(task_id)
 
     const updateForm = useForm<TUpdateTask>({
@@ -62,7 +59,6 @@ export const TaskUpdate = ({ task_id, task_data, setEnableEdit } : {
                     console.log(message)
                     queryClient.invalidateQueries({ queryKey: ['my_tasks'] })
                     setOpenDialog(false)    /* Close dialog */
-                    setEnableEdit(false)    /* Disables edit */
                     toast.success(message)
                 },
                 onError: (error) => {
@@ -83,10 +79,6 @@ export const TaskUpdate = ({ task_id, task_data, setEnableEdit } : {
     return (
         <div>
             <Dialog open={openDialog} onOpenChange={setOpenDialog}>
-                <DialogTrigger asChild>
-                    <Pencil size={'20px'} strokeWidth={1}/>
-                </DialogTrigger>
-
                 <DialogContent onInteractOutside={(e) => e.preventDefault()}>
                     <DialogHeader>
                         <DialogTitle>Update task</DialogTitle>
@@ -166,7 +158,10 @@ export const TaskUpdate = ({ task_id, task_data, setEnableEdit } : {
                                 )}
                             />
                             <DialogFooter className="pt-4">
-                                <Button type="submit">
+                                <Button 
+                                    type="submit"
+                                    disabled={updateSpecificTask.isPending}
+                                >
                                     Update
                                 </Button>
                                 <DialogClose asChild>

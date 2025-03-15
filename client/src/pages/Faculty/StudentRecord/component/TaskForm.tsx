@@ -29,15 +29,12 @@ import { TaskTypes, SubjectTypes } from "@/types/global.types"
 import { DialogClose } from "@radix-ui/react-dialog"
 import { toast } from "sonner"
 import { toCamelCase } from "@/helpers/camel-case"
-import { Switch } from "@/components/ui/switch"
 import { TTaskForm } from "@/types/task.types"
 import { useCurrentQuarterStore } from "@/stores/globalSlice"
 
 
-export const TaskForm = ({ taskType, enableEdit, setEnableEdit }: {
+export const TaskForm = ({ taskType }: {
     taskType: TaskTypes
-    enableEdit: boolean
-    setEnableEdit: (state: boolean) => void
 }) => {
     const { current_quarter } = useCurrentQuarterStore()
     const quarter = current_quarter     // QUARTER state (subject to change)
@@ -331,10 +328,6 @@ export const TaskForm = ({ taskType, enableEdit, setEnableEdit }: {
                 </DialogContent>
 
             </Dialog>
-            <div className="flex space-x-2 items-center">
-                <Label htmlFor="actions">Actions</Label>
-                <Switch id="actions" checked={enableEdit} onCheckedChange={setEnableEdit}/>
-            </div>
         </div>
     )
 }
