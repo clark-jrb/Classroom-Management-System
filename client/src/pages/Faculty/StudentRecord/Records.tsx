@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom"
-import { Button } from "@/components/ui/button"
+import { FileText } from "lucide-react"
 
 export const Records = () => {
     const recordsLinks = [
@@ -12,12 +12,13 @@ export const Records = () => {
     ]
 
     return (
-        <div>
+        <div className="flex-1 grid grid-cols-6 gap-4">
             {recordsLinks.map(({name, path_name}, index) => (
                 <Link to={`${path_name}`} key={index}>
-                    <Button className="me-2" variant={'outline'}>
+                    <div className="flex border p-4 rounded text-lg text-navy hover:shadow-md transition duration-300">
                         {name}
-                    </Button>
+                        <FileText strokeWidth={1} className="ms-auto"/>
+                    </div>
                 </Link>
             ))}
         </div>

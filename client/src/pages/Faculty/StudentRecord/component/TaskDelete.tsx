@@ -43,7 +43,7 @@ export const TaskDelete = ({ task_id, setEnableEdit }: {
         <div>
             <Dialog open={openDialog} onOpenChange={setOpenDialog}>
                 <DialogTrigger asChild>
-                    <CircleX size={'20px'}/>
+                    <CircleX size={'20px'} strokeWidth={1}/>
                 </DialogTrigger>
 
                 <DialogContent className="w-fit">

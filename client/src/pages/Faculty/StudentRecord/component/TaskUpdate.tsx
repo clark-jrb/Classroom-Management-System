@@ -27,7 +27,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { teacherClassInfo } from "@/hooks/useTeacherQuery"
 import { updateTaskSchema } from "@/schemas/task.schema"
-import { TUpdateTask } from "@/types/global.types"
+import { TUpdateTask } from "@/types/task.types"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Pencil } from "lucide-react"
 import { useForm } from "react-hook-form"
@@ -84,7 +84,7 @@ export const TaskUpdate = ({ task_id, task_data, setEnableEdit } : {
         <div>
             <Dialog open={openDialog} onOpenChange={setOpenDialog}>
                 <DialogTrigger asChild>
-                    <Pencil size={'20px'}/>
+                    <Pencil size={'20px'} strokeWidth={1}/>
                 </DialogTrigger>
 
                 <DialogContent onInteractOutside={(e) => e.preventDefault()}>

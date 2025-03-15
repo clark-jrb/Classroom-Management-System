@@ -32,48 +32,49 @@ export const RecordsRoutes = () => {
     return (
         <FacultyLayout>
             <Container>
-                <Breadcrumb className='mb-3'>
-                    <BreadcrumbList>
-                        <BreadcrumbItem>
-                            <Link to={'/records'}>Records</Link>
-                        </BreadcrumbItem>
-                        {recordsLinks.map(({ path_name, name }, index) => 
-                            (currentPath === `/records/${path_name}` && 
-                                <React.Fragment key={index}>
-                                    <BreadcrumbSeparator />
-                                    <BreadcrumbPage>
-                                        {name}
-                                    </BreadcrumbPage>
-                                </React.Fragment>) || 
-                            (currentPath.startsWith(`/records/${path_name}/view/`) && 
-                                <React.Fragment key={index}>
-                                    <BreadcrumbSeparator />
-                                        <BreadcrumbItem>
-                                            <Link to={`/records/${path_name}`}>
-                                                {name}
-                                            </Link>
-                                        </BreadcrumbItem>
-                                    <BreadcrumbSeparator />
-                                        <BreadcrumbPage>
-                                            View
+                <div className='space-y-4 h-full'>
+                    <Breadcrumb className=" border-b border-light_navy leading-none">
+                        <BreadcrumbList>
+                            <BreadcrumbItem className='text-xl text-navy pb-4 '>
+                                <Link to={'/records'} className='leading-none'>Records</Link>
+                            </BreadcrumbItem>
+                            {recordsLinks.map(({ path_name, name }, index) => 
+                                (currentPath === `/records/${path_name}` && 
+                                    <React.Fragment key={index}>
+                                        <BreadcrumbSeparator />
+                                        <BreadcrumbPage className='text-navy'>
+                                            {name}
                                         </BreadcrumbPage>
-                                </React.Fragment>)
-                        )}
-                    </BreadcrumbList>
-                </Breadcrumb>
+                                    </React.Fragment>) || 
+                                (currentPath.startsWith(`/records/${path_name}/view/`) && 
+                                <React.Fragment key={index}>
+                                        <BreadcrumbSeparator />
+                                            <BreadcrumbItem>
+                                                <Link to={`/records/${path_name}`}>
+                                                    {name}
+                                                </Link>
+                                            </BreadcrumbItem>
+                                        <BreadcrumbSeparator />
+                                            <BreadcrumbPage className='text-navy'>
+                                                View
+                                            </BreadcrumbPage>
+                                    </React.Fragment>)
+                            )}
+                        </BreadcrumbList>
+                    </Breadcrumb>
 
-                <Routes>
-                    {recordsLinks.map(({ path_name }, index) => (
-                        <Route key={index} path={path_name} element={
-                            <Suspense fallback={<div>loading...</div>}>
-                                {path_name === '' ? <Records/> : <TaskPage task_type={path_name as TaskTypes}/>}
-                            </Suspense>
-                        }/>
-                    ))}
-                    <Route path=':id/view/:taskId' element={<TaskView/>}/>
-                    <Route path="*" element={<Navigate to="/records" replace/>} />
-                </Routes>
-
+                    <Routes>
+                        {recordsLinks.map(({ path_name }, index) => (
+                            <Route key={index} path={path_name} element={
+                                <Suspense fallback={<div>loading...</div>}>
+                                    {path_name === '' ? <Records/> : <TaskPage task_type={path_name as TaskTypes}/>}
+                                </Suspense>
+                            }/>
+                        ))}
+                        <Route path=':id/view/:taskId' element={<TaskView/>}/>
+                        <Route path="*" element={<Navigate to="/records" replace/>} />
+                    </Routes>
+                </div>
             </Container>
         </FacultyLayout>
     )

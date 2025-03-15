@@ -25,7 +25,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { Input } from "@/components/ui/input"
 import { useTaskMutations, useMyTasks } from "@/hooks/useTaskQuery"
 import { useQueryClient } from "@tanstack/react-query"
-import { TaskTypes, SubjectTypes, QuarterTypes } from "@/types/global.types"
+import { TaskTypes, SubjectTypes } from "@/types/global.types"
 import { DialogClose } from "@radix-ui/react-dialog"
 import { toast } from "sonner"
 import { toCamelCase } from "@/helpers/camel-case"
@@ -130,8 +130,8 @@ export const TaskForm = ({ taskType, enableEdit, setEnableEdit }: {
         <div className="flex space-x-4">
             <Dialog open={open} onOpenChange={openDialog}>
                 <DialogTrigger asChild>
-                    <Button>
-                        Create {taskType} record
+                    <Button variant={'navy'}>
+                        Create record
                     </Button>
                 </DialogTrigger>
 
