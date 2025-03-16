@@ -18,19 +18,21 @@ import {
 import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
 import { teacherClassInfo } from "@/hooks/useTeacherQuery"
-import { useMemo, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { taskSchema } from "@/schemas/task.schema"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Input } from "@/components/ui/input"
 import { useTaskMutations, useMyTasks } from "@/hooks/useTaskQuery"
 import { useQueryClient } from "@tanstack/react-query"
-import { TaskTypes, SubjectTypes } from "@/types/global.types"
+import { TaskTypes, SubjectTypes, GradeLevels } from "@/types/global.types"
 import { DialogClose } from "@radix-ui/react-dialog"
 import { toast } from "sonner"
 import { toCamelCase } from "@/helpers/camel-case"
 import { TTaskForm } from "@/types/task.types"
 import { useCurrentQuarterStore } from "@/stores/globalSlice"
+import { getGradeName } from "@/helpers/get-quarter"
+import { ArrowLeft, ArrowRight, ChevronRight } from "lucide-react"
 
 
 export const TaskForm = ({ taskType }: {
@@ -76,9 +78,12 @@ export const TaskForm = ({ taskType }: {
         }
     })
 
-    if (formStep === 4) {
-        taskForm.setValue("task_no", taskCount + 1)
-    }
+    useEffect(() => {
+        if (formStep === 4) {
+            taskForm.setValue("task_no", taskCount + 1)
+            console.log('task_no set')
+        }
+    }, [formStep, taskCount, taskForm])
     
     function onSubmit(values: TTaskForm) {
         // console.log(values)
@@ -133,41 +138,65 @@ export const TaskForm = ({ taskType }: {
                 </DialogTrigger>
 
                 <DialogContent className="sm:max-w-[525px]" onInteractOutside={(e) => e.preventDefault()}>
-                        <DialogHeader>
-                            <DialogTitle>Create {taskType}</DialogTitle>
+                        <DialogHeader className="space-y-4">
+                            <DialogTitle className="font-medium">
+                                <div className="text-xl text-navy pb-4 border-b border-light_navy leading-none">
+                                    Create {taskType} record
+                                </div>
+                            </DialogTitle>
                             <DialogDescription>
-                                Complete the form
+                                Complete the form:
                             </DialogDescription>
                                 {formStep !== 5 && 
-                                    <p>
-                                        {subject}&nbsp;{gradeLevel}&nbsp;{section}&nbsp;
-                                    </p>
+                                    <div className={`border-b flex text-navy gap-2 ${subject ? 'pb-4' : ''}`}>
+                                        {subject &&
+                                            <>
+                                            <ChevronRight strokeWidth={1}/>
+                                            {toCamelCase(subject)}
+                                            </>
+                                        }
+                                        {gradeLevel && 
+                                            <>
+                                            <ChevronRight strokeWidth={1}/>
+                                            {getGradeName(gradeLevel as GradeLevels)}
+                                            </>
+                                        }
+                                        {section &&
+                                            <>
+                                            <ChevronRight strokeWidth={1}/>
+                                            {toCamelCase(section)}
+                                            </>
+                                        }
+                                    </div>
                                 }
                         </DialogHeader>
                         <Form {...taskForm}>
                             <form onSubmit={taskForm.handleSubmit(onSubmit, onError)}>
                                 <div>
                                     {formStep === 1 && 
-                                        <div className="h-40">
-                                            <div>Pick Subject:</div>
-                                            {subjects.map((data: SubjectTypes, index: number) => (
-                                                <Button 
-                                                    key={index} 
-                                                    variant={'outline'} 
-                                                    onClick={() => {
-                                                        setSubject(data)
-                                                        taskForm.setValue('subject', data)
-                                                        setFormStep(2)
-                                                    }}
-                                                >
-                                                    {data}
-                                                </Button>
-                                            ))}
+                                        <div className="h-40 space-y-4">
+                                            <div className="text-gray-500 text-sm">Pick Subject:</div>
+                                            <div className="flex gap-4">
+                                                {subjects.map((data: SubjectTypes, index: number) => (
+                                                    <Button 
+                                                        key={index} 
+                                                        variant={'outline'} 
+                                                        className="text-navy p-6 text-md"
+                                                        onClick={() => {
+                                                            setSubject(data)
+                                                            taskForm.setValue('subject', data)
+                                                            setFormStep(2)
+                                                        }}
+                                                    >
+                                                        {toCamelCase(data)}
+                                                    </Button>
+                                                ))}
+                                            </div>
                                         </div>
                                     }
                                     {formStep === 2 && 
-                                        <div className="h-40">
-                                            <div>Pick Students:</div>
+                                        <div className="h-40 space-y-4">
+                                            <div className="text-gray-500 text-sm">Pick Students:</div>
                                             <Button 
                                                 variant={'outline'} 
                                                 onClick={() => {
@@ -175,14 +204,15 @@ export const TaskForm = ({ taskType }: {
                                                     taskForm.setValue('grade', grade_assigned)
                                                     setFormStep(3)
                                                 }}
+                                                className="text-navy p-6 text-md"
                                             >
-                                                {grade_assigned}
+                                                {getGradeName(grade_assigned)}
                                             </Button>
                                         </div>
                                     }
                                     {formStep === 3 &&
-                                        <div className="h-40">
-                                            <div>Pick Section:</div>
+                                        <div className="h-40 space-y-4">
+                                            <div className="text-gray-500 text-sm">Pick Section:</div>
                                             {section_handled.map((data: string, index: number) => (
                                                 <Button 
                                                     key={index} 
@@ -192,110 +222,119 @@ export const TaskForm = ({ taskType }: {
                                                         taskForm.setValue('section', data)
                                                         setFormStep(4)
                                                     }}
+                                                    className="text-navy p-6 text-md"
                                                 >
-                                                    {data}
+                                                    {toCamelCase(data)}
                                                 </Button>
                                             ))}
                                         </div>
                                     }
                                     {formStep === 4 &&
-                                        <>
-                                            <FormField
-                                                control={taskForm.control}
-                                                name="task_no"
-                                                render={({ field }) => (
-                                                    <FormItem>
-                                                        <FormLabel>{toCamelCase(taskType)} Number:</FormLabel>
-                                                        <FormControl>
-                                                            <Input 
-                                                                type="number"
-                                                                placeholder="Task number"
-                                                                onChange={(e) => field.onChange(Number(e.target.value))}
-                                                                value={field.value}
-                                                                min={1}
-                                                                max={10}
-                                                            />
-                                                        </FormControl>
-                                                        <FormMessage/>
-                                                    </FormItem>
-                                                )}
-                                            />
-                                            <FormField
-                                                control={taskForm.control}
-                                                name="total_items"
-                                                render={({ field }) => (
-                                                    <FormItem>
-                                                        <FormLabel>Total items:</FormLabel>
-                                                        <FormControl>
-                                                            <Input 
-                                                                type="number"
-                                                                placeholder="total items of the task"
-                                                                onChange={(e) => field.onChange(Number(e.target.value))}
-                                                                value={field.value}
-                                                                min={5}
-                                                                max={100}
-                                                            />
-                                                        </FormControl>
-                                                        <FormMessage/>
-                                                    </FormItem>
-                                                )}
-                                            />
-                                            {taskForm.watch('total_items') !== 0 && // user should input total of items
-                                                <Button 
-                                                    type="button" 
-                                                    onClick={() => {
-                                                        setFormStep(5)
-                                                    }}
-                                                >
-                                                    Next
-                                                </Button>
-                                            }
+                                        <div className="space-y-4">
+                                            <div className="flex gap-4">
+                                                <div className="flex-1">
+                                                    <FormField
+                                                        control={taskForm.control}
+                                                        name="task_no"
+                                                        render={({ field }) => (
+                                                            <FormItem>
+                                                                <FormLabel className="text-gray-500">{toCamelCase(taskType)} Number:</FormLabel>
+                                                                <FormControl>
+                                                                    <Input 
+                                                                        type="number"
+                                                                        placeholder="Task number"
+                                                                        className="p-6 text-md"
+                                                                        onChange={(e) => field.onChange(Number(e.target.value))}
+                                                                        value={field.value}
+                                                                        min={1}
+                                                                        max={10}
+                                                                    />
+                                                                </FormControl>
+                                                                <FormMessage/>
+                                                            </FormItem>
+                                                        )}
+                                                    />
+                                                </div>
+                                                <div className="flex-1">
+                                                    <FormField
+                                                        control={taskForm.control}
+                                                        name="total_items"
+                                                        render={({ field }) => (
+                                                            <FormItem>
+                                                                <FormLabel className="text-gray-500">Total items:</FormLabel>
+                                                                <FormControl>
+                                                                    <Input 
+                                                                        type="number"
+                                                                        placeholder="total items of the task"
+                                                                        className="p-6 text-md"
+                                                                        onChange={(e) => field.onChange(Number(e.target.value))}
+                                                                        value={field.value}
+                                                                        min={5}
+                                                                        max={100}
+                                                                    />
+                                                                </FormControl>
+                                                                <FormMessage/>
+                                                            </FormItem>
+                                                        )}
+                                                    />
+                                                </div>
+                                            </div>
                                             
-                                        </>
+                                            {/* <div className="w-full"> */}
+                                                {taskForm.watch('total_items') !== 0 && // user should input total of items
+                                                    <Button 
+                                                        type="button" 
+                                                        variant={'ghost'}
+                                                        className="w-full text-navy"
+                                                        onClick={() => {
+                                                            setFormStep(5)
+                                                        }}
+                                                    >
+                                                        Next <ArrowRight/>
+                                                    </Button>
+                                                }
+                                            {/* </div> */}
+                                            
+                                        </div>
                                     }
                                     {formStep === 5 && 
-                                    <>
-                                        <div>Confirm creation</div>
-                                        <div className="flex gap-8">
-                                            <div>
-                                                <Label>{taskType} No.</Label>
-                                                <div>{taskForm.watch("task_no")}</div>
+                                        <div className="space-y-4">
+                                            <div className="flex border-b">
+                                                <div className="text-navy text-lg mb-2">
+                                                    Confirm creation
+                                                </div>
+                                                <div className="ms-auto text-gray-500 text-sm">
+                                                    Existing:&nbsp;
+                                                    {taskCount}&nbsp;/&nbsp;{taskLimit}
+                                                </div>
                                             </div>
-                                            <div>
-                                                <Label>Subject</Label>
-                                                <div>{subject}</div>
+                                            <div className="flex gap-6 h-[10rem]">
+                                                <div className="space-y-2">
+                                                    <Label className="text-gray-500">{toCamelCase(taskType)} No.</Label>
+                                                    <div className="text-navy text-lg">{taskForm.watch("task_no")}</div>
+                                                </div>
+                                                <div className="space-y-2">
+                                                    <Label className="text-gray-500">Subject</Label>
+                                                    <div className="text-navy text-lg">{toCamelCase(subject)}</div>
+                                                </div>
+                                                <div className="space-y-2">
+                                                    <Label className="text-gray-500">Grade Level</Label>
+                                                    <div className="text-navy text-lg">{getGradeName(gradeLevel as GradeLevels)}</div>
+                                                </div>
+                                                <div className="space-y-2">
+                                                    <Label className="text-gray-500">Section</Label>
+                                                    <div className="text-navy text-lg">{toCamelCase(section)}</div>
+                                                </div>
+                                                <div className="space-y-2">
+                                                    <Label className="text-gray-500">Total Items</Label>
+                                                    <div className="text-navy text-lg">{taskForm.watch("total_items")}</div>
+                                                </div>
                                             </div>
-                                            <div>
-                                                <Label>Grade Level</Label>
-                                                <div>{gradeLevel}</div>
-                                            </div>
-                                            <div>
-                                                <Label>Section</Label>
-                                                <div>{section}</div>
-                                            </div>
-                                            <div>
-                                                <Label>Total Items</Label>
-                                                <div>{taskForm.watch("total_items")}</div>
-                                            </div>
+                                            
                                         </div>
-                                        <div>
-                                            {taskCount}/{taskLimit}
-                                        </div>
-                                    </>
                                     }
                                 </div>
-                                <DialogFooter className="mt-5">
-                                    {formStep === 5 &&
-                                        <Button 
-                                            type="submit" 
-                                            disabled={generateTask.isPending}
-                                        >
-                                            {generateTask.isPending 
-                                                ? 'Creating...' 
-                                                : 'Create'
-                                            }
-                                        </Button>
-                                    }
+                                <DialogFooter className="mt-4">
                                     {formStep > 1 && 
                                         <Button
                                             type="button"
@@ -307,13 +346,25 @@ export const TaskForm = ({ taskType }: {
                                                 formStep === 2 && setSubject('')
                                             }}
                                         >
-                                            Go back
+                                            <ArrowLeft/>
+                                        </Button>
+                                    }
+                                    {formStep === 5 &&
+                                        <Button 
+                                            type="submit" 
+                                            variant={'navy'}
+                                            disabled={generateTask.isPending}
+                                        >
+                                            {generateTask.isPending 
+                                                ? 'Creating...' 
+                                                : 'Create'
+                                            }
                                         </Button>
                                     }
                                     <DialogClose asChild>
                                             <Button 
                                                 type="button" 
-                                                variant={'destructive'}
+                                                variant={'ghost'}
                                                 onClick={() => {
                                                     resetFormStates()
                                                     taskForm.reset()
