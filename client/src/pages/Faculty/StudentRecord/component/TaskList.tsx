@@ -33,7 +33,7 @@ export const TaskList = ({ taskType }: {
         setSelectedTask(task)
         setIsDeleteOpen(true)
     }
-
+    
     return (
         <div className="h-auto w-full">
             <DataTable 

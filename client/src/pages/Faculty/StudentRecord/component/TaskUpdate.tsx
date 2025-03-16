@@ -35,6 +35,7 @@ import { getTaskChanges } from "@/helpers/changed-fields"
 import { toast } from "sonner"
 import { toCamelCase } from "@/helpers/camel-case"
 import { LoaderCircle } from "lucide-react"
+import { useEffect } from "react"
 
 export const TaskUpdate = ({ task_id, task_data, openDialog, setOpenDialog } : {
     task_id: string
@@ -50,6 +51,13 @@ export const TaskUpdate = ({ task_id, task_data, openDialog, setOpenDialog } : {
         resolver: zodResolver(updateTaskSchema),
         defaultValues: task_data
     })
+
+    // Reset form when task_data changes
+    useEffect(() => {
+        if (task_data) {
+            updateForm.reset(task_data)
+        }
+    }, [task_data, updateForm])
 
     function onSubmit(values: TUpdateTask) {
         // console.log(values)

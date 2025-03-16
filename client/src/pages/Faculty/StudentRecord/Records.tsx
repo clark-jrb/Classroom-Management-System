@@ -12,7 +12,7 @@ export const Records = () => {
     ]
 
     return (
-        <div className="flex-1 grid grid-cols-6 gap-4">
+        <div className="grid grid-cols-6 gap-4">
             {recordsLinks.map(({name, path_name}, index) => (
                 <Link to={`${path_name}`} key={index}>
                     <div className="flex border p-4 rounded text-lg text-navy hover:shadow-md transition duration-300">

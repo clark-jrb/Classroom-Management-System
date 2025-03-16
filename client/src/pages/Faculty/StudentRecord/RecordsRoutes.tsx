@@ -14,6 +14,7 @@ import { TaskView } from './component/TaskView'
 import { Suspense } from 'react'
 import { TaskPage } from './pages/TaskPage'
 import { TaskTypes } from '@/types/global.types'
+import { LoaderCircle } from 'lucide-react'
 
 export const RecordsRoutes = () => {
     const location = useLocation()
@@ -32,7 +33,7 @@ export const RecordsRoutes = () => {
     return (
         <FacultyLayout>
             <Container>
-                <div className='space-y-4 h-full'>
+                <div className='space-y-4 h-full flex flex-col'>
                     <Breadcrumb className=" border-b border-light_navy leading-none">
                         <BreadcrumbList>
                             <BreadcrumbItem className='text-xl text-navy pb-4 '>
@@ -66,7 +67,11 @@ export const RecordsRoutes = () => {
                     <Routes>
                         {recordsLinks.map(({ path_name }, index) => (
                             <Route key={index} path={path_name} element={
-                                <Suspense fallback={<div>loading...</div>}>
+                                <Suspense fallback={
+                                    <div className="flex-1 flex justify-center items-center">
+                                        <LoaderCircle className="animate-spin" color="gray" size={'3rem'}/>
+                                    </div>
+                                }>
                                     {path_name === '' ? <Records/> : <TaskPage task_type={path_name as TaskTypes}/>}
                                 </Suspense>
                             }/>
