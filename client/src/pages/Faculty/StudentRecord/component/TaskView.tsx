@@ -1,4 +1,4 @@
-import { Navigate, useParams } from "react-router-dom"
+import { Navigate, useNavigate, useParams } from "react-router-dom"
 import { useQueryClient } from "@tanstack/react-query"
 import {
     Table,
@@ -24,6 +24,10 @@ import { useTaskMutations, useStudentTasks } from "@/hooks/useTaskQuery"
 import { teacherClassInfo } from "@/hooks/useTeacherQuery"
 import { toast } from "sonner"
 import { StudentScore, StudentTask, TTask } from "@/types/task.types"
+import { ArrowLeft, FileCheck } from "lucide-react"
+import { toCamelCase } from "@/helpers/camel-case"
+import { getGradeName } from "@/helpers/get-quarter"
+import { GradeLevels } from "@/types/global.types"
 
 export const TaskView = () => {
     const { taskId } = useParams()
@@ -57,6 +61,7 @@ const TaskTable = ({ data, taskId, grade_assigned }: {
 }) => {
     const { updateScores } = useTaskMutations()
     const queryClient = useQueryClient()
+    const navigate = useNavigate()
 
     const { task, student_tasks } = data
 
@@ -99,11 +104,40 @@ const TaskTable = ({ data, taskId, grade_assigned }: {
 
     return (
         <>
-            <div>
-                {task?.type}{task?.task_no}{task?.subject}{task?.grade}{task?.section}
-            </div>
+            
             <Form {...studentScoreForm}>
                 <form onSubmit={studentScoreForm.handleSubmit(onSubmit, onError)}>
+                    {/* Header  */}
+                    <div className="flex gap-2 items-center">
+                        <div>
+                            <Button type="button" variant={'ghost'} onClick={() => navigate(`/records/${task?.type}`)}>
+                                <ArrowLeft/>
+                            </Button>
+                        </div>
+                        <div className="flex items-end gap-2">
+                            <div className="text-navy text-2xl">
+                                {toCamelCase(task?.type)}&nbsp;{task?.task_no}
+                            </div>
+                            <div className="text-gray-500 text-2xl">/</div>
+                            <div className="text-gray-500 text-lg">
+                                {toCamelCase(task?.subject)}
+                            </div>
+                            <div className="text-gray-500 text-2xl">/</div>
+                            <div className="text-navy text-lg">
+                                {getGradeName(task?.grade as GradeLevels)},&nbsp;
+                                {toCamelCase(task?.section)}
+                            </div>
+                        </div>
+                        <Button 
+                            variant={'navy'}
+                            className="ms-auto"
+                            type="submit" 
+                            disabled={updateScores.isPending}
+                        >
+                            {updateScores.isPending ? "Processing..." : <>Submit <FileCheck /></>}
+                        </Button>
+                    </div>
+                    {/* Table  */}
                     <Table>
                         <TableHeader>
                             <TableRow>
@@ -147,9 +181,7 @@ const TaskTable = ({ data, taskId, grade_assigned }: {
                             ))}
                         </TableBody>
                     </Table>
-                    <Button type="submit" disabled={updateScores.isPending}>
-                        {updateScores.isPending ? "Processing..." : "Submit"}
-                    </Button>
+                    
                 </form>
             </Form>
         </>
