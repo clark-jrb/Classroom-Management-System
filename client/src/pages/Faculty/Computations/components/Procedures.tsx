@@ -47,20 +47,39 @@ export const Procedures = ({ section_assigned, subject_handled, grade_assigned, 
     }, [sumOfWeight])
 
     return (
-        <div className="border p-5 rounded-md space-y-4">
-            <div>Grading Procedures:</div>
-            {procedures.map(({ name, type, quarter, weight }, index) => (
-                <div key={index}>
-                    {countTask(type, subject_handled, section_assigned, quarter)}&nbsp;
-                    {name}
-                    &nbsp;-&nbsp;
-                    {countTask(type, subject_handled, section_assigned, quarter) > 0 
-                        ? weight 
-                        : 0
-                    }&nbsp;%
+        <div className="border p-5 rounded-md space-y-4 w-[15rem] h-fit">
+            <div className="text-navy border-b pb-4">Grading Procedures:</div>
+            <div className="border-b pb-4 space-y-4">
+                {procedures.map(({ name, type, quarter, weight }, index) => (
+                    <div key={index} className="flex gap-4">
+                        <div className="text-gray-500">
+                            {countTask(type, subject_handled, section_assigned, quarter)}
+                        </div>
+                        <div className="text-navy">
+                            {name}
+                        </div>
+                        <div className="ms-auto text-gray-500">
+                            {countTask(type, subject_handled, section_assigned, quarter) > 0 
+                                ? weight 
+                                : 0
+                            }&nbsp;%
+                        </div>
+                    </div>
+                ))}
+            </div>
+            <div className="space-y-4">
+                <div className="flex items-end text-navy">
+                    <div>
+                        Total Weight:
+                    </div>
+                    <div className="ms-auto text-gray-500 text-xl">
+                        {sumOfWeight}&nbsp;%
+                    </div>
                 </div>
-            ))}
-            <div>Total Weight: <br />{sumOfWeight}</div>
+                <div className="text-gray-500 text-xs">
+                    * You can only save the grade if the total weight is equivalent to 100
+                </div>
+            </div>
             {/* <div>{sumOfWeight === 100 ? 'All required tasks complete' : 'Some tasks are still missing'}</div> */}
         </div>
     )

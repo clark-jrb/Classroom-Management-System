@@ -6,6 +6,9 @@ import { Suspense, useState } from "react"
 import { ComputationViewTable } from "./ComputationViewTable"
 import { Button } from "@/components/ui/button"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { ArrowLeft } from "lucide-react"
+import { toCamelCase } from "@/helpers/camel-case"
+import { getGradeName } from "@/helpers/get-quarter"
 
 export const ComputationView = () => {
     const { section, subject } = useParams<{ section: string, subject: SubjectTypes }>()
@@ -30,11 +33,20 @@ export const ComputationView = () => {
     }
 
     return (
-        <div>
-            <div className="flex gap-5 mb-5">
-                <Button variant={'outline'} onClick={() => navigate('/computations')}>Go back</Button>
-                <div>Subject: {subject}</div>
-                <div>Grade and Section: {grade_assigned}, {section}</div>
+        <div className="space-y-4">
+            <div className="flex gap-5 items-center">
+                <Button variant={'ghost'} onClick={() => navigate('/computations')}>
+                    <ArrowLeft/>
+                </Button>
+                <div className="flex items-end gap-2">
+                    <div className="text-2xl text-navy">
+                        {toCamelCase(subject)}
+                    </div>
+                    <div className="text-gray-500 text-2xl">/</div>
+                    <div className="text-gray-500">
+                        {getGradeName(grade_assigned)}, {toCamelCase(section)}
+                    </div>
+                </div>
                 <div className="ms-auto">
                     <Select onValueChange={handleQuarterChange} defaultValue={quarter}>
                         <SelectTrigger className="w-[180px]">
