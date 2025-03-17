@@ -15,7 +15,7 @@ export const Records = () => {
         <div className="grid grid-cols-6 gap-4">
             {recordsLinks.map(({name, path_name}, index) => (
                 <Link to={`${path_name}`} key={index}>
-                    <div className="flex border p-4 rounded text-lg text-navy hover:shadow-md transition duration-300">
+                    <div className="flex border p-4 rounded text-lg text-navy hover:shadow-md transition duration-200">
                         {name}
                         <FileText strokeWidth={1} className="ms-auto"/>
                     </div>

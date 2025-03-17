@@ -18,7 +18,7 @@ export const MyClasses = () => {
                 {section_handled.map((section, index) => (
                     <div 
                         key={index} 
-                        className="border p-4 rounded-md cursor-pointer w-[15rem] hover:shadow-md transition duration-300" 
+                        className="border p-4 rounded-md cursor-pointer w-[15rem] hover:shadow-md transition duration-200" 
                         onClick={() => {
                             setView(true)
                             setSection(section)
@@ -31,7 +31,7 @@ export const MyClasses = () => {
                             </span>
                             <UsersRound strokeWidth={1} className="ms-auto"/>
                         </div>
-                        <div className="text-light_navy text-2xl ">
+                        <div className="text-light_navy text-xl">
                             {toCamelCase(section)}
                         </div>
                     </div>

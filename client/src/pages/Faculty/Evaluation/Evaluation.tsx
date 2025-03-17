@@ -1,28 +1,30 @@
-import { Button } from "@/components/ui/button"
-import { useNavigate } from "react-router-dom"
+import { BookOpenCheck } from "lucide-react"
+import { Link } from "react-router-dom"
 
 export const Evaluation = () => {
-    const navigate = useNavigate()
 
     return (
         <div className="space-y-4">
-            <div>Student Grades Evaluation</div>
-            <Button 
-                variant={'outline'} 
-                size={'lg'} 
-                className="block" 
-                onClick={() => navigate('/evaluation/qa')}
-            >
-                Students Quarterly Average
-            </Button>
-            <Button 
-                variant={'outline'} 
-                size={'lg'} 
-                className="block" 
-                onClick={() => navigate('/evaluation/ga')}
-            >
-                Students General Average
-            </Button>
+            <Link to={`/evaluation/qa`} className="block w-[20rem]">
+                <div className="border p-4 rounded-md flex items-center hover:shadow-md transition duration-200">
+                    <span className="text-navy text-lg">
+                        Students Quarterly Average
+                    </span>
+                    <div className="text-gray-500 ms-auto">
+                        <BookOpenCheck strokeWidth={1}/>
+                    </div>
+                </div>
+            </Link>
+            <Link to={`/evaluation/qa`} className="block w-[20rem]">
+                <div className="border p-4 rounded-md flex items-center hover:shadow-md transition duration-200">
+                    <span className="text-navy text-lg">
+                        Students General Average
+                    </span>
+                    <div className="text-gray-500 ms-auto">
+                        <BookOpenCheck strokeWidth={1}/>
+                    </div>
+                </div>
+            </Link>
         </div>
     )
 }
