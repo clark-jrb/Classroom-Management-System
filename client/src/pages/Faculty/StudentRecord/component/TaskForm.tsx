@@ -32,7 +32,7 @@ import { toCamelCase } from "@/helpers/camel-case"
 import { TTaskForm } from "@/types/task.types"
 import { useCurrentQuarterStore } from "@/stores/globalSlice"
 import { getGradeName } from "@/helpers/get-quarter"
-import { ArrowLeft, ArrowRight, ChevronRight } from "lucide-react"
+import { ArrowLeft, ArrowRight, ChevronRight, LoaderCircle } from "lucide-react"
 
 
 export const TaskForm = ({ taskType }: {
@@ -334,10 +334,11 @@ export const TaskForm = ({ taskType }: {
                                         </div>
                                     }
                                 </div>
-                                <DialogFooter className="mt-4">
+                                <DialogFooter className="mt-4 flex">
                                     {formStep > 1 && 
                                         <Button
                                             type="button"
+                                            className="me-auto"
                                             variant={'secondary'}
                                             onClick={() => {
                                                 setFormStep(formStep - 1)
@@ -356,7 +357,7 @@ export const TaskForm = ({ taskType }: {
                                             disabled={generateTask.isPending}
                                         >
                                             {generateTask.isPending 
-                                                ? 'Creating...' 
+                                                ? <LoaderCircle className="animate-spin"/>
                                                 : 'Create'
                                             }
                                         </Button>

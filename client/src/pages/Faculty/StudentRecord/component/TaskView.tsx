@@ -24,7 +24,7 @@ import { useTaskMutations, useStudentTasks } from "@/hooks/useTaskQuery"
 import { teacherClassInfo } from "@/hooks/useTeacherQuery"
 import { toast } from "sonner"
 import { StudentScore, StudentTask, TTask } from "@/types/task.types"
-import { ArrowLeft, FileCheck } from "lucide-react"
+import { ArrowLeft, FileCheck, LoaderCircle } from "lucide-react"
 import { toCamelCase } from "@/helpers/camel-case"
 import { getGradeName } from "@/helpers/get-quarter"
 import { GradeLevels } from "@/types/global.types"
@@ -44,11 +44,15 @@ export const TaskView = () => {
         return <Navigate to="/records" replace/>
     }
 
-    if (data && taskId) return (
-        <div>
-            <TaskTable data={data} taskId={taskId} grade_assigned={grade_assigned} />
-        </div>
-    )
+    if (data && taskId) {
+        
+
+        return (
+            <div>
+                <TaskTable data={data} taskId={taskId} grade_assigned={grade_assigned} />
+            </div>
+        )
+    }
 }
 
 const TaskTable = ({ data, taskId, grade_assigned }: {
@@ -106,7 +110,10 @@ const TaskTable = ({ data, taskId, grade_assigned }: {
         <>
             
             <Form {...studentScoreForm}>
-                <form onSubmit={studentScoreForm.handleSubmit(onSubmit, onError)}>
+                <form 
+                    onSubmit={studentScoreForm.handleSubmit(onSubmit, onError)}
+                    className="space-y-4"
+                >
                     {/* Header  */}
                     <div className="flex gap-2 items-center">
                         <div>
@@ -134,7 +141,10 @@ const TaskTable = ({ data, taskId, grade_assigned }: {
                             type="submit" 
                             disabled={updateScores.isPending}
                         >
-                            {updateScores.isPending ? "Processing..." : <>Submit <FileCheck /></>}
+                            {updateScores.isPending 
+                                ? <LoaderCircle className="animate-spin"/>
+                                : <>Submit <FileCheck /></>
+                            }
                         </Button>
                     </div>
                     {/* Table  */}

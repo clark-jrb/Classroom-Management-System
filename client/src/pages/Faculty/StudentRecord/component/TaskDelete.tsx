@@ -42,13 +42,15 @@ export const TaskDelete = ({ task_id, openDialog, setOpenDialog }: {
 
                 <DialogContent className="w-fit">
                     <DialogHeader className="space-y-4">
-                        <DialogTitle>
+                        <DialogTitle className="font-medium">
                             <div className="text-xl text-navy pb-4 border-b border-light_navy leading-none">
-                                Are you sure you want to delete this?
+                                Delete task
                             </div>
                         </DialogTitle>
-                        <DialogDescription>
-                            This action is cannot be undone
+                        <DialogDescription className="text-base">
+                            Are you sure you want to delete this?
+                            <br /> <br />
+                            This action is cannot be undone. 
                         </DialogDescription>
                         <div className="flex space-x-2 justify-end">
                             <Button 
