@@ -1,11 +1,3 @@
-import {
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
-} from "@/components/ui/table"
 import { useStudentsPerformance } from "@/hooks/useTaskQuery"
 import { QuarterTypes, SubjectTypes } from "@/types/global.types"
 import { useForm } from "react-hook-form"
@@ -22,6 +14,9 @@ import { getChangedSG } from "@/helpers/changed-fields"
 import { toast } from "sonner"
 import { useQueryClient } from "@tanstack/react-query"
 import { useEffect, useMemo } from "react"
+import { DataTable } from "./data-table"
+import { columns } from "./columns"
+import { Save } from "lucide-react"
 
 export const ComputationViewTable = ({ section, subject, weight, quarter }: {
     section: string
@@ -59,6 +54,7 @@ export const ComputationViewTable = ({ section, subject, weight, quarter }: {
 
     const isChanged = useMemo(() => changedValues.length > 0, [changedValues])
 
+    // executes this code when something changed that is subject to update
     useEffect(() => {
         if (isChanged) {
             toast.info('There are some changes')
@@ -115,6 +111,7 @@ export const ComputationViewTable = ({ section, subject, weight, quarter }: {
         queryClient.invalidateQueries({ queryKey: ['students_subject_grade', section, subject] })
     }
 
+    // executes this code when students_performance changes
     useEffect(() => {
         if (students_performance) {
             form.reset({ student_sg: calculated_sp })
@@ -122,71 +119,26 @@ export const ComputationViewTable = ({ section, subject, weight, quarter }: {
     }, [students_performance])
 
     return (
-        <div className="flex-1 border rounded-md">
-            <Table>
-                <TableHeader>
-                    <TableRow>
-                        <TableHead className="w-[150px]">Last Name</TableHead>
-                        <TableHead className="w-[150px]">First Name</TableHead>
-                        <TableHead>Recitation</TableHead>
-                        <TableHead>Activity</TableHead>
-                        <TableHead>Quiz</TableHead>
-                        <TableHead>Project</TableHead>
-                        <TableHead>Summative</TableHead>
-                        <TableHead>Exam</TableHead>
-                        <TableHead>Subject Grade</TableHead>
-                    </TableRow>
-                </TableHeader>
-                <TableBody>
-                    {students_performance.map(({
-                        sid,
-                        firstname,
-                        lastname,
-                        recitation,
-                        activity,
-                        quiz,
-                        project,
-                        summative,
-                        exam
-                    }) => (
-                        <TableRow key={sid}>
-                            <TableCell className="font-medium text-base">{lastname}</TableCell>
-                            <TableCell>{firstname}</TableCell>
-                            <TableCell>{recitation ? recitation.toFixed(2) : 0}</TableCell>
-                            <TableCell>{activity ? activity.toFixed(2) : 0}</TableCell>
-                            <TableCell>{quiz ? quiz.toFixed(2) : 0}</TableCell>
-                            <TableCell>{project ? project.toFixed(2) : 0}</TableCell>
-                            <TableCell>{summative ? summative.toFixed(2) : 0}</TableCell>
-                            <TableCell>{exam ? exam.toFixed(2) : 0}</TableCell>
-                            <TableCell>
-                                {(
-                                    recitation + 
-                                    activity +
-                                    quiz +
-                                    project +
-                                    summative +
-                                    exam
-                                ).toFixed(1) || 0}
-                            </TableCell>
-                        </TableRow>
-                    ))}
-                </TableBody>
-            </Table>
+        <div className="flex-1 space-y-4">
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit, onError)}>
                     <Button 
                         type="submit"
+                        variant={'navy'}
                         disabled={weight !== 100}
+                        className="flex gap-2 items-center"
                     >
                         {updateSG.isPending || generateStudentSG.isPending
                             ? 'Processing...'
                             : sg_by_quarter.length > 0
                                 ? 'Update Subject Grade'
-                                : 'Save Subject Grade'
+                                : <>Save Subject Grade<Save /></>
                         }
                     </Button>
                 </form>
             </Form>
+            <DataTable columns={columns} data={students_performance} />
+            
         </div>
     )
 }

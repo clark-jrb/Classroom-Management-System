@@ -6,7 +6,7 @@ import { Suspense, useState } from "react"
 import { ComputationViewTable } from "./ComputationViewTable"
 import { Button } from "@/components/ui/button"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { ArrowLeft } from "lucide-react"
+import { ArrowLeft, LoaderCircle } from "lucide-react"
 import { toCamelCase } from "@/helpers/camel-case"
 import { getGradeName } from "@/helpers/get-quarter"
 
@@ -70,7 +70,11 @@ export const ComputationView = () => {
                     setWeight={setWeight}
                     quarter={quarter}
                 />
-                <Suspense fallback={<div>loading...</div>}>
+                <Suspense fallback={
+                    <div className="flex-1 flex justify-center items-center">
+                        <LoaderCircle className="animate-spin" color="gray" size={'3rem'}/>
+                    </div>
+                }>
                     <ComputationViewTable 
                         section={section}
                         subject={subject}

@@ -77,7 +77,7 @@ export const Procedures = ({ section_assigned, subject_handled, grade_assigned, 
                     </div>
                 </div>
                 <div className="text-gray-500 text-xs">
-                    * You can only save the grade if the total weight is equivalent to 100
+                    * You can only save the grade if the total weight reaches 100 %
                 </div>
             </div>
             {/* <div>{sumOfWeight === 100 ? 'All required tasks complete' : 'Some tasks are still missing'}</div> */}
