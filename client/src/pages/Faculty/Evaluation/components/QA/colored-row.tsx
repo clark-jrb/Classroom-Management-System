@@ -15,7 +15,7 @@ export const ColoredRow = ({ grade }: {
                 className={`absolute bottom-0 left-0 z-0 w-full h-full 
                     ${!grade 
                         ? ''
-                        : grade && grade >= 85
+                        : grade && grade >= 75
                             ? 'passed'
                             : 'failed'
                     }

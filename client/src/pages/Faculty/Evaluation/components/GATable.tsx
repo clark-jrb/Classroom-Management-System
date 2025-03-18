@@ -1,14 +1,6 @@
 import { Button } from "@/components/ui/button"
 import { Form } from "@/components/ui/form"
 import {
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
-} from "@/components/ui/table"
-import {
     Dialog,
     DialogContent,
     DialogDescription,
@@ -27,6 +19,9 @@ import "@/styles/computation_styles.scss"
 import { toast } from "sonner"
 import { DialogClose } from "@radix-ui/react-dialog"
 import { useCurrentQuarterStore } from "@/stores/globalSlice"
+import { LoaderCircle } from "lucide-react"
+import { DataTable } from "./GA/data-table"
+import { columns } from "./GA/columns"
 
 export const GATable = ({ section, grade_assigned }: {
     section: string
@@ -86,23 +81,57 @@ export const GATable = ({ section, grade_assigned }: {
         }
     }, [students_calculated_qa])
     
-    const getRemarksAndGA = (sid: string) => {
-        const get_ga = students_ga.find(data => data.sid === sid)?.general_ave // returns number
-        const remarks = !get_ga 
-            ? '--'
-            : get_ga && get_ga >= 75
-                ? 'passed'
-                : 'failed'
-
-        const general_average = get_ga?.toFixed(0) // returns string
-
-        return { general_average, remarks }
-    }
-    
     return (
-        <div>
+        <div className="space-y-4">
+            <div className="w-full flex justify-end">
+                <Dialog open={openDialog} onOpenChange={setOpenDialog}>
+                    <DialogTrigger asChild>
+                        {current_quarter === 'q4' && 
+                            <Button 
+                                type="button" 
+                                variant={'navy'}
+                                disabled={students_ga.length > 0}
+                            >
+                                Submit Grades
+                            </Button>
+                        }
+                    </DialogTrigger>
+                    <DialogContent className="w-[20rem]">
+                        <DialogHeader>
+                            <DialogTitle className="font-medium text-navy">
+                                Are you sure?
+                            </DialogTitle>
+                            <DialogDescription className="py-4">
+                                This action is cannot be undone once submitted.
+                            </DialogDescription>
+                            <div className="ms-auto">
+                                <div className="flex space-x-2">
+                                    <Form {...form}>
+                                        <form onSubmit={form.handleSubmit(onSubmit, onError)}>
+                                            <Button 
+                                                variant={'navy'}
+                                                type="submit"
+                                                disabled={generateGeneralAverage.isPending}
+                                            >
+                                                {generateGeneralAverage.isPending 
+                                                    ? <>Processing<LoaderCircle className="animate-spin"/></>
+                                                    : 'Yes, submit'
+                                                }
+                                            </Button>
+                                        </form>
+                                    </Form>
+                                    <DialogClose asChild>
+                                        <Button type="button" variant={'ghost'}>Cancel</Button>
+                                    </DialogClose>
+                                </div>
+                            </div>
+                        </DialogHeader>
+                    </DialogContent>
+                </Dialog>
+            </div>
             <div>
-                <Table>
+                <DataTable data={students_calculated_qa} columns={columns(students_ga)}/>
+                {/* <Table>
                     <TableHeader>
                         <TableRow>
                             <TableHead className="w-[150px]">Last Name</TableHead>
@@ -140,42 +169,7 @@ export const GATable = ({ section, grade_assigned }: {
                                 </TableRow>
                         )})}
                     </TableBody>
-                </Table>
-            </div>
-            <div>
-                <Dialog open={openDialog} onOpenChange={setOpenDialog}>
-                    <DialogTrigger asChild>
-                        {current_quarter === 'q4' && 
-                            <Button type="button" disabled={students_ga.length > 0}>
-                                Submit
-                            </Button>
-                        }
-                    </DialogTrigger>
-                    <DialogContent className="w-[20rem]">
-                        <DialogHeader>
-                            <DialogTitle>
-                                Are you sure?
-                            </DialogTitle>
-                            <DialogDescription className="py-4">
-                                This action cannot be undone once submitted.
-                            </DialogDescription>
-                            <div className="ms-auto">
-                                <div className="flex space-x-2">
-                                    <DialogClose asChild>
-                                        <Button type="button" variant={'destructive'}>Cancel</Button>
-                                    </DialogClose>
-                                    <Form {...form}>
-                                        <form onSubmit={form.handleSubmit(onSubmit, onError)}>
-                                            <Button type="submit">
-                                                Yes, submit
-                                            </Button>
-                                        </form>
-                                    </Form>
-                                </div>
-                            </div>
-                        </DialogHeader>
-                    </DialogContent>
-                </Dialog>
+                </Table> */}
             </div>
         </div>
     )
