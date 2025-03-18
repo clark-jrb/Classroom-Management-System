@@ -4,6 +4,7 @@ import { QATable } from "./QATable"
 import { useState } from "react"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { QuarterTypes } from "@/types/global.types"
+import { ArrowLeft } from "lucide-react"
 
 export const ViewQA = ({ grade_assigned, section }: {
     grade_assigned: string
@@ -11,13 +12,17 @@ export const ViewQA = ({ grade_assigned, section }: {
 }) => {
     const navigate = useNavigate()
     const [quarter, setQuarter] = useState('q1')
-
     return (
-        <div>
-            <div className="flex">
-                <div>
-                    <Button variant={'outline'} onClick={() => navigate('/evaluation')}>Go back</Button>
-                </div>
+        <div className="space-y-4">
+            <div className="flex items-center">
+                <Button 
+                    type={'button'} 
+                    variant={'ghost'} 
+                    onClick={() => navigate('/evaluation')}
+                >
+                    <ArrowLeft/>
+                </Button>
+                <div className="text-2xl text-navy">Students Quarterly Average</div>
                 <div className="ms-auto">
                     <Select onValueChange={setQuarter} defaultValue={quarter}>
                         <SelectTrigger className="w-[180px]">

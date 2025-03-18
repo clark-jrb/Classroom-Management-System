@@ -15,7 +15,7 @@ export const Evaluation = () => {
                     </div>
                 </div>
             </Link>
-            <Link to={`/evaluation/qa`} className="block w-[20rem]">
+            <Link to={`/evaluation/ga`} className="block w-[20rem]">
                 <div className="border p-4 rounded-md flex items-center hover:shadow-md transition duration-200">
                     <span className="text-navy text-lg">
                         Students General Average

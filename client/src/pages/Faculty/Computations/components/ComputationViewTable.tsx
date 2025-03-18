@@ -16,7 +16,7 @@ import { useQueryClient } from "@tanstack/react-query"
 import { useEffect, useMemo } from "react"
 import { DataTable } from "./data-table"
 import { columns } from "./columns"
-import { Save } from "lucide-react"
+import { ArrowUp, LoaderCircle, Save } from "lucide-react"
 
 export const ComputationViewTable = ({ section, subject, weight, quarter }: {
     section: string
@@ -129,9 +129,9 @@ export const ComputationViewTable = ({ section, subject, weight, quarter }: {
                         className="flex gap-2 items-center"
                     >
                         {updateSG.isPending || generateStudentSG.isPending
-                            ? 'Processing...'
+                            ? <>Processing<LoaderCircle className="animate-spin"/></>
                             : sg_by_quarter.length > 0
-                                ? 'Update Subject Grade'
+                                ? <>Update Subject Grade<ArrowUp /></>
                                 : <>Save Subject Grade<Save /></>
                         }
                     </Button>
