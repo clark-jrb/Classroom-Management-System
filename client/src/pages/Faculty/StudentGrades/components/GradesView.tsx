@@ -5,8 +5,9 @@ import { Suspense, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { GradesViewTable } from "./GradesViewTable"
-import { Label } from "@/components/ui/label"
 import { toCamelCase } from "@/helpers/camel-case"
+import { ArrowLeft, LoaderCircle } from "lucide-react"
+import { getGradeName } from "@/helpers/get-quarter"
 
 export const GradesView = () => {
     const { section, subject } = useParams<{ section: string, subject: SubjectTypes }>()
@@ -30,16 +31,22 @@ export const GradesView = () => {
     }
 
     return (
-        <div>
+        <div className="flex flex-col h-full">
             <div className="flex gap-5 mb-5">
-                <Button variant={'outline'} onClick={() => navigate('/grades')}>Go back</Button>
-                <div>
-                    <Label>Subject:</Label> &nbsp;
-                    {toCamelCase(subject)}
-                </div>
-                <div>
-                    <Label>Grade and Section:</Label> &nbsp;
-                    {toCamelCase(grade_assigned)}, {toCamelCase(section)}
+                <Button 
+                    variant={'ghost'} 
+                    onClick={() => navigate('/grades')}
+                >
+                    <ArrowLeft/>
+                </Button>
+                <div className="flex items-end gap-2">
+                    <div className="text-2xl text-navy">
+                        {toCamelCase(subject)}
+                    </div>
+                    <div className="text-gray-500 text-2xl">/</div>
+                    <div className="text-gray-500">
+                        {getGradeName(grade_assigned)}, {toCamelCase(section)}
+                    </div>
                 </div>
                 <div className="ms-auto">
                     <Select onValueChange={handleQuarterChange} defaultValue={quarter}>
@@ -55,8 +62,12 @@ export const GradesView = () => {
                     </Select>
                 </div>
             </div>
-            <div className="h-full gap-5">
-                <Suspense fallback={<div>loading...</div>}>
+            <div className="flex-1 gap-5">
+                <Suspense fallback={
+                    <div className="h-full flex justify-center items-center">
+                        <LoaderCircle className="animate-spin" color="gray" size={'3rem'}/>
+                    </div>
+                }>
                     <GradesViewTable section={section} subject={subject} quarter={quarter}/>
                 </Suspense>
             </div>

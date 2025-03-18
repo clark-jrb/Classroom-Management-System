@@ -1,12 +1,4 @@
 import { QuarterTypes, SubjectTypes } from "@/types/global.types"
-import {
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
-} from "@/components/ui/table"
 import { useStudentsQAMutations, useStudentsSG, useStudentsSGfromQA } from "@/hooks/useTaskQuery"
 import { Button } from "@/components/ui/button"
 import { useForm } from "react-hook-form"
@@ -18,6 +10,9 @@ import { getChangedSG } from "@/helpers/changed-fields"
 import { toast } from "sonner"
 import { useEffect, useMemo } from "react"
 import { teacherClassInfo } from "@/hooks/useTeacherQuery"
+import { DataTable } from "./data-table"
+import { columns } from "./columns"
+import { Check, LoaderCircle } from "lucide-react"
 
 export const GradesViewTable = ({ section, subject, quarter }: {
     section: string
@@ -91,52 +86,26 @@ export const GradesViewTable = ({ section, subject, quarter }: {
 
     return (
         <div className="space-y-4">
-            <div className="border rounded-md">
-                <Table>
-                    <TableHeader>
-                        <TableRow>
-                            <TableHead className="w-[150px]">Last Name</TableHead>
-                            <TableHead className="w-[150px]">First Name</TableHead>
-                            <TableHead>Subject Grade</TableHead>
-                            <TableHead>Remarks</TableHead>
-                        </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                        {sg_by_quarter.map(({
-                            sid: {
-                                sid,
-                                firstname,
-                                lastname
-                            },
-                            subj_grade
-                        }) => (
-                            <TableRow key={sid}>
-                                <TableCell className="font-medium text-base">{lastname}</TableCell>
-                                <TableCell>{firstname}</TableCell>
-                                <TableCell>{subj_grade.toFixed(0)}</TableCell>
-                                <TableCell>{subj_grade >= 75 ? 'PASSED' : 'FAILED'}</TableCell>
-                            </TableRow>
-                        ))}
-                    </TableBody>
-                </Table>
-
-            </div>
             <div>
                 <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit, onError)}>
                         <Button 
                             type="submit"
+                            variant={'navy'}
                             disabled={sg_by_quarter.length === 0}
                         >
                             {updateSGfromQA.isPending
-                                ? "Processing..."
+                                ? <>Processing<LoaderCircle className="animate-spin"/></>
                                 : teacher_role !== 'homeroom'
                                     ? 'Submit to homeroom'
-                                    : 'Submit'
+                                    : <>Submit to Evaluation<Check /></>
                             }
                         </Button>
                     </form>
                 </Form>
+            </div>
+            <div>
+                <DataTable columns={columns} data={sg_by_quarter}/>
             </div>
         </div>
     )
