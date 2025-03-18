@@ -58,10 +58,18 @@ export class TeacherController {
             }
 
             const [account, profile, classes] = await Promise.all([
-                TeacherAccountModel.findById(id),
-                TeacherProfileModel.findOne({ tid: id }),
-                TeacherClassModel.findOne({ tid: id }),
-            ]);
+                TeacherAccountModel
+                    .findById(id)
+                    .select('-password -__v')
+                    .lean(),
+                TeacherProfileModel.findOne({ tid: id })
+                    .select('-_id -tid -__v')
+                    .lean(),
+                TeacherClassModel
+                    .findOne({ tid: id })
+                    .select('-_id -tid -__v')
+                    .lean()
+            ])
     
             if (!account) {
                 res.status(404).json({ message: 'Teacher cannot be found' });
