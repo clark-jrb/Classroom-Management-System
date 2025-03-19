@@ -5,8 +5,8 @@ import cookieParser from 'cookie-parser'
 import compression from 'compression'
 import cors from 'cors'
 import * as dotenv from 'dotenv'
-import router from './router'
-import { dbConnect } from './utils/db'
+import router from './src/router'
+import { dbConnect } from './src/utils/db'
 
 const app = express()
 
