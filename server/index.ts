@@ -14,6 +14,7 @@ dotenv.config()
 
 app.use(cors({
     origin: 'https://classroom-management-system.vercel.app',
+    methods: ["GET", "POST", "PATCH", "DELETE"],
     credentials: true,
 }))
 
