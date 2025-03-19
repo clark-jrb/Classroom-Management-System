@@ -4,8 +4,12 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon",
+    "build": "rimraf dist && tsc",
+    "ts.check": "tsc --project tsconfig.json",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "seed:policy": "ts-node src/seeds/seed-policy.ts"
+    "seed:policy": "ts-node src/seeds/seed-policy.ts",
+    "vercel-build": "tsc",
+    "add-build": "git add dist"
   },
   "keywords": [],
   "author": "",
@@ -20,6 +24,8 @@
     "@types/lodash": "^4.17.10",
     "@types/mongoose": "^5.11.96",
     "nodemon": "^3.1.7",
+    "pre-commit": "^1.0.10",
+    "rimraf": "^6.0.1",
     "ts-node": "^10.9.2",
     "typescript": "^5.6.2"
   },
@@ -36,5 +42,10 @@
     "jsonwebtoken": "^9.0.2",
     "lodash": "^4.17.21",
     "mongoose": "^8.7.0"
-  }
+  },
+  "pre-commit": [
+      "ts.check",
+      "build",
+      "add-build"
+  ]
 }
