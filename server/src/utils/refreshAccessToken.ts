@@ -38,7 +38,7 @@ export const refresh = async (req: Request, res: Response): Promise<any> => {
                 httpOnly: true,
                 secure: true, // Enable in a production environment with HTTPS
                 sameSite: "lax",
-                maxAge: 15 * 60 * 1000, // 15 minutes
+                maxAge: 60 * 60 * 1000, // 60 minutes
                 // maxAge: 15 * 1000, // 15 seconds (for testing)
             })
             .json({ message: "Generated new access token" })

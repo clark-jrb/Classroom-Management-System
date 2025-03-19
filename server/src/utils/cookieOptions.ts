@@ -10,7 +10,7 @@ export const accessTokenOpt: IToken = {
     httpOnly: true,
     secure: true,
     sameSite: 'none',
-    maxAge: 15 * 60 * 1000, // 15 minutes
+    maxAge: 60 * 60 * 1000, // 60 minutes
 }
 
 export const refreshTokenOpt: IToken = {
